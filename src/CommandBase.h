@@ -5,10 +5,12 @@
 #include <Commands/Command.h>
 #include <OI.h>
 #include <WPILib.h>
-#include <Subsystems/Cameras.h>
 
 // list all subsystems here to prevent cyclical dependencies
 class Mobility;
+class Cameras;
+class OI;
+
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -22,8 +24,8 @@ public:
 	CommandBase();
 	static void init();
 	// Create a single static instance of all of your subsystems
-	static Cameras* cameras;
 	static Mobility* mobility;
+	static Cameras* cameras;
 	static OI* oi;
 };
 

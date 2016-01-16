@@ -2,6 +2,7 @@
 #include <Commands/Scheduler.h>
 #include <OI.h>
 #include <Subsystems/Mobility.h>
+#include <Subsystems/Cameras.h>
 
 // Initialize a single static instance of all of your subsystems to NULL
 OI* CommandBase::oi = nullptr;
