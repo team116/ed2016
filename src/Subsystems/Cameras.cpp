@@ -12,7 +12,7 @@ Cameras::Cameras() :
 	frameCam0 = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 	frameCam1 = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 
-
+	cameraRunning = -1;
 }
 
 void Cameras::InitDefaultCommand()
@@ -25,6 +25,7 @@ void Cameras::InitDefaultCommand()
 // here. Call these from Commands.
 
 bool Cameras::StopCamera(int cameraNum) {
+	if(cameraRunning != -1){
 		if (cameraNum == 1) {
 			// stop image acquisition
 			IMAQdxStopAcquisition(sessionCam1);
@@ -47,8 +48,10 @@ bool Cameras::StopCamera(int cameraNum) {
 			}
 
 		}
-		return (kOk);
+		cameraRunning = -1;
 	}
+	return (kOk);
+}
 
 bool Cameras::StartCamera(int cameraNum) {
 	if (cameraNum == 1) {
@@ -63,12 +66,13 @@ bool Cameras::StartCamera(int cameraNum) {
 		imaqError = IMAQdxConfigureGrab(sessionCam1);
 		if (imaqError != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
-					"cam0 IMAQdxConfigureGrab error: "
+					"cam1 IMAQdxConfigureGrab error: "
 							+ std::to_string((long) imaqError) + "\n");
 			return (kError);
 		}
 		// acquire images
 		IMAQdxStartAcquisition(sessionCam1);
+		cameraRunning = 1;
 
 	} else if (cameraNum == 0) {
 		imaqError = IMAQdxOpenCamera("cam0",
@@ -88,6 +92,7 @@ bool Cameras::StartCamera(int cameraNum) {
 		}
 		// acquire images
 		IMAQdxStartAcquisition(sessionCam0);
+		cameraRunning = 0;
 
 	}
 

@@ -13,6 +13,8 @@ private:
 	IMAQdxSession sessionCam0;
 	IMAQdxSession sessionCam1;
 
+	int cameraRunning;
+
 	Image *frameCam0;
 	Image *frameCam1;
 
