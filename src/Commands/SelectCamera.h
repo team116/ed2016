@@ -16,8 +16,6 @@ public:
 	void Interrupted();
 private:
 	int camera;
-
-	IMAQdxError imaqError;
 };
 
 #endif
