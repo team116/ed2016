@@ -6,6 +6,7 @@
 // Initialize a single static instance of all of your subsystems to NULL
 OI* CommandBase::oi = nullptr;
 Mobility* CommandBase::mobility = nullptr;
+Cameras* CommandBase::cameras = nullptr;
 
 CommandBase::CommandBase(const std::string &name) :
 		Command(name)
@@ -24,4 +25,5 @@ void CommandBase::init()
 	// line should be repeated for each subsystem in the project.
 	oi = OI::getInstance();
 	mobility = Mobility::getInstance();
+	cameras = Cameras::getInstance();
 }

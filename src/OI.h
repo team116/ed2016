@@ -2,6 +2,7 @@
 #define OI_H
 
 #include <WPILib.h>
+#include <Joystick.h>
 
 class OI
 {
@@ -11,6 +12,8 @@ public:
 private:
 	OI();
 	static OI* INSTANCE;
+
+	Joystick* joystick0;
 };
 
 #endif

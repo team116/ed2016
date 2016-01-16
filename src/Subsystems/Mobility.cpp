@@ -4,7 +4,7 @@
 Mobility* Mobility::INSTANCE = nullptr;
 
 Mobility::Mobility() :
-		Subsystem("ExampleSubsystem")
+		Subsystem("Mobility")
 {
 
 }
