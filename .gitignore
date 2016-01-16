@@ -31,3 +31,5 @@ Debug/*
 
 # Eclipse nonsense
 .settings/*
+.cproject
+sysProps.xml
