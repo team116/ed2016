@@ -12,7 +12,7 @@ SelectCamera::SelectCamera(int cam)
 // Called just before this Command runs the first time
 void SelectCamera::Initialize()
 {
-
+	DriverStation::ReportError("Starting Camera");
 }
 
 // Called repeatedly when this Command is scheduled to run

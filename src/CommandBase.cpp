@@ -27,4 +27,7 @@ void CommandBase::init()
 	oi = OI::getInstance();
 	mobility = Mobility::getInstance();
 	cameras = Cameras::getInstance();
+
+	SmartDashboard::PutData(mobility);
+	SmartDashboard::PutData(cameras);
 }
