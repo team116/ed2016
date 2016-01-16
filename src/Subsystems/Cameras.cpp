@@ -25,35 +25,36 @@ void Cameras::InitDefaultCommand()
 // here. Call these from Commands.
 
 bool Cameras::StopCamera(int cameraNum) {
-	if(cameraRunning != -1){
-		if (cameraNum == 1) {
-			// stop image acquisition
-			IMAQdxStopAcquisition(sessionCam1);
-			//the camera name (ex "cam0") can be found through the roborio web interface
-			imaqError = IMAQdxCloseCamera(sessionCam1);
-			if (imaqError != IMAQdxErrorSuccess) {
-				DriverStation::ReportError(
-						"cam1 IMAQdxCloseCamera error: "
-								+ std::to_string((long) imaqError) + "\n");
-				return (kError);
-			}
-		} else if (cameraNum == 0) {
-			IMAQdxStopAcquisition(sessionCam0);
-			imaqError = IMAQdxCloseCamera(sessionCam0);
-			if (imaqError != IMAQdxErrorSuccess) {
-				DriverStation::ReportError(
-						"cam0 IMAQdxCloseCamera error: "
-								+ std::to_string((long) imaqError) + "\n");
-				return (kError);
-			}
+	DriverStation::ReportError("Stopping Camera: " + cameraNum);
 
+	if (cameraNum == 1) {
+		// stop image acquisition
+		IMAQdxStopAcquisition(sessionCam1);
+		//the camera name (ex "cam0") can be found through the roborio web interface
+		imaqError = IMAQdxCloseCamera(sessionCam1);
+		if (imaqError != IMAQdxErrorSuccess) {
+			DriverStation::ReportError(
+					"cam1 IMAQdxCloseCamera error: "
+							+ std::to_string((long) imaqError) + "\n");
+			return (kError);
 		}
-		cameraRunning = -1;
+	} else if (cameraNum == 0) {
+		IMAQdxStopAcquisition(sessionCam0);
+		imaqError = IMAQdxCloseCamera(sessionCam0);
+		if (imaqError != IMAQdxErrorSuccess) {
+			DriverStation::ReportError(
+					"cam0 IMAQdxCloseCamera error: "
+							+ std::to_string((long) imaqError) + "\n");
+			return (kError);
+		}
+
 	}
 	return (kOk);
 }
 
 bool Cameras::StartCamera(int cameraNum) {
+	DriverStation::ReportError("Starting Camera: " + cameraNum);
+
 	if (cameraNum == 1) {
 		imaqError = IMAQdxOpenCamera("cam1",
 				IMAQdxCameraControlModeController, &sessionCam1);
@@ -66,13 +67,12 @@ bool Cameras::StartCamera(int cameraNum) {
 		imaqError = IMAQdxConfigureGrab(sessionCam1);
 		if (imaqError != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
-					"cam1 IMAQdxConfigureGrab error: "
+					"cam0 IMAQdxConfigureGrab error: "
 							+ std::to_string((long) imaqError) + "\n");
 			return (kError);
 		}
 		// acquire images
 		IMAQdxStartAcquisition(sessionCam1);
-		cameraRunning = 1;
 
 	} else if (cameraNum == 0) {
 		imaqError = IMAQdxOpenCamera("cam0",
@@ -92,24 +92,33 @@ bool Cameras::StartCamera(int cameraNum) {
 		}
 		// acquire images
 		IMAQdxStartAcquisition(sessionCam0);
-		cameraRunning = 0;
 
 	}
+	return (kOk);
+}
 
+void Cameras::RunCamera(int cameraNum)
+{
 	if(cameraNum == 0){
 		imaqError = IMAQdxGrab(sessionCam0, frameCam0, true, NULL);
+		if (imaqError != IMAQdxErrorSuccess) {
+			DriverStation::ReportError(
+					"cam0 IMAQdxGrab error: "
+							+ std::to_string((long) imaqError) + "\n");
+		} else {
+			CameraServer::GetInstance()->SetImage(frameCam0);
+		}
 	}
 	else if(cameraNum == 1){
 		imaqError = IMAQdxGrab(sessionCam1, frameCam1, true, NULL);
+		if (imaqError != IMAQdxErrorSuccess) {
+			DriverStation::ReportError(
+					"cam1 IMAQdxGrab error: "
+							+ std::to_string((long) imaqError) + "\n");
+		} else {
+			CameraServer::GetInstance()->SetImage(frameCam1);
+		}
 	}
-	if (imaqError != IMAQdxErrorSuccess) {
-		DriverStation::ReportError(
-				"cam0 IMAQdxGrab error: "
-						+ std::to_string((long) imaqError) + "\n");
-	} else {
-		CameraServer::GetInstance()->SetImage(frameCam0);
-	}
-	return (kOk);
 }
 
 Cameras* Cameras::getInstance()

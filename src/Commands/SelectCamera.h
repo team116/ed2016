@@ -16,6 +16,8 @@ public:
 	void Interrupted();
 private:
 	int camera;
+
+	bool isFinished;
 };
 
 #endif

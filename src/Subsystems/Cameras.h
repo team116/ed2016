@@ -27,6 +27,7 @@ public:
 
 	bool StopCamera(int cameraNum);
 	bool StartCamera(int cameraNum);
+	void RunCamera(int cameraNum);
 
 	static Cameras* getInstance();
 };
