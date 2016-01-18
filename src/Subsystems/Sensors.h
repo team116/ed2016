@@ -21,6 +21,10 @@ private:
 	Sensors();
 	static Sensors* INSTANCE;
 
+	static const float SHOOTER_ANGLE_OFFSET;
+
+	AnalogInput* shooter_angle_encoder;
+
 };
 
 #endif
