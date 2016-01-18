@@ -2,10 +2,16 @@
 #include <Commands/Scheduler.h>
 #include <OI.h>
 #include <Subsystems/Mobility.h>
+#include <Subsystems/Climber.h>
+#include <Subsystems/Sensors.h>
+#include <Subsystems/Shooter.h>
 
 // Initialize a single static instance of all of your subsystems to NULL
 OI* CommandBase::oi = nullptr;
 Mobility* CommandBase::mobility = nullptr;
+Climber* CommandBase::climber = nullptr;
+Sensors* CommandBase::sensors = nullptr;
+Shooter* CommandBase::shooter = nullptr;
 
 CommandBase::CommandBase(const std::string &name) :
 		Command(name)

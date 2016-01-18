@@ -1,8 +1,8 @@
 #include <Subsystems/Sensors.h>
 #include <RobotMap.h>
 
-Sensors::Sensors() :
-		Subsystem("Sensors")
+Sensors* Sensors::INSTANCE = nullptr;
+Sensors::Sensors() : Subsystem("Sensors")
 {
 
 }
@@ -23,4 +23,12 @@ bool Sensors::isLimitSwitched()
 float Sensors::shooterAngle()
 {
 	return 0.0;
+}
+Sensors* Sensors::getInstance()
+{
+	if (INSTANCE == nullptr)
+	{
+		INSTANCE = new Sensors();
+	}
+	return INSTANCE;
 }

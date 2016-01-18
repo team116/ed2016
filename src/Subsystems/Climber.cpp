@@ -3,10 +3,8 @@
 
 Climber* Climber::INSTANCE = nullptr;
 
-Climber::Climber() :
-		Subsystem("Climber")
+Climber::Climber():Subsystem("Climber")
 {
-
 }
 
 void Climber::InitDefaultCommand()
