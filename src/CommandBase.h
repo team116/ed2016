@@ -7,7 +7,10 @@
 #include <WPILib.h>
 
 // list all subsystems here to prevent cyclical dependencies
+class Climber;
 class Mobility;
+class Sensors;
+class Shooter;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -21,7 +24,10 @@ public:
 	CommandBase();
 	static void init();
 	// Create a single static instance of all of your subsystems
+	static Climber* climber;
 	static Mobility* mobility;
+	static Sensors* sensors;
+	static Shooter* shooter;
 	static OI* oi;
 };
 

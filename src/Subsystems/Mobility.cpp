@@ -3,9 +3,8 @@
 
 Mobility* Mobility::INSTANCE = nullptr;
 
-Mobility::Mobility()
+Mobility::Mobility() : Subsystem("ExampleSubsystem")
 {
-	Subsystem("ExampleSubsystem");
 }
 
 void Mobility::InitDefaultCommand()
