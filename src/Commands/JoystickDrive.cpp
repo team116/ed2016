@@ -6,18 +6,20 @@ JoystickDrive::JoystickDrive()
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	Requires(mobility);
-
 }
 
 // Called just before this Command runs the first time
 void JoystickDrive::Initialize()
 {
-
+	leftInput = 0;
+	rightInput = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
 {
+	leftInput = oi->GetJoystickLeftY();
+	rightInput = oi->GetJoystickRightY();
 
 }
 

@@ -10,12 +10,14 @@ public:
 	void InitDefaultCommand();
 	static Mobility* getInstance();
 	void SetLeft(float motor1);
+	void SetRight(float motor2);
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
 private:
 	Mobility();
 	static Mobility* INSTANCE;
+
 
 };
 

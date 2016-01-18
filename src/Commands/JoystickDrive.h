@@ -8,8 +8,8 @@
 class JoystickDrive: public CommandBase
 {
 public:
-	Joystick* left;
-	Joystick* right;
+	float leftInput;
+	float rightInput;
 	JoystickDrive();
 	void Initialize();
 	void Execute();

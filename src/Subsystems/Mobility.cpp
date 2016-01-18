@@ -6,6 +6,8 @@ Mobility* Mobility::INSTANCE = nullptr;
 Mobility::Mobility() : Subsystem("ExampleSubsystem")
 {
 }
+// Put methods for controlling this subsystem
+// here. Call these from Commands.
 
 void Mobility::InitDefaultCommand()
 {
@@ -16,9 +18,9 @@ void Mobility::SetLeft(float motor1){
 
 }
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+void Mobility::SetRight(float motor2){
 
+}
 
 Mobility* Mobility::getInstance()
 {
