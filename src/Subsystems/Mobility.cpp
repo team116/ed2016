@@ -3,16 +3,18 @@
 
 Mobility* Mobility::INSTANCE = nullptr;
 
-Mobility::Mobility() :
-		//Subsystem("ExampleSubsystem")
+Mobility::Mobility()
 {
-
+	Subsystem("ExampleSubsystem");
 }
 
 void Mobility::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
+}
+void Mobility::SetLeft(float motor1){
+
 }
 
 // Put methods for controlling this subsystem
