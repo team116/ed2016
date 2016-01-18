@@ -15,3 +15,12 @@ void Sensors::InitDefaultCommand()
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+bool Sensors::isLimitSwitched()
+{
+	return false;
+}
+
+float Sensors::shooterAngle()
+{
+	return 0.0;
+}
