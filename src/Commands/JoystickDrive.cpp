@@ -1,13 +1,11 @@
 #include <CommandBase.h>
 #include <Commands/JoystickDrive.h>
 
-JoystickDrive::JoystickDrive(Joystick* j1, Joystick* j2)
+JoystickDrive::JoystickDrive()
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	Requires(mobility);
-	left = j1;
-	right = j2;
 
 }
 

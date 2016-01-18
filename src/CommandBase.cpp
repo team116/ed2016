@@ -24,4 +24,8 @@ void CommandBase::init()
 	// line should be repeated for each subsystem in the project.
 	oi = OI::getInstance();
 	mobility = Mobility::getInstance();
+	climber = Climber::getInstance();
+	sensors = Sensors::getInstance();
+	shooter = Shooter::getInstance();
+	oi = OI::getInstance();
 }

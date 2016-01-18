@@ -10,7 +10,7 @@ class JoystickDrive: public CommandBase
 public:
 	Joystick* left;
 	Joystick* right;
-	JoystickDrive(Joystick* j1, Joystick* j2);
+	JoystickDrive();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
