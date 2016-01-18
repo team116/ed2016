@@ -11,6 +11,14 @@ public:
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
+
+	enum IntakeDirection
+	{
+		INTAKE_IN,
+		INTAKE_STILL,
+		INTAKE_OUT
+	};
+
 private:
 	Shooter();
 	static Shooter* INSTANCE;

@@ -2,13 +2,16 @@
 #define OI_H
 
 #include <WPILib.h>
+#include <Subsystems/Shooter.h>
 
 class OI
 {
 public:
 	static OI* getInstance();
-	float GetJoystickLeftY();
-	float GetJoystickRightY();
+	float getJoystickLeftY();
+	float getJoystickRightY();
+
+	Shooter::IntakeDirection getIntakeDirection();
 
 private:
 	OI();
