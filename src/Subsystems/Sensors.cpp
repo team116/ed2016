@@ -1,10 +1,12 @@
 #include <Subsystems/Sensors.h>
 #include <RobotMap.h>
+#include <WPILib.h>
 
-Sensors::Sensors() :
-		Subsystem("Sensors")
+const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
+
+Sensors::Sensors() : Subsystem("Sensors")
 {
-
+	shooter_angle_encoder = new AnalogInput(Robot::SHOOTER_ANGLE_ENCODER);
 }
 
 void Sensors::InitDefaultCommand()
@@ -22,5 +24,5 @@ bool Sensors::isLimitSwitched()
 
 float Sensors::shooterAngle()
 {
-	return 0.0;
+	return 360.0 * shooter_angle_encoder->GetVoltage() / 5.0 - SHOOTER_ANGLE_OFFSET;
 }
