@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <OI.h>
+#include <Commands/IntakeDefault.h>
 
 OI* OI::INSTANCE = nullptr;
 
@@ -16,6 +17,12 @@ OI::OI()
 	extend_arm = new JoystickButton(joystick2,6);
 	retrive_arm = new JoystickButton(joystick2,7);
 	arm_claw_open_close = new JoystickButton(joystick2,8);
+
+	intake_in->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_IN));
+	intake_in->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
+	intake_out->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_OUT));
+	intake_out->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
+
 }
 float OI::getJoystickLeftY()
 {

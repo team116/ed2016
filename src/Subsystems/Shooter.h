@@ -4,6 +4,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
+// included shooter & intake
 class Shooter: public Subsystem
 {
 public:
@@ -18,10 +19,13 @@ public:
 		INTAKE_STILL,
 		INTAKE_OUT
 	};
-
+	void setIntakeDirection(IntakeDirection value);
 private:
 	Shooter();
 	static Shooter* INSTANCE;
+
+	CANTalon* intake_roller;
+
 };
 
 #endif
