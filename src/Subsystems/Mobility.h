@@ -17,6 +17,10 @@ public:
 private:
 	Mobility();
 	static Mobility* INSTANCE;
+	CANTalon* leftFront;
+	CANTalon* leftBack;
+	CANTalon* rightFront;
+	CANTalon* rightBack;
 
 
 };

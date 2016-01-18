@@ -5,6 +5,17 @@ Mobility* Mobility::INSTANCE = nullptr;
 
 Mobility::Mobility() : Subsystem("Mobility")
 {
+	leftFront = new CANTalon(1);
+	leftBack = new CANTalon(2);
+	rightFront = new CANTalon(3);
+	rightBack = new CANTalon(4);
+
+	leftFront->EnableControl();
+	leftBack->EnableControl();
+	rightFront->EnableControl();
+	rightBack->EnableControl();
+
+
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
@@ -14,11 +25,11 @@ void Mobility::InitDefaultCommand()
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
 }
-void Mobility::SetLeft(float motor1){
+void Mobility::SetLeft(float speed){
 
 }
 
-void Mobility::SetRight(float motor2){
+void Mobility::SetRight(float speed){
 
 }
 

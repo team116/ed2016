@@ -18,8 +18,8 @@ void JoystickDrive::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
 {
-	leftInput = oi->GetJoystickLeftY();
-	rightInput = oi->GetJoystickRightY();
+	leftInput = oi->getJoystickLeftY();
+	rightInput = oi->getJoystickRightY();
 
 }
 
