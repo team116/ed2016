@@ -16,15 +16,29 @@ OI::OI()
 	extend_arm = new JoystickButton(joystick2,6);
 	retrive_arm = new JoystickButton(joystick2,7);
 	arm_claw_open_close = new JoystickButton(joystick2,8);
-	// Process operator interface input here.
 }
-float OI::GetJoystickLeftY()
+float OI::getJoystickLeftY()
 {
 	return joystick_left->GetY();
 }
-float OI::GetJoystickRightY()
+float OI::getJoystickRightY()
 {
 	return joystick_right->GetY();
+}
+Shooter::IntakeDirection OI::getIntakeDirection()
+{
+	if (intake_in->Get())
+	{
+		return Shooter::IntakeDirection::INTAKE_IN;
+	}
+	else if (intake_out->Get())
+	{
+		return Shooter::IntakeDirection::INTAKE_OUT;
+	}
+	else
+	{
+		return Shooter::IntakeDirection::INTAKE_STILL;
+	}
 }
 OI* OI::getInstance()
 {

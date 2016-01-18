@@ -22,7 +22,7 @@
 
 namespace Robot
 {
-
+	const unsigned int SHOOTER_ANGLE_ENCODER = 0;
 }
 
 namespace OI
