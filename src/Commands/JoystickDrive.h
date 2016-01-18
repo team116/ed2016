@@ -8,7 +8,9 @@
 class JoystickDrive: public CommandBase
 {
 public:
-	JoystickDrive();
+	Joystick* left;
+	Joystick* right;
+	JoystickDrive(Joystick* j1, Joystick* j2);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -16,7 +18,6 @@ public:
 	void Interrupted();
 
 private:
-
 };
 
 #endif
