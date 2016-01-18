@@ -11,6 +11,11 @@ public:
 	static Sensors* getInstance();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
+	bool isLimitSwitched();
+	float shooterAngle();	//read the encoder
+	//a method to read the LIDAR, the return type of which we do not yet know
+
+
 
 private:
 	Sensors();
