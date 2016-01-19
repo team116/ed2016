@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <OI.h>
 #include <Commands/IntakeDefault.h>
+#include <Commands/SelectCamera.h>
 
 OI* OI::INSTANCE = nullptr;
 
@@ -22,8 +23,15 @@ OI::OI()
 	intake_in->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
 	intake_out->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_OUT));
 	intake_out->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
+	// Process operator interface input here.
 
+	JoystickButton* joy2_button1 = new JoystickButton(joystick2, 1);
+	JoystickButton* joy2_button2 = new JoystickButton(joystick2, 2);
+
+	joy2_button1->WhenPressed(new SelectCamera(0));
+	joy2_button2->WhenPressed(new SelectCamera(1));
 }
+
 float OI::getJoystickLeftY()
 {
 	return joystick_left->GetY();
@@ -49,7 +57,7 @@ Shooter::IntakeDirection OI::getIntakeDirection()
 }
 OI* OI::getInstance()
 {
-	if (INSTANCE != nullptr)
+	if (INSTANCE == nullptr)
 	{
 		INSTANCE = new OI();
 	}

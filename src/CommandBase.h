@@ -11,6 +11,9 @@ class Climber;
 class Mobility;
 class Sensors;
 class Shooter;
+class Cameras;
+class OI;
+
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -28,6 +31,7 @@ public:
 	static Mobility* mobility;
 	static Sensors* sensors;
 	static Shooter* shooter;
+	static Cameras* cameras;
 	static OI* oi;
 };
 

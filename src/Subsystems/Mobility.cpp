@@ -3,7 +3,8 @@
 
 Mobility* Mobility::INSTANCE = nullptr;
 
-Mobility::Mobility() : Subsystem("Mobility")
+Mobility::Mobility() :
+		Subsystem("Mobility")
 {
 	leftFront = new CANTalon(1);
 	leftBack = new CANTalon(2);

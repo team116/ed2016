@@ -3,6 +3,7 @@
 
 #include <WPILib.h>
 #include <Subsystems/Shooter.h>
+#include <Joystick.h>
 
 class OI
 {

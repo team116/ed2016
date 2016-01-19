@@ -68,6 +68,7 @@ private:
 		// this line or comment it out.
 		if (autonomousCommand != NULL)
 			autonomousCommand->Cancel();
+		DriverStation::ReportError("Starting Robot");
 	}
 
 	void TeleopPeriodic()
