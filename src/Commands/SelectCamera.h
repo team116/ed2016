@@ -15,9 +15,9 @@ public:
 	void End();
 	void Interrupted();
 private:
-	int camera;
+	int camera_num;
 
-	bool isFinished;
+	bool is_finished;
 };
 
 #endif

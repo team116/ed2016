@@ -12,7 +12,9 @@ Cameras::Cameras() :
 	frameCam0 = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 	frameCam1 = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 
-	cameraRunning = -1;
+	camera_running = -1;
+
+	//-1074360316
 }
 
 void Cameras::InitDefaultCommand()
@@ -24,10 +26,9 @@ void Cameras::InitDefaultCommand()
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
-bool Cameras::StopCamera(int cameraNum) {
-	DriverStation::ReportError("Stopping Camera: " + cameraNum);
-
-	if (cameraNum == 1) {
+bool Cameras::StopCamera(int cameraNum)
+{
+	if (cameraNum == 1 && camera_running == 1) {
 		// stop image acquisition
 		IMAQdxStopAcquisition(sessionCam1);
 		//the camera name (ex "cam0") can be found through the roborio web interface
@@ -38,7 +39,7 @@ bool Cameras::StopCamera(int cameraNum) {
 							+ std::to_string((long) imaqError) + "\n");
 			return (kError);
 		}
-	} else if (cameraNum == 0) {
+	} else if (cameraNum == 0 && camera_running == 0) {
 		IMAQdxStopAcquisition(sessionCam0);
 		imaqError = IMAQdxCloseCamera(sessionCam0);
 		if (imaqError != IMAQdxErrorSuccess) {
@@ -52,10 +53,14 @@ bool Cameras::StopCamera(int cameraNum) {
 	return (kOk);
 }
 
-bool Cameras::StartCamera(int cameraNum) {
-	DriverStation::ReportError("Starting Camera: " + cameraNum);
-
+bool Cameras::StartCamera(int cameraNum)
+{
+	if(camera_running >= 0)
+	{
+		StopCamera(camera_running);
+	}
 	if (cameraNum == 1) {
+
 		imaqError = IMAQdxOpenCamera("cam1",
 				IMAQdxCameraControlModeController, &sessionCam1);
 		if (imaqError != IMAQdxErrorSuccess) {
@@ -73,6 +78,7 @@ bool Cameras::StartCamera(int cameraNum) {
 		}
 		// acquire images
 		IMAQdxStartAcquisition(sessionCam1);
+		camera_running = 1;
 
 	} else if (cameraNum == 0) {
 		imaqError = IMAQdxOpenCamera("cam0",
@@ -92,6 +98,7 @@ bool Cameras::StartCamera(int cameraNum) {
 		}
 		// acquire images
 		IMAQdxStartAcquisition(sessionCam0);
+		camera_running = 0;
 
 	}
 	return (kOk);
@@ -119,6 +126,11 @@ void Cameras::RunCamera(int cameraNum)
 			CameraServer::GetInstance()->SetImage(frameCam1);
 		}
 	}
+}
+
+int Cameras::GetRunningCamera()
+{
+	return camera_running;
 }
 
 Cameras* Cameras::getInstance()

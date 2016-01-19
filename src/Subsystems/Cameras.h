@@ -13,7 +13,7 @@ private:
 	IMAQdxSession sessionCam0;
 	IMAQdxSession sessionCam1;
 
-	int cameraRunning;
+	int camera_running;
 
 	Image *frameCam0;
 	Image *frameCam1;
@@ -28,6 +28,8 @@ public:
 	bool StopCamera(int cameraNum);
 	bool StartCamera(int cameraNum);
 	void RunCamera(int cameraNum);
+
+	int GetRunningCamera();
 
 	static Cameras* getInstance();
 };
