@@ -27,6 +27,10 @@ namespace Robot
 	const unsigned int LEFT_BACK_MOTOR = 2;
 	const unsigned int RIGHT_FRONT_MOTOR = 3;
 	const unsigned int RIGHT_BACK_MOTOR = 4;
+
+	const unsigned int INTAKE_ROLLER_MOTOR = 5;
+	const unsigned int LEFT_SHOOTER_MOTOR = 6;
+	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
 }
 
 namespace OI_Ports
