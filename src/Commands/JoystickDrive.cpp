@@ -18,19 +18,15 @@ void JoystickDrive::Initialize()
 	rightInput = 0;
 }
 
-float JoystickDrive::getLeftInput(){
-	return leftInput;
-}
 
-float JoystickDrive::getRightInput(){
-	return rightInput;
-}
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
 {
 	leftInput = oi->getJoystickLeftY();
 	rightInput = oi->getJoystickRightY();
+	mobility->SetRight(rightInput);
+	mobility->SetLeft(leftInput);
 
 }
 
