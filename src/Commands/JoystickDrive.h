@@ -11,6 +11,8 @@ public:
 	float leftInput;
 	float rightInput;
 	JoystickDrive();
+	float getLeftInput();
+	float getRightInput();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
