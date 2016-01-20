@@ -29,7 +29,7 @@ namespace Robot
 	const unsigned int RIGHT_BACK_MOTOR = 4;
 }
 
-namespace OI
+namespace OI_Ports
 {
 
 }

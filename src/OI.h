@@ -19,8 +19,13 @@ private:
 	static OI* INSTANCE;
 	Joystick* joystick_left;
 	Joystick* joystick_right;
-	Joystick* joystick2;
+	Joystick* joystick_buttons;
 
+	//Joystick 0 Buttons
+
+	//Joystick 1 Buttons
+
+	//Joystick 2 Buttons
 	JoystickButton* intake_in;
 	JoystickButton* intake_out;
 	JoystickButton* shoot;
@@ -29,6 +34,8 @@ private:
 	JoystickButton* extend_arm;
 	JoystickButton* retrive_arm;
 	JoystickButton* arm_claw_open_close;
+	JoystickButton* select_camera_front;
+	JoystickButton* select_camera_back;
 };
 
 #endif
