@@ -26,13 +26,18 @@ void Mobility::InitDefaultCommand()
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
 }
-void Mobility::SetLeft(float speed)
-{
+void Mobility::SetLeft(){
+	float speed = 1.0;
+	speed = JoystickDrive.getLeft
+	leftFront->Set(speed);
+	leftBack->Set(speed);
 
 }
 
-void Mobility::SetRight(float speed)
-{
+void Mobility::SetRight(){
+
+	rightFront->Set(speed);
+	rightBack->Set(speed);
 
 }
 

@@ -9,8 +9,8 @@ class Mobility: public Subsystem
 public:
 	void InitDefaultCommand();
 	static Mobility* getInstance();
-	void SetLeft(float motor1);
-	void SetRight(float motor2);
+	void SetLeft();
+	void SetRight();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
