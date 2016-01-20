@@ -3,8 +3,7 @@
 
 Mobility* Mobility::INSTANCE = nullptr;
 
-Mobility::Mobility() :
-		Subsystem("Mobility")
+Mobility::Mobility() : Subsystem("Mobility")
 {
 	leftFront = new CANTalon(1);
 	leftBack = new CANTalon(2);
@@ -25,7 +24,7 @@ void Mobility::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
-	SetDefaultCommand(new JoystickDrive());
+
 }
 void Mobility::SetLeft(float speed){
 

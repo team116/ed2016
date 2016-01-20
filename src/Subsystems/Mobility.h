@@ -11,6 +11,7 @@ public:
 	static Mobility* getInstance();
 	void SetLeft(float speed);
 	void SetRight(float speed);
+	void SetStraight(float speed);
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
