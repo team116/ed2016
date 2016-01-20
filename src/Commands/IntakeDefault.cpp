@@ -1,10 +1,3 @@
-/*
- * IntakeDefault.cpp
- *
- *  Created on: Jan 18, 2016
- *      Author: Amanzeb
- */
-
 #include <Commands/IntakeDefault.h>
 #include <CommandBase.h>
 

@@ -23,6 +23,7 @@ OI::OI()
 	intake_in->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
 	intake_out->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_OUT));
 	intake_out->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
+	shoot->WhenPressed()
 	// Process operator interface input here.
 
 	JoystickButton* joy2_button1 = new JoystickButton(joystick2, 1);

@@ -1,10 +1,3 @@
-/*
- * IntakeDefault.h
- *
- *  Created on: Jan 18, 2016
- *      Author: Amanzeb
- */
-
 #ifndef SRC_COMMANDS_INTAKEDEFAULT_H_
 #define SRC_COMMANDS_INTAKEDEFAULT_H_
 #include <commandbase.h>
