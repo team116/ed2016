@@ -6,32 +6,41 @@
 
 class Cameras: public Subsystem
 {
+public:
+	Cameras();
+	enum CameraDirection
+	{
+		NONE,
+		FRONT,
+		BACK
+	};
+	void InitDefaultCommand();
+
+	bool StopCamera(CameraDirection camera_dir);
+	bool StartCamera(CameraDirection camera_dir);
+	void RunCamera(CameraDirection camera_dir);
+
+	int GetRunningCamera();
+
+
+
+	static Cameras* getInstance();
+
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
-	IMAQdxSession sessionCam0;
-	IMAQdxSession sessionCam1;
+	IMAQdxSession front_cam_session;
+	IMAQdxSession back_cam_session;
 
-	int camera_running;
+	CameraDirection camera_running;
 
-	Image *frameCam0;
-	Image *frameCam1;
+	Image *front_cam_frame;
+	Image *back_cam_frame;
 
 	IMAQdxError imaqError;
 
 	static Cameras* INSTANCE;
-public:
-	Cameras();
-	void InitDefaultCommand();
-
-	bool StopCamera(int cameraNum);
-	bool StartCamera(int cameraNum);
-	void RunCamera(int cameraNum);
-
-	int GetRunningCamera();
-
-	static Cameras* getInstance();
 };
 
 #endif

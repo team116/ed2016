@@ -1,13 +1,14 @@
 #include "SelectCamera.h"
 
-SelectCamera::SelectCamera(int cam)
+SelectCamera::SelectCamera(Cameras::CameraDirection direction)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 	Requires(cameras);
 	SetInterruptible(true);
+	SetRunWhenDisabled(true);
 
-	camera_num = cam;
+	camera_direction = direction;
 
 	is_finished = false;
 }
@@ -19,20 +20,20 @@ void SelectCamera::Initialize()
 	//DriverStation::ReportError("|Init SelectCamera: " + std::to_string(camera_num) + "," + std::to_string(is_finished) + "|\n");
 
 	//DriverStation::ReportError("|Starting Camera: " + std::to_string(camera_num) + "|\n");
-	cameras->StartCamera(camera_num);
+	cameras->StartCamera(camera_direction);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SelectCamera::Execute()
 {
 	//DriverStation::ReportError("|Executing Camera: " + std::to_string(camera_num) + "|\n");
-	cameras->RunCamera(camera_num);
+	cameras->RunCamera(camera_direction);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool SelectCamera::IsFinished()
 {
-	if(cameras->GetRunningCamera() != camera_num)
+	if(cameras->GetRunningCamera() != camera_direction)
 	{
 		//DriverStation::ReportError("|Cameras running different cam number than " + std::to_string(camera_num) + "|\n");
 		is_finished = true;
@@ -44,7 +45,7 @@ bool SelectCamera::IsFinished()
 void SelectCamera::End()
 {
 	//DriverStation::ReportError("|Ending SelectCamera: " + std::to_string(camera_num) + "|\n");
-	cameras->StopCamera(camera_num);
+	cameras->StopCamera(camera_direction);
 }
 
 // Called when another command which requires one or more of the same

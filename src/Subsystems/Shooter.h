@@ -25,7 +25,16 @@ private:
 	static Shooter* INSTANCE;
 
 	CANTalon* intake_roller;
+	CANTalon* left_shooter_wheel;
+	CANTalon* right_shooter_wheel;
 
+	enum ShooterDirection
+	{
+		SHOOT_OUT,
+		SHOOT_STILL,
+		SHOOT_IN
+	};
+	void setShooterDirection(ShooterDirection value);
 };
 
 #endif
