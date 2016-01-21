@@ -39,19 +39,18 @@ OI::OI()
 	intake_in->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
 	intake_out->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_OUT));
 	intake_out->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
-<<<<<<< HEAD
-	shoot->WhenPressed()
+
+
 	// Process operator interface input here.
 
-	JoystickButton* joy2_button1 = new JoystickButton(joystick2, 1);
-	JoystickButton* joy2_button2 = new JoystickButton(joystick2, 2);
+	JoystickButton* joy2_button1 = new JoystickButton(joystick_buttons, 1);
+	JoystickButton* joy2_button2 = new JoystickButton(joystick_buttons, 2);
 
 	joy2_button1->WhenPressed(new SelectCamera(0));
 	joy2_button2->WhenPressed(new SelectCamera(1));
-=======
 	select_camera_front->WhenPressed(new SelectCamera(Cameras::CameraDirection::FRONT));
 	select_camera_back->WhenPressed(new SelectCamera(Cameras::CameraDirection::BACK));
->>>>>>> 8d3dd0306dee67ec5dc3e80422712d1ae09bb26a
+
 }
 
 float OI::getJoystickLeftY()
