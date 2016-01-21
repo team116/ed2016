@@ -1,28 +1,45 @@
 #include <cstdlib>
-#include <OI.h>
 #include <Commands/IntakeDefault.h>
 #include <Commands/SelectCamera.h>
+#include <OI.h>
 
 OI* OI::INSTANCE = nullptr;
 
 OI::OI()
 {
+	// Process operator interface input here.
+
+	//Instantiate Joysticks
 	joystick_left = new Joystick(0);
 	joystick_right = new Joystick(1);
-	joystick2 = new Joystick(2);
-	intake_in = new JoystickButton(joystick2,1);
-	intake_out = new JoystickButton(joystick2,2);
-	shoot = new JoystickButton(joystick2,3);
-	aim_shooter_up = new JoystickButton(joystick2,4);
-	aim_shooter_down = new JoystickButton(joystick2,5);
-	extend_arm = new JoystickButton(joystick2,6);
-	retrive_arm = new JoystickButton(joystick2,7);
-	arm_claw_open_close = new JoystickButton(joystick2,8);
+	joystick_buttons = new Joystick(2);
 
+	//Instantiate Joystick Left Buttons
+
+	//Instantiate Joystick Right Buttons
+
+	//Instantiate Joystick Buttons Buttons
+	intake_in = new JoystickButton(joystick_buttons,1);
+	intake_out = new JoystickButton(joystick_buttons,2);
+	shoot = new JoystickButton(joystick_buttons,3);
+	aim_shooter_up = new JoystickButton(joystick_buttons,4);
+	aim_shooter_down = new JoystickButton(joystick_buttons,5);
+	extend_arm = new JoystickButton(joystick_buttons,6);
+	retrive_arm = new JoystickButton(joystick_buttons,7);
+	arm_claw_open_close = new JoystickButton(joystick_buttons,8);
+	select_camera_front = new JoystickButton(joystick_buttons, 9);
+	select_camera_back = new JoystickButton(joystick_buttons, 10);
+
+	//Set Joystick Left Events
+
+	//Set Joystick Right Events
+
+	//Set Joystick Buttons Events
 	intake_in->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_IN));
 	intake_in->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
 	intake_out->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_OUT));
 	intake_out->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
+<<<<<<< HEAD
 	shoot->WhenPressed()
 	// Process operator interface input here.
 
@@ -31,16 +48,22 @@ OI::OI()
 
 	joy2_button1->WhenPressed(new SelectCamera(0));
 	joy2_button2->WhenPressed(new SelectCamera(1));
+=======
+	select_camera_front->WhenPressed(new SelectCamera(Cameras::CameraDirection::FRONT));
+	select_camera_back->WhenPressed(new SelectCamera(Cameras::CameraDirection::BACK));
+>>>>>>> 8d3dd0306dee67ec5dc3e80422712d1ae09bb26a
 }
 
 float OI::getJoystickLeftY()
 {
 	return joystick_left->GetY();
 }
+
 float OI::getJoystickRightY()
 {
 	return joystick_right->GetY();
 }
+
 Shooter::IntakeDirection OI::getIntakeDirection()
 {
 	if (intake_in->Get())

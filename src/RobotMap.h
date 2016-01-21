@@ -33,7 +33,7 @@ namespace Robot
 	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
 }
 
-namespace OI
+namespace OI_Ports
 {
 
 }

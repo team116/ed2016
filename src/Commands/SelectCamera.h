@@ -8,14 +8,14 @@
 class SelectCamera: public CommandBase
 {
 public:
-	SelectCamera(int cam);
+	SelectCamera(Cameras::CameraDirection direction);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 private:
-	int camera_num;
+	Cameras::CameraDirection camera_direction;
 
 	bool is_finished;
 };
