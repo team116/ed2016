@@ -46,8 +46,8 @@ OI::OI()
 	JoystickButton* joy2_button1 = new JoystickButton(joystick_buttons, 1);
 	JoystickButton* joy2_button2 = new JoystickButton(joystick_buttons, 2);
 
-	joy2_button1->WhenPressed(new SelectCamera(0));
-	joy2_button2->WhenPressed(new SelectCamera(1));
+	joy2_button1->WhenPressed(new SelectCamera(Cameras::CameraDirection::BACK));
+	joy2_button2->WhenPressed(new SelectCamera(Cameras::CameraDirection::FRONT));
 	select_camera_front->WhenPressed(new SelectCamera(Cameras::CameraDirection::FRONT));
 	select_camera_back->WhenPressed(new SelectCamera(Cameras::CameraDirection::BACK));
 

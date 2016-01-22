@@ -1,6 +1,6 @@
 #ifndef SRC_COMMANDS_INTAKEDEFAULT_H_
 #define SRC_COMMANDS_INTAKEDEFAULT_H_
-#include <commandbase.h>
+#include <CommandBase.h>
 #include <Subsystems/Shooter.h>
 #include <WPILib.h>
 
