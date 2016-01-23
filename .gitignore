@@ -26,8 +26,8 @@
 *.exe
 *.out
 *.app
-Debug/*
-/Debug/
+ed2016/Debug/*
+ed2016/Debug/
 
 # Eclipse nonsense
 ed2016/.settings/
