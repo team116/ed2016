@@ -1,3 +1,4 @@
+#include <AHRS.h>
 #include <WPILib.h>
 #include <Commands/Command.h>
 #include <CommandBase.h>
