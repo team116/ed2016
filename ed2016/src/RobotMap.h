@@ -22,7 +22,12 @@
 
 namespace Robot
 {
+	// digital inputs
 	const unsigned int SHOOTER_ANGLE_ENCODER = 0;
+
+	// analog inputs
+
+	// CAN motors
 	const unsigned int LEFT_FRONT_MOTOR = 1;
 	const unsigned int LEFT_BACK_MOTOR = 2;
 	const unsigned int RIGHT_FRONT_MOTOR = 3;

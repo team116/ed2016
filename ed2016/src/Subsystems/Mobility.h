@@ -9,11 +9,14 @@ class Mobility: public Subsystem
 public:
 	void InitDefaultCommand();
 	static Mobility* getInstance();
+
+	// It's desirable that everything possible under private except
+	// for methods that implement subsystem capabilities
 	void SetLeft(float speed);
 	void SetRight(float speed);
 	void SetStraight(float speed);
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
+
+	void useFrontOrientation(bool front);
 
 private:
 	Mobility();
@@ -23,6 +26,7 @@ private:
 	CANTalon* rightFront;
 	CANTalon* rightBack;
 
+	bool front_orientation;
 
 };
 
