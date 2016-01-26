@@ -34,8 +34,8 @@
 								<option id="gnu.cpp.compiler.option.optimization.level.1204256582" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.969129918" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.394786621" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="../../navxmxp/roborio/c++/navx_frc_cpp/include"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/include&quot;"/>
-									<listOptionValue builtIn="false" value="../../navx_frc_cpp/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.1060340803" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++1y" valueType="enumerated"/>
@@ -48,8 +48,8 @@
 									<listOptionValue builtIn="false" value="navx_frc_cpp"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1566479969" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="../../navxmxp/roborio/c++/navx_frc_cpp/Debug"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/lib&quot;"/>
-									<listOptionValue builtIn="false" value="../../navx_frc_cpp/Debug/"/>
 								</option>
 								<option id="gnu.cpp.link.option.flags.675338432" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-Wl,-rpath,/opt/GenICam_v2_3/bin/Linux_armv7-a,-rpath,/usr/local/frc/rpath-lib" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.132949138" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
@@ -90,7 +90,7 @@
 							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.2105416021" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1645322059" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/include&quot;"/>
-									<listOptionValue builtIn="false" value="../../navx_frc_cpp/include"/>
+									<listOptionValue builtIn="false" value="../../navxmxp/roborio/c++/navx_frc_cpp/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1648211502" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
@@ -168,7 +168,7 @@
 							<tool command="&quot;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64\cl&quot;" commandLinePattern="${COMMAND} ${FLAGS} /Fo${OUTPUT_PREFIX}${OUTPUT} ${INPUTS} /wd4068 /EHsc" errorParsers="" id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.809153465" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
 								<option id="gnu.cpp.compiler.option.include.paths.599803694" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/include&quot;"/>
-									<listOptionValue builtIn="false" value="../../navx_frc_cpp/include"/>
+									<listOptionValue builtIn="false" value="../../navxmxp/roborio/c++/navx_frc_cpp/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1265709272" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
@@ -219,12 +219,12 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="linux_simulate"/>
 		<configuration configurationName="Windows Simulate"/>
-		<configuration configurationName="Simulate">
+		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/GearsBotCPP"/>
 		</configuration>
-		<configuration configurationName="linux_simulate"/>
-		<configuration configurationName="Debug">
+		<configuration configurationName="Simulate">
 			<resource resourceType="PROJECT" workspacePath="/GearsBotCPP"/>
 		</configuration>
 	</storageModule>
