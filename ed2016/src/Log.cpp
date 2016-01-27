@@ -40,9 +40,25 @@ void Log::write(Log::debugLevelType debug_level, const char* str, ...)
 		vsprintf(buffer,str,args);
 		va_end(args);
 
-		fputs(buffer,log_file);
+		char timestamp[9];
+		generateTimestamp(timestamp, 9);
+
+		fputs(timestamp, log_file);
+		fputs("\t", log_file);
+		fputs(buffer, log_file);
+		fputs("\n", log_file);
 		fflush(log_file);
 	}
+}
+
+void Log::generateTimestamp(char* str, size_t len)
+{
+	struct tm* local_time;
+	time_t t;
+	time(&t);
+	local_time = localtime(&t);
+
+	snprintf(str, len, "%02i:%02i:%02i", local_time->tm_hour, local_time->tm_min, local_time->tm_sec);
 }
 
 char* Log::generateLogFilename()
