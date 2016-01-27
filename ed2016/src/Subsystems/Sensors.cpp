@@ -1,6 +1,7 @@
 #include <Subsystems/Sensors.h>
 #include <RobotMap.h>
 #include <WPILib.h>
+#include <NAVX/AHRS.h>
 
 Sensors* Sensors::INSTANCE = nullptr;
 
@@ -9,6 +10,8 @@ const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 Sensors::Sensors() : Subsystem("Sensors")
 {
 	shooter_angle_encoder = new AnalogInput(Robot::SHOOTER_ANGLE_ENCODER);
+	AHRS* test = new AHRS(I2C::Port::kMXP);
+	test->GetAngle();
 }
 
 void Sensors::InitDefaultCommand()
