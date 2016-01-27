@@ -11,9 +11,14 @@ public:
 	static Sensors* getInstance();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	bool isLimitSwitched();
+	bool isReadyToShoot(); // Limit Switch
 	float shooterAngle();	//read the encoder
+	float robotAngle();
 	//a method to read the LIDAR, the return type of which we do not yet know
+	float speedLeftShooterWheel();
+	float speedRightShooterWheel();
+	float intakeAngle();
+	float lidarDistance();
 
 
 
@@ -22,8 +27,10 @@ private:
 	static Sensors* INSTANCE;
 
 	static const float SHOOTER_ANGLE_OFFSET;
-
 	AnalogInput* shooter_angle_encoder;
+
+	static const float INTAKE_ANGLE_OFFSET;
+	AnalogInput*  intake_angle_encoder;
 
 };
 
