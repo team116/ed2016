@@ -19,9 +19,8 @@ public:
 	float speedLeftShooterWheel();
 	float speedRightShooterWheel();
 	float intakeAngle();
-	float lidarDistance();
-
-
+	int lidarDistance();
+	void refreshLidar();
 
 private:
 	Sensors();
@@ -32,6 +31,14 @@ private:
 
 	static const float INTAKE_ANGLE_OFFSET;
 	AnalogInput*  intake_angle_encoder;
+	DigitalInput* left_shooter_wheel_tach_input;
+	DigitalInput* right_shooter_wheel_tach_input;
+	Encoder* left_shooter_wheel_tach;
+	Encoder* right_shooter_wheel_tach;
+	I2C* lidar;
+	int lidar_distance;
+
+
 
 };
 
