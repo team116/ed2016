@@ -5,6 +5,8 @@ Climber* Climber::INSTANCE = nullptr;
 
 Climber::Climber():Subsystem("Climber")
 {
+	front_winch = new CANTalon(Robot::FRONT_WINCH);
+	back_winch = new CANTalon(Robot::BACK_WINCH);
 }
 
 void Climber::InitDefaultCommand()
