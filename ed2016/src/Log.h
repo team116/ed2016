@@ -22,6 +22,7 @@ public:
 	void write(debugLevelType debug_level, const char* str, ...);
 
 	char* generateLogFilename();
+	void generateTimestamp(char* str, size_t len);
 
 private:
 	Log();

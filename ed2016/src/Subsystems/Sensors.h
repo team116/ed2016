@@ -3,7 +3,6 @@
 
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
-#include <AHRS.h>
 
 class Sensors: public Subsystem
 {

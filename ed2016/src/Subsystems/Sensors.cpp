@@ -2,6 +2,7 @@
 #include <Subsystems/Sensors.h>
 #include <RobotMap.h>
 #include <WPILib.h>
+#include <NAVX/AHRS.h>
 
 Sensors* Sensors::INSTANCE = nullptr;
 
@@ -20,7 +21,6 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	left_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
-
 
 }
 
