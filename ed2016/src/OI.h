@@ -4,6 +4,7 @@
 #include <WPILib.h>
 #include <Subsystems/Shooter.h>
 #include <Joystick.h>
+#include <Subsystems/Intake.h>
 
 class OI
 {
@@ -12,7 +13,7 @@ public:
 	float getJoystickLeftY();
 	float getJoystickRightY();
 
-	Shooter::IntakeDirection getIntakeDirection();
+	Intake::IntakeDirection getIntakeDirection();
 
 private:
 	OI();

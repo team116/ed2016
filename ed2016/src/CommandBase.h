@@ -13,6 +13,7 @@ class Sensors;
 class Shooter;
 class Cameras;
 class OI;
+class Intake;
 
 
 /**
@@ -33,6 +34,7 @@ public:
 	static Shooter* shooter;
 	static Cameras* cameras;
 	static OI* oi;
+	static Intake* intake;
 };
 
 #endif

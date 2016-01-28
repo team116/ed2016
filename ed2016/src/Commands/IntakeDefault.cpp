@@ -1,9 +1,9 @@
 #include <Commands/IntakeDefault.h>
 #include <CommandBase.h>
 
-IntakeDefault::IntakeDefault(Shooter::IntakeDirection new_direction)
+IntakeDefault::IntakeDefault(Intake::IntakeDirection new_direction)
 {
-	Requires(shooter);
+	//Requires(intake);
 
 	direction = new_direction;
 }
@@ -15,7 +15,7 @@ void IntakeDefault::Initialize()
 
 void IntakeDefault::Execute()
 {
-	shooter->setIntakeDirection (direction);
+	intake->setIntakeDirection (direction);
 }
 
 bool IntakeDefault::IsFinished()

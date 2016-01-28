@@ -5,27 +5,11 @@ Shooter* Shooter::INSTANCE = nullptr;
 
 Shooter::Shooter() : Subsystem("Shooter")
 {
-	intake_roller = new CANTalon(Robot::INTAKE_ROLLER_MOTOR);
 	left_shooter_wheel = new CANTalon(Robot::LEFT_SHOOTER_MOTOR);
 	right_shooter_wheel = new CANTalon(Robot::RIGHT_SHOOTER_MOTOR);
 
 }
 
-void Shooter::setIntakeDirection(IntakeDirection value)
-{
-	if (value == IntakeDirection::INTAKE_IN)
-	{
-		intake_roller->Set(-1.0);
-	}
-	else if (value == IntakeDirection::INTAKE_OUT)
-	{
-		intake_roller->Set(1.0);
-	}
-	else if (value == IntakeDirection::INTAKE_STILL)
-	{
-		intake_roller->Set(0.0);
-	}
-}
 
 void Shooter::InitDefaultCommand()
 {

@@ -6,6 +6,7 @@
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/Cameras.h>
+#include <Subsystems/Intake.h>
 
 // Initialize a single static instance of all of your subsystems to NULL
 OI* CommandBase::oi = nullptr;
@@ -14,6 +15,7 @@ Climber* CommandBase::climber = nullptr;
 Sensors* CommandBase::sensors = nullptr;
 Shooter* CommandBase::shooter = nullptr;
 Cameras* CommandBase::cameras = nullptr;
+Intake* CommandBase::intake = nullptr;
 
 CommandBase::CommandBase(const std::string &name) :
 		Command(name)
@@ -37,4 +39,5 @@ void CommandBase::init()
 	shooter = Shooter::getInstance();
 	oi = OI::getInstance();
 	cameras = Cameras::getInstance();
+	intake = Intake::getInstance();
 }
