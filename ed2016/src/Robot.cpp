@@ -1,4 +1,4 @@
-#include <AHRS.h>
+#include <NAVX/AHRS.h>
 #include <WPILib.h>
 #include <Commands/Command.h>
 #include <CommandBase.h>
