@@ -16,3 +16,27 @@ AutoMoveToDef::~AutoMoveToDef() {
 	// TODO Auto-generated destructor stub
 }
 
+void AutoMoveToDef::Initialize()
+{
+
+}
+
+void AutoMoveToDef::Execute()
+{
+
+}
+
+bool AutoMoveToDef::IsFinished()
+{
+	return false;
+}
+
+void AutoMoveToDef::End()
+{
+
+}
+
+void AutoMoveToDef::Interrupted()
+{
+
+}
