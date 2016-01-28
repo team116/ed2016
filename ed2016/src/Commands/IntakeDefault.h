@@ -7,7 +7,7 @@
 class IntakeDefault : public CommandBase
 {
 public:
-	IntakeDefault(Shooter::IntakeDirection new_direction);
+	IntakeDefault(Intake::IntakeDirection new_direction);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -15,7 +15,7 @@ public:
 	void Interrupted();
 private:
 
-	Shooter::IntakeDirection direction;
+	Intake::IntakeDirection direction;
 
 };
 

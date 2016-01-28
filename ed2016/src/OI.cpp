@@ -35,10 +35,10 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	intake_in->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_IN));
-	intake_in->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
-	intake_out->WhenPressed(new IntakeDefault(Shooter::IntakeDirection::INTAKE_OUT));
-	intake_out->WhenReleased(new IntakeDefault(Shooter::IntakeDirection::INTAKE_STILL));
+	intake_in->WhenPressed(new IntakeDefault(Intake::IntakeDirection::INTAKE_IN));
+	intake_in->WhenReleased(new IntakeDefault(Intake::IntakeDirection::INTAKE_STILL));
+	intake_out->WhenPressed(new IntakeDefault(Intake::IntakeDirection::INTAKE_OUT));
+	intake_out->WhenReleased(new IntakeDefault(Intake::IntakeDirection::INTAKE_STILL));
 
 
 	// Process operator interface input here.
@@ -63,19 +63,19 @@ float OI::getJoystickRightY()
 	return joystick_right->GetY();
 }
 
-Shooter::IntakeDirection OI::getIntakeDirection()
+Intake::IntakeDirection OI::getIntakeDirection()
 {
 	if (intake_in->Get())
 	{
-		return Shooter::IntakeDirection::INTAKE_IN;
+		return Intake::IntakeDirection::INTAKE_IN;
 	}
 	else if (intake_out->Get())
 	{
-		return Shooter::IntakeDirection::INTAKE_OUT;
+		return Intake::IntakeDirection::INTAKE_OUT;
 	}
 	else
 	{
-		return Shooter::IntakeDirection::INTAKE_STILL;
+		return Intake::IntakeDirection::INTAKE_STILL;
 	}
 }
 OI* OI::getInstance()
