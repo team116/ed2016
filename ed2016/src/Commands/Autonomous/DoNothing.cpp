@@ -5,7 +5,7 @@
  *      Author: strahans
  */
 
-#include <Commands/DoNothing.h>
+#include <Commands/Autonomous/DoNothing.h>
 
 DoNothing::DoNothing() {
 	// TODO Auto-generated constructor stub
