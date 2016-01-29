@@ -25,8 +25,8 @@ void JoystickDrive::Execute()
 {
 	leftInput = oi->getJoystickLeftY();
 	rightInput = oi->getJoystickRightY();
-	mobility->SetRight(rightInput);
-	mobility->SetLeft(leftInput);
+	mobility->setRight(rightInput);
+	mobility->setLeft(leftInput);
 
 }
 
