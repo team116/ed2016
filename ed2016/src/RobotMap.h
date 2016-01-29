@@ -26,11 +26,22 @@ namespace Robot
 
 	const unsigned int LEFT_SHOOTER_WHEEL_TACH = 1;
 	const unsigned int RIGHT_SHOOTER_WHEEL_TACH = 2;
+	const unsigned int LEFT_ENCODER_A = 3;
+	const unsigned int LEFT_ENCODER_B = 4;
+	const unsigned int RIGHT_ENCODER_A = 5;
+	const unsigned int RIGHT_ENCODER_B = 6;
+	const unsigned int INTAKE_LIMIT = 7;
+	const unsigned int BALL_PREP_CHECK_LIMIT = 8;
 
 
 	// analog inputs
 	const unsigned int SHOOTER_ANGLE_ENCODER = 0;
 	const unsigned int INTAKE_ANGLE_ENCODER = 1;
+	const unsigned int SHOOTER_AZIMUTH_ENCODER = 2;
+	const unsigned int AUTONOMOUS_NAVX_A = 3;
+	const unsigned int AUTONOMOUS_NAVX_B = 4;
+	const unsigned int AUTONOMOUS_NAVX_C = 5;
+
 	// CAN motors
 	const unsigned int LEFT_FRONT_MOTOR = 1;
 	const unsigned int LEFT_BACK_MOTOR = 2;
