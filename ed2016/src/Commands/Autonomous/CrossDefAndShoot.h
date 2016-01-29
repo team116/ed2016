@@ -4,6 +4,7 @@
  *  Created on: Jan 27, 2016
  *      Author: strahans
  */
+#include "Autonomous.h"
 
 #ifndef SRC_COMMANDS_AUTONOMOUS_CROSSDEFANDSHOOT_H_
 #define SRC_COMMANDS_AUTONOMOUS_CROSSDEFANDSHOOT_H_
