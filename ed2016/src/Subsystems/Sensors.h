@@ -20,6 +20,11 @@ public:
 	float intakeAngle();
 	int lidarDistance();
 	void refreshLidar();
+	float getDistanceLeft();
+	float getDistanceRight();
+	float getSpeedLeft();
+	float getSpeedRight();
+
 
 private:
 	Sensors();
@@ -34,6 +39,8 @@ private:
 	DigitalInput* right_shooter_wheel_tach_input;
 	Encoder* left_shooter_wheel_tach;
 	Encoder* right_shooter_wheel_tach;
+	Encoder* left_drive_encoder_a;
+	Encoder* right_drive_encoder_a;
 	I2C* lidar;
 	int lidar_distance;
 
