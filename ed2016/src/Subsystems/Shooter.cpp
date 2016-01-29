@@ -7,6 +7,7 @@ Shooter::Shooter() : Subsystem("Shooter")
 {
 	left_shooter_wheel = new CANTalon(Robot::LEFT_SHOOTER_MOTOR);
 	right_shooter_wheel = new CANTalon(Robot::RIGHT_SHOOTER_MOTOR);
+	pitch_angle = new CANTalon (Robot::SHOOTER_ANGLE_MOTOR);
 
 }
 
