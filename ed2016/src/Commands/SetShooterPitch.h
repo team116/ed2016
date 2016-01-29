@@ -1,13 +1,13 @@
 #ifndef SetShooterPitch_H
 #define SetShooterPitch_H
 
-#include <../CommandBase.h>
-#include <WPILib.h>
+#include "../CommandBase.h"
+#include "WPILib.h"
 
 class SetShooterPitch: public CommandBase
 {
 public:
-	SetShooterPitch(float);
+	SetShooterPitch(float angle);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -16,6 +16,7 @@ public:
 
 private:
 	float pitch;
+
 };
 
 #endif

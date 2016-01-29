@@ -1,11 +1,10 @@
-#ifndef Shoot_H
-#define Shoot_H
+#ifndef SRC_COMMANDS_SHOOT_H_
+#define SRC_COMMANDS_SHOOT_H_
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class Shoot: public CommandBase
-{
+class Shoot : public CommandBase {
 public:
 	Shoot();
 	void Initialize();
@@ -15,4 +14,4 @@ public:
 	void Interrupted();
 };
 
-#endif
+#endif /* SRC_COMMANDS_SHOOT_H_ */
