@@ -1,17 +1,22 @@
-/*
- * SetShooterPitch.h
- *
- *  Created on: Jan 28, 2016
- *      Author: Siddhesh
- */
+#ifndef SetShooterPitch_H
+#define SetShooterPitch_H
 
-#ifndef SRC_COMMANDS_SETSHOOTERPITCH_H_
-#define SRC_COMMANDS_SETSHOOTERPITCH_H_
+#include "../CommandBase.h"
+#include "WPILib.h"
 
-class SetShooterPitch {
+class SetShooterPitch: public CommandBase
+{
 public:
-	SetShooterPitch();
-	virtual ~SetShooterPitch();
+	SetShooterPitch(float angle);
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+
+private:
+	float pitch;
+
 };
 
-#endif /* SRC_COMMANDS_SETSHOOTERPITCH_H_ */
+#endif

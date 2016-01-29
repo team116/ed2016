@@ -1,17 +1,17 @@
-/*
- * Shoot.h
- *
- *  Created on: Jan 28, 2016
- *      Author: Siddhesh
- */
-
 #ifndef SRC_COMMANDS_SHOOT_H_
 #define SRC_COMMANDS_SHOOT_H_
 
-class Shoot {
+#include "../CommandBase.h"
+#include "WPILib.h"
+
+class Shoot : public CommandBase {
 public:
 	Shoot();
-	virtual ~Shoot();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
 };
 
 #endif /* SRC_COMMANDS_SHOOT_H_ */
