@@ -7,11 +7,16 @@
 
 #include <Commands/AngleIntake.h>
 #include <Subsystems/Intake.h>
+#include <cmath>
 
-AngleIntake::AngleIntake()
+AngleIntake::AngleIntake(float ang, float error)
 {
 	Requires(intake);
-
+	current_angle = 0.0;
+	angle = ang;
+	accepted_error = error;
+	direction = 0;
+	interrupted = false;
 }
 
 AngleIntake::~AngleIntake()
@@ -19,27 +24,49 @@ AngleIntake::~AngleIntake()
 	// TODO Auto-generated destructor stub
 }
 
-void Initialize()
+void AngleIntake::Initialize()
 {
 
 }
 
-void Execute()
+void AngleIntake::Execute()
 {
-
+	current_angle = sensors->intakeAngle();
+	if (angle > current_angle)
+	{
+		direction = Intake::INTAKE_UP;
+	}
+	else if (angle < current_angle)
+	{
+		direction = Intake::INTAKE_DOWN;
+	}
+	else
+	{
+		direction = Intake::INTAKE_STOP;
+	}
+	intake->setIntakeAngleDirection(direction);
 }
 
-bool IsFinished()
+bool AngleIntake::IsFinished()
 {
+	if (interrupted)
+	{
+		return true;
+	}
+	else if (abs(angle-current_angle) <= accepted_error)
+	{
+		return true;
+	}
 	return false;
 }
 
-void End()
+void AngleIntake::End()
 {
-
+	intake->setIntakeAngleDirection(Intake::INTAKE_STOP);
 }
 
-void Interrupted()
+void AngleIntake::Interrupted()
 {
-
+	End();
+	interrupted = true;
 }
