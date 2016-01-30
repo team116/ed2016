@@ -12,9 +12,9 @@ public:
 
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	void SetLeft(float speed);
-	void SetRight(float speed);
-	void SetStraight(float speed);
+	void setLeft(float speed);
+	void setRight(float speed);
+	void setStraight(float speed);
 
 	void useFrontOrientation(bool front);
 

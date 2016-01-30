@@ -37,7 +37,6 @@ void CommandBase::init()
 	climber = Climber::getInstance();
 	sensors = Sensors::getInstance();
 	shooter = Shooter::getInstance();
-	oi = OI::getInstance();
 	cameras = Cameras::getInstance();
 	intake = Intake::getInstance();
 }
