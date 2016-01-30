@@ -8,6 +8,8 @@ DriveDistance::DriveDistance(float dist)
 	distance = dist;
 	starting_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0;
 	current_distance = starting_distance;
+	dir = 0.0;
+	interrupted = false;
 }
 
 // Called just before this Command runs the first time
@@ -15,15 +17,15 @@ void DriveDistance::Initialize()
 {
 	if (distance > 0)
 	{
-		mobility->setStraight(1.0);
+		dir = 1.0;
 	}
 	else if (distance < 0)
 	{
-		mobility->setStraight(-1.0);
+		dir = -1.0;
 	}
 	else
 	{
-		mobility->setStraight(0.0);
+		dir = 0.0;
 	}
 }
 
@@ -31,12 +33,20 @@ void DriveDistance::Initialize()
 void DriveDistance::Execute()
 {
 	current_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0;
+	mobility->setStraight(dir);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished()
 {
-	if((current_distance - starting_distance >= distance && distance > 0) || (current_distance - starting_distance <= distance && distance < 0) || distance == 0) {
+	if(interrupted)
+	{
+		return true;
+	}
+	if((distance == 0 ||
+			(current_distance - starting_distance >= distance && distance > 0)) ||
+			(current_distance - starting_distance <= distance && distance < 0))
+	{
 		return true;
 	}
 	return false;
@@ -52,5 +62,6 @@ void DriveDistance::End()
 // subsystems is scheduled to run
 void DriveDistance::Interrupted()
 {
-	//I'm not sure if I should set the motors to 0 here or not
+	End();
+	interrupted = true;
 }
