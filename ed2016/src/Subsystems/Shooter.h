@@ -20,6 +20,7 @@ private:
 
 	CANTalon* left_shooter_wheel;
 	CANTalon* right_shooter_wheel;
+	CANTalon* pitch_angle;
 
 	enum ShooterDirection
 	{
@@ -27,7 +28,8 @@ private:
 		SHOOT_STILL,
 		SHOOT_IN
 	};
-	void setShooterDirection(ShooterDirection value);
+	void setShooterDirection(ShooterDirection);
+
 };
 
 #endif

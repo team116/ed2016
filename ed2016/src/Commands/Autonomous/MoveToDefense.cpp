@@ -18,7 +18,6 @@ MoveToDefense::~MoveToDefense() {
 
 void MoveToDefense::Initialize()
 {
-
 }
 
 void MoveToDefense::Execute()

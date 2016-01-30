@@ -29,7 +29,13 @@ void Mobility::InitDefaultCommand()
 	SetDefaultCommand(new JoystickDrive());
 }
 
-void Mobility::SetLeft(float speed)
+void Mobility::setStraight(float speed)
+{
+	setLeft(speed);
+	setRight(speed);
+}
+
+void Mobility::setLeft(float speed)
 {
 	if (front_orientation)
 	{
@@ -43,7 +49,7 @@ void Mobility::SetLeft(float speed)
 	}
 }
 
-void Mobility::SetRight(float speed)
+void Mobility::setRight(float speed)
 {
 	if (front_orientation)
 	{

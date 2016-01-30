@@ -17,8 +17,12 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	intake_angle_encoder = new AnalogInput(Robot::INTAKE_ANGLE_ENCODER);
 	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
+	left_drive_encoder_a = new Encoder(Robot::LEFT_ENCODER_A, Robot::LEFT_ENCODER_B);
+	right_drive_encoder_a = new Encoder(Robot::RIGHT_ENCODER_A, Robot::RIGHT_ENCODER_B);
 	right_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
 	left_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
+	left_drive_encoder_a->SetDistancePerPulse(0.0078125);
+	right_drive_encoder_a->SetDistancePerPulse(0.0078125);
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
 
@@ -77,6 +81,25 @@ void Sensors::refreshLidar()
 
 		 lidar_distance = (buffer[0] << 8) + buffer[1];
 	}
+}
+float Sensors::getDistanceLeft(){
+	float distance = 0;
+	distance = left_drive_encoder_a->GetDistance();
+	return distance;
+}
+
+float Sensors::getDistanceRight(){
+	float distance = 0;
+	distance = right_drive_encoder_a->GetDistance();
+	return distance;
+}
+
+float Sensors::getSpeedLeft(){
+	return left_drive_encoder_a->GetRate();
+}
+
+float Sensors::getSpeedRight(){
+	return right_drive_encoder_a->GetRate();
 }
 
 Sensors* Sensors::getInstance()
