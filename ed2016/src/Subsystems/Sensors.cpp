@@ -8,6 +8,7 @@ Sensors* Sensors::INSTANCE = nullptr;
 
 const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
+const float Sensors::DRIVE_DISTANCE_PER_PULSE = 1.0; //TODO: find actual distance per pulse
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
@@ -19,6 +20,10 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
 	left_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
+	left_drive_encoder = new Encoder(Robot::LEFT_ENCODER_A, Robot::LEFT_ENCODER_B);
+	right_drive_encoder = new Encoder(Robot::RIGHT_ENCODER_A, Robot::RIGHT_ENCODER_B);
+	left_drive_encoder->SetDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
+	right_drive_encoder->SetDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
 
@@ -79,6 +84,16 @@ void Sensors::refreshLidar()
 	}
 }
 
+float Sensors::getDistanceLeft()
+{
+	return (float)left_drive_encoder->GetDistance();
+}
+
+float Sensors::getDistanceRight()
+{
+	return (float)right_drive_encoder->GetDistance();
+}
+
 Sensors* Sensors::getInstance()
 {
 	if (INSTANCE == nullptr)
@@ -90,9 +105,9 @@ Sensors* Sensors::getInstance()
 }
 
 void Sensors::resetEncoderLeft() {
-	 left_drive_encoder_a->Reset();
+	 left_drive_encoder->Reset();
 }
 
 void Sensors::resetEncoderRight() {
-	right_drive_encoder_a->Reset();
+	right_drive_encoder->Reset();
 }

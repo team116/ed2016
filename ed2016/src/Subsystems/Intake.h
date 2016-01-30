@@ -18,13 +18,22 @@ public:
 		INTAKE_STILL,
 		INTAKE_OUT
 	};
-	void setIntakeDirection(IntakeDirection value);
+
+	enum IntakeAngleDirection
+	{
+		INTAKE_UP,
+		INTAKE_STOP,
+		INTAKE_DOWN
+	};
+	void setIntakeDirection(IntakeDirection);
+	void setIntakeAngleDirection(IntakeAngleDirection);
 
 private:
 	Intake();
 	static Intake* INSTANCE;
 
 	CANTalon* intake_roller;
+	CANTalon* intake_angle;
 
 };
 

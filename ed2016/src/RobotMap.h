@@ -50,10 +50,12 @@ namespace Robot
 
 
 	const unsigned int INTAKE_ROLLER_MOTOR = 5;
+	const unsigned int INTAKE_ANGLE_MOTOR = 6;
 
-	const unsigned int LEFT_SHOOTER_MOTOR = 6;
-	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
-	const unsigned int CLIMBER_ARMED_MOTOR = 8;
+	const unsigned int LEFT_SHOOTER_MOTOR = 7;
+	const unsigned int RIGHT_SHOOTER_MOTOR = 8;
+
+	const unsigned int CLIMBER_ARMED_MOTOR = 9;
 
 	const unsigned int SHOOTER_PITCH_MOTOR = 10;
 

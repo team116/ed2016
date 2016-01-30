@@ -33,6 +33,7 @@ private:
 	static Sensors* INSTANCE;
 
 	static const float SHOOTER_ANGLE_OFFSET;
+	static const float DRIVE_DISTANCE_PER_PULSE;
 	AnalogInput* shooter_angle_encoder;
 
 	static const float INTAKE_ANGLE_OFFSET;
@@ -41,8 +42,8 @@ private:
 	DigitalInput* right_shooter_wheel_tach_input;
 	Encoder* left_shooter_wheel_tach;
 	Encoder* right_shooter_wheel_tach;
-	Encoder* left_drive_encoder_a;
-	Encoder* right_drive_encoder_a;
+	Encoder* left_drive_encoder;
+	Encoder* right_drive_encoder;
 	I2C* lidar;
 	int lidar_distance;
 
