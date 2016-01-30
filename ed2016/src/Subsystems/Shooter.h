@@ -11,6 +11,7 @@ public:
 	static Shooter* getInstance();
 	void InitDefaultCommand();
 	void turnShooterOn(bool);
+	void turnPushWheelOn(bool);
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 

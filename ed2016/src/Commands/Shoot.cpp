@@ -1,26 +1,43 @@
 #include <Commands/Shoot.h>
 #include <Subsystems/Shooter.h>
 
+const float Shoot::SPEED_UP_TIME = 1.0;
+const float Shoot::PUSH_BOULDER = 1.5;
+
 Shoot::Shoot()
 {
 	Requires(shooter);
+
+	timer = new Timer();
+	interrupted = false;
 }
 
 // Called just before this Command runs the first time
 void Shoot::Initialize()
 {
-
+	timer->Start();
+	timer->Reset();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void Shoot::Execute()
 {
+	shooter->turnShooterOn(true);
 
+	if (timer->HasPeriodPassed(SPEED_UP_TIME))
+	{
+		shooter->turnPushWheelOn(true);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool Shoot::IsFinished()
 {
+	if (interrupted)
+	{
+		return true;
+	}
+
 	return false;
 }
 
@@ -34,5 +51,5 @@ void Shoot::End()
 // subsystems is scheduled to run
 void Shoot::Interrupted()
 {
-
+	interrupted = true;
 }
