@@ -6,13 +6,44 @@
  */
 
 #include <Commands/OperateClimber.h>
+#include <Subsystems/Climber.h>
 
-OperateClimber::OperateClimber() {
-	// TODO Auto-generated constructor stub
-
+OperateClimber::OperateClimber(Climber::ClimberMechanismDirection dir) {
+	Requires(climber);
+	direction = dir;
+	interrupted = false;
 }
 
 OperateClimber::~OperateClimber() {
 	// TODO Auto-generated destructor stub
 }
 
+void OperateClimber::Initialize()
+{
+
+}
+
+void OperateClimber::Execute()
+{
+	climber->setClimber(direction);
+}
+
+bool OperateClimber::IsFinished()
+{
+	if(interrupted)
+	{
+		return true;
+	}
+	return false;
+}
+
+void OperateClimber::End()
+{
+	climber->setClimber(Climber::CLIMBER_STILL);
+}
+
+void OperateClimber::Interrupted()
+{
+	End();
+	interrupted = true;
+}

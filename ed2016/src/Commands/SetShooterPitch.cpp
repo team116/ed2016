@@ -8,17 +8,31 @@ SetShooterPitch::SetShooterPitch(float angle)
 	Requires(shooter);
 
 	pitch = angle;
+	interrupted = false;
 }
 
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
-	float curent_angle = sensors->shooterAngle();
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetShooterPitch::Execute()
 {
+	float current_angle = sensors->shooterAngle();
+	if (pitch > current_angle)
+	{
+		shooter->setShooterPitchDirection(Shooter::SHOOTER_UP);
+	}
+	else if (pitch < current_angle)
+	{
+		shooter->setShooterPitchDirection(Shooter::SHOOTER_DOWN);
+	}
+	else
+	{
+		shooter->setShooterPitchDirection(Shooter::SHOOTER_STILL);
+	}
 
 }
 

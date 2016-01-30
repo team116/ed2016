@@ -17,6 +17,8 @@ public:
 private:
 	float pitch;
 
+	bool interrupted;
+
 };
 
 #endif

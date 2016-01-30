@@ -8,10 +8,22 @@
 #ifndef SRC_COMMANDS_OPERATECLIMBER_H_
 #define SRC_COMMANDS_OPERATECLIMBER_H_
 
-class OperateClimber {
+#include "../CommandBase.h"
+#include "WPILib.h"
+#include <Subsystems/Climber.h>
+
+class OperateClimber: public CommandBase {
 public:
-	OperateClimber();
+	OperateClimber(Climber::ClimberMechanismDirection);
 	virtual ~OperateClimber();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+private:
+	Climber::ClimberMechanismDirection direction;
+	bool interrupted;
 };
 
 #endif /* SRC_COMMANDS_OPERATECLIMBER_H_ */

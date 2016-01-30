@@ -13,6 +13,12 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
+private:
+	static const float CLIMBER_TIMEOUT;
+
+	Timer* temmie;
+
+	bool interrupted;
 };
 
 #endif

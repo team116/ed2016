@@ -13,6 +13,9 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
+private:
+	float distance;
+	bool lidar_read;
 };
 
 #endif

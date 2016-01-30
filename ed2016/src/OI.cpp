@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include <Commands/IntakeDefault.h>
+#include <Commands/RunIntake.h>
 #include <Commands/SelectCamera.h>
 #include <OI.h>
 
@@ -35,10 +35,10 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	intake_in->WhenPressed(new IntakeDefault(Intake::IntakeDirection::INTAKE_IN));
-	intake_in->WhenReleased(new IntakeDefault(Intake::IntakeDirection::INTAKE_STILL));
-	intake_out->WhenPressed(new IntakeDefault(Intake::IntakeDirection::INTAKE_OUT));
-	intake_out->WhenReleased(new IntakeDefault(Intake::IntakeDirection::INTAKE_STILL));
+	intake_in->WhenPressed(new RunIntake(Intake::IntakeDirection::INTAKE_IN));
+	intake_in->WhenReleased(new RunIntake(Intake::IntakeDirection::INTAKE_STILL));
+	intake_out->WhenPressed(new RunIntake(Intake::IntakeDirection::INTAKE_OUT));
+	intake_out->WhenReleased(new RunIntake(Intake::IntakeDirection::INTAKE_STILL));
 
 
 	// Process operator interface input here.
