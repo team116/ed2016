@@ -8,10 +8,23 @@
 #ifndef SRC_COMMANDS_RUNINTAKE_H_
 #define SRC_COMMANDS_RUNINTAKE_H_
 
-class RunIntake {
+#include "../CommandBase.h"
+#include "WPILib.h"
+#include <Subsystems/Intake.h>
+
+class RunIntake: public CommandBase  {
 public:
-	RunIntake();
+	RunIntake(Intake::IntakeDirection dir);
 	virtual ~RunIntake();
+	void Initialize();
+	void Execute();
+	bool IsFinished();
+	void End();
+	void Interrupted();
+private:
+	Intake::IntakeDirection direction;
+
+	bool interrupted;
 };
 
 #endif /* SRC_COMMANDS_RUNINTAKE_H_ */

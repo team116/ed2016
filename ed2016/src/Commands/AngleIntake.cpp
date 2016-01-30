@@ -6,13 +6,40 @@
  */
 
 #include <Commands/AngleIntake.h>
+#include <Subsystems/Intake.h>
 
-AngleIntake::AngleIntake() {
-	// TODO Auto-generated constructor stub
+AngleIntake::AngleIntake()
+{
+	Requires(intake);
 
 }
 
-AngleIntake::~AngleIntake() {
+AngleIntake::~AngleIntake()
+{
 	// TODO Auto-generated destructor stub
 }
 
+void Initialize()
+{
+
+}
+
+void Execute()
+{
+
+}
+
+bool IsFinished()
+{
+	return false;
+}
+
+void End()
+{
+
+}
+
+void Interrupted()
+{
+
+}

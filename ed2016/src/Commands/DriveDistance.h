@@ -16,6 +16,11 @@ public:
 	void Interrupted();
 private:
 	float distance;
+	float starting_distance;
+	float current_distance;
+	int dir;
+
+	bool interrupted;
 
 
 };
