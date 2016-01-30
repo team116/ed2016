@@ -21,24 +21,20 @@ void Shooter::InitDefaultCommand()
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
-void Shooter::setShooterDirection(ShooterDirection value)
+void Shooter::turnShooterOn(bool on)
 {
-	if (value == ShooterDirection::SHOOT_OUT)
+	if (on == true)
 	{
 		left_shooter_wheel->Set(1.0);
 		right_shooter_wheel->Set(1.0);
 	}
-	else if (value == ShooterDirection::SHOOT_STILL)
+	else
 	{
 		left_shooter_wheel->Set(0.0);
 		right_shooter_wheel->Set(0.0);
 	}
-	else if (value == ShooterDirection::SHOOT_IN)
-	{
-		left_shooter_wheel->Set(-1.0);
-		right_shooter_wheel->Set(-1.0);
-	}
 }
+
 
 Shooter* Shooter::getInstance()
 {

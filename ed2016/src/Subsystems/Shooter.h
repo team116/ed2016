@@ -10,6 +10,7 @@ class Shooter: public Subsystem
 public:
 	static Shooter* getInstance();
 	void InitDefaultCommand();
+	void turnShooterOn(bool);
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
@@ -22,13 +23,7 @@ private:
 	CANTalon* right_shooter_wheel;
 	CANTalon* pitch_angle;
 
-	enum ShooterDirection
-	{
-		SHOOT_OUT,
-		SHOOT_STILL,
-		SHOOT_IN
-	};
-	void setShooterDirection(ShooterDirection);
+
 
 };
 

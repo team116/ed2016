@@ -54,10 +54,10 @@ namespace Robot
 
 	const unsigned int LEFT_SHOOTER_MOTOR = 7;
 	const unsigned int RIGHT_SHOOTER_MOTOR = 8;
-	const unsigned int FRONT_WINCH = 9;
-	const unsigned int BACK_WINCH = 10;
 
-	const unsigned int SHOOTER_PITCH_MOTOR = 11;
+	const unsigned int CLIMBER_ARMED_MOTOR = 9;
+
+	const unsigned int SHOOTER_PITCH_MOTOR = 10;
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
