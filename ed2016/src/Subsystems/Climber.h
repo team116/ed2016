@@ -13,6 +13,11 @@ public:
 			CLIMBER_DOWN,
 			CLIMBER_STILL
 		};
+	enum ClimberMechanismSide
+	{
+		CLIMBER_BACK,
+		CLIMBER_FRONT
+	};
 	void InitDefaultCommand();
 	static Climber* getInstance();
 	void setFrontClimber(ClimberMechanismDirection direction);
