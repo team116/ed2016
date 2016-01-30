@@ -7,6 +7,7 @@
 
 #include <Commands/AngleIntake.h>
 #include <Subsystems/Intake.h>
+#include <Subsystems/Sensors.h>
 #include <cmath>
 
 AngleIntake::AngleIntake(float ang, float error)
@@ -15,7 +16,7 @@ AngleIntake::AngleIntake(float ang, float error)
 	current_angle = 0.0;
 	angle = ang;
 	accepted_error = error;
-	direction = 0;
+	direction = Intake::INTAKE_STOP;
 	interrupted = false;
 }
 
@@ -32,6 +33,7 @@ void AngleIntake::Initialize()
 void AngleIntake::Execute()
 {
 	current_angle = sensors->intakeAngle();
+
 	if (angle > current_angle)
 	{
 		direction = Intake::INTAKE_UP;
