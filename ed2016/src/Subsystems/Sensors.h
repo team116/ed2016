@@ -24,6 +24,8 @@ public:
 	float getDistanceRight();
 	float getSpeedLeft();
 	float getSpeedRight();
+	void resetEncoderLeft();
+	void resetEncoderRight();
 
 
 private:
