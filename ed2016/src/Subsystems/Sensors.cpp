@@ -111,3 +111,11 @@ Sensors* Sensors::getInstance()
 	return INSTANCE;
 
 }
+
+void Sensors::resetEncoderLeft() {
+	 left_drive_encoder_a->Reset();
+}
+
+void Sensors::resetEncoderRight() {
+	right_drive_encoder_a->Reset();
+}
