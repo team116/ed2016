@@ -1,6 +1,6 @@
 #include "CrossDefense.h"
-#include <Commands\DriveDistance.h>
-#include <Commands\AngleIntake.h>
+#include <Commands/DriveDistance.h>
+#include <Commands/AngleIntake.h>
 
 CrossDefense::CrossDefense(Defenses def)
 {
