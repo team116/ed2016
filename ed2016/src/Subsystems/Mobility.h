@@ -21,10 +21,10 @@ public:
 private:
 	Mobility();
 	static Mobility* INSTANCE;
-	CANTalon* leftFront;
-	CANTalon* leftBack;
-	CANTalon* rightFront;
-	CANTalon* rightBack;
+	VictorSP* leftFront;
+	VictorSP* leftBack;
+	VictorSP* rightFront;
+	VictorSP* rightBack;
 
 	bool front_orientation;
 

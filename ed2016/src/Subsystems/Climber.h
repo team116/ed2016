@@ -25,7 +25,7 @@ public:
 private:
 	Climber();
 	static Climber* INSTANCE;
-	CANTalon* climber_armed_motor;
+	VictorSP* climber_armed_motor;
 	ClimberMechanismDirection climber_direction;
 };
 
