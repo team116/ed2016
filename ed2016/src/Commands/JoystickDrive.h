@@ -8,8 +8,6 @@
 class JoystickDrive: public CommandBase
 {
 public:
-	float leftInput;
-	float rightInput;
 	JoystickDrive();
 	void Initialize();
 	void Execute();
@@ -18,6 +16,8 @@ public:
 	void Interrupted();
 
 private:
+	float leftInput;
+	float rightInput;
 };
 
 #endif
