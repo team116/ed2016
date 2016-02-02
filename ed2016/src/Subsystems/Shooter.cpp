@@ -34,7 +34,10 @@ void Shooter::turnShooterOn(bool on)
 		right_shooter_wheel->Set(0.0);
 	}
 }
+void Shooter::turnPushWheelOn(bool)
+{
 
+}
 
 Shooter* Shooter::getInstance()
 {

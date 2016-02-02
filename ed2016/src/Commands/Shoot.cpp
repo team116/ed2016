@@ -37,8 +37,11 @@ bool Shoot::IsFinished()
 	{
 		return true;
 	}
-
-	return false;
+	if (timer->HasPeriodPassed(PUSH_BOULDER))
+	{
+	return true;
+	}
+		return false;
 }
 
 // Called once after isFinished returns true
