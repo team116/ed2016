@@ -32,8 +32,8 @@ private:
 	Intake();
 	static Intake* INSTANCE;
 
-	CANTalon* intake_roller;
-	CANTalon* intake_angle;
+	VictorSP* intake_roller;
+	VictorSP* intake_angle;
 
 };
 

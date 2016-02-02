@@ -13,8 +13,8 @@ Sensors* Sensors::INSTANCE = nullptr;
 const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
-const float Sensors::DRIVE_WHEEL_PPR = 128;
-const float Sensors::SHOOTER_WHEEL_PPR = 64;
+const int Sensors::DRIVE_WHEEL_PPR = 128;
+const int Sensors::SHOOTER_WHEEL_PPR = 64;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {

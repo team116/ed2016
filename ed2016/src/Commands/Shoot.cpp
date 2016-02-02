@@ -37,14 +37,18 @@ bool Shoot::IsFinished()
 	{
 		return true;
 	}
-
+	if (timer->HasPeriodPassed(PUSH_BOULDER))
+	{
+		return true;
+	}
 	return false;
 }
 
 // Called once after isFinished returns true
 void Shoot::End()
 {
-
+	shooter->turnShooterOn(false);
+	shooter->turnPushWheelOn(false);
 }
 
 // Called when another command which requires one or more of the same

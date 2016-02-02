@@ -1,22 +1,24 @@
-/*
- * CrossDefense.h
- *
- *  Created on: Jan 27, 2016
- *      Author: strahans
- */
+#ifndef CrossDefense_H
+#define CrossDefense_H
 
-#ifndef SRC_COMMANDS_AUTONOMOUS_CROSSDEFENSE_H_
-#define SRC_COMMANDS_AUTONOMOUS_CROSSDEFENSE_H_
+#include "Commands/CommandGroup.h"
+#include "WPILib.h"
 
-class CrossDefense {
+class CrossDefense: public CommandGroup
+{
 public:
-	CrossDefense();
-	virtual ~CrossDefense();
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
+	enum Defenses {
+		PORTCULLIS,
+		CHEVAL_DE_FRISE,
+		MOAT,
+		RAMPARTS,
+		DRAWBRIDGE,
+		SALLY_PORT,
+		ROCK_WALL,
+		ROUGH_TERRAIN,
+		LOW_BAR
+	};
+	CrossDefense(Defenses);
 };
 
-#endif /* SRC_COMMANDS_AUTONOMOUS_CROSSDEFENSE_H_ */
+#endif

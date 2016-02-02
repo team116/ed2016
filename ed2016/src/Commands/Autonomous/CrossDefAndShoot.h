@@ -1,23 +1,18 @@
-/*
- * CrossDefAndShoot.h
- *
- *  Created on: Jan 27, 2016
- *      Author: strahans
- */
-#include "Autonomous.h"
+#ifndef CrossDefAndShoot_H
+#define CrossDefAndShoot_H
 
-#ifndef SRC_COMMANDS_AUTONOMOUS_CROSSDEFANDSHOOT_H_
-#define SRC_COMMANDS_AUTONOMOUS_CROSSDEFANDSHOOT_H_
+#include "Commands/CommandGroup.h"
+#include "WPILib.h"
+#include "Commands/Autonomous/CrossDefense.h"
 
-class CrossDefAndShoot {
+class CrossDefAndShoot: public CommandGroup
+{
 public:
-	CrossDefAndShoot();
-	virtual ~CrossDefAndShoot();
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
+	enum Goals {
+		HIGH,
+		LOW
+	};
+	CrossDefAndShoot(CrossDefense::Defenses, Goals);
 };
 
-#endif /* SRC_COMMANDS_AUTONOMOUS_CROSSDEFANDSHOOT_H_ */
+#endif

@@ -27,9 +27,10 @@ private:
 	Shooter();
 	static Shooter* INSTANCE;
 
-	CANTalon* left_shooter_wheel;
-	CANTalon* right_shooter_wheel;
-	CANTalon* pitch_angle;
+	VictorSP* left_shooter_wheel;
+	VictorSP* right_shooter_wheel;
+	VictorSP* push_wheel;
+	VictorSP* pitch_angle;
 
 
 
