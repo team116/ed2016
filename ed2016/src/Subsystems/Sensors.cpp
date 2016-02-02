@@ -4,29 +4,37 @@
 #include <WPILib.h>
 #include <NAVX/AHRS.h>
 
+// get access to pi const: M_PI
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 Sensors* Sensors::INSTANCE = nullptr;
 
 const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
-const float Sensors::DRIVE_DISTANCE_PER_PULSE = 1.0; //TODO: find actual distance per pulse
+const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
+const int Sensors::DRIVE_WHEEL_PPR = 128;
+const int Sensors::SHOOTER_WHEEL_PPR = 64;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
 	shooter_angle_encoder = new AnalogInput(Robot::SHOOTER_ANGLE_ENCODER);
+	intake_angle_encoder = new AnalogInput(Robot::INTAKE_ANGLE_ENCODER);
+
 	left_shooter_wheel_tach_input = new DigitalInput(Robot::LEFT_SHOOTER_WHEEL_TACH);
 	right_shooter_wheel_tach_input = new DigitalInput(Robot::RIGHT_SHOOTER_WHEEL_TACH);
-	intake_angle_encoder = new AnalogInput(Robot::INTAKE_ANGLE_ENCODER);
 	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
-	right_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
-	left_shooter_wheel_tach->SetDistancePerPulse(0.0078125); // 1 divided by 128
+	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+
 	left_drive_encoder = new Encoder(Robot::LEFT_ENCODER_A, Robot::LEFT_ENCODER_B);
 	right_drive_encoder = new Encoder(Robot::RIGHT_ENCODER_A, Robot::RIGHT_ENCODER_B);
-	left_drive_encoder->SetDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
-	right_drive_encoder->SetDistancePerPulse(DRIVE_DISTANCE_PER_PULSE);
+	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
+	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
+
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
-
 }
 
 void Sensors::InitDefaultCommand()

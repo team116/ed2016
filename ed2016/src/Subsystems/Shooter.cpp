@@ -37,7 +37,26 @@ void Shooter::turnShooterOn(bool on)
 void Shooter::turnPushWheelOn(bool)
 {
 
+
 }
+
+void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
+{
+	//Note: 1.0 and -1.0 may need to be reversed
+	if(dir == SHOOTER_UP)
+	{
+		pitch_angle->Set(1.0);
+	}
+	else if (dir == SHOOTER_DOWN){
+		pitch_angle->Set(-1.0);
+	}
+	else
+	{
+		pitch_angle->Set(0.0);
+	}
+}
+
+
 
 Shooter* Shooter::getInstance()
 {
