@@ -1,41 +1,23 @@
-/*
- * MoveToDefense.cpp
- *
- *  Created on: Jan 19, 2016
- *      Author: Siddhesh
- */
+#include "MoveToDefense.h"
+#include <Commands\DriveDistance.h>
 
-#include <Commands/Autonomous/MoveToDefense.h>
-
-MoveToDefense::MoveToDefense() {
-	// TODO Auto-generated constructor stub
-
-}
-
-MoveToDefense::~MoveToDefense() {
-	// TODO Auto-generated destructor stub
-}
-
-void MoveToDefense::Initialize()
+MoveToDefense::MoveToDefense()
 {
-}
+	AddSequential(new DriveDistance(6.7));
+	// Add Commands here:
+	// e.g. AddSequential(new Command1());
+	//      AddSequential(new Command2());
+	// these will run in order.
 
-void MoveToDefense::Execute()
-{
+	// To run multiple commands at the same time,
+	// use AddParallel()
+	// e.g. AddParallel(new Command1());
+	//      AddSequential(new Command2());
+	// Command1 and Command2 will run in parallel.
 
-}
-
-bool MoveToDefense::IsFinished()
-{
-	return false;
-}
-
-void MoveToDefense::End()
-{
-
-}
-
-void MoveToDefense::Interrupted()
-{
-
+	// A command group will require all of the subsystems that each member
+	// would require.
+	// e.g. if Command1 requires chassis, and Command2 requires arm,
+	// a CommandGroup containing them would require both the chassis and the
+	// arm.
 }

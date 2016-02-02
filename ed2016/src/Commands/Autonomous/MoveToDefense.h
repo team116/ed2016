@@ -1,22 +1,13 @@
-/*
- * MoveToDefense.h
- *
- *  Created on: Jan 19, 2016
- *      Author: Siddhesh
- */
+#ifndef MoveToDefense_H
+#define MoveToDefense_H
 
-#ifndef SRC_COMMANDS_MoveToDefense_H_
-#define SRC_COMMANDS_MoveToDefense_H_
+#include "Commands/CommandGroup.h"
+#include "WPILib.h"
 
-class MoveToDefense {
+class MoveToDefense: public CommandGroup
+{
 public:
 	MoveToDefense();
-	virtual ~MoveToDefense();
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
 };
 
-#endif /* SRC_COMMANDS_MoveToDefense_H_ */
+#endif

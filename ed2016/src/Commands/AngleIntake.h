@@ -13,7 +13,7 @@
 
 class AngleIntake: public CommandBase {
 public:
-	AngleIntake(float, float);
+	AngleIntake(float ang, float error);
 	virtual ~AngleIntake();
 	void Initialize();
 	void Execute();
