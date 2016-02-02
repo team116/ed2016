@@ -7,7 +7,7 @@
 class SetShooterPitch: public CommandBase
 {
 public:
-	SetShooterPitch(float angle);
+	SetShooterPitch(float, float);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -16,6 +16,7 @@ public:
 
 private:
 	float pitch;
+	float accepted_error;
 
 	bool interrupted;
 
