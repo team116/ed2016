@@ -58,6 +58,7 @@ namespace Robot
 	const unsigned int CLIMBER_ARMED_MOTOR = 9;
 
 	const unsigned int SHOOTER_PITCH_MOTOR = 10;
+	const unsigned int SHOOTER_PUSH_MOTOR = 11;
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
