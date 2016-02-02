@@ -8,6 +8,7 @@ Shooter::Shooter() : Subsystem("Shooter")
 	left_shooter_wheel = new CANTalon(Robot::LEFT_SHOOTER_MOTOR);
 	right_shooter_wheel = new CANTalon(Robot::RIGHT_SHOOTER_MOTOR);
 	pitch_angle = new CANTalon (Robot::SHOOTER_PITCH_MOTOR);
+	push_wheel = new CANTalon (Robot::SHOOTER_PUSH_MOTOR);
 
 }
 
@@ -51,6 +52,17 @@ void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
 	}
 }
 
+void Shooter::turnPushWheelOn(bool turningOn)
+{
+	if(turningOn)
+	{
+		push_wheel->Set(1.0);
+	}
+	else
+	{
+		push_wheel->Set(0.0);
+	}
+}
 
 Shooter* Shooter::getInstance()
 {

@@ -29,6 +29,7 @@ private:
 
 	CANTalon* left_shooter_wheel;
 	CANTalon* right_shooter_wheel;
+	CANTalon* push_wheel;
 	CANTalon* pitch_angle;
 
 
