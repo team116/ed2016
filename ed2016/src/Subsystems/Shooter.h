@@ -27,8 +27,8 @@ private:
 	Shooter();
 	static Shooter* INSTANCE;
 
-	VictorSP* left_shooter_wheel;
-	VictorSP* right_shooter_wheel;
+	VictorSP* top_shooter_wheel;
+	VictorSP* bottom_shooter_wheel;
 	VictorSP* push_wheel;
 	VictorSP* pitch_angle;
 
