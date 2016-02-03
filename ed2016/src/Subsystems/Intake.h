@@ -2,7 +2,6 @@
 #define Yellow_H
 
 #include "Commands/Subsystem.h"
-#include <RobotMap.h>
 #include "WPILib.h"
 
 class Intake: public Subsystem
@@ -33,8 +32,8 @@ private:
 	Intake();
 	static Intake* INSTANCE;
 
-	MOTOR_TYPE* intake_roller;
-	MOTOR_TYPE* intake_angle;
+	VictorSP* intake_roller;
+	VictorSP* intake_angle;
 
 };
 

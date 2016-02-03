@@ -2,7 +2,6 @@
 #define Mobility_H
 
 #include <Commands/Subsystem.h>
-#include <RobotMap.h>
 #include <WPILib.h>
 
 class Mobility: public Subsystem
@@ -22,10 +21,10 @@ public:
 private:
 	Mobility();
 	static Mobility* INSTANCE;
-	MOTOR_TYPE* leftFront;
-	MOTOR_TYPE* leftBack;
-	MOTOR_TYPE* rightFront;
-	MOTOR_TYPE* rightBack;
+	VictorSP* leftFront;
+	VictorSP* leftBack;
+	VictorSP* rightFront;
+	VictorSP* rightBack;
 
 	bool front_orientation;
 
