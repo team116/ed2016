@@ -5,8 +5,8 @@ Shooter* Shooter::INSTANCE = nullptr;
 
 Shooter::Shooter() : Subsystem("Shooter")
 {
-	left_shooter_wheel = new VictorSP(Robot::LEFT_SHOOTER_MOTOR);
-	right_shooter_wheel = new VictorSP(Robot::RIGHT_SHOOTER_MOTOR);
+	top_shooter_wheel = new VictorSP(Robot::LEFT_SHOOTER_MOTOR);
+	bottom_shooter_wheel = new VictorSP(Robot::RIGHT_SHOOTER_MOTOR);
 	pitch_angle = new VictorSP (Robot::SHOOTER_PITCH_MOTOR);
 	push_wheel = new VictorSP (Robot::SHOOTER_PUSH_MOTOR);
 
@@ -26,13 +26,13 @@ void Shooter::turnShooterOn(bool on)
 {
 	if (on == true)
 	{
-		left_shooter_wheel->Set(1.0);
-		right_shooter_wheel->Set(1.0);
+		top_shooter_wheel->Set(1.0);
+		bottom_shooter_wheel->Set(1.0);
 	}
 	else
 	{
-		left_shooter_wheel->Set(0.0);
-		right_shooter_wheel->Set(0.0);
+		top_shooter_wheel->Set(0.0);
+		bottom_shooter_wheel->Set(0.0);
 	}
 }
 
