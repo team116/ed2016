@@ -17,12 +17,12 @@ CrossDefense::CrossDefense(Autonomous::Defense def)
 		AddParallel(new DriveDistance(4));	//rough estimate, probably needs to be fixed
 		AddSequential(new AngleIntake(50));		//rough estimate, probably needs to be fixed
 	}
-	else if (def = DRAWBRIDGE)
+	else if (def == DRAWBRIDGE)
 	{
 		AddSequential(new DriveDistance(7));	//rough estimate, probably needs to be fixed
 		//figure out how to move the drawbridge arm later
 	}
-	else if (def = SALLY_PORT)
+	else if (def == SALLY_PORT)
 		{
 			AddSequential(new DriveDistance(7));	//rough estimate, probably needs to be fixed
 			//figure out how to move the drawbridge arm later
