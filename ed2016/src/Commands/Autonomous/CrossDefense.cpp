@@ -2,7 +2,7 @@
 #include <Commands/DriveDistance.h>
 #include <Commands/AngleIntake.h>
 
-CrossDefense::CrossDefense(Defenses def)
+CrossDefense::CrossDefense(Defense def)
 {
 
 	if (def == MOAT || def == RAMPARTS || def == ROCK_WALL || def == ROUGH_TERRAIN || def == LOW_BAR)

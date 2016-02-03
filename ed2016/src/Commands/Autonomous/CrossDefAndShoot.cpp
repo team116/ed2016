@@ -1,7 +1,7 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include "Commands/Autonomous/CrossDefense.h"
 
-CrossDefAndShoot::CrossDefAndShoot(CrossDefense::Defenses def, Goals)
+CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Goals goal)
 {
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());
