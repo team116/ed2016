@@ -3,22 +3,14 @@
 
 #include "Commands/CommandGroup.h"
 #include "WPILib.h"
+#include "Autonomous.h"
+using namespace Autonomous;
 
 class CrossDefense: public CommandGroup
 {
 public:
-	enum Defenses {
-		PORTCULLIS,
-		CHEVAL_DE_FRISE,
-		MOAT,
-		RAMPARTS,
-		DRAWBRIDGE,
-		SALLY_PORT,
-		ROCK_WALL,
-		ROUGH_TERRAIN,
-		LOW_BAR
-	};
-	CrossDefense(Defenses);
+
+	CrossDefense(Defense);
 };
 
 #endif
