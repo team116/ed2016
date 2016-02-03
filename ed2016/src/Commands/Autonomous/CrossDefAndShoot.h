@@ -4,15 +4,13 @@
 #include "Commands/CommandGroup.h"
 #include "WPILib.h"
 #include "Commands/Autonomous/CrossDefense.h"
+#include "Autonomous.h"
 
 class CrossDefAndShoot: public CommandGroup
 {
 public:
-	enum Goals {
-		HIGH,
-		LOW
-	};
-	CrossDefAndShoot(CrossDefense::Defenses, Goals);
+
+	CrossDefAndShoot(Autonomous::Defense, Autonomous::Goals);
 };
 
 #endif
