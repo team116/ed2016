@@ -49,6 +49,8 @@ private:
 	Encoder* left_drive_encoder;
 	Encoder* right_drive_encoder;
 
+	static const float WINCH_SPEED;
+
 	I2C* lidar;
 	int lidar_distance; // centimeters
 

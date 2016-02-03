@@ -7,6 +7,9 @@ Climber::Climber():Subsystem("Climber")
 {
 	climber_armed_motor = new MOTOR_TYPE(Robot::CLIMBER_ARMED_MOTOR);
 	climber_direction = (ClimberMechanismDirection::CLIMBER_STILL);
+	front_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_FRONT);
+	back_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_BACK);
+
 }
 
 void Climber::InitDefaultCommand()
@@ -37,6 +40,40 @@ void Climber::setClimber(ClimberMechanismDirection direction) //function from .h
 		climber_armed_motor->Set(0.0);
 	}
 }
+void Climber::setFrontWinch(FrontWinchPullDirection direction)
+{
+	front_winch_direction = direction;
+	if (direction == FrontWinchPullDirection::ROBOT_PULL_UP)
+	{
+		front_winch->Set(WINCH_SPEED);
+	}
+	else if (direction == FrontWinchPullDirection::ROBOT_PULL_DOWN)
+	{
+		front_winch->Set(WINCH_SPEED);
+	}
+	else
+	{
+		front_winch->Set(0.0);
+	}
+}
+void Climber::setBackWinch (BackWinchPullDirection direction)
+{
+	back_winch_direction = direction;
+	if (direction == BackWinchPullDirection::PULL_UP_ROBOT)
+	{
+		back_winch->Set(WINCH_SPEED);
+	}
+	else if (direction == BackWinchPullDirection::PULL_DOWN_ROBOT)
+	{
+		back_winch->Set(WINCH_SPEED);
+	}
+	else
+	{
+		back_winch->Set(0.0);
+	}
+
+}
+
 Climber* Climber::getInstance()
 {
 	if (INSTANCE == nullptr)
