@@ -5,7 +5,7 @@ Climber* Climber::INSTANCE = nullptr;
 
 Climber::Climber():Subsystem("Climber")
 {
-	climber_armed_motor = new VictorSP(Robot::CLIMBER_ARMED_MOTOR);
+	climber_armed_motor = new MOTOR_TYPE(Robot::CLIMBER_ARMED_MOTOR);
 	climber_direction = (ClimberMechanismDirection::CLIMBER_STILL);
 }
 

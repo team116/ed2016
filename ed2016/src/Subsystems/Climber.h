@@ -2,6 +2,7 @@
 #define Climber_H
 
 #include <Commands/Subsystem.h>
+#include <RobotMap.h>
 #include <WPILib.h>
 
 class Climber: public Subsystem
@@ -25,7 +26,7 @@ public:
 private:
 	Climber();
 	static Climber* INSTANCE;
-	VictorSP* climber_armed_motor;
+	MOTOR_TYPE* climber_armed_motor;
 	ClimberMechanismDirection climber_direction;
 };
 

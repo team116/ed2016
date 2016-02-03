@@ -6,10 +6,10 @@ Mobility* Mobility::INSTANCE = nullptr;
 
 Mobility::Mobility() : Subsystem("Mobility")
 {
-	leftFront = new VictorSP(Robot::LEFT_FRONT_MOTOR);
-	leftBack = new VictorSP(Robot::LEFT_BACK_MOTOR);
-	rightFront = new VictorSP(Robot::RIGHT_FRONT_MOTOR);
-	rightBack = new VictorSP(Robot::RIGHT_BACK_MOTOR);
+	leftFront = new MOTOR_TYPE(Robot::LEFT_FRONT_MOTOR);
+	leftBack = new MOTOR_TYPE(Robot::LEFT_BACK_MOTOR);
+	rightFront = new MOTOR_TYPE(Robot::RIGHT_FRONT_MOTOR);
+	rightBack = new MOTOR_TYPE(Robot::RIGHT_BACK_MOTOR);
 
 	front_orientation = true; // just to get rid of uninitialized warning
 	useFrontOrientation(true); // this is the actual initializer
