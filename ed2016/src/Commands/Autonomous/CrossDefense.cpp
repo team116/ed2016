@@ -1,8 +1,9 @@
 #include "CrossDefense.h"
 #include <Commands/DriveDistance.h>
 #include <Commands/AngleIntake.h>
+#include "Autonomous.h"
 
-CrossDefense::CrossDefense(Defenses def)
+CrossDefense::CrossDefense(Autonomous::Defense def)
 {
 
 	if (def == MOAT || def == RAMPARTS || def == ROCK_WALL || def == ROUGH_TERRAIN || def == LOW_BAR)
