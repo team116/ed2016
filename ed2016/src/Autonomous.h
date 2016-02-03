@@ -27,7 +27,6 @@ namespace Autonomous{
 		HIGH,
 		LOW
 	};
-	};
 }
 
 
