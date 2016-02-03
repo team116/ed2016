@@ -20,8 +20,6 @@
 //const int RANGE_FINDER_PORT = 1;
 //const int RANGE_FINDER_MODULE = 1;
 
-#define MOTOR_TYPE CANTalon
-
 namespace Robot
 {
 	// digital inputs
