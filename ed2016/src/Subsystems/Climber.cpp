@@ -3,12 +3,14 @@
 
 Climber* Climber::INSTANCE = nullptr;
 
+const float Climber::WINCH_SPEED = 2.2; //temporary speed
+
 Climber::Climber():Subsystem("Climber")
 {
-	climber_armed_motor = new MOTOR_TYPE(Robot::CLIMBER_ARMED_MOTOR);
+	climber_armed_motor = new VictorSP(Robot::CLIMBER_ARMED_MOTOR);
 	climber_direction = (ClimberMechanismDirection::CLIMBER_STILL);
-	front_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_FRONT);
-	back_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_BACK);
+	front_winch = new VictorSP(Robot::WINCH_MOTOR_FRONT);
+	back_winch = new VictorSP(Robot::WINCH_MOTOR_BACK);
 
 }
 
