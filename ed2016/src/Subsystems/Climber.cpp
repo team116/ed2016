@@ -8,9 +8,11 @@ const float Climber::WINCH_SPEED = 2.2; //temporary speed
 Climber::Climber():Subsystem("Climber")
 {
 	climber_armed_motor = new MOTOR_TYPE(Robot::CLIMBER_ARMED_MOTOR);
-	climber_direction = (ClimberMechanismDirection::CLIMBER_STILL);
+	climber_arm_direction = (ClimberMechanismDirection::CLIMBER_ARM_STILL);
 	front_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_FRONT);
 	back_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_BACK);
+
+	back_winch_direction = WinchPullDirection::ROBOT_STILL;
 
 }
 
@@ -24,16 +26,24 @@ void Climber::InitDefaultCommand()
 // here. Call these from Commands.
 Climber::ClimberMechanismDirection Climber::getDirectionClimber()
 {
-	return climber_direction;
+	return climber_arm_direction;
+}
+Climber::WinchPullDirection Climber::getFrontWinchDirection()
+{
+	return front_winch_direction;
+}
+Climber::WinchPullDirection Climber::getBackWinchDirection()
+{
+	return back_winch_direction;
 }
 void Climber::setClimber(ClimberMechanismDirection direction) //function from .h to .cpp
 {
-	climber_direction = direction;
-	if (direction == ClimberMechanismDirection::CLIMBER_UP)
+	climber_arm_direction = direction;
+	if (direction == ClimberMechanismDirection::CLIMBER_ARM_UP)
 	{
 		climber_armed_motor->Set(0.5);
 	}
-	else if (direction == ClimberMechanismDirection::CLIMBER_DOWN)
+	else if (direction == ClimberMechanismDirection::CLIMBER_ARM_DOWN)
 	{
 		climber_armed_motor->Set(-0.5);
 	}
@@ -42,14 +52,14 @@ void Climber::setClimber(ClimberMechanismDirection direction) //function from .h
 		climber_armed_motor->Set(0.0);
 	}
 }
-void Climber::setFrontWinch(FrontWinchPullDirection direction)
+void Climber::setFrontWinch(WinchPullDirection direction)
 {
 	front_winch_direction = direction;
-	if (direction == FrontWinchPullDirection::ROBOT_PULL_UP)
+	if (direction == WinchPullDirection::ROBOT_PULL_UP)
 	{
 		front_winch->Set(WINCH_SPEED);
 	}
-	else if (direction == FrontWinchPullDirection::ROBOT_PULL_DOWN)
+	else if (direction == WinchPullDirection::ROBOT_PULL_DOWN)
 	{
 		front_winch->Set(WINCH_SPEED);
 	}
@@ -58,14 +68,14 @@ void Climber::setFrontWinch(FrontWinchPullDirection direction)
 		front_winch->Set(0.0);
 	}
 }
-void Climber::setBackWinch (BackWinchPullDirection direction)
+void Climber::setBackWinch (WinchPullDirection direction)
 {
 	back_winch_direction = direction;
-	if (direction == BackWinchPullDirection::PULL_UP_ROBOT)
+	if (direction == WinchPullDirection::ROBOT_PULL_UP)
 	{
 		back_winch->Set(WINCH_SPEED);
 	}
-	else if (direction == BackWinchPullDirection::PULL_DOWN_ROBOT)
+	else if (direction == WinchPullDirection::ROBOT_PULL_DOWN)
 	{
 		back_winch->Set(WINCH_SPEED);
 	}
