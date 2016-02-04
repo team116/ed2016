@@ -1,43 +1,31 @@
-/*
- * SpyBoxShoot.cpp
- *
- *  Created on: Jan 27, 2016
- *      Author: strahans
- */
-
-#include <Commands/Autonomous/SpyBoxShoot.h>
-
-SpyBoxShoot::SpyBoxShoot() {
-	// TODO Auto-generated constructor stub
-
-}
-
-SpyBoxShoot::~SpyBoxShoot() {
-	// TODO Auto-generated destructor stub
-}
-
-
-void SpyBoxShoot::Initialize()
+#include "SpyBoxShoot.h"
+// fucking hydrangeas Wivwiv
+SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 {
+	if (goal == Autonomous::HIGH)	//AS FUUUUUUUUUUUUUUUUUhydrangeasUUUUUUUUUUUUUUUUUUUUUUCK
+	{
+		AddSequential(new AutoAim());
+		AddSequential(new Shoot());
+	}
+	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
+	{
+		AddSequential(new DriveDistance(2.5));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
+		//either push or shoot
+	}
+	// Add Commands here:
+	// e.g. AddSequential(new Command1());
+	//      AddSequential(new Command2());
+	// these will run in order.
 
-}
+	// To run multiple commands at the same time,
+	// use AddParallel()
+	// e.g. AddParallel(new Command1());
+	//      AddSequential(new Command2());
+	// Command1 and Command2 will run in parallel.
 
-void SpyBoxShoot::Execute()
-{
-
-}
-
-bool SpyBoxShoot::IsFinished()
-{
-	return false;
-}
-
-void SpyBoxShoot::End()
-{
-
-}
-
-void SpyBoxShoot::Interrupted()
-{
-
+	// A command group will require all of the subsystems that each member
+	// would require.
+	// e.g. if Command1 requires chassis, and Command2 requires arm,
+	// a CommandGroup containing them would require both the chassis and the
+	// arm.
 }
