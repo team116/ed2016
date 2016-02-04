@@ -3,6 +3,7 @@
 
 #include "Commands/CommandGroup.h"
 #include "WPILib.h"
+#include <Autonomous.h>
 
 class SpyBoxShoot: public CommandGroup
 {
