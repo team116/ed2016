@@ -1,5 +1,6 @@
 #include <CommandBase.h>
 #include <Commands/JoystickDrive.h>
+#include <OI.h>
 
 JoystickDrive::JoystickDrive()
 {

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <Commands/Command.h>
-#include <OI.h>
 #include <WPILib.h>
 
 // list all subsystems here to prevent cyclical dependencies

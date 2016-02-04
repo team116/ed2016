@@ -1,8 +1,9 @@
 #ifndef Shooter_H
 #define Shooter_H
 
-#include "Commands/Subsystem.h"
-#include "WPILib.h"
+#include <Commands/Subsystem.h>
+#include <RobotMap.h>
+#include <WPILib.h>
 
 // included shooter
 class Shooter: public Subsystem
@@ -27,10 +28,10 @@ private:
 	Shooter();
 	static Shooter* INSTANCE;
 
-	VictorSP* left_shooter_wheel;
-	VictorSP* right_shooter_wheel;
-	VictorSP* push_wheel;
-	VictorSP* pitch_angle;
+	MOTOR_TYPE* top_shooter_wheel;
+	MOTOR_TYPE* bottom_shooter_wheel;
+	MOTOR_TYPE* push_wheel;
+	MOTOR_TYPE* pitch_angle;
 
 
 
