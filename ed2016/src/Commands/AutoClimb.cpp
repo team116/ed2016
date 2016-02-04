@@ -19,7 +19,7 @@ void AutoClimb::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void AutoClimb::Execute()
 {
-	climber->setClimber(Climber::CLIMBER_DOWN);
+	climber->setClimber(Climber::CLIMBER_ARM_DOWN);
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +39,7 @@ bool AutoClimb::IsFinished()
 // Called once after isFinished returns true
 void AutoClimb::End()
 {
-	climber->setClimber(Climber::CLIMBER_STILL);
+	climber->setClimber(Climber::CLIMBER_ARM_STILL);
 }
 
 // Called when another command which requires one or more of the same

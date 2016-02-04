@@ -39,7 +39,7 @@ bool OperateClimber::IsFinished()
 
 void OperateClimber::End()
 {
-	climber->setClimber(Climber::CLIMBER_STILL);
+	climber->setClimber(Climber::CLIMBER_ARM_STILL);
 }
 
 void OperateClimber::Interrupted()

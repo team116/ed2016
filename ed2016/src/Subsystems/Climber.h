@@ -10,9 +10,9 @@ class Climber: public Subsystem
 public:
 	enum ClimberMechanismDirection
 		{
-			CLIMBER_UP,
-			CLIMBER_DOWN,
-			CLIMBER_STILL
+			CLIMBER_ARM_UP,
+			CLIMBER_ARM_DOWN,
+			CLIMBER_ARM_STILL
 		};
 
 	void InitDefaultCommand();
@@ -20,21 +20,17 @@ public:
 	void setClimber(ClimberMechanismDirection direction);
 	ClimberMechanismDirection getDirectionClimber();
 
-	enum FrontWinchPullDirection
+	enum WinchPullDirection
 	{
 			ROBOT_PULL_UP,
 			ROBOT_PULL_DOWN,
 			ROBOT_STILL
 	};
-	void setFrontWinch (FrontWinchPullDirection direction);
+	void setFrontWinch (WinchPullDirection direction);
+	void setBackWinch (WinchPullDirection direction);
 
-	enum BackWinchPullDirection
-	{
-			PULL_UP_ROBOT,
-			PULL_DOWN_ROBOT,
-			STILL_ROBOT
-	};
-	void setBackWinch (BackWinchPullDirection direction);
+	WinchPullDirection getFrontWinchDirection();
+	WinchPullDirection getBackWinchDirection();
 
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -45,9 +41,9 @@ private:
 
 	const static float WINCH_SPEED;
 
-	ClimberMechanismDirection climber_direction;
-	FrontWinchPullDirection front_winch_direction;
-	BackWinchPullDirection back_winch_direction;
+	ClimberMechanismDirection climber_arm_direction;
+	WinchPullDirection front_winch_direction;
+	WinchPullDirection back_winch_direction;
 
 	MOTOR_TYPE* climber_armed_motor;
 	MOTOR_TYPE* front_winch;
