@@ -1,6 +1,7 @@
 #ifndef Sensors_H
 #define Sensors_H
 
+#include <NAVX/AHRS.h>
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
 
@@ -54,7 +55,7 @@ private:
 	I2C* lidar;
 	int lidar_distance; // centimeters
 
-
+	AHRS* navx;
 
 };
 

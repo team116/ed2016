@@ -1,11 +1,7 @@
 #include "CrossDefense.h"
 #include <Commands/DriveDistance.h>
 #include <Commands/AngleIntake.h>
-<<<<<<< HEAD
-#include "Autonomous.h"
-=======
 #include <Autonomous.h>
->>>>>>> bf54a7c82a5834ed256304ac9d67a0f0f54074ca
 
 CrossDefense::CrossDefense(Autonomous::Defense def)
 {

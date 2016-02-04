@@ -20,7 +20,13 @@
 //const int RANGE_FINDER_PORT = 1;
 //const int RANGE_FINDER_MODULE = 1;
 
+#define ROBOT_TYPE ANDERSON_BOT
+
+#if ROBOT_TYPE == ANDERSON_BOT
 #define MOTOR_TYPE CANTalon
+#elif ROBOT_TYPE == ED2016_BOT
+#define MOTOR_TYPE VictorSP
+#endif
 
 namespace Robot
 {
