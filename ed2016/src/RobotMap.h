@@ -80,7 +80,33 @@ namespace Robot
 
 namespace OI_Ports
 {
+	//Joysticks
+	const unsigned int LEFT_JOYSTICK = 0;
+	const unsigned int RIGHT_JOYSTICK = 1;
+	const unsigned int BUTTONS_JOYSTICK = 2;
 
+	//Digital Buttons
+	const unsigned int EXTEND_SCALING_ARM_BUTTON = 0;
+	const unsigned int RETRACT_SCALING_ARM_BUTTON = 1;
+	const unsigned int AUTO_WINCH_BUTTON = 2;
+	const unsigned int SHOOTER_ENGAGE_BUTTON = 3;
+	const unsigned int SHOOTER_DISENGAGE_BUTTON = 4;
+	const unsigned int AUTO_AIM_BUTTON = 5;
+
+	//Digital Switches
+	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 6;
+	const unsigned SHOOTER_WHEELS_SWITCH = 7;
+	const unsigned INTAKE_BELT_FORWARD_SWITCH = 8;
+	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 9;
+
+	//Analog Dials
+	const unsigned int INTAKE_ANGLE_DIAL = 0;
+	const unsigned int SHOOTER_SPEED_DIAL = 1;
+	const unsigned int MANUAL_AIM_DIAL = 2;
+
+	//Analog Joysticks
+	const unsigned int FRONT_WINCH_JOYSTICK = 4;
+	const unsigned int BACK_WINCH_JOYSTICK = 5;
 }
 
 namespace Utils

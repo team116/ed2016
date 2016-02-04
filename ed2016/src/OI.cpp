@@ -7,50 +7,48 @@ OI* OI::INSTANCE = nullptr;
 
 OI::OI()
 {
-	// Process operator interface input here.
+	//Instantiate Additional Analog Inputs
+	intake_angle = new AnalogInput(OI_Ports::INTAKE_ANGLE_DIAL);
+	shooter_speed = new AnalogInput(OI_Ports::SHOOTER_SPEED_DIAL);
+	manual_aim = new AnalogInput(OI_Ports::MANUAL_AIM_DIAL);
+	manual_front_winch = new AnalogInput(OI_Ports::FRONT_WINCH_JOYSTICK);
+	manual_back_winch = new AnalogInput(OI_Ports::BACK_WINCH_JOYSTICK);
 
 	//Instantiate Joysticks
-	joystick_left = new Joystick(0);
-	joystick_right = new Joystick(1);
-	joystick_buttons = new Joystick(2);
+	joystick_left = new Joystick(OI_Ports::LEFT_JOYSTICK);
+	joystick_right = new Joystick(OI_Ports::RIGHT_JOYSTICK);
+	joystick_buttons = new Joystick(OI_Ports::BUTTONS_JOYSTICK);
 
 	//Instantiate Joystick Left Buttons
 
 	//Instantiate Joystick Right Buttons
 
 	//Instantiate Joystick Buttons Buttons
-	intake_in = new JoystickButton(joystick_buttons,1);
-	intake_out = new JoystickButton(joystick_buttons,2);
-	shoot = new JoystickButton(joystick_buttons,3);
-	aim_shooter_up = new JoystickButton(joystick_buttons,4);
-	aim_shooter_down = new JoystickButton(joystick_buttons,5);
-	extend_arm = new JoystickButton(joystick_buttons,6);
-	retrive_arm = new JoystickButton(joystick_buttons,7);
-	arm_claw_open_close = new JoystickButton(joystick_buttons,8);
-	select_camera_front = new JoystickButton(joystick_buttons, 9);
-	select_camera_back = new JoystickButton(joystick_buttons, 10);
+	b_extend_scaling_arm = new JoystickButton(joystick_buttons, OI_Ports::EXTEND_SCALING_ARM_BUTTON);
+	b_retract_scaling_arm = new JoystickButton(joystick_buttons, OI_Ports::RETRACT_SCALING_ARM_BUTTON);
+	b_auto_winch = new JoystickButton(joystick_buttons, OI_Ports::AUTO_WINCH_BUTTON);
+	b_shooter_engage = new JoystickButton(joystick_buttons, OI_Ports::SHOOTER_ENGAGE_BUTTON);
+	b_shooter_disengage = new JoystickButton(joystick_buttons, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
+	b_auto_aim = new JoystickButton(joystick_buttons, OI_Ports::AUTO_AIM_BUTTON);
+
+	s_manual_winch_enable = new JoystickButton(joystick_buttons, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
+	s_shooter_wheels = new JoystickButton(joystick_buttons, OI_Ports::SHOOTER_WHEELS_SWITCH);
+	s_intake_belt_forward = new JoystickButton(joystick_buttons, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
+	s_intake_belt_backward = new JoystickButton(joystick_buttons, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
+
+	d_intake_angle = new AnalogTrigger(intake_angle);
+	d_shooter_speed = new AnalogTrigger(shooter_speed);
+	d_manual_aim = new AnalogTrigger(manual_aim);
+
+	//TODO:Instantiate front/back winch joysticks
 
 	//Set Joystick Left Events
 
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	intake_in->WhenPressed(new RunIntake(Intake::IntakeDirection::INTAKE_IN));
-	intake_in->WhenReleased(new RunIntake(Intake::IntakeDirection::INTAKE_STILL));
-	intake_out->WhenPressed(new RunIntake(Intake::IntakeDirection::INTAKE_OUT));
-	intake_out->WhenReleased(new RunIntake(Intake::IntakeDirection::INTAKE_STILL));
-
 
 	// Process operator interface input here.
-
-	JoystickButton* joy2_button1 = new JoystickButton(joystick_buttons, 1);
-	JoystickButton* joy2_button2 = new JoystickButton(joystick_buttons, 2);
-
-	joy2_button1->WhenPressed(new SelectCamera(Cameras::CameraDirection::BACK));
-	joy2_button2->WhenPressed(new SelectCamera(Cameras::CameraDirection::FRONT));
-	select_camera_front->WhenPressed(new SelectCamera(Cameras::CameraDirection::FRONT));
-	select_camera_back->WhenPressed(new SelectCamera(Cameras::CameraDirection::BACK));
-
 }
 
 float OI::getJoystickLeftY()
@@ -65,11 +63,11 @@ float OI::getJoystickRightY()
 
 Intake::IntakeDirection OI::getIntakeDirection()
 {
-	if (intake_in->Get())
+	if (s_intake_belt_forward->Get())
 	{
 		return Intake::IntakeDirection::INTAKE_IN;
 	}
-	else if (intake_out->Get())
+	else if (s_intake_belt_backward->Get())
 	{
 		return Intake::IntakeDirection::INTAKE_OUT;
 	}
