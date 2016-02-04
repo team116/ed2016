@@ -19,14 +19,40 @@ public:
 	void setClimber(ClimberMechanismDirection direction);
 	ClimberMechanismDirection getDirectionClimber();
 
+	enum FrontWinchPullDirection
+	{
+			ROBOT_PULL_UP,
+			ROBOT_PULL_DOWN,
+			ROBOT_STILL
+	};
+	void setFrontWinch (FrontWinchPullDirection direction);
+
+	enum BackWinchPullDirection
+	{
+			PULL_UP_ROBOT,
+			PULL_DOWN_ROBOT,
+			STILL_ROBOT
+	};
+	void setBackWinch (BackWinchPullDirection direction);
+
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
 private:
 	Climber();
 	static Climber* INSTANCE;
-	VictorSP* climber_armed_motor;
+
+	const static float WINCH_SPEED;
+
 	ClimberMechanismDirection climber_direction;
+	FrontWinchPullDirection front_winch_direction;
+	BackWinchPullDirection back_winch_direction;
+
+	VictorSP* climber_armed_motor;
+	VictorSP* front_winch;
+	VictorSP* back_winch;
+
+
 };
 
 #endif

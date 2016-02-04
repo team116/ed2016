@@ -42,7 +42,7 @@ namespace Robot
 	const unsigned int AUTONOMOUS_NAVX_B = 4;
 	const unsigned int AUTONOMOUS_NAVX_C = 5;
 
-	// CAN motors
+	//motors
 	const unsigned int LEFT_FRONT_MOTOR = 1;
 	const unsigned int LEFT_BACK_MOTOR = 2;
 	const unsigned int RIGHT_FRONT_MOTOR = 3;
@@ -59,6 +59,9 @@ namespace Robot
 
 	const unsigned int SHOOTER_PITCH_MOTOR = 10;
 	const unsigned int SHOOTER_PUSH_MOTOR = 11;
+
+	const unsigned int WINCH_MOTOR_FRONT = 12;
+	const unsigned int WINCH_MOTOR_BACK = 13;
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
