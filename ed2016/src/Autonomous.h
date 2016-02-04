@@ -9,7 +9,8 @@
 #define AUTONOMOUS_H_
 
 
-namespace Autonomous{
+namespace Autonomous
+{
 	enum Defense
 	{
 		LOW_BAR = 0,
@@ -20,7 +21,7 @@ namespace Autonomous{
 		DRAWBRIDGE = 5,
 		SALLY_PORT = 6,
 		ROCK_WALL = 7,
-		ROUGH_TERRAIN = 8,
+		ROUGH_TERRAIN = 8
 	};
 	enum Goals
 	{
@@ -28,6 +29,5 @@ namespace Autonomous{
 		LOW
 	};
 }
-
 
 #endif /* AUTONOMOUS_H_ */

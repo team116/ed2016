@@ -1,22 +1,14 @@
-/*
- * SpyBoxShoot.h
- *
- *  Created on: Jan 27, 2016
- *      Author: strahans
- */
+#ifndef SpyBoxShoot_H
+#define SpyBoxShoot_H
 
-#ifndef SRC_COMMANDS_AUTONOMOUS_SPYBOXSHOOT_H_
-#define SRC_COMMANDS_AUTONOMOUS_SPYBOXSHOOT_H_
+#include "Commands/CommandGroup.h"
+#include "WPILib.h"
 
-class SpyBoxShoot {
+class SpyBoxShoot: public CommandGroup
+{
 public:
-	SpyBoxShoot();
-	virtual ~SpyBoxShoot();
-	void Initialize();
-	void Execute();
-	bool IsFinished();
-	void End();
-	void Interrupted();
+	SpyBoxShoot(Autonomous::Goals);
+
 };
 
-#endif /* SRC_COMMANDS_AUTONOMOUS_SPYBOXSHOOT_H_ */
+#endif
