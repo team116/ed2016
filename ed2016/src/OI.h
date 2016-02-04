@@ -1,10 +1,9 @@
 #ifndef OI_H
 #define OI_H
 
-#include <WPILib.h>
-#include <Subsystems/Shooter.h>
 #include <Joystick.h>
 #include <Subsystems/Intake.h>
+#include <WPILib.h>
 
 class OI
 {

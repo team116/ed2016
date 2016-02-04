@@ -8,8 +8,9 @@
 #ifndef SRC_COMMANDS_ANGLEINTAKE_H_
 #define SRC_COMMANDS_ANGLEINTAKE_H_
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <Subsystems/Intake.h>
+#include <WPILib.h>
 
 class AngleIntake: public CommandBase {
 public:

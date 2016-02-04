@@ -5,8 +5,8 @@ Intake* Intake::INSTANCE = nullptr;
 
 Intake::Intake() : Subsystem("Intake")
 {
-	intake_roller = new VictorSP(Robot::INTAKE_ROLLER_MOTOR);
-	intake_angle = new VictorSP(Robot::INTAKE_ANGLE_MOTOR);
+	intake_roller = new MOTOR_TYPE(Robot::INTAKE_ROLLER_MOTOR);
+	intake_angle = new MOTOR_TYPE(Robot::INTAKE_ANGLE_MOTOR);
 }
 
 void Intake::InitDefaultCommand()
