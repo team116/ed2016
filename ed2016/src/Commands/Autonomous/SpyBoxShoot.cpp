@@ -2,7 +2,11 @@
 #include <Commands/AutoAim.h>
 #include <Commands/Shoot.h>
 #include <Commands/DriveDistance.h>
+#include <Commands/SetShooterPitch.h>
+#include <Commands/TurnDegrees.h>
 // fucking hydrangeas Wivwiv
+const float SpyBoxShoot::SHOOTER_PITCH_ERROR = 1;
+
 SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 {
 	if (goal == Autonomous::HIGH)	//AS FUUUUUUUUUUUUUUUUUhydrangeasUUUUUUUUUUUUUUUUUUUUUUCK
@@ -12,8 +16,12 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 	}
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
 	{
-		AddSequential(new DriveDistance(2.5));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
-		//either push or shoot
+		AddSequential(new TurnDegrees(45));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
+		AddSequential(new DriveDistance(5.41));
+		AddSequential(new TurnDegrees(-75));
+		AddParallel(new SetShooterPitch(0, SHOOTER_PITCH_ERROR));
+		AddSequential(new DriveDistance(6.5));
+		AddSequential(new Shoot());
 	}
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());
