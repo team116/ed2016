@@ -9,6 +9,10 @@ private:
 	Command* autonomousCommand;
 	SendableChooser *chooser;
 
+	AnalogInput* goal_switch;
+	AnalogInput* position_switch;
+	AnalogInput* defense_switch;
+
 	void RobotInit()
 	{
 		CommandBase::init();
@@ -16,6 +20,19 @@ private:
 		//chooser->AddDefault("Default Auto", new ExampleCommand());
 		//chooser->AddObject("My Auto", new MyAutoCommand());
 		SmartDashboard::PutData("Auto Modes", chooser);
+
+		/*int var = 0;
+		switch (var)
+		{
+		case 0:
+			break;
+		case 1:
+			break;
+		default:
+		*/
+
+
+
 	}
 
 	/**
@@ -54,6 +71,8 @@ private:
 
 		if (autonomousCommand != NULL)
 			autonomousCommand->Start();
+
+		pow(8,switch_num-1) * value;
 	}
 
 	void AutonomousPeriodic()

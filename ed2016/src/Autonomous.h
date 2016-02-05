@@ -26,7 +26,12 @@ namespace Autonomous
 	enum Goals
 	{
 		HIGH,
-		LOW
+		LOW,
+		NONE
+	};
+	enum AllAutoPlays
+	{
+
 	};
 }
 
