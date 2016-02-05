@@ -35,6 +35,8 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
+
+	navx = new AHRS(I2C::Port::kMXP);
 }
 
 void Sensors::InitDefaultCommand()
@@ -58,7 +60,13 @@ float Sensors::shooterAngle()
 
 float Sensors::robotAngle()
 {
+#if ROBOT_TYPE == ANDERSON_BOT
+	return navx->GetYaw();
+#elif ROBOT_TYPE == ED2016_BOT
+	return navx->GetRoll();
+#else
 	return 0.0;
+#endif
 }
 
 float Sensors::speedLeftShooterWheel()
