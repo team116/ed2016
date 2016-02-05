@@ -40,4 +40,7 @@ void DoNothing::Interrupted()
 {
 
 }
-
+//First shalt thou take out the Holy Pin, then shalt thou count to three, no more, no less.
+//Three shall be the number thou shalt count, and the number of the counting shall be three.
+//Four shalt thou not count, neither count thou two, excepting that thou then proceed to three.
+//Five is right out. Once the number three, being the third number, be reached, then:
