@@ -10,7 +10,7 @@ CrossDefense::CrossDefense(Autonomous::Defense def)
 
 	if (def == MOAT || def == RAMPARTS || def == ROCK_WALL || def == ROUGH_TERRAIN || def == LOW_BAR)
 	{
-		AddSequential(new DriveDistance(13.5)); //Intentionally 2.5 feet over estimate
+		AddSequential(new DriveDistance(8.5)); //Intentionally 2.5 feet over estimate
 	}
 	else if (def == PORTCULLIS)
 	{
