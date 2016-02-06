@@ -2,10 +2,15 @@
 #include <Commands/PushClimberWinch.h>
 #include <Commands/LowerClimberArm.h>
 #include <Commands/RaiseClimberArm.h>
+#include <Commands/AngleIntake.h>
 #include <cstdlib>
 #include <Commands/RunIntake.h>
 #include <Commands/SelectCamera.h>
 #include <OI.h>
+#include <Commands/RaiseIntake.h>
+#include <Commands/LowerIntake.h>
+#include <Commands/RaiseClimberArm.h>
+#include <Commands/LowerClimberArm.h>
 
 OI* OI::INSTANCE = nullptr;
 

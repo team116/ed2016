@@ -1,40 +1,39 @@
-#include "RaiseClimberArm.h"
-#include <Subsystems/Climber.h>
-
-RaiseClimberArm::RaiseClimberArm()
+#include "RaiseIntake.h"
+#include <Subsystems/Intake.h>
+RaiseIntake::RaiseIntake()
 {
+	Requires(intake);
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(climber);
 }
 
 // Called just before this Command runs the first time
-void RaiseClimberArm::Initialize()
+void RaiseIntake::Initialize()
 {
 
 }
 
 // Called repeatedly when this Command is scheduled to run
-void RaiseClimberArm::Execute()
+void RaiseIntake::Execute()
 {
-	climber->setClimber(Climber::CLIMBER_ARM_UP );
+	intake->setIntakeAngleDirection(Intake::IntakeAngleDirection::INTAKE_UP);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool RaiseClimberArm::IsFinished()
+bool RaiseIntake::IsFinished()
 {
 	return false;
 }
 
 // Called once after isFinished returns true
-void RaiseClimberArm::End()
+void RaiseIntake::End()
 {
-	climber->setClimber(Climber::CLIMBER_ARM_STILL);
+	intake->setIntakeAngleDirection(Intake::IntakeAngleDirection::INTAKE_STOP);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void RaiseClimberArm::Interrupted()
+void RaiseIntake::Interrupted()
 {
 	End();
 }
