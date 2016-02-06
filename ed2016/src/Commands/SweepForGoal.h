@@ -1,18 +1,13 @@
-#ifndef ContinuousTurn_H
-#define ContinuousTurn_H
+#ifndef SweepForGoal_H
+#define SweepForGoal_H
 
 #include <CommandBase.h>
 #include <WPILib.h>
 
-class ContinuousTurn: public CommandBase
+class SweepForGoal: public CommandBase
 {
 public:
-	enum Direction {
-		RIGHT,
-		LEFT,
-		STOP
-	};
-	ContinuousTurn(Direction);
+	SweepForGoal(int); //initial position (1 through 5, with low bar on outside edge as 1)
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -20,7 +15,8 @@ public:
 	void Interrupted();
 
 private:
-	Direction direction;
+	int initial_position;
+	float angle;
 	static const float TURN_SPEED;
 	bool interrupted;
 };

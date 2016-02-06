@@ -22,6 +22,8 @@ private:
 
 	bool interrupted;
 
+	static const float DRIVE_DISTANCE_TIMEOUT;
+
 
 };
 
