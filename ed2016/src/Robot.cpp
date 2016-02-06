@@ -72,7 +72,7 @@ private:
 		if (autonomousCommand != NULL)
 			autonomousCommand->Start();
 
-		pow(8,switch_num-1) * value;
+
 	}
 
 	void AutonomousPeriodic()

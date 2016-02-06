@@ -111,7 +111,7 @@ namespace OI_Ports
 
 namespace Utils
 {
-	float voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
+	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
 }
 
 #endif
