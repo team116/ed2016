@@ -1,13 +1,13 @@
-#ifndef PushClimberWinch_H
-#define PushClimberWinch_H
+#ifndef PushBackClimberWinch_H
+#define PushBackClimberWinch_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class PushClimberWinch: public CommandBase
+class PushBackClimberWinch: public CommandBase
 {
 public:
-	PushClimberWinch();
+	PushBackClimberWinch();
 	void Initialize();
 	void Execute();
 	bool IsFinished();

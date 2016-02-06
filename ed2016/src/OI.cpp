@@ -1,5 +1,7 @@
-#include <Commands/PullClimberWinch.h>
-#include <Commands/PushClimberWinch.h>
+#include <Commands/PullFrontClimberWinch.h>
+#include <Commands/PushFrontClimberWinch.h>
+#include <Commands/PullBackClimberWinch.h>
+#include <Commands/PushBackClimberWinch.h>
 #include <Commands/LowerClimberArm.h>
 #include <Commands/RaiseClimberArm.h>
 #include <Commands/AngleIntake.h>
@@ -56,8 +58,8 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
-	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_extend_scaling_arm->WhileHeld(new PushFrontClimberWinch());
+	b_retract_scaling_arm->WhileHeld(new PullFrontClimberWinch());
 
 	// Process operator interface input here.
 }

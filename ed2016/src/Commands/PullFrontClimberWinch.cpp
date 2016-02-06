@@ -1,41 +1,40 @@
-#include <Commands/PullClimberWinch.h>
+#include "PullFrontClimberWinch.h"
+#include <Subsystems/Climber.h>
 
-OperateClimberWinch::OperateClimberWinch(Climber::WinchDirection direction)
+PullFrontClimberWinch::PullFrontClimberWinch()
 {
+	Requires(climber);
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(climber);
-
-	winch_direction = direction;
 }
 
 // Called just before this Command runs the first time
-void OperateClimberWinch::Initialize()
+void PullFrontClimberWinch::Initialize()
 {
 
 }
 
 // Called repeatedly when this Command is scheduled to run
-void OperateClimberWinch::Execute()
+void PullFrontClimberWinch::Execute()
 {
-
+	climber->setFrontWinch(Climber::WinchDirection::ROBOT_PULL_DOWN);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool OperateClimberWinch::IsFinished()
+bool PullFrontClimberWinch::IsFinished()
 {
 	return false;
 }
 
 // Called once after isFinished returns true
-void OperateClimberWinch::End()
+void PullFrontClimberWinch::End()
 {
-
+	climber->setFrontWinch(Climber::WinchDirection::ROBOT_STILL);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void OperateClimberWinch::Interrupted()
+void PullFrontClimberWinch::Interrupted()
 {
-
+	End();
 }
