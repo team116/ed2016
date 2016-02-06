@@ -1,16 +1,21 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/CrossDefense.h>
-#include "Autonomous.h"
+#include <Autonomous.h>
 #include <Commands/AutoAim.h>
 #include <Commands/Shoot.h>
 #include <Commands/DriveDistance.h>
+#include <Commands/SweepForGoal.h>
+#include <Subsystems/Sensors.h>
+#include <Subsystems/Cameras.h>
 
-CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals goal)
+CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals goal, int initial_position)
 {
 	AddSequential(new CrossDefense(def));
 
 	if (goal == Autonomous::HIGH)
 		{
+			float angle = sensors->robotAngle();
+			AddSequential(new SweepForGoal(initial_position));
 			AddSequential(new AutoAim());
 			AddSequential(new Shoot());
 		}
