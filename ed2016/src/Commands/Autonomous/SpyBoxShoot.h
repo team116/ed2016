@@ -9,7 +9,8 @@ class SpyBoxShoot: public CommandGroup
 {
 public:
 	SpyBoxShoot(Autonomous::Goals);
-
+private:
+	static const float SHOOTER_PITCH_ERROR;
 };
 
 #endif

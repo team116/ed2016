@@ -1,9 +1,25 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
-#include "Commands/Autonomous/CrossDefense.h"
+#include <Commands/Autonomous/CrossDefense.h>
 #include "Autonomous.h"
+#include <Commands/AutoAim.h>
+#include <Commands/Shoot.h>
+#include <Commands/DriveDistance.h>
 
-CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals)
+CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals goal)
 {
+	AddSequential(new CrossDefense(def));
+
+	if (goal == Autonomous::HIGH)
+		{
+			AddSequential(new AutoAim());
+			AddSequential(new Shoot());
+		}
+
+	else if (goal == Autonomous::LOW)
+		{
+			AddSequential(new DriveDistance(2.5)); //This is a stand-in value, we need to find out distance from low goal
+			//either push or shoot
+		}
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());
 	//      AddSequential(new Command2());

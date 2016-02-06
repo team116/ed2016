@@ -7,10 +7,10 @@ const float Climber::WINCH_SPEED = 2.2; //temporary speed
 
 Climber::Climber():Subsystem("Climber")
 {
-	climber_armed_motor = new MOTOR_TYPE(Robot::CLIMBER_ARMED_MOTOR);
 	climber_arm_direction = (ClimberArmDirection::CLIMBER_ARM_STILL);
-	front_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_FRONT);
-	back_winch = new MOTOR_TYPE(Robot::WINCH_MOTOR_BACK);
+	climber_armed_motor = new MOTOR_TYPE(RobotPorts::CLIMBER_ARMED_MOTOR);
+	front_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_FRONT);
+	back_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_BACK);
 
 	back_winch_direction = WinchDirection::ROBOT_STILL;
 

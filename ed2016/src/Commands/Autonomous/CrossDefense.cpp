@@ -1,46 +1,32 @@
 #include "CrossDefense.h"
+#include <Commands/Autonomous/MoveToDefense.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/AngleIntake.h>
 #include <Autonomous.h>
 
 CrossDefense::CrossDefense(Autonomous::Defense def)
 {
+	AddSequential(new MoveToDefense());
 
 	if (def == MOAT || def == RAMPARTS || def == ROCK_WALL || def == ROUGH_TERRAIN || def == LOW_BAR)
 	{
-		AddSequential(new DriveDistance(12));
+		AddSequential(new DriveDistance(8.5)); //Intentionally 2.5 feet over estimate
 	}
 	else if (def == PORTCULLIS)
 	{
-		AddSequential(new DriveDistance(7));	//rough estimate, probably needs to be fixed
-		AddSequential(new AngleIntake(75));		//rough estimate, probably needs to be fixed
-		AddParallel(new DriveDistance(4));	//rough estimate, probably needs to be fixed
-		AddSequential(new AngleIntake(50));		//rough estimate, probably needs to be fixed
+		AddSequential(new DriveDistance(0.3));	//rough estimate, probably needs to be fixed
+		AddSequential(new AngleIntake(75.0));		//rough estimate, probably needs to be fixed
+		AddParallel(new DriveDistance(4.0));	//rough estimate, probably needs to be fixed
+		AddSequential(new AngleIntake(50.0));		//rough estimate, probably needs to be fixed
 	}
 	else if (def == DRAWBRIDGE)
 	{
-		AddSequential(new DriveDistance(7));	//rough estimate, probably needs to be fixed
+		AddSequential(new DriveDistance(0.3));	//rough estimate, probably needs to be fixed
 		//figure out how to move the drawbridge arm later
 	}
 	else if (def == SALLY_PORT)
-		{
-			AddSequential(new DriveDistance(7));	//rough estimate, probably needs to be fixed
-			//figure out how to move the drawbridge arm later
-		}
-	// Add Commands here:
-	// e.g. AddSequential(new Command1());
-	//      AddSequential(new Command2());
-	// these will run in order.
-
-	// To run multiple commands at the same time,
-	// use AddParallel()
-	// e.g. AddParallel(new Command1());
-	//      AddSequential(new Command2());
-	// Command1 and Command2 will run in parallel.
-
-	// A command group will require all of the subsystems that each member
-	// would require.
-	// e.g. if Command1 requires chassis, and Command2 requires arm,
-	// a CommandGroup containing them would require both the chassis and the
-	// arm.
+	{
+		AddSequential(new DriveDistance(0.3));	//rough estimate, probably needs to be fixed
+		//figure out how to move the drawbridge arm later
+	}
 }

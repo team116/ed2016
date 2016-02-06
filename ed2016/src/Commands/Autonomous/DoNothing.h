@@ -7,8 +7,11 @@
 
 #ifndef SRC_COMMANDS_DONOTHING_H_
 #define SRC_COMMANDS_DONOTHING_H_
+#include "Commands/CommandGroup.h"
+#include "WPILib.h"
+#include "Autonomous.h"
 
-class DoNothing {
+class DoNothing: public CommandGroup {
 public:
 	DoNothing();
 	virtual ~DoNothing();

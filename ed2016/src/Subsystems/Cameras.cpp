@@ -134,6 +134,11 @@ int Cameras::GetRunningCamera()
 	return camera_running;
 }
 
+bool Cameras::canSeeGoal()
+{
+	return false;
+}
+
 Cameras* Cameras::getInstance()
 {
 	if (INSTANCE == nullptr)

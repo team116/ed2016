@@ -5,7 +5,7 @@ const float AutoClimb::CLIMBER_TIMEOUT = 1.0; //TODO: change later
 AutoClimb::AutoClimb()
 {
 	Requires(climber);
-	temmie = new Timer();
+	temmie = new Timer(); //hOi! im.... temmie!
 	interrupted = false;
 }
 

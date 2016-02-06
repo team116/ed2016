@@ -28,7 +28,7 @@
 #define MOTOR_TYPE VictorSP
 #endif
 
-namespace Robot
+namespace RobotPorts
 {
 	// digital inputs
 
@@ -111,7 +111,7 @@ namespace OI_Ports
 
 namespace Utils
 {
-
+	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
 }
 
 #endif
