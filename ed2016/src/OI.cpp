@@ -1,3 +1,7 @@
+#include <Commands/PullClimberWinch.h>
+#include <Commands/PushClimberWinch.h>
+#include <Commands/LowerClimberArm.h>
+#include <Commands/RaiseClimberArm.h>
 #include <cstdlib>
 #include <Commands/RunIntake.h>
 #include <Commands/SelectCamera.h>
@@ -47,18 +51,22 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
+	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
+	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
 
 	// Process operator interface input here.
 }
 
 float OI::getJoystickLeftY()
 {
-	return joystick_left->GetY();
+	//return joystick_left->GetY();
+	return 0.0f;
 }
 
 float OI::getJoystickRightY()
 {
-	return joystick_right->GetY();
+	//return joystick_right->GetY();
+	return 0.0f;
 }
 
 Intake::IntakeDirection OI::getIntakeDirection()

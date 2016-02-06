@@ -86,18 +86,18 @@ namespace OI_Ports
 	const unsigned int BUTTONS_JOYSTICK = 2;
 
 	//Digital Buttons
-	const unsigned int EXTEND_SCALING_ARM_BUTTON = 0;
-	const unsigned int RETRACT_SCALING_ARM_BUTTON = 1;
-	const unsigned int AUTO_WINCH_BUTTON = 2;
-	const unsigned int SHOOTER_ENGAGE_BUTTON = 3;
-	const unsigned int SHOOTER_DISENGAGE_BUTTON = 4;
-	const unsigned int AUTO_AIM_BUTTON = 5;
+	const unsigned int EXTEND_SCALING_ARM_BUTTON = 1;
+	const unsigned int RETRACT_SCALING_ARM_BUTTON = 2;
+	const unsigned int AUTO_WINCH_BUTTON = 3;
+	const unsigned int SHOOTER_ENGAGE_BUTTON = 4;
+	const unsigned int SHOOTER_DISENGAGE_BUTTON = 5;
+	const unsigned int AUTO_AIM_BUTTON = 6;
 
 	//Digital Switches
-	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 6;
-	const unsigned SHOOTER_WHEELS_SWITCH = 7;
-	const unsigned INTAKE_BELT_FORWARD_SWITCH = 8;
-	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 9;
+	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 7;
+	const unsigned SHOOTER_WHEELS_SWITCH = 8;
+	const unsigned INTAKE_BELT_FORWARD_SWITCH = 9;
+	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 10;
 
 	//Analog Dials
 	const unsigned int INTAKE_ANGLE_DIAL = 0;
