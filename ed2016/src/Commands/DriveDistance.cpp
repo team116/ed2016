@@ -2,6 +2,8 @@
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Sensors.h>
 
+const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 1.0;
+
 DriveDistance::DriveDistance(float dist)
 {
 	Requires(mobility);
@@ -10,6 +12,8 @@ DriveDistance::DriveDistance(float dist)
 	current_distance = starting_distance;
 	dir = 0.0;
 	interrupted = false;
+
+	SetTimeout(DRIVE_DISTANCE_TIMEOUT * distance);
 }
 
 // Called just before this Command runs the first time
