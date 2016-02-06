@@ -15,7 +15,7 @@ public:
 	void Interrupted();
 
 private:
-	CANTalon* talon;
+
 };
 
 #endif
