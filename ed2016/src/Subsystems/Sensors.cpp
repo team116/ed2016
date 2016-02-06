@@ -18,23 +18,23 @@ const int Sensors::SHOOTER_WHEEL_PPR = 64;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
-	shooter_angle_encoder = new AnalogInput(Robot::SHOOTER_ANGLE_ENCODER);
-	intake_angle_encoder = new AnalogInput(Robot::INTAKE_ANGLE_ENCODER);
+	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
+	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 
-	left_shooter_wheel_tach_input = new DigitalInput(Robot::LEFT_SHOOTER_WHEEL_TACH);
-	right_shooter_wheel_tach_input = new DigitalInput(Robot::RIGHT_SHOOTER_WHEEL_TACH);
+	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
+	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
 	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 
-	left_drive_encoder = new Encoder(Robot::LEFT_ENCODER_A, Robot::LEFT_ENCODER_B);
-	right_drive_encoder = new Encoder(Robot::RIGHT_ENCODER_A, Robot::RIGHT_ENCODER_B);
+	left_drive_encoder = new Encoder(RobotPorts::LEFT_ENCODER_A, RobotPorts::LEFT_ENCODER_B);
+	right_drive_encoder = new Encoder(RobotPorts::RIGHT_ENCODER_A, RobotPorts::RIGHT_ENCODER_B);
 	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 
 	lidar_distance = 0;
-	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
+	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
 
 	navx = new AHRS(I2C::Port::kMXP);
 }
@@ -91,10 +91,10 @@ int Sensors::lidarDistance()
 
 void Sensors::refreshLidar()
 {
-	if (lidar->Write(Robot::LIDAR_INIT_REGISTER, 4) != 0)
+	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
 	{
 		uint8_t buffer[2];
-		while (lidar->Read(Robot::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
+		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
 
 		 lidar_distance = (buffer[0] << 8) + buffer[1];
 	}

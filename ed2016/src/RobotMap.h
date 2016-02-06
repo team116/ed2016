@@ -28,7 +28,7 @@
 #define MOTOR_TYPE VictorSP
 #endif
 
-namespace Robot
+namespace RobotPorts
 {
 	// digital inputs
 
