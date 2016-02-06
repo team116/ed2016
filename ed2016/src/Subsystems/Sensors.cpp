@@ -37,6 +37,14 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	lidar = new I2C(I2C::Port::kOnboard, Robot::LIDAR_ADDRESS);
 
 	navx = new AHRS(I2C::Port::kMXP);
+
+	drive_encoders_enabled = true;
+	lidar_sensor_enabled = true;
+	shooter_angle_enabled = true;
+	robot_angle_enabled = true;
+	intake_angle_enabled = true;
+	ready_to_shoot_enabled = true;
+	shooter_wheel_tachometer_enabled = true;
 }
 
 void Sensors::InitDefaultCommand()
@@ -50,64 +58,130 @@ void Sensors::InitDefaultCommand()
 // here. Call these from Commands.
 bool Sensors::isReadyToShoot()
 {
+	if (ready_to_shoot_enabled);
+{
 	return false;
+}
 }
 
 float Sensors::shooterAngle()
 {
-	return 360.0 * shooter_angle_encoder->GetVoltage() / 5.0 - SHOOTER_ANGLE_OFFSET;
+	if (shooter_angle_enabled)
+{
+		return 360.0 * shooter_angle_encoder->GetVoltage() / 5.0 - SHOOTER_ANGLE_OFFSET;
+}
+	else
+	{
+		return 0.0;
+	}
 }
 
 float Sensors::robotAngle()
 {
-#if ROBOT_TYPE == ANDERSON_BOT
-	return navx->GetYaw();
-#elif ROBOT_TYPE == ED2016_BOT
-	return navx->GetRoll();
-#else
-	return 0.0;
-#endif
+	if(robot_angle_enabled)
+{
+	#if ROBOT_TYPE == ANDERSON_BOT
+		return navx->GetYaw();
+	#elif ROBOT_TYPE == ED2016_BOT
+		return navx->GetRoll();
+	#else
+		return 0.0;
+	#endif
+}
+	else
+	{
+		return 0.0;
+	}
 }
 
 float Sensors::speedLeftShooterWheel()
 {
+	{
+		if (shooter_wheel_tachometer_enabled)
+		{
 	return left_shooter_wheel_tach->GetRate();
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
 }
 
 float Sensors::speedRightShooterWheel()
 {
+	{
+		if (shooter_wheel_tachometer_enabled)
+		{
 	return left_shooter_wheel_tach->GetRate();
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
 }
 
 float Sensors::intakeAngle()
 {
+	if (intake_angle_enabled)
+{
 	return 360.0 * intake_angle_encoder->GetVoltage() / 5.0 - INTAKE_ANGLE_OFFSET;
+}
+	else
+	{
+		return 0.0;
+	}
 }
 
 int Sensors::lidarDistance()
 {
-	return lidar_distance;
+	if (lidar_sensor_enabled)
+	{
+		return lidar_distance;
+	}
+	else
+	{
+		return 0.0;
+	}
 }
-
 void Sensors::refreshLidar()
 {
-	if (lidar->Write(Robot::LIDAR_INIT_REGISTER, 4) != 0)
+	if (lidar_sensor_enabled)
 	{
-		uint8_t buffer[2];
-		while (lidar->Read(Robot::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
+		if (lidar->Write(Robot::LIDAR_INIT_REGISTER, 4) != 0)
+		{
+			uint8_t buffer[2];
+			while (lidar->Read(Robot::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
 
-		 lidar_distance = (buffer[0] << 8) + buffer[1];
+			 lidar_distance = (buffer[0] << 8) + buffer[1];
+		}
 	}
 }
 
 float Sensors::getDistanceLeft()
 {
-	return (float)left_drive_encoder->GetDistance();
+	if (drive_encoders_enabled)
+	{
+		return (float)left_drive_encoder->GetDistance();
+	}
+	else
+	{
+		return 0.0;
+	}
 }
 
 float Sensors::getDistanceRight()
 {
-	return (float)right_drive_encoder->GetDistance();
+	if(drive_encoders_enabled)
+
+	{
+		return (float)right_drive_encoder->GetDistance();
+	}
+	else
+	{
+		return 0.0;
+	}
 }
 
 Sensors* Sensors::getInstance()
@@ -120,10 +194,42 @@ Sensors* Sensors::getInstance()
 
 }
 
-void Sensors::resetEncoderLeft() {
+void Sensors::resetEncoderLeft()
+{
 	 left_drive_encoder->Reset();
 }
 
-void Sensors::resetEncoderRight() {
+void Sensors::resetEncoderRight()
+{
 	right_drive_encoder->Reset();
+}
+
+bool Sensors::areDriveEncoderEnabled()
+{
+	return drive_encoders_enabled;
+}
+
+bool Sensors::areLidarEnabled()
+{
+	return lidar_sensor_enabled;
+}
+bool Sensors::areShooterAngleEnabled()
+{
+	return shooter_angle_enabled;
+}
+bool Sensors::areRobotAngleEnabled()
+{
+	return robot_angle_enabled;
+}
+bool Sensors::areIntakeAngleEnabled()
+{
+	return intake_angle_enabled;
+}
+bool Sensors::readyToShoot()
+{
+	return ready_to_shoot_enabled;
+}
+bool Sensors::shooterWheelTachometerEnabled()
+{
+	return shooter_wheel_tachometer_enabled;
 }
