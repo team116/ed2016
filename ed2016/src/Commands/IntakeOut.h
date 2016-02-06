@@ -1,21 +1,18 @@
-#ifndef RaiseClimberArm_H
-#define RaiseClimberArm_H
+#ifndef IntakeOut_H
+#define IntakeOut_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class RaiseClimberArm: public CommandBase
+class IntakeOut: public CommandBase
 {
 public:
-	RaiseClimberArm();
+	IntakeOut();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
-
-private:
-
 };
 
 #endif

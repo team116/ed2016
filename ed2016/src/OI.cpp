@@ -6,7 +6,6 @@
 #include <Commands/RaiseClimberArm.h>
 #include <Commands/AngleIntake.h>
 #include <cstdlib>
-#include <Commands/RunIntake.h>
 #include <Commands/SelectCamera.h>
 #include <OI.h>
 #include <Commands/RaiseIntake.h>
@@ -76,21 +75,6 @@ float OI::getJoystickRightY()
 	return 0.0f;
 }
 
-Intake::IntakeDirection OI::getIntakeDirection()
-{
-	if (s_intake_belt_forward->Get())
-	{
-		return Intake::IntakeDirection::INTAKE_IN;
-	}
-	else if (s_intake_belt_backward->Get())
-	{
-		return Intake::IntakeDirection::INTAKE_OUT;
-	}
-	else
-	{
-		return Intake::IntakeDirection::INTAKE_STILL;
-	}
-}
 OI* OI::getInstance()
 {
 	if (INSTANCE == nullptr)
