@@ -7,7 +7,7 @@
 class TurnToAngle: public CommandBase
 {
 public:
-	TurnToAngle(float, float err = 3);
+	TurnToAngle(float, float err = 1);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
