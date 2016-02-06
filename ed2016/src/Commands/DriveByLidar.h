@@ -8,7 +8,7 @@ class DriveByLidar: public CommandBase
 {
 public:
 	//drive until the lidar is returning specified distance
-	DriveByLidar(float, float);	//distance in cm, error
+	DriveByLidar(float, float err = 5.0);	//distance in cm, error
 	void Initialize();
 	void Execute();
 	bool IsFinished();
