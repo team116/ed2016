@@ -20,6 +20,8 @@ public:
 	bool StartCamera(CameraDirection camera_dir);
 	void RunCamera(CameraDirection camera_dir);
 
+	bool canSeeGoal();
+
 	int GetRunningCamera();
 
 
