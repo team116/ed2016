@@ -46,7 +46,7 @@ void TurnToAngle::Execute()
 		else
 		{
 			mobility->setLeft(TURN_SPEED);
-			mobility->setRight-(TURN_SPEED);
+			mobility->setRight(TURN_SPEED);
 		}
 	}
 }
