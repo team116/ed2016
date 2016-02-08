@@ -1,15 +1,15 @@
 #include <cstdlib>
 #include <OI.h>
 #include <Commands/SelectCamera.h>
-#include <Commands/PullClimberWinch.h>
-#include <Commands/PushClimberWinch.h>
+#include <Commands/PullFrontClimberWinch.h>
+#include <Commands/PushFrontClimberWinch.h>
+#include <Commands/PullBackClimberWinch.h>
+#include <Commands/PushBackClimberWinch.h>
 #include <Commands/LowerClimberArm.h>
 #include <Commands/RaiseClimberArm.h>
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
-#include <Commands/RaiseClimberArm.h>
-#include <Commands/LowerClimberArm.h>
 
 OI* OI::INSTANCE = nullptr;
 
@@ -55,8 +55,8 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
-	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_extend_scaling_arm->WhileHeld(new PushFrontClimberWinch());
+	b_retract_scaling_arm->WhileHeld(new PullFrontClimberWinch());
 
 	// Process operator interface input here.
 }
