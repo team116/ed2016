@@ -7,6 +7,8 @@ AutoClimb::AutoClimb()
 	Requires(climber);
 	temmie = new Timer(); //hOi! im.... temmie!
 	interrupted = false;
+
+	SetTimeout(CLIMBER_TIMEOUT);
 }
 
 // Called just before this Command runs the first time
