@@ -1,7 +1,9 @@
 #include "CheckLidar.h"
 #include <Subsystems/Sensors.h>
+
 CheckLidar::CheckLidar()
 {
+	Requires(sensors);
 	distance = 0.0;
 	lidar_read = false;
 }

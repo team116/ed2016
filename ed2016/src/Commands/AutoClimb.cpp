@@ -5,7 +5,7 @@ const float AutoClimb::CLIMBER_TIMEOUT = 1.0; //TODO: change later
 AutoClimb::AutoClimb()
 {
 	Requires(climber);
-	temmie = new Timer(); //hOi! im.... temmie!
+	SetTimeout(CLIMBER_TIMEOUT);
 	interrupted = false;
 
 	SetTimeout(CLIMBER_TIMEOUT);
@@ -14,8 +14,7 @@ AutoClimb::AutoClimb()
 // Called just before this Command runs the first time
 void AutoClimb::Initialize()
 {
-	temmie->Reset();
-	temmie->Start();
+
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -28,10 +27,6 @@ void AutoClimb::Execute()
 bool AutoClimb::IsFinished()
 {
 	if (interrupted)
-	{
-		return true;
-	}
-	else if ((float)temmie->Get() == CLIMBER_TIMEOUT)
 	{
 		return true;
 	}

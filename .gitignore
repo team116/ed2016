@@ -26,11 +26,12 @@
 *.exe
 *.out
 *.app
-ed2016/Debug/*
 ed2016/Debug/
+HardwareTesting/Debug/
 
 # Eclipse nonsense
 ed2016/.settings/
+HardwareTesting/.settings/
 sysProps.xml
 .metadata
 RemoteSystemsTempFiles

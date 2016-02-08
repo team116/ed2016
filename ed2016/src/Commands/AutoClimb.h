@@ -16,8 +16,6 @@ public:
 private:
 	static const float CLIMBER_TIMEOUT;
 
-	Timer* temmie;
-
 	bool interrupted;
 };
 
