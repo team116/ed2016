@@ -27,7 +27,13 @@ public:
 	float getSpeedRight();
 	void resetEncoderLeft();
 	void resetEncoderRight();
-
+	bool areDriveEncoderEnabled();
+	bool areLidarEnabled();
+	bool areShooterAngleEnabled();
+	bool areRobotAngleEnabled();
+	bool areIntakeAngleEnabled();
+	bool readyToShoot();
+	bool shooterWheelTachometerEnabled();
 
 private:
 	Sensors();
@@ -56,6 +62,14 @@ private:
 	int lidar_distance; // centimeters
 
 	AHRS* navx;
+
+	bool drive_encoders_enabled;
+	bool lidar_sensor_enabled;
+	bool shooter_angle_enabled;
+	bool robot_angle_enabled;
+	bool intake_angle_enabled;
+	bool ready_to_shoot_enabled;
+	bool shooter_wheel_tachometer_enabled;
 
 };
 
