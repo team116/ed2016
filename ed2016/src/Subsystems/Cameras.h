@@ -21,10 +21,10 @@ public:
 	void RunCamera(CameraDirection camera_dir);
 
 	bool canSeeGoal();
+	float GetTargetX();
+	float GetTargetY();
 
 	int GetRunningCamera();
-
-
 
 	static Cameras* getInstance();
 
@@ -41,6 +41,8 @@ private:
 	Image *back_cam_frame;
 
 	IMAQdxError imaqError;
+
+	std::shared_ptr<NetworkTable> grip;
 
 	static Cameras* INSTANCE;
 };

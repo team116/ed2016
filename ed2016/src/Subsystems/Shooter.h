@@ -19,7 +19,6 @@ public:
 	void InitDefaultCommand();
 	void turnShooterOn(bool);
 	void setShooterPitchDirection(ShooterPitchDirection);
-	void turnPushWheelOn(bool);
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
@@ -30,7 +29,6 @@ private:
 
 	MOTOR_TYPE* top_shooter_wheel;
 	MOTOR_TYPE* bottom_shooter_wheel;
-	MOTOR_TYPE* push_wheel;
 	MOTOR_TYPE* pitch_angle;
 
 

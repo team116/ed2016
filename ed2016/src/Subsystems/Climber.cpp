@@ -61,7 +61,7 @@ void Climber::setFrontWinch(WinchDirection direction)
 	}
 	else if (direction == WinchDirection::ROBOT_PULL_DOWN)
 	{
-		front_winch->Set(WINCH_SPEED);
+		front_winch->Set(-WINCH_SPEED);
 	}
 	else
 	{

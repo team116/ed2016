@@ -14,6 +14,7 @@ Mobility* CommandBase::mobility = nullptr;
 Climber* CommandBase::climber = nullptr;
 Sensors* CommandBase::sensors = nullptr;
 Shooter* CommandBase::shooter = nullptr;
+HolderWheel* CommandBase::holderwheel = nullptr;
 Cameras* CommandBase::cameras = nullptr;
 Intake* CommandBase::intake = nullptr;
 

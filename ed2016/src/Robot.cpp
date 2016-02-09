@@ -79,7 +79,7 @@ private:
 
 		int AutoPlays = pow(8, 0)*voltageConversion(goal_switch->GetVoltage(), 3, 5.0) + pow(8, 2)*voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 
-		switch ((AllAutoPlays)AutoPlays)
+		/*switch ((AllAutoPlays)AutoPlays)
 		{
 		case AllAutoPlays::NOSHOOTING_DEFPORTCULLIS:
 			auto_command = new CrossDefense(Defense::PORTCULLIS);
@@ -155,7 +155,7 @@ private:
 			break;
 		default:
 			auto_command = new DoNothing();
-		}
+		} */
 		auto_command->Start();
 
 	}

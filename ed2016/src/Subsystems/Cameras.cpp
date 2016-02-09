@@ -6,6 +6,8 @@ Cameras* Cameras::INSTANCE = nullptr;
 
 const bool kError = false;
 const bool kOk = true;
+const int IMAGE_WIDTH = 320;
+const int IMAGE_HEIGHT = 240;
 
 Cameras::Cameras() :
 		Subsystem("Cameras")
@@ -14,6 +16,8 @@ Cameras::Cameras() :
 	back_cam_frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 
 	camera_running = CameraDirection::NONE;
+
+	grip = NetworkTable::GetTable("GRIP");
 
 	//-1074360316
 }
@@ -136,7 +140,27 @@ int Cameras::GetRunningCamera()
 
 bool Cameras::canSeeGoal()
 {
+	if(grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>()).size() > 0) {
+		DriverStation::ReportError("Can see vision target\n");
+		return true;
+	}
 	return false;
+}
+
+float Cameras::GetTargetX()
+{
+	if(grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>()).size() > 0) {
+		return grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[0];
+	}
+	return 116; //If there is no target in view...
+}
+
+float Cameras::GetTargetY()
+{
+	if(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>()).size() > 0) {
+		return grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0];
+	}
+	return 116; //If there is no target in view...
 }
 
 Cameras* Cameras::getInstance()

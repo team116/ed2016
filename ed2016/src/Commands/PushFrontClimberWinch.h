@@ -1,8 +1,8 @@
 #ifndef PushFrontClimberWinch_H
 #define PushFrontClimberWinch_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <WPILib.h>
 
 class PushFrontClimberWinch: public CommandBase
 {
