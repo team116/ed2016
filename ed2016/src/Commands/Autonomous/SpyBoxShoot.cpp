@@ -17,10 +17,10 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
 	{
 		AddSequential(new TurnDegrees(45));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
-		AddSequential(new DriveDistance(5.41));
+		AddSequential(new DriveDistance(165));
 		AddSequential(new TurnDegrees(-75));
 		AddParallel(new SetShooterPitch(0, SHOOTER_PITCH_ERROR));
-		AddSequential(new DriveDistance(6.5));
+		AddSequential(new DriveDistance(198));
 		AddSequential(new Shoot());
 	}
 	// Add Commands here:

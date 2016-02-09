@@ -1,7 +1,15 @@
+#include <Commands/PullClimberWinch.h>
+#include <Commands/PushClimberWinch.h>
+#include <Commands/LowerClimberArm.h>
+#include <Commands/RaiseClimberArm.h>
+#include <Commands/AngleIntake.h>
 #include <cstdlib>
-#include <Commands/RunIntake.h>
 #include <Commands/SelectCamera.h>
 #include <OI.h>
+#include <Commands/RaiseIntake.h>
+#include <Commands/LowerIntake.h>
+#include <Commands/RaiseClimberArm.h>
+#include <Commands/LowerClimberArm.h>
 
 OI* OI::INSTANCE = nullptr;
 
@@ -47,35 +55,24 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
+	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
+	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
 
 	// Process operator interface input here.
 }
 
 float OI::getJoystickLeftY()
 {
-	return joystick_left->GetY();
+	//return joystick_left->GetY();
+	return 0.0f;
 }
 
 float OI::getJoystickRightY()
 {
-	return joystick_right->GetY();
+	//return joystick_right->GetY();
+	return 0.0f;
 }
 
-Intake::IntakeDirection OI::getIntakeDirection()
-{
-	if (s_intake_belt_forward->Get())
-	{
-		return Intake::IntakeDirection::INTAKE_IN;
-	}
-	else if (s_intake_belt_backward->Get())
-	{
-		return Intake::IntakeDirection::INTAKE_OUT;
-	}
-	else
-	{
-		return Intake::IntakeDirection::INTAKE_STILL;
-	}
-}
 OI* OI::getInstance()
 {
 	if (INSTANCE == nullptr)
