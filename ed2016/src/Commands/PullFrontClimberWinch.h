@@ -1,8 +1,8 @@
 #ifndef PullFrontClimberWinch_H
 #define PullFrontClimberWinch_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <WPILib.h>
 
 class PullFrontClimberWinch: public CommandBase
 {
