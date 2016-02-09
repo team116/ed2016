@@ -63,14 +63,12 @@ OI::OI()
 
 float OI::getJoystickLeftY()
 {
-	//return joystick_left->GetY();
-	return 0.0f;
+	return joystick_left->GetY();
 }
 
 float OI::getJoystickRightY()
 {
-	//return joystick_right->GetY();
-	return 0.0f;
+	return joystick_right->GetY();
 }
 
 OI* OI::getInstance()
