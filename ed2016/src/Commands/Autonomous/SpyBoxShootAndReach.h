@@ -5,12 +5,15 @@
  *      Author: strahans
  */
 
+#include "Commands/CommandGroup.h"
+#include "WPILib.h"
+#include <Autonomous.h>
 #ifndef SRC_COMMANDS_AUTONOMOUS_SPYBOXSHOOTANDREACH_H_
 #define SRC_COMMANDS_AUTONOMOUS_SPYBOXSHOOTANDREACH_H_
 
-class SpyBoxShootAndReach {
+class SpyBoxShootAndReach: public CommandGroup {
 public:
-	SpyBoxShootAndReach();
+	SpyBoxShootAndReach(Autonomous::Goals);
 	virtual ~SpyBoxShootAndReach();
 	void Initialize();
 	void Execute();
