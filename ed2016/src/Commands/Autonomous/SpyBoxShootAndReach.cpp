@@ -18,7 +18,7 @@ SpyBoxShootAndReach::SpyBoxShootAndReach(Autonomous::Goals goal)
 	if(goal == Autonomous::HIGH)
 	{
 		AddSequential(new TurnDegrees(-15));//Inaccurate value
-		AddSequential(new DriveDistance(6));//Inaccurate value
+		AddSequential(new DriveDistance(180));//Inaccurate value
 	}
 	else
 	{
