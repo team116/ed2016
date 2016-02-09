@@ -1,5 +1,6 @@
 #include <Commands/Shoot.h>
 #include <Subsystems/Shooter.h>
+#include <Subsystems/HolderWheel.h>
 
 const float Shoot::SPEED_UP_TIME = 1.0;
 const float Shoot::PUSH_BOULDER = 1.5;
@@ -7,6 +8,7 @@ const float Shoot::PUSH_BOULDER = 1.5;
 Shoot::Shoot()
 {
 	Requires(shooter);
+	Requires(holderwheel);
 
 	timer = new Timer();
 	interrupted = false;
@@ -26,7 +28,7 @@ void Shoot::Execute()
 
 	if (timer->HasPeriodPassed(SPEED_UP_TIME))
 	{
-		shooter->turnPushWheelOn(true);
+		holderwheel->turnHolderWheelOn(true);
 	}
 }
 
@@ -48,7 +50,7 @@ bool Shoot::IsFinished()
 void Shoot::End()
 {
 	shooter->turnShooterOn(false);
-	shooter->turnPushWheelOn(false);
+	holderwheel->turnHolderWheelOn(false);
 }
 
 // Called when another command which requires one or more of the same
