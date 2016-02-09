@@ -13,7 +13,7 @@ Climber::Climber():Subsystem("Climber")
 	back_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_BACK);
 
 	back_winch_direction = WinchDirection::ROBOT_STILL;
-
+	front_winch_direction = WinchDirection::ROBOT_STILL;
 }
 
 void Climber::InitDefaultCommand()

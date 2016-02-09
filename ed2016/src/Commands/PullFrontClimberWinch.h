@@ -1,22 +1,18 @@
-#ifndef AutoClimb_H
-#define AutoClimb_H
+#ifndef PullFrontClimberWinch_H
+#define PullFrontClimberWinch_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
 
-class AutoClimb: public CommandBase
+class PullFrontClimberWinch: public CommandBase
 {
 public:
-	AutoClimb();
+	PullFrontClimberWinch();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
-private:
-	static const float CLIMBER_TIMEOUT;
-
-	bool interrupted;
 };
 
 #endif
