@@ -140,27 +140,29 @@ int Cameras::GetRunningCamera()
 
 bool Cameras::canSeeGoal()
 {
+	//TODO: More advanced code to make sure the contour we find is actually the goal, or handling multiple contours
 	if(grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>()).size() > 0) {
-		DriverStation::ReportError("Can see vision target\n");
 		return true;
 	}
 	return false;
 }
 
+//0 is left side of picture
 float Cameras::GetTargetX()
 {
 	if(grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>()).size() > 0) {
-		return grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[0];
+		return (float)grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[0] / (float)IMAGE_WIDTH;
 	}
-	return 116; //If there is no target in view...
+	return 0.0f; //If there is no target in view...
 }
 
+//0 is top side of picture
 float Cameras::GetTargetY()
 {
 	if(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>()).size() > 0) {
-		return grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0];
+		return (float)grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0] / (float)IMAGE_HEIGHT;
 	}
-	return 116; //If there is no target in view...
+	return 0.0f; //If there is no target in view...
 }
 
 Cameras* Cameras::getInstance()
