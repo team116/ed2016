@@ -172,7 +172,7 @@ float Cameras::GetTargetY()
 float Cameras::PitchFromHorizontal()
 {
 
-	return atan(TARGET_HEIGHT / GetDistanceFromTarget());
+	return (CAMERA_ANGLE + atan(TARGET_HEIGHT / GetDistanceFromTarget()));
 }
 
 float Cameras::AzimuthDegreesFromTarget()
