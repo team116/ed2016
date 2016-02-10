@@ -1,6 +1,7 @@
 #include <Subsystems/Cameras.h>
 #include <RobotMap.h>
 #include <Commands/SelectCamera.h>
+#include <math.h>
 
 Cameras* Cameras::INSTANCE = nullptr;
 
@@ -8,6 +9,9 @@ const bool kError = false;
 const bool kOk = true;
 const int IMAGE_WIDTH = 320;
 const int IMAGE_HEIGHT = 240;
+const float CAMERA_ANGLE = 0;//TODO: Measure exact angle on robot
+const float TARGET_HEIGHT = 17.78;//In centimeters //TODO: Measure exact height at competition
+const float HEIGHT_DISTANCE_RATIO = 11100;
 
 Cameras::Cameras() :
 		Subsystem("Cameras")
@@ -163,6 +167,30 @@ float Cameras::GetTargetY()
 		return (float)grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0] / (float)IMAGE_HEIGHT;
 	}
 	return 0.0f; //If there is no target in view...
+}
+
+float Cameras::PitchFromHorizontal()
+{
+
+	return atan(TARGET_HEIGHT / GetDistanceFromTarget());
+}
+
+float Cameras::AzimuthDegreesFromTarget()
+{
+	return 0.0f;
+}
+
+//In centimeters
+float Cameras::GetDistanceFromTarget()
+{
+	if(canSeeGoal()) {
+		float pixel_height = grip->GetNumberArray("vision_contours/height", llvm::ArrayRef<double>())[0];
+		return HEIGHT_DISTANCE_RATIO / pixel_height;
+	}
+	else {
+		DriverStation::ReportError("Error: Cannot calculate distance if target is not in sight\n");
+		return 0.0f;
+	}
 }
 
 Cameras* Cameras::getInstance()

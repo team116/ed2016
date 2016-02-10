@@ -23,6 +23,9 @@ public:
 	bool canSeeGoal();
 	float GetTargetX();
 	float GetTargetY();
+	float PitchFromHorizontal();
+	float AzimuthDegreesFromTarget();
+	float GetDistanceFromTarget();
 
 	int GetRunningCamera();
 
