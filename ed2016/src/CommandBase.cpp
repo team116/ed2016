@@ -1,6 +1,7 @@
 #include <CommandBase.h>
 #include <Commands/Scheduler.h>
 #include <OI.h>
+#include <Subsystems/HolderWheel.h>
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Climber.h>
 #include <Subsystems/Sensors.h>
@@ -14,7 +15,7 @@ Mobility* CommandBase::mobility = nullptr;
 Climber* CommandBase::climber = nullptr;
 Sensors* CommandBase::sensors = nullptr;
 Shooter* CommandBase::shooter = nullptr;
-HolderWheel* CommandBase::holderwheel = nullptr;
+HolderWheel* CommandBase::holder_wheel = nullptr;
 Cameras* CommandBase::cameras = nullptr;
 Intake* CommandBase::intake = nullptr;
 
@@ -40,4 +41,5 @@ void CommandBase::init()
 	shooter = Shooter::getInstance();
 	cameras = Cameras::getInstance();
 	intake = Intake::getInstance();
+	holder_wheel = HolderWheel::getInstance();
 }

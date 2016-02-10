@@ -32,7 +32,7 @@ public:
 	static Mobility* mobility;
 	static Sensors* sensors;
 	static Shooter* shooter;
-	static HolderWheel* holderwheel;
+	static HolderWheel* holder_wheel;
 	static Cameras* cameras;
 	static OI* oi;
 	static Intake* intake;
