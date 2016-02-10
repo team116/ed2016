@@ -92,6 +92,7 @@ namespace OI_Ports
 	const unsigned int SHOOTER_ENGAGE_BUTTON = 4;
 	const unsigned int SHOOTER_DISENGAGE_BUTTON = 5;
 	const unsigned int AUTO_AIM_BUTTON = 6;
+	const unsigned int CLEAR_COMMANDS_BUTTON = 11;
 
 	//Digital Switches
 	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 7;

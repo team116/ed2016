@@ -40,6 +40,7 @@ private:
 	JoystickButton* b_shooter_engage;
 	JoystickButton* b_shooter_disengage;
 	JoystickButton* b_auto_aim;
+	JoystickButton* b_clear_commands;
 
 	JoystickButton* s_manual_winch_enable;
 	JoystickButton* s_shooter_wheels;
