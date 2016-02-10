@@ -25,7 +25,7 @@ public:
 		int port = 1;
 		victor = new VictorSP(port);
 
-		while (port <= 13)
+		while (port <= 13 && IsAutonomous() && IsEnabled())
 		{
 			if (timer->HasPeriodPassed(1.0))
 			{
@@ -65,7 +65,7 @@ public:
 		VictorSP* victor11 = new VictorSP(11);
 		VictorSP* victor_1= new VictorSP(1);
 		VictorSP* victor_2 = new VictorSP(2);
-		while (true)
+		while (IsOperatorControl() && IsEnabled())
 		{
 			if (joystick1->GetRawButton(1))
 			{
