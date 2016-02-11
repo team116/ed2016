@@ -93,7 +93,7 @@ private:
 				//no shooting, position 1, various defenses
 		else if (shoot_value == 0 && position_value != 0  && defense_value != 0)
 		{
-			auto_command = new CrossDefense(Defense);
+			auto_command = new CrossDefense((Defense)defense_value);
 		}
 		//CrossDefAndShoot plays
 		else if ((shoot_value == 1 || shoot_value == 2) && defense_value != 0 && position_value != 0)
