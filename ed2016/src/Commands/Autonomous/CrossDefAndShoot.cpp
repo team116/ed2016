@@ -82,3 +82,29 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 	// a CommandGroup containing them would require both the chassis and the
 	// arm.
 }
+
+/*void CrossDefAndShoot::Initialize()
+{
+
+}
+
+void CrossDefAndShoot::Execute()
+{
+
+}
+
+bool CrossDefAndShoot::IsFinished()
+{
+	return false;
+}
+
+void CrossDefAndShoot::End()
+{
+
+}
+
+void CrossDefAndShoot::Interrupted()
+{
+
+}
+*/

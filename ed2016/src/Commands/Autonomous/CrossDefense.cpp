@@ -8,7 +8,7 @@ CrossDefense::CrossDefense(Autonomous::Defense def)
 {
 	AddSequential(new MoveToDefense());
 
-	if (def == MOAT || def == RAMPARTS || def == ROCK_WALL || def == ROUGH_TERRAIN || def == LOW_BAR)
+	if (def == MOAT || def == RAMPARTS || def == ROUGH_TERRAIN )
 	{
 		AddSequential(new DriveDistance(259)); //Intentionally 2.5 feet over estimate
 	}

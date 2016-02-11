@@ -6,6 +6,8 @@
 #include <Autonomous.h>
 #include <Commands/Autonomous/CrossDefense.h>
 #include <Commands/Autonomous/DoNothing.h>
+#include <Commands/Autonomous/MoveToDefense.h>
+#include <Commands/Autonomous/CrossDefAndShoot.h>
 
 using namespace Autonomous;
 using namespace Utils;
@@ -16,7 +18,7 @@ private:
 	Command* auto_command;
 	SendableChooser *chooser;
 
-	AnalogInput* goal_switch;
+	AnalogInput* shoot_switch;
 	AnalogInput* position_switch;
 	AnalogInput* defense_switch;
 
@@ -37,8 +39,6 @@ private:
 			break;
 		default:
 		*/
-
-
 
 	}
 
@@ -74,88 +74,34 @@ private:
 			autonomousCommand.reset(new ExampleCommand());
 		} */
 
-		voltageConversion(goal_switch->GetVoltage(), 3, 5.0);
-		voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
+		int shoot_value = voltageConversion(shoot_switch->GetVoltage(), 3, 5.0);
+		int position_value = voltageConversion(position_switch->GetVoltage(), 6, 5.0);
+		int defense_value = voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 
-		int AutoPlays = pow(8, 0)*voltageConversion(goal_switch->GetVoltage(), 3, 5.0) + pow(8, 2)*voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
+		int AutoPlays = pow(8, 0)*voltageConversion(shoot_switch->GetVoltage(), 3, 5.0) + pow(8, 1)*voltageConversion(position_switch->GetVoltage(), 6, 5.0) + pow(8, 2)*voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 
-		/*switch ((AllAutoPlays)AutoPlays)
+		if (shoot_value == 0 && position_value == 0 && defense_value == 0)
 		{
-		case AllAutoPlays::NOSHOOTING_DEFPORTCULLIS:
-			auto_command = new CrossDefense(Defense::PORTCULLIS);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFCHEVALDEFRISES:
-			auto_command = new CrossDefense(Defense::CHEVAL_DE_FRISES);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFMOAT:
-			auto_command = new CrossDefense(Defense::MOAT);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFRAMPARTS:
-			auto_command = new CrossDefense(Defense::RAMPARTS);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFDRAWBRIDGE:
-			auto_command = new CrossDefense(Defense::DRAWBRIDGE);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFSALLYPORT:
-			auto_command = new CrossDefense(Defense::SALLY_PORT);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFROCKWALL:
-			auto_command = new CrossDefense(Defense::ROCK_WALL);
-			break;
-		case AllAutoPlays::NOSHOOTING_DEFROUGHTERRAIN:
-			auto_command = new CrossDefense(Defense::ROUGH_TERRAIN);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFPORTCULLIS:
-			auto_command = new CrossDefense(Defense::PORTCULLIS);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFCHEVALDEFRISES:
-			auto_command = new CrossDefense(Defense::CHEVAL_DE_FRISES);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFMOAT:
-			auto_command = new CrossDefense(Defense::MOAT);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFRAMPARTS:
-			auto_command = new CrossDefense(Defense::RAMPARTS);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFDRAWBRIDGE:
-			auto_command = new CrossDefense(Defense::DRAWBRIDGE);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFSALLYPORT:
-			auto_command = new CrossDefense(Defense::SALLY_PORT);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFROCKWALL:
-			auto_command = new CrossDefense(Defense::ROCK_WALL);
-			break;
-		case AllAutoPlays::SHOOTINGLOW_DEFROUGHTERRAIN:
-			auto_command = new CrossDefense(Defense::ROUGH_TERRAIN);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFPORTCULLIS:
-			auto_command = new CrossDefense(Defense::PORTCULLIS);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFCHEVALDEFRISES:
-			auto_command = new CrossDefense(Defense::CHEVAL_DE_FRISES);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFMOAT:
-			auto_command = new CrossDefense(Defense::MOAT);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFRAMPARTS:
-			auto_command = new CrossDefense(Defense::RAMPARTS);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFDRAWBRIDGE:
-			auto_command = new CrossDefense(Defense::DRAWBRIDGE);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFSALLYPORT:
-			auto_command = new CrossDefense(Defense::SALLY_PORT);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFROCKWALL:
-			auto_command = new CrossDefense(Defense::ROCK_WALL);
-			break;
-		case AllAutoPlays::SHOOTINGHIGH_DEFROUGHTERRAIN:
-			auto_command = new CrossDefense(Defense::ROUGH_TERRAIN);
-			break;
-		default:
 			auto_command = new DoNothing();
-		} */
+		}
+		//MoveToDefense Plays
+		else if (shoot_value == 0 && position_value != 0 && defense_value == 0)
+		{
+			auto_command = new MoveToDefense();
+		}
+		//CrossDefense plays
+				//no shooting, position 1, various defenses
+		else if (shoot_value == 0 && position_value != 0  && defense_value != 0)
+		{
+			auto_command = new CrossDefense((Defense)defense_value);
+		}
+		//CrossDefAndShoot plays
+		else if ((shoot_value == 1 || shoot_value == 2) && defense_value != 0 && position_value != 0)
+		{
+			auto_command = new CrossDefAndShoot((Defense)defense_value, (Goals)shoot_value, position_value);
+		}
+
+
 		auto_command->Start();
 
 	}
