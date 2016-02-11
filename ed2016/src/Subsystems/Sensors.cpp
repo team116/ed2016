@@ -230,3 +230,17 @@ bool Sensors::shooterWheelTachometerEnabled()
 {
 	return shooter_wheel_tachometer_enabled;
 }
+
+
+PIDSource* Sensors::getMobilityRightPIDInput()
+{
+	return right_drive_encoder;
+}
+PIDSource* Sensors::getMobilityLeftPIDInput()
+{
+	return left_drive_encoder;
+}
+PIDSource* Sensors::getShooterPIDInput()
+{
+	return shooter_angle_encoder;
+}

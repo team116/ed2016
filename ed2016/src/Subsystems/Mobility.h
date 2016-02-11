@@ -19,6 +19,9 @@ public:
 
 	void useFrontOrientation(bool front);
 
+	PIDOutput* getPIDOutputLeft();
+	PIDOutput* getPIDOutputRight();
+
 private:
 	Mobility();
 	static Mobility* INSTANCE;

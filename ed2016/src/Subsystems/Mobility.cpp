@@ -63,6 +63,15 @@ void Mobility::useFrontOrientation(bool front)
 	front_orientation = front;
 }
 
+PIDOutput* getPIDOutputLeft()
+{
+
+}
+PIDOutput* getPIDOutputRight()
+{
+
+}
+
 Mobility* Mobility::getInstance()
 {
 	if (INSTANCE == nullptr)

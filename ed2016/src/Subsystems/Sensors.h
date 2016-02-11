@@ -35,6 +35,10 @@ public:
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
 
+	PIDSource* getMobilityRightPIDInput();
+	PIDSource* getMobilityLeftPIDInput();
+	PIDSource* getShooterPIDInput();
+
 private:
 	Sensors();
 	static Sensors* INSTANCE;
