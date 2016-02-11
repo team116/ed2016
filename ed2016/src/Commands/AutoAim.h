@@ -22,6 +22,13 @@ public:
 	void Interrupted();
 private:
 	bool interrupted;
+	float pitch;
+	float azimuth;
+
+	float current_pitch;
+
+	static const float TURN_SPEED;
+	static const float ACCEPTED_ERROR;
 };
 
 #endif /* SRC_COMMANDS_AUTOAIM_H_ */
