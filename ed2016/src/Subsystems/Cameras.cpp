@@ -9,9 +9,10 @@ const bool kError = false;
 const bool kOk = true;
 const int IMAGE_WIDTH = 320;
 const int IMAGE_HEIGHT = 240;
-const float CAMERA_ANGLE = 0;//TODO: Measure exact angle on robot
-const float TARGET_HEIGHT = 17.78;//In centimeters //TODO: Measure exact height at competition
-const float HEIGHT_DISTANCE_RATIO = 11100;
+const float CAMERA_MOUNT_ANGLE = 0;//TODO: Measure exact angle on real robot
+const float TARGET_HEIGHT = 0.0;//In centimeters TODO: Measure exact height at competition
+const float HEIGHT_DISTANCE_RATIO = 46.25;
+const float CAMERA_MOUNT_HEIGHT = 0.0;//centimeters TODO: Measure exact height on real robot
 
 Cameras::Cameras() :
 		Subsystem("Cameras")
@@ -154,7 +155,7 @@ bool Cameras::canSeeGoal()
 //0 is left side of picture
 float Cameras::GetTargetX()
 {
-	if(grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>()).size() > 0) {
+	if(canSeeGoal()) {
 		return (float)grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[0] / (float)IMAGE_WIDTH;
 	}
 	return 0.0f; //If there is no target in view...
@@ -163,7 +164,7 @@ float Cameras::GetTargetX()
 //0 is top side of picture
 float Cameras::GetTargetY()
 {
-	if(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>()).size() > 0) {
+	if(canSeeGoal()) {
 		return (float)grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0] / (float)IMAGE_HEIGHT;
 	}
 	return 0.0f; //If there is no target in view...
@@ -172,7 +173,7 @@ float Cameras::GetTargetY()
 float Cameras::PitchFromHorizontal()
 {
 
-	return (CAMERA_ANGLE + atan(TARGET_HEIGHT / GetDistanceFromTarget()));
+	return (CAMERA_MOUNT_ANGLE + atan((TARGET_HEIGHT - CAMERA_MOUNT_HEIGHT) / GetDistanceFromTarget()));
 }
 
 float Cameras::AzimuthDegreesFromTarget()
@@ -185,7 +186,7 @@ float Cameras::GetDistanceFromTarget()
 {
 	if(canSeeGoal()) {
 		float pixel_height = grip->GetNumberArray("vision_contours/height", llvm::ArrayRef<double>())[0];
-		return HEIGHT_DISTANCE_RATIO / pixel_height;
+		return HEIGHT_DISTANCE_RATIO * IMAGE_HEIGHT / pixel_height;
 	}
 	else {
 		DriverStation::ReportError("Error: Cannot calculate distance if target is not in sight\n");
