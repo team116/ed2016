@@ -11,6 +11,8 @@ public:
 	static OI* getInstance();
 	float getJoystickLeftY();
 	float getJoystickRightY();
+	float getBackWinchY();
+	float getFrontWinchY();
 
 	Intake::IntakeDirection getIntakeDirection();
 
@@ -50,14 +52,9 @@ private:
 	AnalogTrigger* d_shooter_speed;
 	AnalogTrigger* d_manual_aim;
 
-	AnalogInput* j_manual_front_winch;
-	AnalogInput* j_manual_back_winch;
-
 	//Analog Inputs
 	AnalogInput* intake_angle;
 	AnalogInput* shooter_speed;
 	AnalogInput* manual_aim;
-	AnalogInput* manual_front_winch;
-	AnalogInput* manual_back_winch;
 };
 #endif

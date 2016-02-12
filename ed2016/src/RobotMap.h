@@ -105,8 +105,6 @@ namespace OI_Ports
 	const unsigned int MANUAL_AIM_DIAL = 2;
 
 	//Analog Joysticks
-	const unsigned int FRONT_WINCH_JOYSTICK = 4;
-	const unsigned int BACK_WINCH_JOYSTICK = 5;
 }
 
 namespace Utils
