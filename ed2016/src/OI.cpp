@@ -19,13 +19,13 @@ OI::OI()
 	intake_angle = new AnalogInput(OI_Ports::INTAKE_ANGLE_DIAL);
 	shooter_speed = new AnalogInput(OI_Ports::SHOOTER_SPEED_DIAL);
 	manual_aim = new AnalogInput(OI_Ports::MANUAL_AIM_DIAL);
-	manual_front_winch = new AnalogInput(OI_Ports::FRONT_WINCH_JOYSTICK);
-	manual_back_winch = new AnalogInput(OI_Ports::BACK_WINCH_JOYSTICK);
 
 	//Instantiate Joysticks
 	joystick_left = new Joystick(OI_Ports::LEFT_JOYSTICK);
 	joystick_right = new Joystick(OI_Ports::RIGHT_JOYSTICK);
 	joystick_buttons = new Joystick(OI_Ports::BUTTONS_JOYSTICK);
+	joystick_buttons->GetAxis(Joystick::AxisType::kXAxis);
+	joystick_buttons->GetAxis(Joystick::AxisType::kYAxis);
 
 	//Instantiate Joystick Left Buttons
 
@@ -71,6 +71,15 @@ float OI::getJoystickLeftY()
 float OI::getJoystickRightY()
 {
 	return joystick_right->GetY();
+}
+
+float OI::getBackWinchY()
+{
+	return joystick_buttons->GetY();
+}
+float OI::getFrontWinchY()
+{
+	return joystick_buttons->GetX();
 }
 
 OI* OI::getInstance()
