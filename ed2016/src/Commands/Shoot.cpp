@@ -1,9 +1,11 @@
 #include <Commands/Shoot.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/HolderWheel.h>
+#include <Subsystems/Sensors.h>
 
 const float Shoot::SPEED_UP_TIME = 1.0;
 const float Shoot::PUSH_BOULDER = 1.5;
+const float Shoot::IDEAL_SPEED = 6000.0;
 
 Shoot::Shoot()
 {
@@ -26,7 +28,7 @@ void Shoot::Execute()
 {
 	shooter->turnShooterOn(true);
 
-	if (timer->HasPeriodPassed(SPEED_UP_TIME))
+	if ((sensors->speedLeftShooterWheel() > IDEAL_SPEED && sensors->speedRightShooterWheel() > IDEAL_SPEED) || timer->HasPeriodPassed(SPEED_UP_TIME))
 	{
 		holder_wheel->turnHolderWheelOn(true);
 	}
