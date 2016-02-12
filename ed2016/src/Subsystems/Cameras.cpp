@@ -17,6 +17,10 @@ const float CAMERA_MOUNT_HEIGHT = 0.0;//centimeters TODO: Measure exact height o
 Cameras::Cameras() :
 		Subsystem("Cameras")
 {
+	back_cam_session = 0;
+	front_cam_session = 0;
+	imaq_error = IMAQdxError::IMAQdxErrorInvalidPointer;
+
 	front_cam_frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 	back_cam_frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 
@@ -42,20 +46,20 @@ bool Cameras::StopCamera(CameraDirection camera_dir)
 		// stop image acquisition
 		IMAQdxStopAcquisition(back_cam_session);
 		//the camera name (ex "cam0") can be found through the roborio web interface
-		imaqError = IMAQdxCloseCamera(back_cam_session);
-		if (imaqError != IMAQdxErrorSuccess) {
+		imaq_error = IMAQdxCloseCamera(back_cam_session);
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"back cam IMAQdxCloseCamera error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 			return (kError);
 		}
 	} else if (camera_dir == CameraDirection::FRONT && camera_running == CameraDirection::FRONT) {
 		IMAQdxStopAcquisition(front_cam_session);
-		imaqError = IMAQdxCloseCamera(front_cam_session);
-		if (imaqError != IMAQdxErrorSuccess) {
+		imaq_error = IMAQdxCloseCamera(front_cam_session);
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"front cam IMAQdxCloseCamera error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 			return (kError);
 		}
 
@@ -71,19 +75,19 @@ bool Cameras::StartCamera(CameraDirection camera_dir)
 	}
 	if (camera_dir == CameraDirection::BACK) {
 
-		imaqError = IMAQdxOpenCamera("cam1",
+		imaq_error = IMAQdxOpenCamera("cam1",
 				IMAQdxCameraControlModeController, &back_cam_session);
-		if (imaqError != IMAQdxErrorSuccess) {
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"back cam IMAQdxOpenCamera error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 			return (kError);
 		}
-		imaqError = IMAQdxConfigureGrab(back_cam_session);
-		if (imaqError != IMAQdxErrorSuccess) {
+		imaq_error = IMAQdxConfigureGrab(back_cam_session);
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"back cam IMAQdxConfigureGrab error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 			return (kError);
 		}
 		// acquire images
@@ -91,19 +95,19 @@ bool Cameras::StartCamera(CameraDirection camera_dir)
 		camera_running = CameraDirection::BACK;
 
 	} else if (camera_dir == CameraDirection::FRONT) {
-		imaqError = IMAQdxOpenCamera("cam0",
+		imaq_error = IMAQdxOpenCamera("cam0",
 				IMAQdxCameraControlModeController, &front_cam_session);
-		if (imaqError != IMAQdxErrorSuccess) {
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"front cam IMAQdxOpenCamera error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 			return (kError);
 		}
-		imaqError = IMAQdxConfigureGrab(front_cam_session);
-		if (imaqError != IMAQdxErrorSuccess) {
+		imaq_error = IMAQdxConfigureGrab(front_cam_session);
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"front cam IMAQdxConfigureGrab error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 			return (kError);
 		}
 		// acquire images
@@ -117,21 +121,21 @@ bool Cameras::StartCamera(CameraDirection camera_dir)
 void Cameras::RunCamera(CameraDirection camera_dir)
 {
 	if(camera_dir == CameraDirection::FRONT){
-		imaqError = IMAQdxGrab(front_cam_session, front_cam_frame, true, NULL);
-		if (imaqError != IMAQdxErrorSuccess) {
+		imaq_error = IMAQdxGrab(front_cam_session, front_cam_frame, true, NULL);
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"front cam IMAQdxGrab error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 		} else {
 			CameraServer::GetInstance()->SetImage(front_cam_frame);
 		}
 	}
 	else if(camera_dir == CameraDirection::BACK){
-		imaqError = IMAQdxGrab(back_cam_session, back_cam_frame, true, NULL);
-		if (imaqError != IMAQdxErrorSuccess) {
+		imaq_error = IMAQdxGrab(back_cam_session, back_cam_frame, true, NULL);
+		if (imaq_error != IMAQdxErrorSuccess) {
 			DriverStation::ReportError(
 					"back cam IMAQdxGrab error: "
-							+ std::to_string((long) imaqError) + "\n");
+							+ std::to_string((long) imaq_error) + "\n");
 		} else {
 			CameraServer::GetInstance()->SetImage(back_cam_frame);
 		}

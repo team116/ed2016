@@ -43,7 +43,7 @@ private:
 	Image *front_cam_frame;
 	Image *back_cam_frame;
 
-	IMAQdxError imaqError;
+	IMAQdxError imaq_error;
 
 	std::shared_ptr<NetworkTable> grip;
 

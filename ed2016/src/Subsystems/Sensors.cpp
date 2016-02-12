@@ -58,10 +58,7 @@ void Sensors::InitDefaultCommand()
 // here. Call these from Commands.
 bool Sensors::isReadyToShoot()
 {
-	if (ready_to_shoot_enabled);
-{
 	return false;
-}
 }
 
 float Sensors::shooterAngle()
