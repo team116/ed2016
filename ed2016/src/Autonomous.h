@@ -13,28 +13,30 @@ namespace Autonomous
 {
 	enum Defense
 	{
-		LOW_BAR = 0,
+
+		DEFNONE = 0,
 		PORTCULLIS = 1,
 		CHEVAL_DE_FRISES = 2,
 		MOAT = 3,
 		RAMPARTS = 4,
 		DRAWBRIDGE = 5,
 		SALLY_PORT = 6,
-		ROCK_WALL = 7,
-		ROUGH_TERRAIN = 8
+		ROUGH_TERRAIN = 7		//rough terrain, rock wall and low bar will share the same value
+
+
 	};
 	enum Goals
 	{
-		HIGH,
-		LOW,
-		NONE
+		NONE = 0,
+		LOW = 1,
+		HIGH = 2,
 	};
 	enum AllAutoPlays
 	{
 		//new new list
 		//named in a pattern of 1st Dial (shooting), 2nd Dial (Starting Position (SP)), 3rd Dial (defense)
 		//DoNothing play
-		NOSHOOTING_SP0_DEFNONE = 0,
+		/*NOSHOOTING_SP0_DEFNONE = 0,
 		//MoveToDefense plays
 		NOSHOOTING_SP1_DEFNONE = 8,		//SP = low bar
 		NOSHOOTING_SP2_DEFNONE = 16,	//SP = A
@@ -161,6 +163,7 @@ namespace Autonomous
 		SHOOTINGHIGH_SP5_DEFDRAWBRIDGE = 362,
 		SHOOTINGHIGH_SP5_DEFSALLYPORT = 426,
 		SHOOTINGHIGH_SP5_DEFROUGHTERRAIN = 490
+		*/
 	};
 }
 
