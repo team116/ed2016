@@ -38,6 +38,7 @@ OI::OI()
 	b_shooter_engage = new JoystickButton(joystick_buttons, OI_Ports::SHOOTER_ENGAGE_BUTTON);
 	b_shooter_disengage = new JoystickButton(joystick_buttons, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
 	b_auto_aim = new JoystickButton(joystick_buttons, OI_Ports::AUTO_AIM_BUTTON);
+	b_clear_commands = new JoystickButton(joystick_buttons, OI_Ports::CLEAR_COMMANDS_BUTTON);
 
 	s_manual_winch_enable = new JoystickButton(joystick_buttons, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 	s_shooter_wheels = new JoystickButton(joystick_buttons, OI_Ports::SHOOTER_WHEELS_SWITCH);

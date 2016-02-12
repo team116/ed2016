@@ -1,11 +1,18 @@
 #include <Subsystems/Cameras.h>
 #include <RobotMap.h>
 #include <Commands/SelectCamera.h>
+#include <math.h>
 
 Cameras* Cameras::INSTANCE = nullptr;
 
 const bool kError = false;
 const bool kOk = true;
+const int IMAGE_WIDTH = 320;
+const int IMAGE_HEIGHT = 240;
+const float CAMERA_MOUNT_ANGLE = 0;//TODO: Measure exact angle on real robot
+const float TARGET_HEIGHT = 0.0;//In centimeters TODO: Measure exact height at competition
+const float HEIGHT_DISTANCE_RATIO = 46.25;
+const float CAMERA_MOUNT_HEIGHT = 0.0;//centimeters TODO: Measure exact height on real robot
 
 Cameras::Cameras() :
 		Subsystem("Cameras")
@@ -14,6 +21,8 @@ Cameras::Cameras() :
 	back_cam_frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
 
 	camera_running = CameraDirection::NONE;
+
+	grip = NetworkTable::GetTable("GRIP");
 
 	//-1074360316
 }
@@ -136,7 +145,53 @@ int Cameras::GetRunningCamera()
 
 bool Cameras::canSeeGoal()
 {
+	//TODO: More advanced code to make sure the contour we find is actually the goal, or handling multiple contours
+	if(grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>()).size() > 0) {
+		return true;
+	}
 	return false;
+}
+
+//0 is left side of picture
+float Cameras::GetTargetX()
+{
+	if(canSeeGoal()) {
+		return (float)grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[0] / (float)IMAGE_WIDTH;
+	}
+	return 0.0f; //If there is no target in view...
+}
+
+//0 is top side of picture
+float Cameras::GetTargetY()
+{
+	if(canSeeGoal()) {
+		return (float)grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0] / (float)IMAGE_HEIGHT;
+	}
+	return 0.0f; //If there is no target in view...
+}
+
+float Cameras::PitchFromHorizontal()
+{
+
+	return (CAMERA_MOUNT_ANGLE + atan((TARGET_HEIGHT - CAMERA_MOUNT_HEIGHT) / GetDistanceFromTarget()));
+}
+
+float Cameras::AzimuthDegreesFromTarget()
+{
+	return 0.0f;
+}
+
+//In centimeters
+float Cameras::GetDistanceFromTarget()
+{
+	if(canSeeGoal()) {
+		float pixel_height = grip->GetNumberArray("vision_contours/height", llvm::ArrayRef<double>())[0];
+		return HEIGHT_DISTANCE_RATIO * IMAGE_HEIGHT / pixel_height;
+	}
+	else {
+		DriverStation::ReportError("Error: Cannot calculate distance if target is not in sight\n");
+		return 0.0f;
+	}
 }
 
 Cameras* Cameras::getInstance()

@@ -8,7 +8,7 @@ const float Shoot::PUSH_BOULDER = 1.5;
 Shoot::Shoot()
 {
 	Requires(shooter);
-	Requires(holderwheel);
+	Requires(holder_wheel);
 
 	timer = new Timer();
 	interrupted = false;
@@ -28,7 +28,7 @@ void Shoot::Execute()
 
 	if (timer->HasPeriodPassed(SPEED_UP_TIME))
 	{
-		holderwheel->turnHolderWheelOn(true);
+		holder_wheel->turnHolderWheelOn(true);
 	}
 }
 
@@ -50,7 +50,7 @@ bool Shoot::IsFinished()
 void Shoot::End()
 {
 	shooter->turnShooterOn(false);
-	holderwheel->turnHolderWheelOn(false);
+	holder_wheel->turnHolderWheelOn(false);
 }
 
 // Called when another command which requires one or more of the same

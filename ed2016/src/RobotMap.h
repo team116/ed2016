@@ -51,25 +51,24 @@ namespace RobotPorts
 	const unsigned int AUTONOMOUS_NAVX_C = 5;
 
 	//motors
-	const unsigned int LEFT_FRONT_MOTOR = 1;
-	const unsigned int LEFT_BACK_MOTOR = 2;
-	const unsigned int RIGHT_FRONT_MOTOR = 3;
-	const unsigned int RIGHT_BACK_MOTOR = 4;
+	const unsigned int LEFT_FRONT_MOTOR = 0;
+	const unsigned int LEFT_BACK_MOTOR = 1;
+	const unsigned int RIGHT_FRONT_MOTOR = 2;
+	const unsigned int RIGHT_BACK_MOTOR = 3;
 
+	const unsigned int WINCH_MOTOR_FRONT = 4;
+	const unsigned int WINCH_MOTOR_BACK = 5;
 
-	const unsigned int INTAKE_ROLLER_MOTOR = 5;
-	const unsigned int INTAKE_ANGLE_MOTOR = 6;
+	const unsigned int LEFT_SHOOTER_MOTOR = 6;
+	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
 
-	const unsigned int LEFT_SHOOTER_MOTOR = 7;
-	const unsigned int RIGHT_SHOOTER_MOTOR = 8;
+	const unsigned int SHOOTER_PITCH_MOTOR = 8;
+	const unsigned int SHOOTER_PUSH_MOTOR = 9;
 
-	const unsigned int CLIMBER_ARMED_MOTOR = 9;
+	const unsigned int INTAKE_ROLLER_MOTOR = 10;
+	const unsigned int INTAKE_ANGLE_MOTOR = 11;
 
-	const unsigned int SHOOTER_PITCH_MOTOR = 10;
-	const unsigned int SHOOTER_PUSH_MOTOR = 11;
-
-	const unsigned int WINCH_MOTOR_FRONT = 12;
-	const unsigned int WINCH_MOTOR_BACK = 13;
+	const unsigned int CLIMBER_ARMED_MOTOR = 12;
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
@@ -92,6 +91,7 @@ namespace OI_Ports
 	const unsigned int SHOOTER_ENGAGE_BUTTON = 4;
 	const unsigned int SHOOTER_DISENGAGE_BUTTON = 5;
 	const unsigned int AUTO_AIM_BUTTON = 6;
+	const unsigned int CLEAR_COMMANDS_BUTTON = 11;
 
 	//Digital Switches
 	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 7;
