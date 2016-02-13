@@ -17,6 +17,7 @@ private:
 	Timer* timer;
 	static const float SPEED_UP_TIME;
 	static const float PUSH_BOULDER; // gives it time to get the boulder in position
+	static const float IDEAL_SPEED;
 
 	bool interrupted;
 };

@@ -40,6 +40,7 @@ namespace RobotPorts
 	const unsigned int RIGHT_ENCODER_B = 6;
 	const unsigned int INTAKE_LIMIT = 7;
 	const unsigned int BALL_PREP_CHECK_LIMIT = 8;
+	const unsigned int SHOOTER_HOME_SWITCH = 9;
 
 
 	// analog inputs

@@ -35,6 +35,8 @@ public:
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
 
+	bool isShooterHomeSwitchHorizontal();
+
 private:
 	Sensors();
 	static Sensors* INSTANCE;
@@ -48,6 +50,7 @@ private:
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 	DigitalInput* left_shooter_wheel_tach_input;
 	DigitalInput* right_shooter_wheel_tach_input;
+	DigitalInput* shooter_ready_to_shoot;
 	Encoder* left_shooter_wheel_tach;
 	Encoder* right_shooter_wheel_tach;
 
@@ -70,6 +73,9 @@ private:
 	bool intake_angle_enabled;
 	bool ready_to_shoot_enabled;
 	bool shooter_wheel_tachometer_enabled;
+
+	DigitalInput* shooter_home_switch;
+
 
 };
 
