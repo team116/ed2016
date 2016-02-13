@@ -10,7 +10,7 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
-//#include <Commands/TestingCommand.h>
+
 
 OI* OI::INSTANCE = nullptr;
 
@@ -59,7 +59,7 @@ OI::OI()
 	//Set Joystick Buttons Events
 	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
 	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
-	//b_auto_aim->WhileHeld(new TestingCommand());
+
 	// Process operator interface input here.
 }
 
