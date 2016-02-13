@@ -10,6 +10,7 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
+#include <Commands/TestingCommand.h>
 
 OI* OI::INSTANCE = nullptr;
 
@@ -49,28 +50,28 @@ OI::OI()
 	d_shooter_speed = new AnalogTrigger(shooter_speed);
 	d_manual_aim = new AnalogTrigger(manual_aim);
 
-	//TODO:Instantiate front/back winch joysticks
-	j_manual_back_winch = nullptr;
-	j_manual_front_winch = nullptr;
 	//Set Joystick Left Events
 
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new PushFrontClimberWinch());
-	b_retract_scaling_arm->WhileHeld(new PullFrontClimberWinch());
+	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
+	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_auto_aim->WhileHeld(new TestingCommand());
 
 	// Process operator interface input here.
 }
 
 float OI::getJoystickLeftY()
 {
-	return joystick_left->GetY();
+	//return joystick_left->GetY();
+	return 0.0;
 }
 
 float OI::getJoystickRightY()
 {
-	return joystick_right->GetY();
+	//return joystick_right->GetY();
+	return 0.0;
 }
 
 float OI::getBackWinchY()
