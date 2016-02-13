@@ -50,6 +50,10 @@ void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
 	}
 }
 
+PIDOutput* Shooter::getShooterPIDOutput()
+{
+	return pitch_angle;
+}
 
 Shooter* Shooter::getInstance()
 {
