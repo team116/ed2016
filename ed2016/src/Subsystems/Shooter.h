@@ -4,6 +4,7 @@
 #include <Commands/Subsystem.h>
 #include <RobotMap.h>
 #include <WPILib.h>
+#include <Subsystems/Sensors.h>
 
 // included shooter
 class Shooter: public Subsystem
@@ -32,7 +33,7 @@ private:
 	MOTOR_TYPE* bottom_shooter_wheel;
 	MOTOR_TYPE* pitch_angle;
 
-
+	Sensors* sensors;
 
 };
 

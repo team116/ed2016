@@ -8,6 +8,7 @@ Shooter::Shooter() : Subsystem("Shooter")
 	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::LEFT_SHOOTER_MOTOR);
 	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::RIGHT_SHOOTER_MOTOR);
 	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
+	sensors = Sensors::getInstance();
 }
 
 
@@ -42,10 +43,14 @@ void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
 		pitch_angle->Set(1.0);
 	}
 	else if (dir == SHOOTER_DOWN){
-		/*if ( )
+		if (sensors->isShooterHomeSwitchHorizontal() )
 			{
+			pitch_angle->Set(0.0);
+			}
+		else
+		{
 			pitch_angle->Set(-1.0);
-			}*/
+		}
 	}
 	else
 	{
@@ -55,7 +60,10 @@ void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
 
 void Shooter::checkLimits()
 {
-
+	if (sensors->isShooterHomeSwitchHorizontal())
+	{
+		pitch_angle->Set(0.0);
+	}
 }
 
 Shooter* Shooter::getInstance()
