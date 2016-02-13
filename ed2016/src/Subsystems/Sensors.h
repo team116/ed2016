@@ -48,6 +48,7 @@ private:
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 	DigitalInput* left_shooter_wheel_tach_input;
 	DigitalInput* right_shooter_wheel_tach_input;
+	DigitalInput* shooter_ready_to_shoot;
 	Encoder* left_shooter_wheel_tach;
 	Encoder* right_shooter_wheel_tach;
 
