@@ -42,7 +42,10 @@ void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
 		pitch_angle->Set(1.0);
 	}
 	else if (dir == SHOOTER_DOWN){
-		pitch_angle->Set(-1.0);
+		/*if ( )
+			{
+			pitch_angle->Set(-1.0);
+			}*/
 	}
 	else
 	{
