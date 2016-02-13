@@ -50,6 +50,10 @@ void Shooter::setShooterPitchDirection(ShooterPitchDirection dir)
 	}
 }
 
+void Shooter::checkLimits()
+{
+
+}
 
 Shooter* Shooter::getInstance()
 {
