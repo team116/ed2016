@@ -35,6 +35,8 @@ public:
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
 
+	bool isShooterHomeSwitchHorizontal();
+
 private:
 	Sensors();
 	static Sensors* INSTANCE;
@@ -70,6 +72,9 @@ private:
 	bool intake_angle_enabled;
 	bool ready_to_shoot_enabled;
 	bool shooter_wheel_tachometer_enabled;
+
+	DigitalInput* shooter_home_switch;
+
 
 };
 
