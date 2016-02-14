@@ -8,7 +8,7 @@
 #include <Commands/Autonomous/DoNothing.h>
 #include <Commands/Autonomous/MoveToDefense.h>
 #include <Commands/Autonomous/CrossDefAndShoot.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPitch.h>
 
 using namespace Autonomous;
 using namespace Utils;
@@ -23,7 +23,7 @@ private:
 	AnalogInput* position_switch;
 	AnalogInput* defense_switch;
 
-	Shooter* shooter;
+	ShooterPitch* shooter_pitch;
 
 	void RobotInit()
 	{
@@ -32,7 +32,7 @@ private:
 		//chooser->AddDefault("Default Auto", new ExampleCommand());
 		//chooser->AddObject("My Auto", new MyAutoCommand());
 		SmartDashboard::PutData("Auto Modes", chooser);
-		shooter = Shooter::getInstance();
+		shooter_pitch = ShooterPitch::getInstance();
 
 		/*int var = 0;
 		switch (var)
@@ -129,7 +129,7 @@ private:
 	void TeleopPeriodic()
 	{
 		Scheduler::GetInstance()->Run();
-		shooter->checkLimits();
+		shooter_pitch->checkLimits();
 	}
 
 	void TestPeriodic()

@@ -12,15 +12,8 @@ class Shooter: public Subsystem
 public:
 	static Shooter* getInstance();
 
-	enum ShooterPitchDirection {
-		SHOOTER_UP,
-		SHOOTER_STILL,
-		SHOOTER_DOWN
-	};
 	void InitDefaultCommand();
 	void turnShooterOn(bool);
-	void setShooterPitchDirection(ShooterPitchDirection);
-	void checkLimits();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
@@ -31,7 +24,6 @@ private:
 
 	MOTOR_TYPE* top_shooter_wheel;
 	MOTOR_TYPE* bottom_shooter_wheel;
-	MOTOR_TYPE* pitch_angle;
 
 	Sensors* sensors;
 

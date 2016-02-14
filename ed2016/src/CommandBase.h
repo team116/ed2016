@@ -10,6 +10,7 @@ class Climber;
 class Mobility;
 class Sensors;
 class Shooter;
+class ShooterPitch;
 class HolderWheel;
 class Cameras;
 class OI;
@@ -32,6 +33,7 @@ public:
 	static Mobility* mobility;
 	static Sensors* sensors;
 	static Shooter* shooter;
+	static ShooterPitch* shooter_pitch;
 	static HolderWheel* holder_wheel;
 	static Cameras* cameras;
 	static OI* oi;
