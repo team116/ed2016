@@ -4,6 +4,7 @@
 #include <Commands/Subsystem.h>
 #include <RobotMap.h>
 #include <WPILib.h>
+#include <Subsystems/Sensors.h>
 
 // included shooter
 class Shooter: public Subsystem
@@ -19,6 +20,7 @@ public:
 	void InitDefaultCommand();
 	void turnShooterOn(bool);
 	void setShooterPitchDirection(ShooterPitchDirection);
+	void checkLimits();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
@@ -31,7 +33,7 @@ private:
 	MOTOR_TYPE* bottom_shooter_wheel;
 	MOTOR_TYPE* pitch_angle;
 
-
+	Sensors* sensors;
 
 };
 
