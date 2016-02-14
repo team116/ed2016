@@ -82,7 +82,7 @@ private:
 		int position_value = voltageConversion(position_switch->GetVoltage(), 6, 5.0);
 		int defense_value = voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 
-		int AutoPlays = pow(8, 0)*voltageConversion(shoot_switch->GetVoltage(), 3, 5.0) + pow(8, 1)*voltageConversion(position_switch->GetVoltage(), 6, 5.0) + pow(8, 2)*voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
+		//int AutoPlays = pow(8, 0)*voltageConversion(shoot_switch->GetVoltage(), 3, 5.0) + pow(8, 1)*voltageConversion(position_switch->GetVoltage(), 6, 5.0) + pow(8, 2)*voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 
 		if (shoot_value == 0 && position_value == 0 && defense_value == 0)
 		{
