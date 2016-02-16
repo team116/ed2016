@@ -29,7 +29,8 @@ void Shoot::Execute()
 	float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
 	shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
 
-	if ((sensors->speedLeftShooterWheel() > ideal_speed && sensors->speedRightShooterWheel() > ideal_speed) || timer->HasPeriodPassed(SPEED_UP_TIME))
+	if ((sensors->speedLeftShooterWheel() > ideal_speed && sensors->speedRightShooterWheel() > ideal_speed) ||
+		 timer->Get() > SPEED_UP_TIME)
 	{
 		holder_wheel->turnHolderWheelOn(true);
 	}
@@ -42,7 +43,7 @@ bool Shoot::IsFinished()
 	{
 		return true;
 	}
-	if (timer->HasPeriodPassed(PUSH_BOULDER))
+	if (timer->Get() > PUSH_BOULDER)
 	{
 		return true;
 	}
