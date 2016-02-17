@@ -14,17 +14,7 @@ void HolderWheel::InitDefaultCommand()
 	//SetDefaultCommand(new MySpecialCommand());
 }
 
-void HolderWheel::turnHolderWheelOn(bool turningOn)
-{
-	if(turningOn)
-	{
-		holder_wheel->Set(1.0);
-	}
-	else
-	{
-		holder_wheel->Set(0.0);
-	}
-}
+
 
 HolderWheel* HolderWheel::getInstance()
 {
@@ -33,6 +23,21 @@ HolderWheel* HolderWheel::getInstance()
 		INSTANCE = new HolderWheel();
 	}
 	return INSTANCE;
+}
+void HolderWheel::holderWheelDirection(HolderWheelDirection direction)
+{
+	if (direction == WHEEL_IN)
+	{
+		holder_wheel->Set(1.0);
+	}
+	else if (direction == WHEEL_OUT)
+	{
+		holder_wheel->Set(-1.0);
+	}
+	else
+	{
+		holder_wheel->Set(0.0);
+	}
 }
 
 // Put methods for controlling this subsystem
