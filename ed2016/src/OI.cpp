@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <OI.h>
-#include <Commands/AutoClimb.h>
+#include <Commands/ExtendScalingArm.h>
+#include <Commands/RetractWinches.h>
 #include <Commands/AutoAim.h>
 #include <Commands/ClearCommands.h>
 #include <Commands/IntakeIn.h>
@@ -47,6 +48,7 @@ OI::OI()
 	b_extend_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::EXTEND_SCALING_ARM_BUTTON);
 	b_retract_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::RETRACT_SCALING_ARM_BUTTON);
 	b_auto_winch = new JoystickButton(joystick_buttons2, OI_Ports::AUTO_WINCH_BUTTON);
+	b_auto_climber_deploy = new JoystickButton(joystick_buttons2, OI_Ports::AUTO_CLIMBER_DEPLOY_BUTTON);
 	s_manual_winch_enable = new JoystickButton(joystick_buttons2, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 
 	//Set Joystick Left Events
@@ -56,7 +58,8 @@ OI::OI()
 	//Set Joystick Buttons Events
 	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
 	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
-	b_auto_winch->WhenPressed(new AutoClimb());
+	b_auto_winch->WhenPressed(new RetractWinches());
+	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoAim());
 	b_clear_commands->WhenPressed(new ClearCommands());

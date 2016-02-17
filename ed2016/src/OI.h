@@ -42,6 +42,7 @@ private:
 	JoystickButton* b_extend_scaling_arm;
 	JoystickButton* b_retract_scaling_arm;
 	JoystickButton* b_auto_winch;
+	JoystickButton* b_auto_climber_deploy;
 	JoystickButton* b_shooter_engage;
 	//JoystickButton* b_shooter_disengage;
 	JoystickButton* b_auto_aim;
