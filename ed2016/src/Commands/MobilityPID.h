@@ -3,7 +3,6 @@
 
 #include "../CommandBase.h"
 #include "WPILib.h"
-#include <PIDController.h>
 
 class MobilityPID: public CommandBase
 {
@@ -14,8 +13,6 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
-	float left_out;
-	float right_out;
 private:
 	PIDController* left_shark;
 	PIDController* right_shark;

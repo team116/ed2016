@@ -4,7 +4,6 @@
 #include <NAVX/AHRS.h>
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
-#include <PIDSource.h>
 
 class Sensors: public Subsystem
 {
@@ -36,9 +35,9 @@ public:
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
 
-	float getMobilityRightPIDInput();
-	float getMobilityLeftPIDInput();
-	float getShooterPIDInput();
+	PIDSource* getMobilityRightPIDInput();
+	PIDSource* getMobilityLeftPIDInput();
+	PIDSource* getShooterPIDInput();
 
 private:
 	Sensors();

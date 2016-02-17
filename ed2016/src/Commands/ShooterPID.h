@@ -14,7 +14,8 @@ public:
 	void End();
 	void Interrupted();
 private:
-	PIDController* shootPID;
+	PIDController* spock;
+
 
 	static const float P_VAL;
 	static const float I_VAL;
