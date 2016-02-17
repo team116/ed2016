@@ -23,7 +23,8 @@ private:
 	static OI* INSTANCE;
 	Joystick* joystick_left;
 	Joystick* joystick_right;
-	Joystick* joystick_buttons;
+	Joystick* joystick_buttons1;
+	Joystick* joystick_buttons2;
 
 	/*
 	 * Prefix Key:
