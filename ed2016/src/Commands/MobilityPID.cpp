@@ -20,6 +20,12 @@ void MobilityPID::Initialize()
 	left_shark->SetOutputRange(-1.0, 1.0);
 	right_shark->SetPID(P_VAL, I_VAL, D_VAL);
 	right_shark->SetOutputRange(-1.0, 1.0);
+
+	left_shark->SetContinuous(true);
+	right_shark->SetContinuous(true);
+
+	left_shark->SetInputRange(0.0, 4000.0);
+	right_shark->SetInputRange(0.0, 4000.0);
 }
 
 // Called repeatedly when this Command is scheduled to run
