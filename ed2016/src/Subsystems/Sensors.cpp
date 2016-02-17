@@ -29,6 +29,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	left_drive_encoder = new Encoder(RobotPorts::LEFT_ENCODER_A, RobotPorts::LEFT_ENCODER_B);
 	right_drive_encoder = new Encoder(RobotPorts::RIGHT_ENCODER_A, RobotPorts::RIGHT_ENCODER_B);
@@ -59,10 +60,7 @@ void Sensors::InitDefaultCommand()
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-bool Sensors::isReadyToShoot()
-{
-	return shooter_ready_to_shoot->Get();
-}
+
 float Sensors::shooterAngle()
 {
 	if (shooter_angle_enabled)
@@ -223,7 +221,7 @@ bool Sensors::areIntakeAngleEnabled()
 }
 bool Sensors::readyToShoot()
 {
-	return ready_to_shoot_enabled;
+	return ready_to_shoot_balls_switch->Get();
 }
 bool Sensors::shooterWheelTachometerEnabled()
 {

@@ -7,6 +7,7 @@
 
 #include <Commands/AutoAim.h>
 #include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Mobility.h>
@@ -16,6 +17,7 @@ const float AutoAim::ACCEPTED_ERROR = 2;
 
 AutoAim::AutoAim() {
 	Requires(shooter);
+	Requires(shooter_pitch);
 	Requires(mobility);
 
 	pitch = 0;
@@ -44,15 +46,15 @@ void AutoAim::Execute()
 
 		if (pitch < current_pitch)
 		{
-			shooter->setShooterPitchDirection(Shooter::SHOOTER_DOWN);
+			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
 		}
 		else if (pitch > current_pitch)
 		{
-			shooter->setShooterPitchDirection(Shooter::SHOOTER_UP);
+			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
 		}
 		else
 		{
-			shooter->setShooterPitchDirection(Shooter::SHOOTER_STILL);
+			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 		}
 
 
@@ -90,7 +92,7 @@ bool AutoAim::IsFinished()
 void AutoAim::End()
 {
 	mobility->setStraight(0.0);
-	shooter->setShooterPitchDirection(Shooter::SHOOTER_STILL);
+	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 }
 
 void AutoAim::Interrupted()

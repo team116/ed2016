@@ -47,4 +47,4 @@ void DoNothing::Interrupted()
 //Four shalt thou not count, neither count thou two, excepting that thou then proceed to three.
 //Five is right out. Once the number three, being the third number, be reached, then:
 
-//You do a barrel roll, get laid, and kill the jabberwookie. in that order.
+//You do a barrel roll, get laid, and kill the jabberwocky. in that order.
