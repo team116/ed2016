@@ -9,6 +9,9 @@ MobilityPID::MobilityPID()
 {
 	left_shark = new PIDController(P_VAL, I_VAL, D_VAL, sensors->getMobilityLeftPIDInput(), new MobilityPIDOutput(MobilityPIDOutput::LEFT));
 	right_shark  = new PIDController(P_VAL, I_VAL, D_VAL, sensors->getMobilityRightPIDInput(), new MobilityPIDOutput(MobilityPIDOutput::RIGHT));
+	left_out = 0.0;
+	right_out = 0.0;
+
 
 	interrupted = false;
 }

@@ -1,6 +1,7 @@
 #include <Subsystems/Shooter.h>
 #include <RobotMap.h>
 
+
 Shooter* Shooter::INSTANCE = nullptr;
 
 Shooter::Shooter() : Subsystem("Shooter")

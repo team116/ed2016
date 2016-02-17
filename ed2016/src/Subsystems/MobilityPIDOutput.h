@@ -9,6 +9,7 @@
 #define SRC_SUBSYSTEMS_MOBILITYPIDOUTPUT_H_
 
 #include <WPILib.h>
+#include <PIDOutput.h>
 
 class MobilityPIDOutput: public PIDOutput {
 public:
