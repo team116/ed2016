@@ -36,16 +36,16 @@ Climber::WinchDirection Climber::getBackWinchDirection()
 {
 	return back_winch_direction;
 }
-void Climber::setClimber(ClimberArmDirection direction) //function from .h to .cpp
+void Climber::setClimber(ClimberArmDirection direction, float speed) //function from .h to .cpp
 {
 	climber_arm_direction = direction;
 	if (direction == ClimberArmDirection::CLIMBER_ARM_UP)
 	{
-		climber_armed_motor->Set(0.5);
+		climber_armed_motor->Set(speed);
 	}
 	else if (direction == ClimberArmDirection::CLIMBER_ARM_DOWN)
 	{
-		climber_armed_motor->Set(-0.5);
+		climber_armed_motor->Set(-speed);
 	}
 	else
 	{
