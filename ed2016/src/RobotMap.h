@@ -40,6 +40,7 @@ namespace RobotPorts
 	const unsigned int RIGHT_ENCODER_B = 6;
 	const unsigned int INTAKE_LIMIT = 7;
 	const unsigned int BALL_PREP_CHECK_LIMIT = 8;
+	const unsigned int SHOOTER_HOME_SWITCH = 9;
 
 
 	// analog inputs
@@ -51,25 +52,24 @@ namespace RobotPorts
 	const unsigned int AUTONOMOUS_NAVX_C = 5;
 
 	//motors
-	const unsigned int LEFT_FRONT_MOTOR = 1;
-	const unsigned int LEFT_BACK_MOTOR = 2;
-	const unsigned int RIGHT_FRONT_MOTOR = 3;
-	const unsigned int RIGHT_BACK_MOTOR = 4;
+	const unsigned int LEFT_FRONT_MOTOR = 0;
+	const unsigned int LEFT_BACK_MOTOR = 1;
+	const unsigned int RIGHT_FRONT_MOTOR = 2;
+	const unsigned int RIGHT_BACK_MOTOR = 3;
 
+	const unsigned int WINCH_MOTOR_FRONT = 4;
+	const unsigned int WINCH_MOTOR_BACK = 5;
 
-	const unsigned int INTAKE_ROLLER_MOTOR = 5;
-	const unsigned int INTAKE_ANGLE_MOTOR = 6;
+	const unsigned int LEFT_SHOOTER_MOTOR = 6;
+	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
 
-	const unsigned int LEFT_SHOOTER_MOTOR = 7;
-	const unsigned int RIGHT_SHOOTER_MOTOR = 8;
+	const unsigned int SHOOTER_PITCH_MOTOR = 8;
+	const unsigned int SHOOTER_PUSH_MOTOR = 9;
 
-	const unsigned int CLIMBER_ARMED_MOTOR = 9;
+	const unsigned int INTAKE_ROLLER_MOTOR = 10;
+	const unsigned int INTAKE_ANGLE_MOTOR = 11;
 
-	const unsigned int SHOOTER_PITCH_MOTOR = 10;
-	const unsigned int SHOOTER_PUSH_MOTOR = 11;
-
-	const unsigned int WINCH_MOTOR_FRONT = 12;
-	const unsigned int WINCH_MOTOR_BACK = 13;
+	const unsigned int CLIMBER_ARMED_MOTOR = 12;
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
@@ -83,31 +83,33 @@ namespace OI_Ports
 	//Joysticks
 	const unsigned int LEFT_JOYSTICK = 0;
 	const unsigned int RIGHT_JOYSTICK = 1;
-	const unsigned int BUTTONS_JOYSTICK = 2;
+	const unsigned int BUTTONS_JOYSTICK1 = 2;
+	const unsigned int BUTTONS_JOYSTICK2 = 3;
 
-	//Digital Buttons
-	const unsigned int EXTEND_SCALING_ARM_BUTTON = 1;
-	const unsigned int RETRACT_SCALING_ARM_BUTTON = 2;
+	// buttons joystick 1, digital
+	const unsigned int AUTO_AIM_BUTTON = 1;
+	const unsigned int SHOOTER_ENGAGE_BUTTON = 2;
+	const unsigned int DISENGAGE_BUTTON = 3; // currently purposeless
+	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
+	const unsigned SHOOTER_WHEELS_SWITCH = 5;
+	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
+	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
+
+	// buttons joystick 1, analog
+	const unsigned int MANUAL_AIM_DIAL = 1; // X
+	const unsigned int SHOOTER_SPEED_DIAL = 2; // Y
+	const unsigned int INTAKE_ANGLE_DIAL = 3; // Z
+
+	// buttons joystick 2, digital
+	const unsigned int EXTEND_SCALING_ARM_BUTTON = 0;
+	const unsigned int RETRACT_SCALING_ARM_BUTTON = 1;
+	const unsigned int AUTO_CLIMBER_DEPLOY_BUTTON = 2;
 	const unsigned int AUTO_WINCH_BUTTON = 3;
-	const unsigned int SHOOTER_ENGAGE_BUTTON = 4;
-	const unsigned int SHOOTER_DISENGAGE_BUTTON = 5;
-	const unsigned int AUTO_AIM_BUTTON = 6;
-	const unsigned int CLEAR_COMMANDS_BUTTON = 11;
+	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 4;
 
-	//Digital Switches
-	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 7;
-	const unsigned SHOOTER_WHEELS_SWITCH = 8;
-	const unsigned INTAKE_BELT_FORWARD_SWITCH = 9;
-	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 10;
-
-	//Analog Dials
-	const unsigned int INTAKE_ANGLE_DIAL = 0;
-	const unsigned int SHOOTER_SPEED_DIAL = 1;
-	const unsigned int MANUAL_AIM_DIAL = 2;
-
-	//Analog Joysticks
-	const unsigned int FRONT_WINCH_JOYSTICK = 4;
-	const unsigned int BACK_WINCH_JOYSTICK = 5;
+	// buttons joystick 3, analog
+	const unsigned int FRONT_WINCH_JOYSTICK = 0; // X
+	const unsigned int BACK_WINCH_JOYSTICK = 1; // Y
 }
 
 namespace Utils

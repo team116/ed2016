@@ -26,6 +26,7 @@ public:
 	float PitchFromHorizontal();
 	float AzimuthDegreesFromTarget();
 	float GetDistanceFromTarget();
+	void RefreshContours();
 
 	int GetRunningCamera();
 
@@ -43,11 +44,19 @@ private:
 	Image *front_cam_frame;
 	Image *back_cam_frame;
 
-	IMAQdxError imaqError;
+	IMAQdxError imaq_error;
 
 	std::shared_ptr<NetworkTable> grip;
 
 	static Cameras* INSTANCE;
+
+	struct Contour
+	{
+		float x;
+		float y;
+		float area;
+	};
+	Contour target;
 };
 
 #endif

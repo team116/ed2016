@@ -23,8 +23,8 @@ static const uint8_t    NAVX_DEFAULT_UPDATE_RATE_HZ         = 60;
 static const int        YAW_HISTORY_LENGTH                  = 10;
 static const int16_t    DEFAULT_ACCEL_FSR_G                 = 2;
 static const int16_t    DEFAULT_GYRO_FSR_DPS                = 2000;
-static const uint32_t   MAX_SPI_BITRATE                     = 2000000;
-static const uint32_t   MIN_SPI_BITRATE                     = 100000;
+//static const uint32_t   MAX_SPI_BITRATE                     = 2000000;
+//static const uint32_t   MIN_SPI_BITRATE                     = 100000;
 static const uint32_t   DEFAULT_SPI_BITRATE                 = 500000;
 static const uint8_t    NAVX_MXP_I2C_ADDRESS                = 0x32;
 
@@ -224,6 +224,11 @@ class AHRSInternal : public IIOCompleteNotification, public IBoardCapabilities {
         return (((ahrs->capability_flags & NAVX_CAPABILITY_FLAG_VEL_AND_DISP) != 0) ? true : false);
     }
 };
+
+IBoardCapabilities::~IBoardCapabilities()
+{
+	//Destruct that shit yo
+}
 
 /**
  * The AHRS class provides an interface to AHRS capabilities

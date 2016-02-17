@@ -6,6 +6,7 @@
 #include <Subsystems/Climber.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Intake.h>
 
@@ -15,6 +16,7 @@ Mobility* CommandBase::mobility = nullptr;
 Climber* CommandBase::climber = nullptr;
 Sensors* CommandBase::sensors = nullptr;
 Shooter* CommandBase::shooter = nullptr;
+ShooterPitch* CommandBase::shooter_pitch = nullptr;
 HolderWheel* CommandBase::holder_wheel = nullptr;
 Cameras* CommandBase::cameras = nullptr;
 Intake* CommandBase::intake = nullptr;
