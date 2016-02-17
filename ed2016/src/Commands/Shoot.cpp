@@ -32,7 +32,7 @@ void Shoot::Execute()
 	if ((sensors->speedLeftShooterWheel() > ideal_speed && sensors->speedRightShooterWheel() > ideal_speed) ||
 		 timer->Get() > SPEED_UP_TIME)
 	{
-		holder_wheel->turnHolderWheelOn(true);
+		holder_wheel->holderWheelDirection(HolderWheel::HolderWheelDirection::WHEEL_OUT);
 	}
 }
 
@@ -54,7 +54,7 @@ bool Shoot::IsFinished()
 void Shoot::End()
 {
 	shooter->setShooterSpeed(0.0);
-	holder_wheel->turnHolderWheelOn(false);
+	holder_wheel->holderWheelDirection(HolderWheel::HolderWheelDirection::WHEEL_STILL);
 }
 
 // Called when another command which requires one or more of the same
