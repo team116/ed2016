@@ -17,7 +17,7 @@ public:
 
 	void InitDefaultCommand();
 	static Climber* getInstance();
-	void setClimber(ClimberArmDirection direction);
+	void setClimber(ClimberArmDirection direction, float speed = 0.0);
 	ClimberArmDirection getDirectionClimber();
 
 	enum WinchDirection
