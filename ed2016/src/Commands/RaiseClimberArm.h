@@ -13,9 +13,16 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
-
 private:
+	bool interrupted;
+	Timer* temmie;
 
+	static const float TIMEOUT_1;
+	static const float TIMEOUT_2;
+
+	static const float SPEED_1;
+	static const float SPEED_2;
 };
 
 #endif
+
