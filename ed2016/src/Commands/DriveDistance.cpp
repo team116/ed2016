@@ -6,7 +6,7 @@ const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 1.0;
 
 DriveDistance::DriveDistance(float dist)
 {
-	Requires(mobility);
+	Requires(&*mobility);
 	distance = dist;
 	starting_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0;
 	current_distance = starting_distance;

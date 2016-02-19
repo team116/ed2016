@@ -6,7 +6,7 @@ FollowTarget::FollowTarget()
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(mobility);
+	Requires(&*mobility);
 }
 
 // Called just before this Command runs the first time

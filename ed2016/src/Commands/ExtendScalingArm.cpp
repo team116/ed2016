@@ -9,7 +9,7 @@ const float ExtendScalingArm::SPEED_2 = 0.5;
 
 ExtendScalingArm::ExtendScalingArm()
 {
-	Requires(climber);
+	Requires(&*climber);
 	interrupted = false;
 	temmie = new Timer();
 }

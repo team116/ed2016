@@ -4,9 +4,9 @@
 
 JoystickDrive::JoystickDrive()
 {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
-	Requires(mobility);
+	// Use Requires(&*) here to declare subsystem dependencies
+	// eg. Requires(&*chassis);
+	Requires(&*mobility);
 
 	leftInput = 0;
 	rightInput = 0;

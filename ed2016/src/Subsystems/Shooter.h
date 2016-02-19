@@ -10,6 +10,7 @@
 class Shooter: public Subsystem
 {
 public:
+	Shooter();
 	static Shooter* getInstance();
 	void InitDefaultCommand();
 
@@ -28,7 +29,6 @@ public:
 	float getSpeedPreset(int preset); // 0 to 5
 
 private:
-	Shooter();
 	static Shooter* INSTANCE;
 
 	MOTOR_TYPE* top_shooter_wheel;

@@ -8,6 +8,8 @@
 class Climber: public Subsystem
 {
 public:
+	Climber();
+
 	enum ClimberArmDirection
 		{
 			CLIMBER_ARM_UP,
@@ -36,7 +38,6 @@ public:
 	// for methods that implement subsystem capabilities
 
 private:
-	Climber();
 	static Climber* INSTANCE;
 
 	const static float WINCH_SPEED;

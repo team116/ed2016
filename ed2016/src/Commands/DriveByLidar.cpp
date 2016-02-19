@@ -4,7 +4,7 @@
 
 DriveByLidar::DriveByLidar(float dist, float err)
 {
-	Requires(mobility);
+	Requires(&*mobility);
 	target_distance = dist;
 	distance = 0;
 	error = err;

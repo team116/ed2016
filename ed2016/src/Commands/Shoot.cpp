@@ -9,8 +9,8 @@ const float Shoot::PUSH_BOULDER = 1.5;
 
 Shoot::Shoot()
 {
-	Requires(shooter);
-	Requires(holder_wheel);
+	Requires(&*shooter);
+	Requires(&*holder_wheel);
 
 	timer = new Timer();
 	interrupted = false;

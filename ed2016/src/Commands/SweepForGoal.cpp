@@ -7,7 +7,7 @@ const float SweepForGoal::TURN_SPEED = 0.75;
 
 SweepForGoal::SweepForGoal(int init_pos)
 {
-	Requires(mobility);
+	Requires(&*mobility);
 	initial_position = init_pos;
 	interrupted = false;
 	angle = 0;

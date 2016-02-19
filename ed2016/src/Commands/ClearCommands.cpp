@@ -7,13 +7,13 @@
 
 ClearCommands::ClearCommands()
 {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
-	Requires(mobility);
-	Requires(shooter);
-	Requires(climber);
-	Requires(intake);
-	Requires(holder_wheel);
+	// Use Requires(&*) here to declare subsystem dependencies
+	// eg. Requires(&*chassis);
+	Requires(&*mobility);
+	Requires(&*shooter);
+	Requires(&*climber);
+	Requires(&*intake);
+	Requires(&*holder_wheel);
 }
 
 // Called just before this Command runs the first time

@@ -8,6 +8,7 @@
 class HolderWheel: public Subsystem
 {
 public:
+	HolderWheel();
 	enum HolderWheelDirection
 		{
 			WHEEL_IN,
@@ -18,7 +19,6 @@ public:
 	void holderWheelDirection(HolderWheelDirection direction);
 
 private:
-	HolderWheel();
 	void InitDefaultCommand();
 	static HolderWheel* INSTANCE;
 

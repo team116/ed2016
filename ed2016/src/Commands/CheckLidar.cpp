@@ -3,7 +3,7 @@
 
 CheckLidar::CheckLidar()
 {
-	Requires(sensors);
+	Requires(&*sensors);
 	distance = 0.0;
 	lidar_read = false;
 }

@@ -8,6 +8,7 @@
 class Mobility: public Subsystem
 {
 public:
+	Mobility();
 	void InitDefaultCommand();
 	static Mobility* getInstance();
 
@@ -20,7 +21,6 @@ public:
 	void useFrontOrientation(bool front);
 
 private:
-	Mobility();
 	static Mobility* INSTANCE;
 	MOTOR_TYPE* leftFront;
 	MOTOR_TYPE* leftBack;

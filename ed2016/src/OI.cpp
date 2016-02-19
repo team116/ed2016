@@ -56,8 +56,8 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
-	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_extend_scaling_arm->WhenPressed(new IntakeIn());
+	b_retract_scaling_arm->WhenPressed(new IntakeOut());
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());

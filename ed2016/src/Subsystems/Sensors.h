@@ -8,6 +8,7 @@
 class Sensors: public Subsystem
 {
 public:
+	Sensors();
 	void InitDefaultCommand();
 	static Sensors* getInstance();
 	// It's desirable that everything possible under private except
@@ -37,7 +38,6 @@ public:
 	bool isShooterHomeSwitchHorizontal();
 
 private:
-	Sensors();
 	static Sensors* INSTANCE;
 
 	DigitalInput* ready_to_shoot_balls_switch;

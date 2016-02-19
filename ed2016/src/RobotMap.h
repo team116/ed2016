@@ -101,11 +101,11 @@ namespace OI_Ports
 	const unsigned int INTAKE_ANGLE_DIAL = 3; // Z
 
 	// buttons joystick 2, digital
-	const unsigned int EXTEND_SCALING_ARM_BUTTON = 0;
-	const unsigned int RETRACT_SCALING_ARM_BUTTON = 1;
-	const unsigned int AUTO_CLIMBER_DEPLOY_BUTTON = 2;
-	const unsigned int AUTO_WINCH_BUTTON = 3;
-	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 4;
+	const unsigned int EXTEND_SCALING_ARM_BUTTON = 1;
+	const unsigned int RETRACT_SCALING_ARM_BUTTON = 2;
+	const unsigned int AUTO_CLIMBER_DEPLOY_BUTTON = 3;
+	const unsigned int AUTO_WINCH_BUTTON = 4;
+	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 5;
 
 	// buttons joystick 3, analog
 	const unsigned int FRONT_WINCH_JOYSTICK = 0; // X
