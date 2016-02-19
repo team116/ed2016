@@ -88,24 +88,24 @@ namespace OI_Ports
 
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
-	const unsigned int SHOOTER_ENGAGE_BUTTON = 2;
-	const unsigned int DISENGAGE_BUTTON = 3; // currently purposeless
+	const unsigned int SHOOTER_DISENGAGE_BUTTON = 2;
+	const unsigned int SHOOTER_ENGAGE_BUTTON = 3;
 	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
 	const unsigned SHOOTER_WHEELS_SWITCH = 5;
 	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
 	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
 
 	// buttons joystick 1, analog
-	const unsigned int MANUAL_AIM_DIAL = 1; // X
-	const unsigned int SHOOTER_SPEED_DIAL = 2; // Y
-	const unsigned int INTAKE_ANGLE_DIAL = 3; // Z
+	const unsigned int MANUAL_AIM_DIAL = 0; // X
+	const unsigned int SHOOTER_SPEED_DIAL = 1; // Y
+	const unsigned int INTAKE_ANGLE_DIAL = 2; // Z
 
 	// buttons joystick 2, digital
-	const unsigned int EXTEND_SCALING_ARM_BUTTON = 0;
-	const unsigned int RETRACT_SCALING_ARM_BUTTON = 1;
-	const unsigned int AUTO_CLIMBER_DEPLOY_BUTTON = 2;
-	const unsigned int AUTO_WINCH_BUTTON = 3;
-	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 4;
+	const unsigned int EXTEND_SCALING_ARM_BUTTON = 1;
+	const unsigned int RETRACT_SCALING_ARM_BUTTON = 2;
+	const unsigned int AUTO_CLIMBER_DEPLOY_BUTTON = 3;
+	const unsigned int AUTO_WINCH_BUTTON = 4;
+	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 5;
 
 	// buttons joystick 3, analog
 	const unsigned int FRONT_WINCH_JOYSTICK = 0; // X

@@ -6,6 +6,7 @@
 #include <Commands/ClearCommands.h>
 #include <Commands/IntakeIn.h>
 #include <Commands/IntakeOut.h>
+
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
@@ -37,8 +38,8 @@ OI::OI()
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
+	b_shooter_disengage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_ENGAGE_BUTTON);
-	//b_shooter_disengage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
 	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
