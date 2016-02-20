@@ -1,8 +1,8 @@
 #ifndef ExtendScalingArm_H
 #define ExtendScalingArm_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <WPILib.h>
 
 class ExtendScalingArm: public CommandBase
 {
@@ -22,6 +22,8 @@ private:
 
 	static const float SPEED_1;
 	static const float SPEED_2;
+
+	static const float SHOOTER_ERROR;
 };
 
 #endif

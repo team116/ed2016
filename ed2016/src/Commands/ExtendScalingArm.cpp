@@ -8,9 +8,12 @@ const float ExtendScalingArm::TIMEOUT_2 = 3.0;
 const float ExtendScalingArm::SPEED_1 = 1.0;
 const float ExtendScalingArm::SPEED_2 = 0.5;
 
+const float ExtendScalingArm::SHOOTER_ERROR = 0.5;
+
 ExtendScalingArm::ExtendScalingArm()
 {
 	Requires(&*climber);
+	Requires(&*shooter);
 	interrupted = false;
 	temmie = new Timer();
 }
@@ -19,18 +22,27 @@ ExtendScalingArm::ExtendScalingArm()
 void ExtendScalingArm::Initialize()
 {
 	temmie->Reset();
-	temmie->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ExtendScalingArm::Execute()
 {
-	//TODO: Shooter must be fully retracted before the arms are raised (so the wires don't get in the way)
-	if(temmie->Get() < TIMEOUT_1)
+	bool shooter_ready = sensors->shooterAngle() < SHOOTER_ERROR;
+
+	if (!shooter_ready)
+	{
+		shooter->setShooterPitchDirection(Shooter::SHOOTER_DOWN);
+	}
+	else if (temmie->Get() == 0)
+	{
+		temmie->Start();
+	}
+
+	if(temmie->Get() < TIMEOUT_1 && shooter_ready)
 	{
 		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_1);
 	}
-	else if(temmie->Get() < TIMEOUT_2)
+	else if(temmie->Get() < TIMEOUT_2 && shooter_ready)
 	{
 		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_2);
 	}
