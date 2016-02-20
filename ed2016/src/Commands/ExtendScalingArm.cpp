@@ -1,5 +1,6 @@
 #include <Commands/ExtendScalingArm.h>
 #include <Subsystems/Climber.h>
+#include <Subsystems/Shooter.h>
 
 const float ExtendScalingArm::TIMEOUT_1 = 0.5;
 const float ExtendScalingArm::TIMEOUT_2 = 3.0;
@@ -23,6 +24,7 @@ void ExtendScalingArm::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void ExtendScalingArm::Execute()
 {
+	//TODO: Shooter must be fully retracted before the arms are raised (so the wires don't get in the way)
 	if(temmie->Get() < TIMEOUT_1)
 	{
 		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_1);
