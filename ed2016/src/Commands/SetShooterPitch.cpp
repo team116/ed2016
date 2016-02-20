@@ -4,8 +4,8 @@
 
 SetShooterPitch::SetShooterPitch(float angle, float error)
 {
-	// Use Requires() here to declare subsystem dependencies
-	Requires(shooter_pitch);
+	// Use Requires(&*) here to declare subsystem dependencies
+	Requires(&*shooter_pitch);
 
 	pitch = angle;
 	accepted_error = error;

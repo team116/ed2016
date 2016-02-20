@@ -3,11 +3,13 @@
 
 const float RetractWinches::ARM_TIMEOUT = 3.0;
 const float RetractWinches::WINCH_TIMEOUT = 3.0;
+const float RetractWinches::CURRENT_SPIKE_TIMEOUT = 2.0;
 
 RetractWinches::RetractWinches()
 {
-	Requires(climber);
-	temmie = new Timer();
+	Requires(&*climber);
+	temmie_a = new Timer();
+	temmie_w = new Timer();
 
 	interrupted = false;
 }
@@ -15,13 +17,21 @@ RetractWinches::RetractWinches()
 // Called just before this Command runs the first time
 void RetractWinches::Initialize()
 {
-	temmie->Reset();
+	interrupted = false;
+	temmie_a->Reset();
+	temmie_w->Reset();
+	temmie_w->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void RetractWinches::Execute()
 {
-	if (temmie->Get() < ARM_TIMEOUT)
+	if(climber->isWinchCurrentSpiking() || temmie_w->Get() > CURRENT_SPIKE_TIMEOUT)
+	{
+		temmie_a->Start();
+	}
+
+	if (temmie_a->Get() < ARM_TIMEOUT && temmie_a->Get() > 0.0)
 	{
 		climber->setClimber(Climber::CLIMBER_ARM_DOWN);
 	}
@@ -30,7 +40,9 @@ void RetractWinches::Execute()
 		climber->setClimber(Climber::CLIMBER_ARM_STILL);
 	}
 
-	if (temmie->Get() < WINCH_TIMEOUT)
+
+
+	if (temmie_w->Get() < WINCH_TIMEOUT)
 	{
 		climber->setFrontWinch(Climber::ROBOT_PULL_UP);
 		climber->setBackWinch(Climber::ROBOT_PULL_UP);
@@ -49,7 +61,7 @@ bool RetractWinches::IsFinished()
 	{
 		return true;
 	}
-	else if (temmie->Get() > ARM_TIMEOUT && temmie->Get() > WINCH_TIMEOUT)
+	else if (temmie_a->Get() > ARM_TIMEOUT && temmie_w->Get() > WINCH_TIMEOUT)
 	{
 		return true;
 	}

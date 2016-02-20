@@ -2,9 +2,9 @@
 
 SelectCamera::SelectCamera(Cameras::CameraDirection direction)
 {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
-	Requires(cameras);
+	// Use Requires(&*) here to declare subsystem dependencies
+	// eg. Requires(&*chassis);
+	Requires(&*cameras);
 	SetInterruptible(true);
 	SetRunWhenDisabled(true);
 

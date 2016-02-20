@@ -6,6 +6,7 @@
 #include <Commands/ClearCommands.h>
 #include <Commands/IntakeIn.h>
 #include <Commands/IntakeOut.h>
+
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
@@ -19,9 +20,6 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
-
-
-OI* OI::INSTANCE = nullptr;
 
 OI::OI()
 {
@@ -37,8 +35,8 @@ OI::OI()
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
+	b_shooter_disengage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_ENGAGE_BUTTON);
-	//b_shooter_disengage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
 	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
@@ -57,8 +55,8 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
-	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_extend_scaling_arm->WhenPressed(new IntakeIn());
+	b_retract_scaling_arm->WhenPressed(new IntakeOut());
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
@@ -99,13 +97,4 @@ int OI::getShooterSpeedPosition()
 {
 	// assumes GetRawAxis returns in the range [0.0, 1.0]
 	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL), 6, 1.0);
-}
-
-OI* OI::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new OI();
-	}
-	return INSTANCE;
 }

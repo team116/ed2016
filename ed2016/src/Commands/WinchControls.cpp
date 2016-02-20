@@ -2,8 +2,8 @@
 #include "OI.h"
 WinchControls::WinchControls()
 {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
+	// Use Requires(&*) here to declare subsystem dependencies
+	// eg. Requires(&*chassis);
 	back_winch = 0.0;
 	front_winch = 0.0;
 

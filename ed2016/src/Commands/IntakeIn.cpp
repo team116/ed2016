@@ -3,9 +3,9 @@
 
 IntakeIn::IntakeIn()
 {
-	Requires (intake);
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
+	Requires(&*intake);
+	// Use Requires(&*) here to declare subsystem dependencies
+	// eg. Requires(&*chassis);
 }
 
 // Called just before this Command runs the first time
