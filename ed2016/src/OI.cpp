@@ -1,12 +1,11 @@
- #include <cstdlib>
+#include <cstdlib>
 #include <OI.h>
-#include <Commands/ExtendScalingArm.h>
 #include <Commands/RetractWinches.h>
 #include <Commands/AutoAim.h>
 #include <Commands/ClearCommands.h>
+#include <Commands/ExtendScalingArm.h>
 #include <Commands/IntakeIn.h>
 #include <Commands/IntakeOut.h>
-
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
