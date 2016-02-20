@@ -15,6 +15,7 @@ public:
 	void Interrupted();
 private:
 	bool interrupted;
+	bool shooter_ready;
 	Timer* temmie;
 	Timer* temmie_sp; //shooter pitch tem
 

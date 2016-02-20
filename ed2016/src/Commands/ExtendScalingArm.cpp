@@ -2,8 +2,8 @@
 #include <Subsystems/Climber.h>
 #include <Subsystems/ShooterPitch.h>
 
-const float ExtendScalingArm::TIMEOUT_1 = 0.5;
-const float ExtendScalingArm::TIMEOUT_2 = 3.0;
+const float ExtendScalingArm::TIMEOUT_1 = 3.0;
+const float ExtendScalingArm::TIMEOUT_2 = 10.0;
 const float ExtendScalingArm::SHOOTER_TIMEOUT = 2.0;
 
 const float ExtendScalingArm::SPEED_1 = 1.0;
@@ -16,6 +16,7 @@ ExtendScalingArm::ExtendScalingArm()
 	Requires(&*climber);
 	Requires(&*shooter_pitch);
 	interrupted = false;
+	shooter_ready = false;
 	temmie = new Timer();
 	temmie_sp = new Timer();
 }
@@ -23,32 +24,40 @@ ExtendScalingArm::ExtendScalingArm()
 // Called just before this Command runs the first time
 void ExtendScalingArm::Initialize()
 {
+	DriverStation::ReportError("\nAuto Deploy starting.");
 	temmie->Reset();
 	temmie_sp->Reset();
 	temmie_sp->Start();
+
+	shooter_ready = sensors->shooterAngle() < SHOOTER_ERROR;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ExtendScalingArm::Execute()
 {
-	bool shooter_ready = sensors->shooterAngle() < SHOOTER_ERROR;
 
 	if (!shooter_ready && temmie_sp->Get() < SHOOTER_TIMEOUT)
 	{
+		DriverStation::ReportError("\nLowering shooter.");
 		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
-		shooter->setShooterSpeed(1.0);
 	}
-	else if (temmie->Get() == 0)
+	else if (temmie->Get() == 0 && (shooter_ready || temmie_sp->Get() > SHOOTER_TIMEOUT))
 	{
+		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+		shooter_ready = true;
+		DriverStation::ReportError("\nShooter ready, deploying climber arms.");
+		temmie->Reset();
 		temmie->Start();
 	}
 
 	if(temmie->Get() < TIMEOUT_1 && shooter_ready)
 	{
+		DriverStation::ReportError("\nDeploying climber arms, stage 1.");
 		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_1);
 	}
 	else if(temmie->Get() < TIMEOUT_2 && shooter_ready)
 	{
+		DriverStation::ReportError("\nDeploying climber arms, stage 2.");
 		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_2);
 	}
 	else
@@ -74,7 +83,9 @@ bool ExtendScalingArm::IsFinished()
 // Called once after isFinished returns true
 void ExtendScalingArm::End()
 {
+	DriverStation::ReportError("\nAuto Deploy ending.");
 	climber->setClimber(Climber::CLIMBER_ARM_STILL);
+	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 	temmie->Stop();
 }
 
