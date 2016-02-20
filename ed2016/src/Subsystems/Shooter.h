@@ -5,6 +5,7 @@
 #include <RobotMap.h>
 #include <WPILib.h>
 
+
 // included shooter
 class Shooter: public Subsystem
 {
