@@ -4,7 +4,6 @@
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
 #include <RobotMap.h>
-#include <Subsystems/Sensors.h>
 
 class ShooterPitch: public Subsystem
 {

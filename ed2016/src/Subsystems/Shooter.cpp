@@ -40,7 +40,6 @@ void Shooter::setShooterSpeed(float speed)
 {
 	top_shooter_wheel->Set(speed);
 	bottom_shooter_wheel->Set(-speed);
-	CommandBase::sensors->getDistanceRight();
 }
 
 float Shooter::getRPMPreset(int preset)

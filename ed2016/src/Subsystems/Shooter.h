@@ -4,7 +4,6 @@
 #include <Commands/Subsystem.h>
 #include <RobotMap.h>
 #include <WPILib.h>
-#include <Subsystems/Sensors.h>
 
 // included shooter
 class Shooter: public Subsystem
