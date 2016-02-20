@@ -19,6 +19,7 @@ ExtendScalingArm::ExtendScalingArm()
 void ExtendScalingArm::Initialize()
 {
 	temmie->Reset();
+	temmie->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -57,6 +58,7 @@ bool ExtendScalingArm::IsFinished()
 void ExtendScalingArm::End()
 {
 	climber->setClimber(Climber::CLIMBER_ARM_STILL);
+	temmie->Stop();
 }
 
 // Called when another command which requires one or more of the same
