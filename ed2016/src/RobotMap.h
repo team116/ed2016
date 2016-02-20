@@ -120,6 +120,8 @@ namespace OI_Ports
 namespace Utils
 {
 	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
+	float boundaryCheck(float target, float min, float max);
 }
+
 
 #endif
