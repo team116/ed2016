@@ -15,6 +15,7 @@ public:
 	void Interrupted();
 
 private:
+	Timer* temmie;
 
 };
 

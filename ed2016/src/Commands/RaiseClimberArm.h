@@ -3,6 +3,7 @@
 
 #include "../CommandBase.h"
 #include "WPILib.h"
+#include <Timer.h>
 
 class RaiseClimberArm: public CommandBase
 {
@@ -15,6 +16,7 @@ public:
 	void Interrupted();
 
 private:
+	Timer* temmie;
 
 };
 
