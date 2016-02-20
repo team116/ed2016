@@ -35,8 +35,6 @@ private:
 	MOTOR_TYPE* bottom_shooter_wheel;
 	MOTOR_TYPE* pitch_angle;
 
-	Sensors* sensors;
-
 	static const float RPM_PRESETS[];
 	static const float SPEED_PRESETS[];
 

@@ -27,7 +27,6 @@ void CommandBase::init()
 {
 	// Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
-	oi.reset(new OI());
 	mobility.reset(new Mobility());
 	climber.reset(new Climber());
 	sensors.reset(new Sensors());
@@ -36,4 +35,6 @@ void CommandBase::init()
 	holder_wheel.reset(new HolderWheel());
 	cameras.reset(new Cameras());
 	intake.reset(new Intake());
+
+	oi.reset(new OI());
 }

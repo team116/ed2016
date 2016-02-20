@@ -13,7 +13,6 @@ private:
 	// for methods that implement subsystem capabilities
 
 	MOTOR_TYPE* pitch_angle;
-	Sensors* sensors;
 
 	static ShooterPitch* INSTANCE;
 

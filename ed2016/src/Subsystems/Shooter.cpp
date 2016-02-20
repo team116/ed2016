@@ -1,6 +1,5 @@
 #include <Commands/RunShooterWheels.h>
 #include <Subsystems/Shooter.h>
-#include <Subsystems/Sensors.h>
 #include <RobotMap.h>
 
 Shooter* Shooter::INSTANCE = nullptr;
@@ -43,7 +42,7 @@ void Shooter::setShooterSpeed(float speed)
 {
 	top_shooter_wheel->Set(speed);
 	bottom_shooter_wheel->Set(-speed);
-	sensors->getDistanceRight();
+	CommandBase::sensors->getDistanceRight();
 }
 
 float Shooter::getRPMPreset(int preset)

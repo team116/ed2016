@@ -23,16 +23,13 @@ private:
 	AnalogInput* position_switch;
 	AnalogInput* defense_switch;
 
-	ShooterPitch* shooter_pitch;
-
 	void RobotInit()
 	{
 		CommandBase::init();
-		chooser = new SendableChooser();
+		//chooser = new SendableChooser();
 		//chooser->AddDefault("Default Auto", new ExampleCommand());
 		//chooser->AddObject("My Auto", new MyAutoCommand());
-		SmartDashboard::PutData("Auto Modes", chooser);
-		shooter_pitch = ShooterPitch::getInstance();
+		//SmartDashboard::PutData("Auto Modes", chooser);
 
 		/*int var = 0;
 		switch (var)
@@ -129,7 +126,7 @@ private:
 	void TeleopPeriodic()
 	{
 		Scheduler::GetInstance()->Run();
-		shooter_pitch->checkLimits();
+		CommandBase::shooter_pitch->checkLimits();
 	}
 
 	void TestPeriodic()
