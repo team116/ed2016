@@ -226,3 +226,13 @@ bool Sensors::isShooterHomeSwitchHorizontal()
 		return false;
 	}
 }
+
+float Sensors::getSpeedLeft()
+{
+		return 0.0;
+}
+
+float Sensors::getSpeedRight()
+{
+		return 0.0;
+}
