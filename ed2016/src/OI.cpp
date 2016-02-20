@@ -50,8 +50,7 @@ OI::OI()
 	d_manual_aim = new AnalogTrigger(manual_aim);
 
 	//TODO:Instantiate front/back winch joysticks
-	j_manual_back_winch = nullptr;
-	j_manual_front_winch = nullptr;
+
 	//Set Joystick Left Events
 
 	//Set Joystick Right Events
