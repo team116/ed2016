@@ -16,9 +16,11 @@ public:
 private:
 	bool interrupted;
 	Timer* temmie;
+	Timer* temmie_sp; //shooter pitch tem
 
 	static const float TIMEOUT_1;
 	static const float TIMEOUT_2;
+	static const float SHOOTER_TIMEOUT;
 
 	static const float SPEED_1;
 	static const float SPEED_2;
