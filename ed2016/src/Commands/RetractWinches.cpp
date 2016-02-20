@@ -6,7 +6,7 @@ const float RetractWinches::WINCH_TIMEOUT = 3.0;
 
 RetractWinches::RetractWinches()
 {
-	Requires(climber);
+	Requires(&*climber);
 	temmie = new Timer();
 
 	interrupted = false;

@@ -13,15 +13,10 @@ private:
 	// for methods that implement subsystem capabilities
 
 	MOTOR_TYPE* pitch_angle;
-	Sensors* sensors;
-
-	static ShooterPitch* INSTANCE;
 
 public:
 	ShooterPitch();
 	void InitDefaultCommand();
-
-	static ShooterPitch* getInstance();
 
 	enum ShooterPitchDirection {
 		SHOOTER_UP,

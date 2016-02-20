@@ -12,7 +12,7 @@
 
 AngleIntake::AngleIntake(float ang, float error)
 {
-	Requires(intake);
+	Requires(&*intake);
 	current_angle = 0.0;
 	angle = ang;
 	accepted_error = error;

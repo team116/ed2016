@@ -16,9 +16,9 @@ const float AutoAim::TURN_SPEED = 0.75;
 const float AutoAim::ACCEPTED_ERROR = 2;
 
 AutoAim::AutoAim() {
-	Requires(shooter);
-	Requires(shooter_pitch);
-	Requires(mobility);
+	Requires(&*shooter);
+	Requires(&*shooter_pitch);
+	Requires(&*mobility);
 
 	pitch = 0;
 	current_pitch = 0;

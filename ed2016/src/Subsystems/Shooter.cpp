@@ -2,8 +2,6 @@
 #include <Subsystems/Shooter.h>
 #include <RobotMap.h>
 
-Shooter* Shooter::INSTANCE = nullptr;
-
 const float Shooter::RPM_PRESETS[] = {
 	750.0,
 	1500.0,
@@ -27,7 +25,6 @@ Shooter::Shooter() : Subsystem("Shooter")
 	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::LEFT_SHOOTER_MOTOR);
 	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::RIGHT_SHOOTER_MOTOR);
 	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
-	sensors = Sensors::getInstance();
 }
 
 
@@ -43,6 +40,7 @@ void Shooter::setShooterSpeed(float speed)
 {
 	top_shooter_wheel->Set(speed);
 	bottom_shooter_wheel->Set(-speed);
+	CommandBase::sensors->getDistanceRight();
 }
 
 float Shooter::getRPMPreset(int preset)
@@ -53,13 +51,4 @@ float Shooter::getRPMPreset(int preset)
 float Shooter::getSpeedPreset(int preset)
 {
 	return SPEED_PRESETS[preset];
-}
-
-Shooter* Shooter::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Shooter();
-	}
-	return INSTANCE;
 }

@@ -10,7 +10,7 @@
 class Shooter: public Subsystem
 {
 public:
-	static Shooter* getInstance();
+	Shooter();
 	void InitDefaultCommand();
 
 	enum ShooterPitchDirection
@@ -28,14 +28,9 @@ public:
 	float getSpeedPreset(int preset); // 0 to 5
 
 private:
-	Shooter();
-	static Shooter* INSTANCE;
-
 	MOTOR_TYPE* top_shooter_wheel;
 	MOTOR_TYPE* bottom_shooter_wheel;
 	MOTOR_TYPE* pitch_angle;
-
-	Sensors* sensors;
 
 	static const float RPM_PRESETS[];
 	static const float SPEED_PRESETS[];

@@ -8,7 +8,7 @@
 class OI
 {
 public:
-	static OI* getInstance();
+	OI();
 
 	float getJoystickLeftY();
 	float getJoystickRightY();
@@ -19,8 +19,6 @@ public:
 	int getShooterSpeedPosition();
 
 private:
-	OI();
-	static OI* INSTANCE;
 	Joystick* joystick_left;
 	Joystick* joystick_right;
 	Joystick* joystick_buttons1;

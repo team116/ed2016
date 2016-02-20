@@ -7,8 +7,8 @@ const float TurnDegrees::TURN_SPEED = 0.75;
 
 TurnDegrees::TurnDegrees(float degrees, float error)
 {
-	// Use Requires() here to declare subsystem dependencies
-	Requires(mobility);
+	// Use Requires(&*) here to declare subsystem dependencies
+	Requires(&*mobility);
 
 	acceptable_error = error;
 	this->degrees = degrees;

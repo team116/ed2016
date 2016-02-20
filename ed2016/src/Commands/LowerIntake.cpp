@@ -2,8 +2,8 @@
 #include <Subsystems/Intake.h>
 LowerIntake::LowerIntake()
 {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(chassis);
+	// Use Requires(&*) here to declare subsystem dependencies
+	// eg. Requires(&*chassis);
 }
 
 // Called just before this Command runs the first time

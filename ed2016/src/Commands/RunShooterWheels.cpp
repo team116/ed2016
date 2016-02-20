@@ -4,7 +4,7 @@
 
 RunShooterWheels::RunShooterWheels()
 {
-	Requires(shooter);
+	Requires(&*shooter);
 }
 
 // Called just before this Command runs the first time

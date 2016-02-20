@@ -30,8 +30,6 @@ public:
 
 	int GetRunningCamera();
 
-	static Cameras* getInstance();
-
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -47,8 +45,6 @@ private:
 	IMAQdxError imaq_error;
 
 	std::shared_ptr<NetworkTable> grip;
-
-	static Cameras* INSTANCE;
 
 	struct Contour
 	{

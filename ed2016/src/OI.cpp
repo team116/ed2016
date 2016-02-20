@@ -21,9 +21,6 @@
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
 
-
-OI* OI::INSTANCE = nullptr;
-
 OI::OI()
 {
 	//Instantiate Joysticks
@@ -57,8 +54,8 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
-	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_extend_scaling_arm->WhenPressed(new IntakeIn());
+	b_retract_scaling_arm->WhenPressed(new IntakeOut());
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
@@ -99,13 +96,4 @@ int OI::getShooterSpeedPosition()
 {
 	// assumes GetRawAxis returns in the range [0.0, 1.0]
 	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL), 6, 1.0);
-}
-
-OI* OI::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new OI();
-	}
-	return INSTANCE;
 }
