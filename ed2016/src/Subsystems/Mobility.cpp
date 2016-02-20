@@ -60,3 +60,12 @@ void Mobility::useFrontOrientation(bool front)
 {
 	front_orientation = front;
 }
+
+float Mobility::getLeft()
+{
+	return leftBack->Get();
+}
+float Mobility::getRight()
+{
+	return rightBack->Get();
+}
