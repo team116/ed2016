@@ -39,7 +39,7 @@ private:
 	float joystick_value;
 	static const float ENCODER_SPEED_OFFSET;
 
-	static const float STARTING_ROBOT_ANGLE;
+	float starting_robot_angle;
 	static const float DEGREE_TOLERANCE;
 	static const float GYRO_SPEED_OFFSET;
 };
