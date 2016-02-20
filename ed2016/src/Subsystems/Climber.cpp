@@ -2,7 +2,7 @@
 #include <RobotMap.h>
 
 const float Climber::WINCH_SPEED = 2.2; //temporary speed
-const float Climber::CURRENT_SPIKE_THRESHHOLD = 1.0;	//random guess, no idea what this number is actually supposed to look like
+const float Climber::CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea what this number is actually supposed to look like
 
 Climber::Climber():Subsystem("Climber")
 {
@@ -42,7 +42,6 @@ void Climber::setClimber(ClimberArmDirection direction, float speed) //function 
 	climber_arm_direction = direction;
 	if (direction == ClimberArmDirection::CLIMBER_ARM_UP)
 	{
-		DriverStation::ReportError("\nClimber arms going up.");
 		climber_armed_motor->Set(speed);
 	}
 	else if (direction == ClimberArmDirection::CLIMBER_ARM_DOWN)
