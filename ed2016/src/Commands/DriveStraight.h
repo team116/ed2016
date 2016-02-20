@@ -26,8 +26,7 @@ public:
 	void Execute();
 	bool IsFinished();
 	void End();
-	void Interupted();
-	virtual ~DriveStraight();
+	void Interrupted();
 
 
 private:
@@ -35,9 +34,14 @@ private:
 	float curr_right_speed;
 	int joystick_used;
 	SensorType sensor_type;
+
 	static const float MAX_ROBOT_SPEED;
 	float joystick_value;
 	static const float ENCODER_SPEED_OFFSET;
+
+	static const float STARTING_ROBOT_ANGLE;
+	static const float DEGREE_TOLERANCE;
+	static const float GYRO_SPEED_OFFSET;
 };
 
 

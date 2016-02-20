@@ -21,6 +21,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
+	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
 	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
 	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
 	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
@@ -142,6 +143,7 @@ int Sensors::lidarDistance()
 		return 0.0;
 	}
 }
+
 void Sensors::refreshLidar()
 {
 	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
@@ -149,9 +151,9 @@ void Sensors::refreshLidar()
 		uint8_t buffer[2];
 		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
 
-			 lidar_distance = (buffer[0] << 8) + buffer[1];
-		}
+		lidar_distance = (buffer[0] << 8) + buffer[1];
 	}
+}
 
 float Sensors::getDistanceLeft()
 {

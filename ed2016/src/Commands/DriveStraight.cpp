@@ -1,7 +1,12 @@
 #include <Commands/DriveStraight.h>
 #include <Subsystems/Mobility.h>
+#include <RobotMap.h>
+
 const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
+const float DriveStraight::STARTING_ROBOT_ANGLE = 5.0;
+const float DriveStraight::DEGREE_TOLERANCE = 1.0;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
 
 DriveStraight::DriveStraight(int joystick, SensorType type)
 {
@@ -14,7 +19,7 @@ DriveStraight::DriveStraight(int joystick, SensorType type)
 
 void DriveStraight::Initialize()
 {
-
+	//STARTING_ROBOT_ANGLE = sensors->robotAngle();
 }
 void DriveStraight::Execute()
 {
@@ -31,9 +36,20 @@ void DriveStraight::Execute()
 	{
 		case GYRO:
 		{
+			/*
+			if(sensors->robotAngle()> (DEGREE_TOLERANCE + starting_robot_angle))
+			{
+				mobility->setLeft(Utils::boundryCheck(mobility->getLeft()-SPEED_OFFSET, -1.0, 1.0));
+
+				mobility->setRight(Utils::boundryCheck(mobility->getRight()+SPEED_OFFSET, -1.0, 1.0));
+			}
+			else if(sensors->robotAngle() < (starting_robot_angle - DEGREE_TOLERANCE))
+			{
+				mobility->setLeft(Utils::boundryCheck(mobility->getLeft()+SPEED_OFFSET, -1.0, 1.0));
+				mobility->setRight(Utils::boundryCheck(mobility->getRight()-SPEED_OFFSET, -1.0, 1.0));
+			}*/
 			break;
 		}
-
 		case ENCODER:
 		{
 			curr_left_speed = sensors ->getSpeedLeft();
@@ -76,8 +92,3 @@ void DriveStraight::Interrupted()
 {
 
 }
-DriveStraight::~DriveStraight()
-{
-	// TODO Auto-generated destructor stub
-}
-
