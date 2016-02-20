@@ -12,15 +12,7 @@ public:
 	Shooter();
 	void InitDefaultCommand();
 
-	enum ShooterPitchDirection
-	{
-		SHOOTER_UP,
-		SHOOTER_STILL,
-		SHOOTER_DOWN
-	};
-
 	void setShooterSpeed(float speed);
-	void setShooterPitchDirection(ShooterPitchDirection);
 	void checkLimits();
 
 	float getRPMPreset(int preset); // 0 to 5
