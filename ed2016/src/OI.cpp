@@ -19,6 +19,8 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
+#include <Subsystems/Intake.h>
+#include <Commands/MoveIntake.h>
 
 OI::OI()
 {
@@ -65,8 +67,9 @@ OI::OI()
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new WinchControls());
 	s_shooter_wheels->WhileHeld(new RunShooterWheels());
-	s_intake_belt_inward->WhileHeld(new IntakeIn());
-	s_intake_belt_outward->WhileHeld(new IntakeOut());
+	s_intake_belt_inward->WhileHeld(new MoveIntake(Intake::INTAKE_IN));
+	s_intake_belt_outward->WhileHeld(new MoveIntake(Intake::INTAKE_OUT));
+
 
 
 	// Process operator interface input here.
