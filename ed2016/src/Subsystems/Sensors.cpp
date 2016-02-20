@@ -142,6 +142,7 @@ int Sensors::lidarDistance()
 		return 0.0;
 	}
 }
+
 void Sensors::refreshLidar()
 {
 	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
@@ -149,9 +150,9 @@ void Sensors::refreshLidar()
 		uint8_t buffer[2];
 		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
 
-			 lidar_distance = (buffer[0] << 8) + buffer[1];
-		}
+		lidar_distance = (buffer[0] << 8) + buffer[1];
 	}
+}
 
 float Sensors::getDistanceLeft()
 {
