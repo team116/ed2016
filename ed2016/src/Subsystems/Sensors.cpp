@@ -21,6 +21,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
+	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
 	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
 	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
 	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
