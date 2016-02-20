@@ -10,7 +10,6 @@ class Sensors: public Subsystem
 public:
 	Sensors();
 	void InitDefaultCommand();
-	static Sensors* getInstance();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 	float shooterAngle();	//read the encoder
@@ -38,8 +37,6 @@ public:
 	bool isShooterHomeSwitchHorizontal();
 
 private:
-	static Sensors* INSTANCE;
-
 	DigitalInput* ready_to_shoot_balls_switch;
 
 	static const float SHOOTER_ANGLE_OFFSET;

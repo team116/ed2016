@@ -18,7 +18,6 @@ public:
 		};
 
 	void InitDefaultCommand();
-	static Climber* getInstance();
 	void setClimber(ClimberArmDirection direction, float speed = 1.0);
 	ClimberArmDirection getDirectionClimber();
 
@@ -38,7 +37,6 @@ public:
 	// for methods that implement subsystem capabilities
 
 private:
-	static Climber* INSTANCE;
 
 	const static float WINCH_SPEED;
 

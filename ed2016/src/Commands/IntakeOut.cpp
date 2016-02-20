@@ -11,7 +11,7 @@ IntakeOut::IntakeOut()
 // Called just before this Command runs the first time
 void IntakeOut::Initialize()
 {
-	DriverStation::ReportError("Out init\n");
+
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -29,7 +29,6 @@ bool IntakeOut::IsFinished()
 // Called once after isFinished returns true
 void IntakeOut::End()
 {
-	DriverStation::ReportError("Out end\n");
 	intake->setIntakeDirection(Intake::IntakeDirection::INTAKE_STILL);
 }
 

@@ -2,8 +2,6 @@
 #include "../RobotMap.h"
 #include <CommandBase.h>
 
-ShooterPitch* ShooterPitch::INSTANCE = nullptr;
-
 ShooterPitch::ShooterPitch() :
 		Subsystem("ShooterPitch")
 {
@@ -48,13 +46,4 @@ void ShooterPitch::checkLimits()
 	{
 		pitch_angle->Set(0.0);
 	}
-}
-
-ShooterPitch* ShooterPitch::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new ShooterPitch();
-	}
-	return INSTANCE;
 }

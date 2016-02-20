@@ -15,12 +15,10 @@ public:
 			WHEEL_OUT,
 			WHEEL_STILL
 		};
-	static HolderWheel* getInstance();
 	void holderWheelDirection(HolderWheelDirection direction);
 
 private:
 	void InitDefaultCommand();
-	static HolderWheel* INSTANCE;
 
 	MOTOR_TYPE* holder_wheel;
 };

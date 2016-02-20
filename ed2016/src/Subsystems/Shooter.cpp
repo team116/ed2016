@@ -2,8 +2,6 @@
 #include <Subsystems/Shooter.h>
 #include <RobotMap.h>
 
-Shooter* Shooter::INSTANCE = nullptr;
-
 const float Shooter::RPM_PRESETS[] = {
 	750.0,
 	1500.0,
@@ -53,13 +51,4 @@ float Shooter::getRPMPreset(int preset)
 float Shooter::getSpeedPreset(int preset)
 {
 	return SPEED_PRESETS[preset];
-}
-
-Shooter* Shooter::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Shooter();
-	}
-	return INSTANCE;
 }

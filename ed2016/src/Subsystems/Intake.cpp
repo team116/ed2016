@@ -1,8 +1,6 @@
 #include <RobotMap.h>
 #include <Subsystems/Intake.h>
 
-Intake* Intake::INSTANCE = nullptr;
-
 Intake::Intake() : Subsystem("Intake")
 {
 	intake_roller = new MOTOR_TYPE(RobotPorts::INTAKE_ROLLER_MOTOR);
@@ -46,13 +44,4 @@ void Intake::setIntakeAngleDirection(IntakeAngleDirection value)
 		{
 			intake_angle->Set(0.0);
 		}
-}
-
-Intake* Intake::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Intake();
-	}
-	return INSTANCE;
 }

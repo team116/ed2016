@@ -20,9 +20,6 @@
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
 
-
-OI* OI::INSTANCE = nullptr;
-
 OI::OI()
 {
 	//Instantiate Joysticks
@@ -98,13 +95,4 @@ int OI::getShooterSpeedPosition()
 {
 	// assumes GetRawAxis returns in the range [0.0, 1.0]
 	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL), 6, 1.0);
-}
-
-OI* OI::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new OI();
-	}
-	return INSTANCE;
 }

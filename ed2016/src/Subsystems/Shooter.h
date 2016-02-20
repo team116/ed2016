@@ -11,7 +11,6 @@ class Shooter: public Subsystem
 {
 public:
 	Shooter();
-	static Shooter* getInstance();
 	void InitDefaultCommand();
 
 	enum ShooterPitchDirection
@@ -29,8 +28,6 @@ public:
 	float getSpeedPreset(int preset); // 0 to 5
 
 private:
-	static Shooter* INSTANCE;
-
 	MOTOR_TYPE* top_shooter_wheel;
 	MOTOR_TYPE* bottom_shooter_wheel;
 	MOTOR_TYPE* pitch_angle;

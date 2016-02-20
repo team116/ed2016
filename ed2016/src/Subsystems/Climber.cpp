@@ -1,8 +1,6 @@
 #include <Subsystems/Climber.h>
 #include <RobotMap.h>
 
-Climber* Climber::INSTANCE = nullptr;
-
 const float Climber::WINCH_SPEED = 2.2; //temporary speed
 
 Climber::Climber():Subsystem("Climber")
@@ -84,13 +82,4 @@ void Climber::setBackWinch (WinchDirection direction)
 		back_winch->Set(0.0);
 	}
 
-}
-
-Climber* Climber::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Climber();
-	}
-	return INSTANCE;
 }

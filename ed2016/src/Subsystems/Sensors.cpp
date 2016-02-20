@@ -8,8 +8,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Sensors* Sensors::INSTANCE = nullptr;
-
 const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
@@ -178,16 +176,6 @@ float Sensors::getDistanceRight()
 	{
 		return 0.0;
 	}
-}
-
-Sensors* Sensors::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Sensors();
-	}
-	return INSTANCE;
-
 }
 
 void Sensors::resetEncoderLeft()

@@ -11,7 +11,7 @@ IntakeIn::IntakeIn()
 // Called just before this Command runs the first time
 void IntakeIn::Initialize()
 {
-	DriverStation::ReportError("In init\n");
+
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -29,7 +29,6 @@ bool IntakeIn::IsFinished()
 // Called once after isFinished returns true
 void IntakeIn::End()
 {
-	DriverStation::ReportError("In end\n");
 	intake->setIntakeDirection(Intake::IntakeDirection::INTAKE_STILL);
 }
 

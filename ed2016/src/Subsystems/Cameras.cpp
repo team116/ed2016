@@ -3,8 +3,6 @@
 #include <Commands/SelectCamera.h>
 #include <math.h>
 
-Cameras* Cameras::INSTANCE = nullptr;
-
 const bool kError = false;
 const bool kOk = true;
 const int IMAGE_WIDTH = 320;
@@ -242,13 +240,4 @@ float Cameras::GetDistanceFromTarget()
 		DriverStation::ReportError("Error: Cannot calculate distance if target is not in sight (Do you need to call RefreshContours?)\n");
 		return 0.0f;
 	}
-}
-
-Cameras* Cameras::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Cameras();
-	}
-	return INSTANCE;
 }

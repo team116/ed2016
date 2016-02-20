@@ -14,13 +14,9 @@ private:
 
 	MOTOR_TYPE* pitch_angle;
 
-	static ShooterPitch* INSTANCE;
-
 public:
 	ShooterPitch();
 	void InitDefaultCommand();
-
-	static ShooterPitch* getInstance();
 
 	enum ShooterPitchDirection {
 		SHOOTER_UP,
