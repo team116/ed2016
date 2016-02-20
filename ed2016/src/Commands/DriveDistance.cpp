@@ -12,14 +12,12 @@ DriveDistance::DriveDistance(float dist)
 	current_distance = starting_distance;
 	dir = 0.0;
 	interrupted = false;
-	timer = new Timer;
+	SetTimeout(dist * DRIVE_DISTANCE_TIMEOUT);
 }
 
 // Called just before this Command runs the first time
 void DriveDistance::Initialize()
 {
-	timer->Start();
-	timer->Reset();
 	if (distance > 0)
 	{
 		dir = 1.0;
@@ -44,8 +42,10 @@ void DriveDistance::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished()
 {
-	if(timer->HasPeriodPassed(DRIVE_DISTANCE_TIMEOUT * distance))
+
+	if(IsTimedOut())
 	{
+		DriverStation::ReportError("DriveDistance HasTimedOut");
 		return true;
 	}
 	if(interrupted)
@@ -65,7 +65,6 @@ bool DriveDistance::IsFinished()
 void DriveDistance::End()
 {
 	mobility->setStraight(0.0);
-	timer->Stop();
 }
 
 // Called when another command which requires one or more of the same
