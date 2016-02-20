@@ -1,5 +1,6 @@
 #include "ShooterPitch.h"
 #include "../RobotMap.h"
+#include <Subsystems/Sensors.h>
 
 ShooterPitch* ShooterPitch::INSTANCE = nullptr;
 
@@ -7,7 +8,6 @@ ShooterPitch::ShooterPitch() :
 		Subsystem("ShooterPitch")
 {
 	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
-	sensors = Sensors::getInstance();
 }
 
 void ShooterPitch::InitDefaultCommand()

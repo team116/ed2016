@@ -1,5 +1,6 @@
 #include <Commands/RunShooterWheels.h>
 #include <Subsystems/Shooter.h>
+#include <Subsystems/Sensors.h>
 #include <RobotMap.h>
 
 Shooter* Shooter::INSTANCE = nullptr;
@@ -27,7 +28,6 @@ Shooter::Shooter() : Subsystem("Shooter")
 	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::LEFT_SHOOTER_MOTOR);
 	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::RIGHT_SHOOTER_MOTOR);
 	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
-	sensors = Sensors::getInstance();
 }
 
 
@@ -43,6 +43,7 @@ void Shooter::setShooterSpeed(float speed)
 {
 	top_shooter_wheel->Set(speed);
 	bottom_shooter_wheel->Set(-speed);
+	sensors->getDistanceRight();
 }
 
 float Shooter::getRPMPreset(int preset)
