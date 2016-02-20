@@ -8,7 +8,7 @@
 class Intake: public Subsystem
 {
 public:
-	static Intake* getInstance();
+	Intake();
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -30,9 +30,6 @@ public:
 	void setIntakeAngleDirection(IntakeAngleDirection);
 
 private:
-	Intake();
-	static Intake* INSTANCE;
-
 	MOTOR_TYPE* intake_roller;
 	MOTOR_TYPE* intake_angle;
 

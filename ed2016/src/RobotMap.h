@@ -40,6 +40,7 @@ namespace RobotPorts
 	const unsigned int RIGHT_ENCODER_B = 6;
 	const unsigned int INTAKE_LIMIT = 7;
 	const unsigned int BALL_PREP_CHECK_LIMIT = 8;
+	const unsigned int SHOOTER_HOME_SWITCH = 9;
 
 
 	// analog inputs
@@ -82,29 +83,33 @@ namespace OI_Ports
 	//Joysticks
 	const unsigned int LEFT_JOYSTICK = 0;
 	const unsigned int RIGHT_JOYSTICK = 1;
-	const unsigned int BUTTONS_JOYSTICK = 2;
+	const unsigned int BUTTONS_JOYSTICK1 = 2;
+	const unsigned int BUTTONS_JOYSTICK2 = 3;
 
-	//Digital Buttons
+	// buttons joystick 1, digital
+	const unsigned int AUTO_AIM_BUTTON = 1;
+	const unsigned int SHOOTER_DISENGAGE_BUTTON = 2;
+	const unsigned int SHOOTER_ENGAGE_BUTTON = 3;
+	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
+	const unsigned SHOOTER_WHEELS_SWITCH = 5;
+	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
+	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
+
+	// buttons joystick 1, analog
+	const unsigned int MANUAL_AIM_DIAL = 0; // X
+	const unsigned int SHOOTER_SPEED_DIAL = 1; // Y
+	const unsigned int INTAKE_ANGLE_DIAL = 2; // Z
+
+	// buttons joystick 2, digital
 	const unsigned int EXTEND_SCALING_ARM_BUTTON = 1;
 	const unsigned int RETRACT_SCALING_ARM_BUTTON = 2;
-	const unsigned int AUTO_WINCH_BUTTON = 3;
-	const unsigned int SHOOTER_ENGAGE_BUTTON = 4;
-	const unsigned int SHOOTER_DISENGAGE_BUTTON = 5;
-	const unsigned int AUTO_AIM_BUTTON = 6;
-	const unsigned int CLEAR_COMMANDS_BUTTON = 11;
+	const unsigned int AUTO_CLIMBER_DEPLOY_BUTTON = 3;
+	const unsigned int AUTO_WINCH_BUTTON = 4;
+	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 5;
 
-	//Digital Switches
-	const unsigned MANUAL_WINCH_ENABLE_SWITCH = 7;
-	const unsigned SHOOTER_WHEELS_SWITCH = 8;
-	const unsigned INTAKE_BELT_FORWARD_SWITCH = 9;
-	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 10;
-
-	//Analog Dials
-	const unsigned int INTAKE_ANGLE_DIAL = 0;
-	const unsigned int SHOOTER_SPEED_DIAL = 1;
-	const unsigned int MANUAL_AIM_DIAL = 2;
-
-	//Analog Joysticks
+	// buttons joystick 3, analog
+	const unsigned int FRONT_WINCH_JOYSTICK = 0; // X
+	const unsigned int BACK_WINCH_JOYSTICK = 1; // Y
 }
 
 namespace Utils

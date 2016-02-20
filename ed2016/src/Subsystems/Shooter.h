@@ -9,29 +9,30 @@
 class Shooter: public Subsystem
 {
 public:
-	static Shooter* getInstance();
+	Shooter();
+	void InitDefaultCommand();
 
-	enum ShooterPitchDirection {
+	enum ShooterPitchDirection
+	{
 		SHOOTER_UP,
 		SHOOTER_STILL,
 		SHOOTER_DOWN
 	};
-	void InitDefaultCommand();
-	void turnShooterOn(bool);
-	void setShooterPitchDirection(ShooterPitchDirection);
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
 
+	void setShooterSpeed(float speed);
+	void setShooterPitchDirection(ShooterPitchDirection);
+	void checkLimits();
+
+	float getRPMPreset(int preset); // 0 to 5
+	float getSpeedPreset(int preset); // 0 to 5
 
 private:
-	Shooter();
-	static Shooter* INSTANCE;
-
 	MOTOR_TYPE* top_shooter_wheel;
 	MOTOR_TYPE* bottom_shooter_wheel;
 	MOTOR_TYPE* pitch_angle;
 
-
+	static const float RPM_PRESETS[];
+	static const float SPEED_PRESETS[];
 
 };
 

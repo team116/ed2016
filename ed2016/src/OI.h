@@ -8,20 +8,21 @@
 class OI
 {
 public:
-	static OI* getInstance();
+	OI();
+
 	float getJoystickLeftY();
 	float getJoystickRightY();
+
 	float getBackWinchY();
 	float getFrontWinchY();
 
-	Intake::IntakeDirection getIntakeDirection();
+	int getShooterSpeedPosition();
 
 private:
-	OI();
-	static OI* INSTANCE;
 	Joystick* joystick_left;
 	Joystick* joystick_right;
-	Joystick* joystick_buttons;
+	Joystick* joystick_buttons1;
+	Joystick* joystick_buttons2;
 
 	/*
 	 * Prefix Key:
@@ -39,6 +40,7 @@ private:
 	JoystickButton* b_extend_scaling_arm;
 	JoystickButton* b_retract_scaling_arm;
 	JoystickButton* b_auto_winch;
+	JoystickButton* b_auto_climber_deploy;
 	JoystickButton* b_shooter_engage;
 	JoystickButton* b_shooter_disengage;
 	JoystickButton* b_auto_aim;
@@ -46,8 +48,8 @@ private:
 
 	JoystickButton* s_manual_winch_enable;
 	JoystickButton* s_shooter_wheels;
-	JoystickButton* s_intake_belt_forward;
-	JoystickButton* s_intake_belt_backward;
+	JoystickButton* s_intake_belt_inward;
+	JoystickButton* s_intake_belt_outward;
 
 	AnalogTrigger* d_intake_angle;
 	AnalogTrigger* d_shooter_speed;
@@ -55,7 +57,6 @@ private:
 
 	//Analog Inputs
 	AnalogInput* intake_angle;
-	AnalogInput* shooter_speed;
 	AnalogInput* manual_aim;
 };
 #endif

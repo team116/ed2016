@@ -1,8 +1,6 @@
 #include "HolderWheel.h"
 #include "../RobotMap.h"
 
-HolderWheel* HolderWheel::INSTANCE = nullptr;
-
 HolderWheel::HolderWheel() : Subsystem("HolderWheel")
 {
 	holder_wheel = new MOTOR_TYPE(RobotPorts::SHOOTER_PUSH_MOTOR);
@@ -14,25 +12,20 @@ void HolderWheel::InitDefaultCommand()
 	//SetDefaultCommand(new MySpecialCommand());
 }
 
-void HolderWheel::turnHolderWheelOn(bool turningOn)
+void HolderWheel::holderWheelDirection(HolderWheelDirection direction)
 {
-	if(turningOn)
+	if (direction == WHEEL_IN)
 	{
 		holder_wheel->Set(1.0);
+	}
+	else if (direction == WHEEL_OUT)
+	{
+		holder_wheel->Set(-1.0);
 	}
 	else
 	{
 		holder_wheel->Set(0.0);
 	}
-}
-
-HolderWheel* HolderWheel::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new HolderWheel();
-	}
-	return INSTANCE;
 }
 
 // Put methods for controlling this subsystem

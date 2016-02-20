@@ -8,11 +8,10 @@
 class Sensors: public Subsystem
 {
 public:
+	Sensors();
 	void InitDefaultCommand();
-	static Sensors* getInstance();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	bool isReadyToShoot(); // Limit Switch
 	float shooterAngle();	//read the encoder
 	float robotAngle();
 	//a method to read the LIDAR, the return type of which we do not yet know
@@ -35,9 +34,10 @@ public:
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
 
+	bool isShooterHomeSwitchHorizontal();
+
 private:
-	Sensors();
-	static Sensors* INSTANCE;
+	DigitalInput* ready_to_shoot_balls_switch;
 
 	static const float SHOOTER_ANGLE_OFFSET;
 	AnalogInput* shooter_angle_encoder;
@@ -48,6 +48,7 @@ private:
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 	DigitalInput* left_shooter_wheel_tach_input;
 	DigitalInput* right_shooter_wheel_tach_input;
+	//DigitalInput* shooter_ready_to_shoot;
 	Encoder* left_shooter_wheel_tach;
 	Encoder* right_shooter_wheel_tach;
 
@@ -71,7 +72,12 @@ private:
 	bool ready_to_shoot_enabled;
 	bool shooter_wheel_tachometer_enabled;
 
+<<<<<<< HEAD
 	DigitalInput* intake_limit_switch;
+=======
+	DigitalInput* shooter_home_switch;
+
+>>>>>>> d699925c2e9ddffb49bbc4f7b60ab2f174851813
 
 };
 

@@ -3,8 +3,6 @@
 #include <Commands/SelectCamera.h>
 #include <math.h>
 
-Cameras* Cameras::INSTANCE = nullptr;
-
 const bool kError = false;
 const bool kOk = true;
 const int IMAGE_WIDTH = 320;
@@ -147,45 +145,91 @@ int Cameras::GetRunningCamera()
 	return camera_running;
 }
 
+void Cameras::RefreshContours()
+{
+	unsigned int index = 0;
+	float height = 0.0f;
+	for(unsigned int x = 0; x < grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>()).size(); x++) {
+		if(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[x] > height) {
+			height = grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[x];
+			index = x;
+		}
+	}
+
+	if(canSeeGoal()) {
+		target.x = grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[index];
+		target.y = grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[index];
+		target.area = grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>())[index];
+	}
+	else {
+		target.x = 0.0;
+		target.y = 0.0;
+		target.area = 0.0;
+	}
+}
+
+//Make sure to call RefreshContours
 bool Cameras::canSeeGoal()
 {
 	//TODO: More advanced code to make sure the contour we find is actually the goal, or handling multiple contours
-	if(grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>()).size() > 0) {
+	if((grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>()).size() > 0) &&
+			(grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>()).size() > 0) &&
+			(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>()).size() > 0)) {
 		return true;
 	}
 	return false;
 }
 
-//0 is left side of picture
+/* 0-1
+ * 0 is left side of picture
+ *
+ * Make sure to call RefreshContours
+ */
 float Cameras::GetTargetX()
 {
 	if(canSeeGoal()) {
-		return (float)grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[0] / (float)IMAGE_WIDTH;
+		return target.x / IMAGE_WIDTH;
 	}
+	DriverStation::ReportError("Error: Cannot get target X if no target in view (Do you need to call RefreshContours?)\n");
 	return 0.0f; //If there is no target in view...
 }
 
-//0 is top side of picture
+/* 0-1
+ * 0 is top side of picture
+ *
+ * Make sure to call RefreshContours
+ */
 float Cameras::GetTargetY()
 {
 	if(canSeeGoal()) {
-		return (float)grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[0] / (float)IMAGE_HEIGHT;
+		return target.y / IMAGE_WIDTH;
 	}
+	DriverStation::ReportError("Error: Cannot get target Y if no target in view (Do you need to call RefreshContours?)\n");
 	return 0.0f; //If there is no target in view...
 }
 
+//Make sure to call RefreshContours
 float Cameras::PitchFromHorizontal()
 {
-
-	return (CAMERA_MOUNT_ANGLE + atan((TARGET_HEIGHT - CAMERA_MOUNT_HEIGHT) / GetDistanceFromTarget()));
-}
-
-float Cameras::AzimuthDegreesFromTarget()
-{
+	if(canSeeGoal()) {
+		return (CAMERA_MOUNT_ANGLE + atan((TARGET_HEIGHT - CAMERA_MOUNT_HEIGHT) / GetDistanceFromTarget()));
+	}
+	DriverStation::ReportError("Error: Cannot calculate pitch from horizontal if no target in view (Do you need to call RefreshContours?)\n");
 	return 0.0f;
 }
 
-//In centimeters
+//Make sure to call RefreshContours
+float Cameras::AzimuthDegreesFromTarget()
+{
+	DriverStation::ReportError("Warning: AzimuthDegreesFromTarget is not implemented\n");
+	return 0.0f;
+}
+
+/*
+ * in centimeters
+ *
+ * Make sure to call RefreshContours
+ */
 float Cameras::GetDistanceFromTarget()
 {
 	if(canSeeGoal()) {
@@ -193,16 +237,7 @@ float Cameras::GetDistanceFromTarget()
 		return HEIGHT_DISTANCE_RATIO * IMAGE_HEIGHT / pixel_height;
 	}
 	else {
-		DriverStation::ReportError("Error: Cannot calculate distance if target is not in sight\n");
+		DriverStation::ReportError("Error: Cannot calculate distance if target is not in sight (Do you need to call RefreshContours?)\n");
 		return 0.0f;
 	}
-}
-
-Cameras* Cameras::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Cameras();
-	}
-	return INSTANCE;
 }

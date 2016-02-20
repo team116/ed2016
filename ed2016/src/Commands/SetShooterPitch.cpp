@@ -1,11 +1,11 @@
 #include <Commands/SetShooterPitch.h>
 #include <Subsystems/Sensors.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPitch.h>
 
 SetShooterPitch::SetShooterPitch(float angle, float error)
 {
-	// Use Requires() here to declare subsystem dependencies
-	Requires(shooter);
+	// Use Requires(&*) here to declare subsystem dependencies
+	Requires(&*shooter_pitch);
 
 	pitch = angle;
 	accepted_error = error;
@@ -24,15 +24,15 @@ void SetShooterPitch::Execute()
 	float current_angle = sensors->shooterAngle();
 	if (pitch > current_angle)
 	{
-		shooter->setShooterPitchDirection(Shooter::SHOOTER_UP);
+		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
 	}
 	else if (pitch < current_angle)
 	{
-		shooter->setShooterPitchDirection(Shooter::SHOOTER_DOWN);
+		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
 	}
 	else
 	{
-		shooter->setShooterPitchDirection(Shooter::SHOOTER_STILL);
+		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 	}
 
 }
@@ -56,7 +56,7 @@ bool SetShooterPitch::IsFinished()
 // Called once after isFinished returns true
 void SetShooterPitch::End()
 {
-	shooter->setShooterPitchDirection(Shooter::SHOOTER_STILL);
+	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 }
 
 // Called when another command which requires one or more of the same

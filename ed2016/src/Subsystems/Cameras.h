@@ -26,10 +26,9 @@ public:
 	float PitchFromHorizontal();
 	float AzimuthDegreesFromTarget();
 	float GetDistanceFromTarget();
+	void RefreshContours();
 
 	int GetRunningCamera();
-
-	static Cameras* getInstance();
 
 private:
 	// It's desirable that everything possible under private except
@@ -47,7 +46,13 @@ private:
 
 	std::shared_ptr<NetworkTable> grip;
 
-	static Cameras* INSTANCE;
+	struct Contour
+	{
+		float x;
+		float y;
+		float area;
+	};
+	Contour target;
 };
 
 #endif

@@ -63,8 +63,8 @@ public:
 		VictorSP* victor9 = new VictorSP(9);
 		VictorSP* victor10 = new VictorSP(10);
 		VictorSP* victor11 = new VictorSP(11);
-		VictorSP* victor_1= new VictorSP(1);
-		VictorSP* victor_2 = new VictorSP(2);
+		VictorSP* victor_1= new VictorSP(12);
+		VictorSP* victor_2 = new VictorSP(13);
 		while (IsOperatorControl() && IsEnabled())
 		{
 			if (joystick1->GetRawButton(1))
@@ -155,7 +155,7 @@ public:
 			{
 				victor11->Set(0.0);
 			}
-			if (joystick2->GetRawButton(1))
+			if (joystick2->GetRawButton(12))
 			{
 				victor_1->Set(1.0);
 			}
@@ -163,7 +163,7 @@ public:
 			{
 				victor_1->Set(0.0);
 			}
-			if (joystick2->GetRawButton(2))
+			if (joystick2->GetRawButton(13))
 			{
 				victor_2->Set(1.0);
 			}
