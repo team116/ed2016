@@ -72,12 +72,8 @@ private:
 	bool ready_to_shoot_enabled;
 	bool shooter_wheel_tachometer_enabled;
 
-<<<<<<< HEAD
 	DigitalInput* intake_limit_switch;
-=======
 	DigitalInput* shooter_home_switch;
-
->>>>>>> d699925c2e9ddffb49bbc4f7b60ab2f174851813
 
 };
 

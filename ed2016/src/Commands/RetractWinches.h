@@ -21,6 +21,7 @@ private:
 
 	static const float ARM_TIMEOUT;
 	static const float WINCH_TIMEOUT;
+	static const float CURRENT_SPIKE_TIMEOUT;
 };
 
 #endif

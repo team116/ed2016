@@ -2,7 +2,7 @@
 #include <RobotMap.h>
 
 const float Climber::WINCH_SPEED = 2.2; //temporary speed
-const float Climber::CURRENT_SPIKE_THRESHHOLD = 1.0;	//random guess, no idea what this number is actually supposed to look like
+const float Climber::CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea what this number is actually supposed to look like
 
 Climber::Climber():Subsystem("Climber")
 {
