@@ -16,7 +16,8 @@ public:
 private:
 	bool interrupted;
 
-	Timer* temmie;
+	Timer* temmie_a;	//arm tem
+	Timer* temmie_w;	//winch tem
 
 	static const float ARM_TIMEOUT;
 	static const float WINCH_TIMEOUT;

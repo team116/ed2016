@@ -30,6 +30,9 @@
 
 namespace RobotPorts
 {
+	//PDP
+	const unsigned int PDP = 0;
+
 	// digital inputs
 
 	const unsigned int LEFT_SHOOTER_WHEEL_TACH = 1;
