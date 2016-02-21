@@ -2,7 +2,9 @@
 #include <Subsystems/Mobility.h>
 #include <RobotMap.h>
 
-//const float DriveStraight::STARTING_ROBOT_ANGLE = 5.0;
+const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
+const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
+
 const float DriveStraight::DEGREE_TOLERANCE = 1.0;
 const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
 
@@ -10,8 +12,8 @@ DriveStraight::DriveStraight(int joystick, SensorType type)
 {
 	Requires(&*mobility);
 	joystick_used = joystick;
-	curr_speed_left = 0.0;
-	curr_speed_right = 0.0;
+	curr_left_speed = 0.0;
+	curr_right_speed = 0.0;
 	sensor_type = type;
 }
 
@@ -23,11 +25,11 @@ void DriveStraight::Execute()
 {
 	if(joystick_used == 0)
 	{
-		mobility ->setStraight(oi -> getJoystickLeftY());
+		joystick_value = oi -> getJoystickLeftY();
 	}
 	else if (joystick_used == 1)
 	{
-		mobility ->setStraight(oi ->getJoystickRightY());
+		joystick_value = oi ->getJoystickRightY();
 	}
 
 	switch(sensor_type)
@@ -50,6 +52,30 @@ void DriveStraight::Execute()
 		}
 		case ENCODER:
 		{
+			curr_left_speed = sensors ->getSpeedLeft();
+			curr_right_speed = sensors->getSpeedRight();
+			float target_speed = MAX_ROBOT_SPEED * joystick_value;
+
+			if(curr_left_speed > target_speed)
+			{
+				mobility ->setLeft(mobility ->getLeft() - ENCODER_SPEED_OFFSET);
+			}
+
+				else if(curr_left_speed < target_speed)
+				{
+					mobility ->setLeft(mobility ->getLeft() + ENCODER_SPEED_OFFSET);
+				}
+
+			if(curr_right_speed > target_speed)
+			{
+				mobility ->setRight(mobility ->getRight() - ENCODER_SPEED_OFFSET);
+			}
+
+				else if (curr_right_speed < target_speed)
+				{
+					mobility ->setRight(mobility ->getRight() + ENCODER_SPEED_OFFSET);
+				}
+
 			break;
 		}
 	}

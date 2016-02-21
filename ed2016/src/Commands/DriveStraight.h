@@ -30,10 +30,15 @@ public:
 
 
 private:
-	float curr_speed_left;
-	float curr_speed_right;
+	float curr_left_speed;
+	float curr_right_speed;
 	int joystick_used;
 	SensorType sensor_type;
+
+	static const float MAX_ROBOT_SPEED;
+	float joystick_value;
+	static const float ENCODER_SPEED_OFFSET;
+
 	float starting_robot_angle;
 	static const float DEGREE_TOLERANCE;
 	static const float GYRO_SPEED_OFFSET;
