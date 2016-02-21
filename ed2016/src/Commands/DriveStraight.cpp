@@ -8,7 +8,7 @@ const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 const float DriveStraight::DEGREE_TOLERANCE = 3.0;
 const float DriveStraight::GYRO_SPEED_OFFSET = 0.1;
 
-DriveStraight::DriveStraight(int joystick, SensorType type)
+DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
 	Requires(&*mobility);
 	joystick_used = joystick;
@@ -23,11 +23,11 @@ void DriveStraight::Initialize()
 }
 void DriveStraight::Execute()
 {
-	if(joystick_used == 0)
+	if(joystick_used == JoystickSide::LEFT)
 	{
 		joystick_value = oi -> getJoystickLeftY();
 	}
-	else if (joystick_used == 1)
+	else if (joystick_used == JoystickSide::RIGHT)
 	{
 		joystick_value = oi ->getJoystickRightY();
 	}

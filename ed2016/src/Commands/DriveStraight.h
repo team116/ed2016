@@ -15,13 +15,18 @@
 class DriveStraight : public CommandBase
 {
 public:
+	enum JoystickSide
+	{
+		LEFT,
+		RIGHT
+	};
 	enum SensorType
 	{
 		GYRO,
 		ENCODER
 	};
 
-	DriveStraight(int, SensorType);
+	DriveStraight(JoystickSide, SensorType);
 	void Initialize ();
 	void Execute();
 	bool IsFinished();
@@ -32,7 +37,7 @@ public:
 private:
 	float curr_left_speed;
 	float curr_right_speed;
-	int joystick_used;
+	JoystickSide joystick_used;
 	SensorType sensor_type;
 
 	static const float MAX_ROBOT_SPEED;
