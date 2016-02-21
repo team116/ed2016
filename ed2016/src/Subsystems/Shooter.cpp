@@ -35,6 +35,7 @@ const float Shooter::SPEED_PRESETS[] = {
 	// SetSetpoint() -  Sets where the PID controller should move the system
 	//                  to
 	// Enable() - Enables the PID controller.
+	Enable();
 }
 
 double Shooter::ReturnPIDInput()
