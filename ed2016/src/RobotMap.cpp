@@ -21,4 +21,12 @@ namespace Utils
 		}
 		return target;
 	}
+	float deadZoneCheck(float axis, float offset)
+	{
+		if (axis > offset || axis < offset)
+		{
+			return axis;
+		}
+		return 0.0;
+	}
 }

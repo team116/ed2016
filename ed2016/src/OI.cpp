@@ -18,6 +18,7 @@
 #include <Commands/MoveIntake.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
+const float OI::DEAD_ZONE_AMOUNT = 0.1;
 
 OI::OI()
 {
@@ -178,12 +179,13 @@ void OI::process()
 
 float OI::getJoystickLeftY()
 {
-	return joystick_left->GetY();
+	return pow(Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT), 3);
+
 }
 
 float OI::getJoystickRightY()
 {
-	return joystick_right->GetY();
+	return pow(Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT), 3);
 }
 
 float OI::getFrontWinchY()
