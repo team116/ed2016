@@ -27,8 +27,8 @@ namespace RobotPorts
 
 	// digital inputs
 
-	const unsigned int LEFT_SHOOTER_WHEEL_TACH = 1;
-	const unsigned int RIGHT_SHOOTER_WHEEL_TACH = 2;
+	const unsigned int TOP_SHOOTER_WHEEL_TACH = 1;
+	const unsigned int BOTTOM_SHOOTER_WHEEL_TACH = 2;
 	const unsigned int LEFT_ENCODER_A = 3;
 	const unsigned int LEFT_ENCODER_B = 4;
 	const unsigned int RIGHT_ENCODER_A = 5;
@@ -85,8 +85,7 @@ namespace OI_Ports
 
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
-	const unsigned int SHOOTER_DISENGAGE_BUTTON = 2;
-	const unsigned int SHOOTER_ENGAGE_BUTTON = 3;
+	const unsigned int SHOOT_BUTTON = 2;
 	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
 
 	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
@@ -106,13 +105,25 @@ namespace OI_Ports
 	const unsigned int AUTO_WINCH_BUTTON = 4;
 	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 5;
 
-	// buttons joystick 3, analog
+	// buttons joystick 2, analog
 	const unsigned int FRONT_WINCH_JOYSTICK = 0; // X
 	const unsigned int BACK_WINCH_JOYSTICK = 1; // Y
 }
 
 namespace Utils
 {
+	enum VerticalDirection
+	{
+		UP,
+		V_STILL,
+		DOWN
+	};
+	enum HorizontalDirection
+	{
+		IN,
+		H_STILL,
+		OUT
+	};
 	enum RobotType
 	{
 		ANDERSON_BOT,
@@ -123,6 +134,8 @@ namespace Utils
 
 	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
 	float boundaryCheck(float target, float min, float max);
+	float deadZoneCheck(float axis, float offset);
+
 }
 
 

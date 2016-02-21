@@ -18,6 +18,7 @@ DriveDistance::DriveDistance(float dist)
 // Called just before this Command runs the first time
 void DriveDistance::Initialize()
 {
+	interrupted = false;
 	if (distance > 0)
 	{
 		dir = 1.0;

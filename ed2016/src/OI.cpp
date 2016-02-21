@@ -8,22 +8,17 @@
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
-#include <Commands/WinchControls.h>
-#include <Commands/PullFrontClimberWinch.h>
-#include <Commands/PushFrontClimberWinch.h>
-#include <Commands/PullBackClimberWinch.h>
-#include <Commands/PushBackClimberWinch.h>
-#include <Commands/LowerClimberArm.h>
-#include <Commands/RaiseClimberArm.h>
+#include <Commands/ManualWinchControl.h>
+#include <Commands/MoveClimberArm.h>
 #include <Commands/AngleIntake.h>
-#include <Commands/RaiseIntake.h>
-#include <Commands/LowerIntake.h>
+#include <Commands/MoveIntakeAngle.h>
 #include <Subsystems/Intake.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
+const float OI::DEAD_ZONE_AMOUNT = 0.1;
 
 OI::OI()
 {
@@ -41,8 +36,7 @@ OI::OI()
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
-	b_shooter_disengage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_DISENGAGE_BUTTON);
-	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_ENGAGE_BUTTON);
+	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOT_BUTTON);
 	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
@@ -62,8 +56,8 @@ OI::OI()
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhenPressed(new RaiseClimberArm());
-	b_retract_scaling_arm->WhenPressed(new LowerClimberArm());
+	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
+	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
@@ -71,10 +65,10 @@ OI::OI()
 	b_clear_commands->WhenPressed(new ClearCommands());
 
 	//Set Joystick Switch Events
-	s_manual_winch_enable->WhileHeld(new WinchControls());
-	s_shooter_wheels->WhileHeld(new RunShooterWheels());
-	s_intake_belt_inward->WhileHeld(new MoveIntake(Intake::INTAKE_IN));
-	s_intake_belt_outward->WhileHeld(new MoveIntake(Intake::INTAKE_OUT));
+	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
+	//s_shooter_wheels->WhileHeld(new RunShooterWheels());
+	s_intake_belt_inward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::IN));
+	s_intake_belt_outward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::OUT));
 
 	//Set Joystick Analog Dial Events
 
@@ -109,24 +103,23 @@ void OI::process()
 		intake_angle_position_process = intake_angle_curr;
 	}
 	else if(angle_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		DriverStation::ReportError("Updating Angle Dial: " + std::to_string(intake_angle_position_process));
 		switch(intake_angle_position_process) {
-				case 1:
+				case 0:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
 					break;
-				case 2:
+				case 1:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(18, 1));
 					break;
-				case 3:
+				case 2:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(36, 1));
 					break;
-				case 4:
+				case 3:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(54, 1));
 					break;
-				case 5:
+				case 4:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(72, 1));
 					break;
-				case 6:
+				case 5:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
 					break;
 				default:
@@ -144,7 +137,6 @@ void OI::process()
 		shooter_speed_position_process = shooter_speed_curr;
 	}
 	else if(speed_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		DriverStation::ReportError("Updating Speed Dial: " + std::to_string(shooter_speed_position_process));
 		shooter_speed_position = shooter_speed_position_process;
 		speed_temmie->Reset();
 		speed_temmie->Stop();
@@ -157,7 +149,6 @@ void OI::process()
 		manual_aim_position_process = manual_aim_curr;
 	}
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		DriverStation::ReportError("Updating Pitch Dial: " + std::to_string(manual_aim_position_process));
 		switch(manual_aim_position_process) {
 			case 0:
 				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));
@@ -188,25 +179,31 @@ void OI::process()
 
 float OI::getJoystickLeftY()
 {
-	return joystick_left->GetY();
+	return pow(Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT), 3);
+
 }
 
 float OI::getJoystickRightY()
 {
-	return joystick_right->GetY();
+	return pow(Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT), 3);
 }
 
 float OI::getFrontWinchY()
 {
-	return joystick_buttons1->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK);
+	return joystick_buttons2->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK);
 }
 
 float OI::getBackWinchY()
 {
-	return joystick_buttons1->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK);
+	return joystick_buttons2->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK);
 }
 
 int OI::getShooterSpeedPosition()
 {
 	return shooter_speed_position;
+}
+
+bool OI::getShooterWheelsSwitch()
+{
+	return s_shooter_wheels->Get();
 }

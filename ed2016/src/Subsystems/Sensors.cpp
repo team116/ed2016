@@ -16,18 +16,34 @@ const int Sensors::SHOOTER_WHEEL_PPR = 64;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
+	last_count = 0;
+
+	timer = new Timer();
+
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
+
+	top_shooter_wheel_tach = new Encoder(top_shooter_wheel_tach_input, nullptr);
+	bottom_shooter_wheel_tach = new Encoder(bottom_shooter_wheel_tach_input, nullptr);
 
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
-	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
-	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
-	left_shooter_wheel_tach = new Encoder(0, 1);
-	right_shooter_wheel_tach = new Encoder(2, 3);
-	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
-	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	top_shooter_wheel_tach_input = new DigitalInput(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
+	bottom_shooter_wheel_tach_input = new DigitalInput(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
+
+	top_shooter_wheel_tach_counter = new Counter(top_shooter_wheel_tach_input);
+	bottom_shooter_wheel_tach_counter = new Counter(bottom_shooter_wheel_tach_input);
+
+	top_shooter_wheel_tach_counter->SetUpSource(top_shooter_wheel_tach_input);
+	bottom_shooter_wheel_tach_counter->SetUpSource(bottom_shooter_wheel_tach_input);
+
+	top_shooter_wheel_tach_counter->ClearDownSource();
+	bottom_shooter_wheel_tach_counter->ClearDownSource();
+
+	bottom_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	top_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	left_drive_encoder = new Encoder(RobotPorts::LEFT_ENCODER_A, RobotPorts::LEFT_ENCODER_B);
@@ -35,6 +51,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
+
 
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
@@ -97,12 +114,12 @@ float Sensors::robotAngle()
 	}
 }
 
-float Sensors::speedLeftShooterWheel()
+float Sensors::speedTopShooterWheel()
 {
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return left_shooter_wheel_tach->GetRate();
+	return top_shooter_wheel_tach->GetRate();
 		}
 		else
 		{
@@ -111,12 +128,12 @@ float Sensors::speedLeftShooterWheel()
 	}
 }
 
-float Sensors::speedRightShooterWheel()
+float Sensors::speedBottomShooterWheel()
 {
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return left_shooter_wheel_tach->GetRate();
+	return bottom_shooter_wheel_tach->GetRate();
 		}
 		else
 		{
@@ -242,4 +259,14 @@ float Sensors::getSpeedLeft()
 float Sensors::getSpeedRight()
 {
 		return 0.0;
+}
+
+float Sensors::getTachRate(){
+	timer->Start();
+	timer->Reset();
+	top_shooter_wheel_tach_counter->Reset();
+	float diff_t = timer->Get();
+	float diff_c = top_shooter_wheel_tach_counter->Get();
+	float rate = diff_c / diff_t;
+	return rate;
 }
