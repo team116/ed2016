@@ -34,6 +34,10 @@ public:
 	bool areIntakeAngleEnabled();
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
+	float getTachRate();
+
+	float last_count;
+	Timer* timer;
 
 	bool isShooterHomeSwitchHorizontal();
 
