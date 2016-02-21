@@ -22,6 +22,8 @@ public:
 	void End();
 	void Interrupted();
 private:
+	static const float TIMEOUT;
+
 	Utils::VerticalDirection direction;
 	float current_angle;
 	float angle;
