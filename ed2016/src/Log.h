@@ -31,6 +31,7 @@ private:
 	FILE* log_file;
 	char filename[80];
 
+	static const bool PRINT_TO_DS;
 };
 
 #endif /* SRC_LOG_H_ */
