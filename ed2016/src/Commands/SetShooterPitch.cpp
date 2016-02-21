@@ -2,10 +2,12 @@
 #include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
 
+//Angle in degrees
 SetShooterPitch::SetShooterPitch(float angle, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
 	Requires(&*shooter_pitch);
+	SetTimeout(3.0);
 
 	pitch = angle;
 	accepted_error = error;
@@ -49,6 +51,9 @@ bool SetShooterPitch::IsFinished()
 	else if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
 	{
 		return true;
+	}
+	else if(IsTimedOut()) {
+		DriverStation::ReportError("SetShooterPitch timed out when trying to reach angle " + std::to_string(pitch) + " (Current Angle: " + std::to_string(current_angle) + ")");
 	}
 	return false;
 }

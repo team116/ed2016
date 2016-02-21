@@ -7,6 +7,7 @@
 class SetShooterPitch: public CommandBase
 {
 public:
+	//Angle in degrees
 	SetShooterPitch(float, float);
 	void Initialize();
 	void Execute();
