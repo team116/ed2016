@@ -1,14 +1,24 @@
 #include "WPILib.h"
 
+#define MOTOR_COUNT 13
+
 class Robot: public SampleRobot
 {
 	Joystick* joystick1;
 	Joystick* joystick2;
+
+	VictorSP* victors[MOTOR_COUNT];
+
 public:
 	Robot()
 	{
-		joystick1 = new Joystick(1);
-		joystick2 = new Joystick(2);
+		joystick1 = new Joystick(0);
+		joystick2 = new Joystick(1);
+
+		for (int i = 0; i < MOTOR_COUNT; ++i)
+		{
+			victors[i] = new VictorSP(i);
+		}
 	}
 
 	void RobotInit()
@@ -17,60 +27,47 @@ public:
 
 	void Autonomous() // Automatically go through every single motor, forward and backwards for 1 second
 	{
-		VictorSP* victor;
 		Timer* timer = new Timer();
 		timer->Start();
 		timer->Reset();
 
-		int port = 0;
-		victor = new VictorSP(port);
-
-		while (port <= 13 && IsAutonomous() && IsEnabled())
+		int i = 0;
+		while (i <= 13 && IsAutonomous() && IsEnabled())
 		{
 			if (timer->Get() > 1.0)
 			{
-				victor->Set(-1.0);
+				victors[i]->Set(-1.0);
 			}
 			else
 			{
-				victor->Set(1.0);
+				victors[i]->Set(1.0);
 			}
-
 
 			if (timer->Get() > 2.0)
 			{
-				++port;
-				victor->Set(0.0);
+				victors[i]->Set(0.0);
+				++i;
 				timer->Reset();
-				delete victor;
-				victor = new VictorSP(port);
 			}
 		}
-
-		delete victor;
 	}
 
 	void OperatorControl()
 	{
-		VictorSP* victors[13];
 		JoystickButton* buttons[13];
-
-		Joystick joystick1(0);
-		Joystick joystick2(1);
-		JoystickButton reverse_button(&joystick1, 11);
+		JoystickButton reverse_button(joystick1, 11);
 
 		int i;
 		for (i = 0; i < 13; ++i)
 		{
 			if (i < 10)
 			{
-				buttons[i] = new JoystickButton(&joystick1, i + 1);
+				buttons[i] = new JoystickButton(joystick1, i + 1);
 			}
 			else
 			{
-				buttons[i] = new JoystickButton(&joystick2, i - 9);
+				buttons[i] = new JoystickButton(joystick2, i - 9);
 			}
-			victors[i] = new VictorSP(i);
 		}
 
 		while (IsOperatorControl() && IsEnabled())
@@ -97,7 +94,6 @@ public:
 
 		for (i = 0; i < 13; ++i)
 		{
-			delete victors[i];
 			delete buttons[i];
 		}
 	}
