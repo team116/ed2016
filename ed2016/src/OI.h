@@ -30,8 +30,6 @@ private:
 	const static float DIAL_5;
 	const static float DIAL_6;
 
-	int GetDialPosition(float);
-
 	Joystick* joystick_left;
 	Joystick* joystick_right;
 	Joystick* joystick_buttons1;

@@ -20,6 +20,8 @@
 #include <Commands/LowerIntake.h>
 #include <Subsystems/Intake.h>
 #include <Commands/MoveIntake.h>
+#include <Commands/DriveStraight.h>
+#include <Commands/MoveIntake.h>
 
 const float OI::DIAL_TOLERANCE = 0.2;
 
@@ -53,10 +55,6 @@ OI::OI()
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
 	s_intake_belt_outward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
 
-	d_intake_angle = new AnalogTrigger(OI_Ports::INTAKE_ANGLE_DIAL);
-	d_shooter_speed = new AnalogTrigger(OI_Ports::SHOOTER_SPEED_DIAL);
-	d_manual_aim = new AnalogTrigger(OI_Ports::MANUAL_AIM_DIAL);
-
 	// Instantiate Joystick Buttons 2's Buttons
 	b_extend_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::EXTEND_SCALING_ARM_BUTTON);
 	b_retract_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::RETRACT_SCALING_ARM_BUTTON);
@@ -65,8 +63,10 @@ OI::OI()
 	s_manual_winch_enable = new JoystickButton(joystick_buttons2, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 
 	//Set Joystick Left Events
+	b_drive_align_left->WhileHeld(new DriveStraight(0, DriveStraight::GYRO));
 
 	//Set Joystick Right Events
+	b_drive_align_right->WhileHeld(new DriveStraight(1, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
 	b_extend_scaling_arm->WhenPressed(new RaiseClimberArm());
@@ -158,30 +158,6 @@ void OI::process()
 			Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
 			break;
 	}*/
-}
-
-//Returns position of dial 1-6
-int OI::GetDialPosition(float joystick_axis)
-{
-	if((joystick_axis > (DIAL_1 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_1 + DIAL_TOLERANCE))) {
-		return 1;
-	}
-	else if((joystick_axis > (DIAL_2 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_2 + DIAL_TOLERANCE))) {
-		return 2;
-	}
-	else if((joystick_axis > (DIAL_3 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_3 + DIAL_TOLERANCE))) {
-		return 3;
-	}
-	else if((joystick_axis > (DIAL_4 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_4 + DIAL_TOLERANCE))) {
-		return 4;
-	}
-	else if((joystick_axis > (DIAL_5 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_5 + DIAL_TOLERANCE))) {
-		return 5;
-	}
-	else if((joystick_axis > (DIAL_6 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_6 + DIAL_TOLERANCE))) {
-		return 6;
-	}
-	return 0;
 }
 
 float OI::getJoystickLeftY()

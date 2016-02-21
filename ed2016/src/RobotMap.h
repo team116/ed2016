@@ -55,10 +55,10 @@ namespace RobotPorts
 	const unsigned int AUTONOMOUS_NAVX_C = 5;
 
 	//motors
-	const unsigned int LEFT_FRONT_MOTOR = 0;
-	const unsigned int LEFT_BACK_MOTOR = 1;
-	const unsigned int RIGHT_FRONT_MOTOR = 2;
-	const unsigned int RIGHT_BACK_MOTOR = 3;
+	const unsigned int LEFT_FRONT_MOTOR = 1;
+	const unsigned int LEFT_BACK_MOTOR = 2;
+	const unsigned int RIGHT_FRONT_MOTOR = 3;
+	const unsigned int RIGHT_BACK_MOTOR = 4;
 
 	const unsigned int WINCH_MOTOR_FRONT = 4;
 	const unsigned int WINCH_MOTOR_BACK = 5;
