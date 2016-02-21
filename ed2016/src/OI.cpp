@@ -63,10 +63,10 @@ OI::OI()
 	s_manual_winch_enable = new JoystickButton(joystick_buttons2, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 
 	//Set Joystick Left Events
-	b_drive_align_left->WhileHeld(new DriveStraight(0, DriveStraight::GYRO));
+	b_drive_align_left->WhileHeld(new DriveStraight(DriveStraight::LEFT, DriveStraight::GYRO));
 
 	//Set Joystick Right Events
-	b_drive_align_right->WhileHeld(new DriveStraight(1, DriveStraight::GYRO));
+	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
 	b_extend_scaling_arm->WhenPressed(new RaiseClimberArm());
