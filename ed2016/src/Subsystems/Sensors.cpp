@@ -3,6 +3,9 @@
 #include <RobotMap.h>
 #include <WPILib.h>
 #include <NAVX/AHRS.h>
+#include <Subsystems/Shooter.h>
+#include <math.h>
+#include <CommandBase.h>
 
 // get access to pi const: M_PI
 #define _USE_MATH_DEFINES
@@ -244,4 +247,15 @@ float Sensors::getBottomTachRate(){
 float Sensors::getTopTachRate(){
 	return top_shooter_wheel_tach->GetRate();
 }
-
+float Sensors::getTach(){
+	float top = getTopTachRate();
+	float bottom = getBottomTachRate();
+	float difference = fabs(top - bottom);
+	if(difference >= 10){
+		if(top < 5) return getBottomTachRate();
+		if(bottom < 5) return getTopTachRate();
+	}
+	else{
+		return ((getTopTachRate() + getBottomTachRate()) / 2.0);
+	}
+}

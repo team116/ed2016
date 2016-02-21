@@ -13,11 +13,11 @@ public:
 	void UsePIDOutput(double output);
 	void InitDefaultCommand();
 
-	void setShooterSpeed(float speed);
 	void checkLimits();
 
 	float getRPMPreset(int preset); // 0 to 5
 	float getSpeedPreset(int preset); // 0 to 5
+	void setShooterSpeed(float speed);
 private:
 	MOTOR_TYPE* top_shooter_wheel;
 	MOTOR_TYPE* bottom_shooter_wheel;

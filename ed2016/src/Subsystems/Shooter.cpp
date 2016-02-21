@@ -41,7 +41,7 @@ double Shooter::ReturnPIDInput()
 {
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
-	float test =  ((CommandBase::sensors->getTopTachRate() + CommandBase::sensors->getBottomTachRate()) /2);
+	float test =  (CommandBase::sensors->getTach());
 	test = (test * 60);
 	return test;
 
@@ -78,3 +78,4 @@ void Shooter::setShooterSpeed(float speed){
 	top_shooter_wheel->Set(speed);
 	bottom_shooter_wheel->Set(speed);
 }
+
