@@ -10,6 +10,8 @@
 #include <Subsystems/Sensors.h>
 #include <cmath>
 
+const float AngleIntake::TIMEOUT = 0.05;
+
 AngleIntake::AngleIntake(float ang, float error)
 {
 	Requires(&*intake);
@@ -27,7 +29,7 @@ AngleIntake::~AngleIntake()
 
 void AngleIntake::Initialize()
 {
-
+	SetTimeout(TIMEOUT * fabs(angle - sensors->intakeAngle()));
 }
 
 void AngleIntake::Execute()
@@ -57,6 +59,10 @@ bool AngleIntake::IsFinished()
 	}
 	else if (abs(angle-current_angle) <= accepted_error)
 	{
+		return true;
+	}
+	else if(IsTimedOut()) {
+		Log::getInstance()->write(Log::WARNING_LEVEL, "AngleIntake timed out when trying to reach angle %f (Current Angle: %f)", angle, current_angle);
 		return true;
 	}
 	return false;

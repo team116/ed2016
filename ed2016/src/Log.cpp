@@ -2,8 +2,11 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
+#include <WPILib.h>
 
 Log* Log::INSTANCE = nullptr;
+
+const bool Log::PRINT_TO_DS = true;
 
 Log::Log()
 {
@@ -33,6 +36,7 @@ const Log::debugLevelType MAXIMUM_DEBUG_LEVEL = Log::TRACE_LEVEL;
 void Log::write(Log::debugLevelType debug_level, const char* str, ...)
 {
 	if(log_file && (debug_level<=MAXIMUM_DEBUG_LEVEL)){
+
 		char buffer[256];
 		va_list args;
 
@@ -48,6 +52,20 @@ void Log::write(Log::debugLevelType debug_level, const char* str, ...)
 		fputs(buffer, log_file);
 		fputs("\n", log_file);
 		fflush(log_file);
+
+		if(PRINT_TO_DS) {
+			switch(debug_level) {
+			case Log::ERROR_LEVEL:
+				DriverStation::ReportError(buffer);
+				break;
+			case Log::WARNING_LEVEL:
+				DriverStation::ReportWarning(buffer);
+				break;
+			default:
+				DriverStation::ReportWarning(buffer);
+				break;
+			}
+		}
 	}
 }
 

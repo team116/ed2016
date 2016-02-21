@@ -104,22 +104,22 @@ void OI::process()
 	}
 	else if(angle_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
 		switch(intake_angle_position_process) {
-				case 1:
+				case 0:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
 					break;
-				case 2:
+				case 1:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(18, 1));
 					break;
-				case 3:
+				case 2:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(36, 1));
 					break;
-				case 4:
+				case 3:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(54, 1));
 					break;
-				case 5:
+				case 4:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(72, 1));
 					break;
-				case 6:
+				case 5:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
 					break;
 				default:
