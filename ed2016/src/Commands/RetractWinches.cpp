@@ -33,24 +33,24 @@ void RetractWinches::Execute()
 
 	if (temmie_a->Get() < ARM_TIMEOUT && temmie_a->Get() > 0.0)
 	{
-		climber->setClimber(Climber::CLIMBER_ARM_DOWN);
+		climber->setClimber(Utils::VerticalDirection::DOWN);
 	}
 	else
 	{
-		climber->setClimber(Climber::CLIMBER_ARM_STILL);
+		climber->setClimber(Utils::VerticalDirection::V_STILL);
 	}
 
 
 
 	if (temmie_w->Get() < WINCH_TIMEOUT)
 	{
-		climber->setFrontWinchDirection(Climber::ROBOT_PULL_UP);
-		climber->setBackWinchDirection(Climber::ROBOT_PULL_UP);
+		climber->setFrontWinchDirection(Utils::VerticalDirection::UP);
+		climber->setBackWinchDirection(Utils::VerticalDirection::UP);
 	}
 	else
 	{
-		climber->setFrontWinchDirection(Climber::ROBOT_STILL);
-		climber->setBackWinchDirection(Climber::ROBOT_STILL);
+		climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+		climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 	}
 }
 
@@ -71,10 +71,10 @@ bool RetractWinches::IsFinished()
 // Called once after isFinished returns true
 void RetractWinches::End()
 {
-	climber->setClimber(Climber::CLIMBER_ARM_STILL);
+	climber->setClimber(Utils::VerticalDirection::V_STILL);
 
-	climber->setFrontWinchDirection(Climber::ROBOT_STILL);
-	climber->setBackWinchDirection(Climber::ROBOT_STILL);
+	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+	climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same

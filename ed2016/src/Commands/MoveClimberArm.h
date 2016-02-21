@@ -7,14 +7,14 @@
 class MoveClimberArm: public CommandBase
 {
 public:
-	MoveClimberArm(Climber::ClimberArmDirection direction, float speed);
+	MoveClimberArm(Utils::VerticalDirection);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
-
-	Climber::ClimberArmDirection direction;
-	float speed;
+private:
+	Utils::VerticalDirection movement_direction;
 };
+
 #endif

@@ -2,7 +2,7 @@
 #include <CommandBase.h>
 
 
-MoveIntake::MoveIntake(Intake::IntakeDirection direction)
+MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
@@ -32,7 +32,7 @@ bool MoveIntake::IsFinished()
 // Called once after isFinished returns true
 void MoveIntake::End()
 {
-	CommandBase::intake->setIntakeDirection(Intake::INTAKE_STILL);
+	CommandBase::intake->setIntakeDirection(Utils::HorizontalDirection::H_STILL);
 }
 
 // Called when another command which requires one or more of the same

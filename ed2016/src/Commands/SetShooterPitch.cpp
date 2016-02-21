@@ -3,12 +3,13 @@
 #include <Subsystems/ShooterPitch.h>
 #include <Log.h>
 
+const float SetShooterPitch::TIMEOUT = 0.05;
+
 //Angle in degrees
 SetShooterPitch::SetShooterPitch(float angle, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
 	Requires(&*shooter_pitch);
-	SetTimeout(3.0);
 
 	pitch = angle;
 	accepted_error = error;
@@ -18,7 +19,7 @@ SetShooterPitch::SetShooterPitch(float angle, float error)
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
-
+	SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
 }
 
 // Called repeatedly when this Command is scheduled to run

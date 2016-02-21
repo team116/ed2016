@@ -49,15 +49,15 @@ void ExtendScalingArm::Execute()
 
 	if(temmie->Get() < TIMEOUT_1 && shooter_ready)
 	{
-		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_1);
+		climber->setClimber(Utils::VerticalDirection::UP, SPEED_1);
 	}
 	else if(temmie->Get() < TIMEOUT_2 && shooter_ready)
 	{
-		climber->setClimber(Climber::CLIMBER_ARM_UP, SPEED_2);
+		climber->setClimber(Utils::VerticalDirection::UP, SPEED_2);
 	}
 	else
 	{
-		climber->setClimber(Climber::CLIMBER_ARM_STILL);
+		climber->setClimber(Utils::VerticalDirection::V_STILL);
 	}
 }
 
@@ -78,7 +78,7 @@ bool ExtendScalingArm::IsFinished()
 // Called once after isFinished returns true
 void ExtendScalingArm::End()
 {
-	climber->setClimber(Climber::CLIMBER_ARM_STILL);
+	climber->setClimber(Utils::VerticalDirection::V_STILL);
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 	temmie->Stop();
 }

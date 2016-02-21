@@ -35,8 +35,8 @@ namespace RobotPorts
 
 	// digital inputs
 
-	const unsigned int LEFT_SHOOTER_WHEEL_TACH = 1;
-	const unsigned int RIGHT_SHOOTER_WHEEL_TACH = 2;
+	const unsigned int TOP_SHOOTER_WHEEL_TACH = 1;
+	const unsigned int BOTTOM_SHOOTER_WHEEL_TACH = 2;
 	const unsigned int LEFT_ENCODER_A = 3;
 	const unsigned int LEFT_ENCODER_B = 4;
 	const unsigned int RIGHT_ENCODER_A = 5;
@@ -123,6 +123,19 @@ namespace OI_Ports
 
 namespace Utils
 {
+	enum VerticalDirection
+	{
+		UP,
+		V_STILL,
+		DOWN
+	};
+	enum HorizontalDirection
+	{
+		IN,
+		H_STILL,
+		OUT
+	};
+
 	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
 	float boundaryCheck(float target, float min, float max);
 }

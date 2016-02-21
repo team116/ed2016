@@ -16,6 +16,8 @@ public:
 	void Interrupted();
 
 private:
+	static const float TIMEOUT;
+
 	float pitch;
 	float accepted_error;
 

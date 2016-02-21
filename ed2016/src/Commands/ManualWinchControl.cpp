@@ -37,8 +37,8 @@ bool ManualWinchControl::IsFinished()
 // Called once after isFinished returns true
 void ManualWinchControl::End()
 {
-	climber->setFrontWinchDirection(Climber::WinchDirection::ROBOT_STILL);
-	climber->setBackWinchDirection(Climber::WinchDirection::ROBOT_STILL);
+	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+	climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same
