@@ -35,8 +35,8 @@ namespace RobotPorts
 
 	// digital inputs
 
-	const unsigned int LEFT_SHOOTER_WHEEL_TACH = 1;
-	const unsigned int RIGHT_SHOOTER_WHEEL_TACH = 2;
+	const unsigned int TOP_SHOOTER_WHEEL_TACH = 1;
+	const unsigned int BOTTOM_SHOOTER_WHEEL_TACH = 2;
 	const unsigned int LEFT_ENCODER_A = 3;
 	const unsigned int LEFT_ENCODER_B = 4;
 	const unsigned int RIGHT_ENCODER_A = 5;

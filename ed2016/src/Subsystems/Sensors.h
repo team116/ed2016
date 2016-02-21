@@ -4,6 +4,7 @@
 #include <NAVX/AHRS.h>
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
+#include <Counter.h>
 
 class Sensors: public Subsystem
 {
@@ -46,11 +47,11 @@ private:
 	AnalogInput*  intake_angle_encoder;
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
-	DigitalInput* left_shooter_wheel_tach_input;
-	DigitalInput* right_shooter_wheel_tach_input;
+	DigitalInput* top_shooter_wheel_tach_input;
+	DigitalInput* bottom_shooter_wheel_tach_input;
 	//DigitalInput* shooter_ready_to_shoot;
-	Encoder* left_shooter_wheel_tach;
-	Encoder* right_shooter_wheel_tach;
+	Counter* top_shooter_wheel_tach;
+	Counter* bottom_shooter_wheel_tach;
 
 	static const float DRIVE_WHEEL_DIAMETER; // inches
 	static const int DRIVE_WHEEL_PPR;

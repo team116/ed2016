@@ -22,12 +22,20 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
-	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
-	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
-	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
+	top_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
+	bottom_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
+
+
+	top_shooter_wheel_tach = new Counter(top_shooter_wheel_tach_input);
+	bottom_shooter_wheel_tach = new Counter(bottom_shooter_wheel_tach_input);
+	top_shooter_wheel_tach->SetUpSource(top_shooter_wheel_tach_input);
+	bottom_shooter_wheel_tach->SetUpSource(bottom_shooter_wheel_tach_input);
+	/*
+	 * left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
 	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	 */
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	left_drive_encoder = new Encoder(RobotPorts::LEFT_ENCODER_A, RobotPorts::LEFT_ENCODER_B);
@@ -35,6 +43,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
+
 
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
