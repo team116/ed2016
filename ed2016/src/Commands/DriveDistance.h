@@ -19,7 +19,6 @@ private:
 	float starting_distance;
 	float current_distance;
 	int dir;
-	Timer* timer;
 
 	bool interrupted;
 

@@ -4,8 +4,6 @@
 #include <Commands/RetractWinches.h>
 #include <Commands/AutoAim.h>
 #include <Commands/ClearCommands.h>
-#include <Commands/IntakeIn.h>
-#include <Commands/IntakeOut.h>
 #include <Commands/SetShooterPitch.h>
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
@@ -20,6 +18,8 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
+#include <Subsystems/Intake.h>
+#include <Commands/MoveIntake.h>
 
 const float OI::DIAL_TOLERANCE = 0.2;
 
@@ -39,8 +39,10 @@ OI::OI()
 	joystick_buttons2 = new Joystick(OI_Ports::BUTTONS_JOYSTICK2);
 
 	//Instantiate Joystick Left Buttons
+	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
 
 	//Instantiate Joystick Right Buttons
+	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
@@ -67,8 +69,8 @@ OI::OI()
 	//Set Joystick Right Events
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhenPressed(new IntakeIn());
-	b_retract_scaling_arm->WhenPressed(new IntakeOut());
+	b_extend_scaling_arm->WhenPressed(new RaiseClimberArm());
+	b_retract_scaling_arm->WhenPressed(new LowerClimberArm());
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
@@ -78,8 +80,8 @@ OI::OI()
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new WinchControls());
 	s_shooter_wheels->WhileHeld(new RunShooterWheels(0.75));
-	s_intake_belt_inward->WhileHeld(new IntakeIn());
-	s_intake_belt_outward->WhileHeld(new IntakeOut());
+	s_intake_belt_inward->WhileHeld(new MoveIntake(Intake::INTAKE_IN));
+	s_intake_belt_outward->WhileHeld(new MoveIntake(Intake::INTAKE_OUT));
 
 	//Set Joystick Analog Dial Events
 
@@ -88,9 +90,9 @@ OI::OI()
 
 void OI::process()
 {
-	int manual_aim = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0)a
+	int manual_aim = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0);
 
-	switch() {
+	switch(manual_aim) {
 		case 0:
 			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));
 			break;

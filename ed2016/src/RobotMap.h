@@ -30,6 +30,9 @@
 
 namespace RobotPorts
 {
+	//PDP
+	const unsigned int PDP = 0;
+
 	// digital inputs
 
 	const unsigned int LEFT_SHOOTER_WHEEL_TACH = 1;
@@ -87,15 +90,19 @@ namespace OI_Ports
 	const unsigned int RIGHT_JOYSTICK = 1;
 	const unsigned int BUTTONS_JOYSTICK1 = 2;
 	const unsigned int BUTTONS_JOYSTICK2 = 3;
+	const unsigned int B_DRIVE_ALIGN_BUTTON_LEFT = 2;
+	const unsigned int B_DRVIE_ALIGN_BUTTON_RIGHT = 2;
 
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
 	const unsigned int SHOOTER_DISENGAGE_BUTTON = 2;
 	const unsigned int SHOOTER_ENGAGE_BUTTON = 3;
 	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
-	const unsigned SHOOTER_WHEELS_SWITCH = 5;
+
 	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
 	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
+
+	const unsigned SHOOTER_WHEELS_SWITCH = 9;
 
 	// buttons joystick 1, analog
 	const unsigned int MANUAL_AIM_DIAL = 0; // X
@@ -117,6 +124,8 @@ namespace OI_Ports
 namespace Utils
 {
 	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
+	float boundaryCheck(float target, float min, float max);
 }
+
 
 #endif

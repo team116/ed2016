@@ -16,6 +16,8 @@ public:
 	void setLeft(float speed);
 	void setRight(float speed);
 	void setStraight(float speed);
+	float getLeft();
+	float getRight();
 
 	void useFrontOrientation(bool front);
 

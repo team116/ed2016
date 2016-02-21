@@ -63,6 +63,8 @@ private:
 	JoystickButton* s_shooter_wheels;
 	JoystickButton* s_intake_belt_inward;
 	JoystickButton* s_intake_belt_outward;
+	JoystickButton* b_drive_align_left;
+	JoystickButton* b_drive_align_right;
 
 	AnalogTrigger* d_intake_angle;
 	AnalogTrigger* d_shooter_speed;

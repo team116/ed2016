@@ -33,12 +33,15 @@ public:
 	WinchDirection getFrontWinchDirection();
 	WinchDirection getBackWinchDirection();
 
+	bool isWinchCurrentSpiking();
+
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
 private:
 
 	const static float WINCH_SPEED;
+	const static float CURRENT_SPIKE_THRESHHOLD;
 
 	ClimberArmDirection climber_arm_direction;
 	WinchDirection front_winch_direction;
@@ -48,6 +51,7 @@ private:
 	MOTOR_TYPE* front_winch;
 	MOTOR_TYPE* back_winch;
 
+	PowerDistributionPanel* pdp;
 
 };
 
