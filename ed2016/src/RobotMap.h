@@ -1,3 +1,4 @@
+
 #ifndef ROBOTMAP_H
 #define ROBOTMAP_H
 
@@ -89,7 +90,7 @@ namespace OI_Ports
 	const unsigned int BUTTONS_JOYSTICK1 = 2;
 	const unsigned int BUTTONS_JOYSTICK2 = 3;
 	const unsigned int B_DRIVE_ALIGN_BUTTON_LEFT = 2;
-	const unsigned int B_DRVIE_ALIGN_BUTTON_RIGHT = 2;
+	const unsigned int B_DRIVE_ALIGN_BUTTON_RIGHT = 2;
 
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
