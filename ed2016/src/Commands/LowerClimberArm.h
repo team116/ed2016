@@ -1,8 +1,8 @@
 #ifndef LowerClimberArm_H
 #define LowerClimberArm_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <WPILib.h>
 
 class LowerClimberArm: public CommandBase
 {
