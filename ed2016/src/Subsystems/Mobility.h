@@ -22,10 +22,10 @@ public:
 	void useFrontOrientation(bool front);
 
 private:
-	MOTOR_TYPE* leftFront;
-	MOTOR_TYPE* leftBack;
-	MOTOR_TYPE* rightFront;
-	MOTOR_TYPE* rightBack;
+	SpeedController* leftFront;
+	SpeedController* leftBack;
+	SpeedController* rightFront;
+	SpeedController* rightBack;
 
 	bool front_orientation;
 

@@ -3,8 +3,8 @@
 
 Intake::Intake() : Subsystem("Intake")
 {
-	intake_roller = new MOTOR_TYPE(RobotPorts::INTAKE_ROLLER_MOTOR);
-	intake_angle = new MOTOR_TYPE(RobotPorts::INTAKE_ANGLE_MOTOR);
+	intake_roller = Utils::constructMotor(RobotPorts::INTAKE_ROLLER_MOTOR);
+	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
 }
 
 void Intake::InitDefaultCommand()

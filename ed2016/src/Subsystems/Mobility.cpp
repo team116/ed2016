@@ -4,10 +4,10 @@
 
 Mobility::Mobility() : Subsystem("Mobility")
 {
-	leftFront = new MOTOR_TYPE(RobotPorts::LEFT_FRONT_MOTOR);
-	leftBack = new MOTOR_TYPE(RobotPorts::LEFT_BACK_MOTOR);
-	rightFront = new MOTOR_TYPE(RobotPorts::RIGHT_FRONT_MOTOR);
-	rightBack = new MOTOR_TYPE(RobotPorts::RIGHT_BACK_MOTOR);
+	leftFront = Utils::constructMotor(RobotPorts::LEFT_FRONT_MOTOR);
+	leftBack = Utils::constructMotor(RobotPorts::LEFT_BACK_MOTOR);
+	rightFront = Utils::constructMotor(RobotPorts::RIGHT_FRONT_MOTOR);
+	rightBack = Utils::constructMotor(RobotPorts::RIGHT_BACK_MOTOR);
 
 	front_orientation = true; // just to get rid of uninitialized warning
 	useFrontOrientation(true); // this is the actual initializer

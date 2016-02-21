@@ -30,8 +30,8 @@ public:
 	void setIntakeAngleDirection(IntakeAngleDirection);
 
 private:
-	MOTOR_TYPE* intake_roller;
-	MOTOR_TYPE* intake_angle;
+	SpeedController* intake_roller;
+	SpeedController* intake_angle;
 
 };
 

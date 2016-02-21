@@ -24,8 +24,8 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
 	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
 	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
-	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
-	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
+	left_shooter_wheel_tach = new Encoder(0, 1);
+	right_shooter_wheel_tach = new Encoder(2, 3);
 	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
@@ -77,15 +77,20 @@ float Sensors::shooterAngle()
 float Sensors::robotAngle()
 {
 	if(robot_angle_enabled)
-{
-	#if ROBOT_TYPE == ANDERSON_BOT
-		return navx->GetYaw();
-	#elif ROBOT_TYPE == ED2016_BOT
-		return navx->GetRoll();
-	#else
-		return 0.0;
-	#endif
-}
+	{
+		if (Utils::getRobotType() == Utils::ANDERSON_BOT)
+		{
+			return navx->GetYaw();
+		}
+		else if (Utils::getRobotType() == Utils::ED2016_BOT)
+		{
+			return navx->GetRoll();
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
 	else
 	{
 		return 0.0;

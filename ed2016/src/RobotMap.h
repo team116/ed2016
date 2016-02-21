@@ -20,14 +20,6 @@
 //const int RANGE_FINDER_PORT = 1;
 //const int RANGE_FINDER_MODULE = 1;
 
-#define ROBOT_TYPE ANDERSON_BOT
-
-#if ROBOT_TYPE == ANDERSON_BOT
-#define MOTOR_TYPE CANTalon
-#elif ROBOT_TYPE == ED2016_BOT
-#define MOTOR_TYPE VictorSP
-#endif
-
 namespace RobotPorts
 {
 	//PDP
@@ -55,10 +47,10 @@ namespace RobotPorts
 	const unsigned int AUTONOMOUS_NAVX_C = 5;
 
 	//motors
-	const unsigned int LEFT_FRONT_MOTOR = 1;
-	const unsigned int LEFT_BACK_MOTOR = 2;
-	const unsigned int RIGHT_FRONT_MOTOR = 3;
-	const unsigned int RIGHT_BACK_MOTOR = 4;
+	const unsigned int LEFT_FRONT_MOTOR = 0;
+	const unsigned int LEFT_BACK_MOTOR = 1;
+	const unsigned int RIGHT_FRONT_MOTOR = 2;
+	const unsigned int RIGHT_BACK_MOTOR = 3;
 
 	const unsigned int WINCH_MOTOR_FRONT = 4;
 	const unsigned int WINCH_MOTOR_BACK = 5;
@@ -70,11 +62,9 @@ namespace RobotPorts
 	const unsigned int SHOOTER_PUSH_MOTOR = 9;
 
 	//NAVX
-	const unsigned int INTAKE_ROLLER_MOTOR = 11;//N0
-	const unsigned int INTAKE_ANGLE_MOTOR = 12;//N1
-	const unsigned int SHOOTER_AZIMUTH_MOTOR = 13;//N2
-	const unsigned int MANIPULATOR_ARM_MOTOR = 14;//N3
-	const unsigned int CLIMBER_ARMED_MOTOR = 10;//N4
+	const unsigned int INTAKE_ROLLER_MOTOR = 10;//N0
+	const unsigned int INTAKE_ANGLE_MOTOR = 11;//N1
+	const unsigned int CLIMBER_ARMED_MOTOR = 12;//N2
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
@@ -123,6 +113,14 @@ namespace OI_Ports
 
 namespace Utils
 {
+	enum RobotType
+	{
+		ANDERSON_BOT,
+		ED2016_BOT
+	};
+	RobotType getRobotType();
+	SpeedController* constructMotor(unsigned int port);
+
 	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
 	float boundaryCheck(float target, float min, float max);
 }
