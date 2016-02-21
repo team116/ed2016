@@ -23,15 +23,6 @@
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
 
-const float OI::DIAL_TOLERANCE = 0.2;
-
-const float OI::DIAL_1 = 1.0;
-const float OI::DIAL_2 = 0.6;
-const float OI::DIAL_3 = 0.2;
-const float OI::DIAL_4 = -0.2;
-const float OI::DIAL_5 = -0.6;
-const float OI::DIAL_6 = -1.0;
-
 OI::OI()
 {
 	//Instantiate Joysticks
