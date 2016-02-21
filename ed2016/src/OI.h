@@ -4,6 +4,7 @@
 #include <Joystick.h>
 #include <Subsystems/Intake.h>
 #include <WPILib.h>
+#include <Log.h>
 
 class OI
 {
@@ -58,5 +59,19 @@ private:
 	AnalogTrigger* d_intake_angle;
 	AnalogTrigger* d_shooter_speed;
 	AnalogTrigger* d_manual_aim;
+
+	static const float DIAL_UPDATE_TIME;
+
+	int intake_angle_position_process;
+	int shooter_speed_position_process;
+	int manual_aim_position_process;
+
+	int shooter_speed_position;
+
+	Timer* angle_temmie;
+	Timer* speed_temmie;
+	Timer* aim_temmie;
+
+	Log* log;
 };
 #endif

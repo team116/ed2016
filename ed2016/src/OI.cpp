@@ -23,6 +23,8 @@
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
 
+const float OI::DIAL_UPDATE_TIME = 0.05;
+
 OI::OI()
 {
 	//Instantiate Joysticks
@@ -76,79 +78,112 @@ OI::OI()
 
 	//Set Joystick Analog Dial Events
 
-	// Process operator interface input here.
+	//Set any other variables here
+	intake_angle_position_process = -1;
+	shooter_speed_position_process = -1;
+	manual_aim_position_process = -1;
+
+	shooter_speed_position = 0;
+
+	angle_temmie = new Timer();
+	speed_temmie = new Timer();
+	aim_temmie = new Timer();
+
+	angle_temmie->Start();
+	speed_temmie->Start();
+	aim_temmie->Start();
+
+	log = Log::getInstance();
 }
 
 void OI::process()
 {
-	int manual_aim = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0);
+	int intake_angle_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL) + 1.0, 6, 2.0);
+	int shooter_speed_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0, 6, 2.0);
+	int manual_aim_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0);
 
-	switch(manual_aim) {
-		case 0:
-			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));
-			break;
-		case 1:
-			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(15, 1));
-			break;
-		case 2:
-			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(30, 1));
-			break;
-		case 3:
-			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(45, 1));
-			break;
-		case 4:
-			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(60, 1));
-			break;
-		case 5:
-			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(75, 1));
-			break;
-		default:
-			DriverStation::ReportWarning("Manual Aim Dial invalid position: " +
-					std::to_string(Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0)) + "\n");
-			break;
+	//Intake Angle Dial
+	if(intake_angle_curr != intake_angle_position_process) {
+		angle_temmie->Reset();
+		angle_temmie->Start();
+		intake_angle_position_process = intake_angle_curr;
+	}
+	else if(angle_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
+		DriverStation::ReportError("Updating Angle Dial: " + std::to_string(intake_angle_position_process));
+		switch(intake_angle_position_process) {
+				case 1:
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
+					break;
+				case 2:
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(18, 1));
+					break;
+				case 3:
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(36, 1));
+					break;
+				case 4:
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(54, 1));
+					break;
+				case 5:
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(72, 1));
+					break;
+				case 6:
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
+					break;
+				default:
+					log->write(Log::WARNING_LEVEL, "Intake angle dial invalid position: %d",  intake_angle_position_process);
+					break;
+			}
+		angle_temmie->Reset();
+		angle_temmie->Stop();
 	}
 
-	/*switch(GetDialPosition(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL))) {
-		case 1:
-			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0));
-			break;
-		case 2:
-			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.2));
-			break;
-		case 3:
-			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.4));
-			break;
-		case 4:
-			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.6));
-			break;
-		case 5:
-			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.8));
-			break;
-		case 6:
-			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(1.0));
-			break;
+	//Shooter Speed Dial
+	if(shooter_speed_curr != shooter_speed_position_process) {
+		speed_temmie->Reset();
+		speed_temmie->Start();
+		shooter_speed_position_process = shooter_speed_curr;
+	}
+	else if(speed_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
+		DriverStation::ReportError("Updating Speed Dial: " + std::to_string(shooter_speed_position_process));
+		shooter_speed_position = shooter_speed_position_process;
+		speed_temmie->Reset();
+		speed_temmie->Stop();
 	}
 
-	switch(GetDialPosition(joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL))) {
-		case 1:
-			Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
-			break;
-		case 2:
-			Scheduler::GetInstance()->AddCommand(new AngleIntake(18, 1));
-			break;
-		case 3:
-			Scheduler::GetInstance()->AddCommand(new AngleIntake(36, 1));
-			break;
-		case 4:
-			Scheduler::GetInstance()->AddCommand(new AngleIntake(54, 1));
-			break;
-		case 5:
-			Scheduler::GetInstance()->AddCommand(new AngleIntake(72, 1));
-			break;
-		case 6:
-			Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
-			break;
-	}*/
+	//Shooter Pitch Dial
+	if(manual_aim_curr != manual_aim_position_process) {
+		aim_temmie->Reset();
+		aim_temmie->Start();
+		manual_aim_position_process = manual_aim_curr;
+	}
+	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
+		DriverStation::ReportError("Updating Pitch Dial: " + std::to_string(manual_aim_position_process));
+		switch(manual_aim_position_process) {
+			case 0:
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));
+				break;
+			case 1:
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(15, 1));
+				break;
+			case 2:
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(30, 1));
+				break;
+			case 3:
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(45, 1));
+				break;
+			case 4:
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(60, 1));
+				break;
+			case 5:
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(75, 1));
+				break;
+			default:
+				log->write(Log::WARNING_LEVEL, "Manual aim dial invalid position: %d", manual_aim_position_process);
+				break;
+		}
+		aim_temmie->Reset();
+		aim_temmie->Stop();
+	}
 }
 
 float OI::getJoystickLeftY()
@@ -173,6 +208,5 @@ float OI::getBackWinchY()
 
 int OI::getShooterSpeedPosition()
 {
-	// assumes GetRawAxis returns in the range [0.0, 1.0]
-	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0, 6, 2.0);
+	return shooter_speed_position;
 }

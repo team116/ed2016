@@ -1,6 +1,7 @@
 #include <Commands/SetShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Log.h>
 
 //Angle in degrees
 SetShooterPitch::SetShooterPitch(float angle, float error)
@@ -53,7 +54,8 @@ bool SetShooterPitch::IsFinished()
 		return true;
 	}
 	else if(IsTimedOut()) {
-		DriverStation::ReportError("SetShooterPitch timed out when trying to reach angle " + std::to_string(pitch) + " (Current Angle: " + std::to_string(current_angle) + ")");
+		Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
+		return true;
 	}
 	return false;
 }
