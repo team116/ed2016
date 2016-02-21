@@ -1,11 +1,11 @@
-#include "ShooterPID.h"
 #include "../RobotMap.h"
 #include "SmartDashboard/SmartDashboard.h"
 #include "LiveWindow/LiveWindow.h"
 #include <Subsystems/Sensors.h>
 #include <CommandBase.h>
+#include <Subsystems/Shooter.h>
 
-const float ShooterPID::RPM_PRESETS[] = {
+const float Shooter::RPM_PRESETS[] = {
 	666.67,
 	1333.34,
 	2000.01,
@@ -14,7 +14,7 @@ const float ShooterPID::RPM_PRESETS[] = {
 	4000.0
 };
 
-const float ShooterPID::SPEED_PRESETS[] = {
+const float Shooter::SPEED_PRESETS[] = {
 	0.1666666666666,
 	0.3333333333333,
 	0.5,
@@ -22,11 +22,13 @@ const float ShooterPID::SPEED_PRESETS[] = {
 	0.8333333333333,
 	1.0
 };
-	ShooterPID::ShooterPID() :
+	Shooter::Shooter() :
 		PIDSubsystem("ShooterPID", 1.0, 0.0, 0.0)
 {
 	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::TOP_SHOOTER_MOTOR);
 	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::BOTTOM_SHOOTER_MOTOR);
+	SetInputRange(0.0, 4000.0);
+	SetOutputRange(0.0, 1.0);
 
 	// Use these to get going:
 	// SetSetpoint() -  Sets where the PID controller should move the system
@@ -34,16 +36,17 @@ const float ShooterPID::SPEED_PRESETS[] = {
 	// Enable() - Enables the PID controller.
 }
 
-double ShooterPID::ReturnPIDInput()
+double Shooter::ReturnPIDInput()
 {
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
-	return ((CommandBase::sensors->getTopTachRate() + CommandBase::sensors->getBottomTachRate()) /2);
+	float test =  ((CommandBase::sensors->getTopTachRate() + CommandBase::sensors->getBottomTachRate()) /2);
+	test = (test * 60);
+	return test;
 
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-	return 0;
 }
-void ShooterPID::UsePIDOutput(double output)
+void Shooter::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
@@ -54,23 +57,23 @@ void ShooterPID::UsePIDOutput(double output)
 
 }
 
-void ShooterPID::InitDefaultCommand()
+void Shooter::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//setDefaultCommand(new MySpecialCommand());
 }
 
-float ShooterPID::getRPMPreset(int preset)
+float Shooter::getRPMPreset(int preset)
 {
 	return RPM_PRESETS[preset];
 }
 
-float ShooterPID::getSpeedPreset(int preset)
+float Shooter::getSpeedPreset(int preset)
 {
 	return SPEED_PRESETS[preset];
 }
 
-void ShooterPID::setShooterSpeed(float speed){
+void Shooter::setShooterSpeed(float speed){
 	top_shooter_wheel->Set(speed);
 	bottom_shooter_wheel->Set(speed);
 }

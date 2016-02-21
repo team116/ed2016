@@ -51,7 +51,7 @@ OI::OI()
 	b_auto_climber_deploy = new JoystickButton(joystick_buttons2, OI_Ports::AUTO_CLIMBER_DEPLOY_BUTTON);
 	s_manual_winch_enable = new JoystickButton(joystick_buttons2, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
-	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
+	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRIVE_ALIGN_BUTTON_RIGHT);
 	//Set Joystick Left Events
 	b_drive_align_left->WhileHeld(new DriveStraight(0, DriveStraight::GYRO));
 

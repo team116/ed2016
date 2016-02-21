@@ -6,8 +6,8 @@
  */
 
 #include <Commands/AutoAim.h>
-#include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Subsystems/Shooter.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Mobility.h>

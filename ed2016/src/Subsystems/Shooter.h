@@ -1,14 +1,14 @@
-#ifndef ShooterPID_H
-#define ShooterPID_H
+#ifndef Shooter_H
+#define Shooter_H
 
 #include "Commands/PIDSubsystem.h"
 #include "WPILib.h"
 #include <RobotMap.h>
 
-class ShooterPID: public PIDSubsystem
+class Shooter: public PIDSubsystem
 {
 public:
-	ShooterPID();
+	Shooter();
 	double ReturnPIDInput();
 	void UsePIDOutput(double output);
 	void InitDefaultCommand();

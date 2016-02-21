@@ -12,7 +12,7 @@
 #include <Subsystems/Intake.h>
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Sensors.h>
-#include <Subsystems/ShooterPID.h>
+#include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
 
 /**
@@ -30,7 +30,7 @@ public:
 	static std::unique_ptr<Climber> climber;
 	static std::unique_ptr<Mobility> mobility;
 	static std::unique_ptr<Sensors> sensors;
-	static std::unique_ptr<ShooterPID> shooter;
+	static std::unique_ptr<Shooter> shooter;
 	static std::unique_ptr<ShooterPitch> shooter_pitch;
 	static std::unique_ptr<HolderWheel> holder_wheel;
 	static std::unique_ptr<Cameras> cameras;

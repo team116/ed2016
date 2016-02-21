@@ -237,5 +237,11 @@ float Sensors::getSpeedLeft()
 float Sensors::getSpeedRight()
 {
 		return 0.0;
->>>>>>> master
 }
+float Sensors::getBottomTachRate(){
+	return bottom_shooter_wheel_tach->GetRate();
+}
+float Sensors::getTopTachRate(){
+	return top_shooter_wheel_tach->GetRate();
+}
+
