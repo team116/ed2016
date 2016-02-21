@@ -44,13 +44,13 @@ void RetractWinches::Execute()
 
 	if (temmie_w->Get() < WINCH_TIMEOUT)
 	{
-		climber->setFrontWinch(Climber::ROBOT_PULL_UP);
-		climber->setBackWinch(Climber::ROBOT_PULL_UP);
+		climber->setFrontWinchDirection(Climber::ROBOT_PULL_UP);
+		climber->setBackWinchDirection(Climber::ROBOT_PULL_UP);
 	}
 	else
 	{
-		climber->setFrontWinch(Climber::ROBOT_STILL);
-		climber->setBackWinch(Climber::ROBOT_STILL);
+		climber->setFrontWinchDirection(Climber::ROBOT_STILL);
+		climber->setBackWinchDirection(Climber::ROBOT_STILL);
 	}
 }
 
@@ -73,8 +73,8 @@ void RetractWinches::End()
 {
 	climber->setClimber(Climber::CLIMBER_ARM_STILL);
 
-	climber->setFrontWinch(Climber::ROBOT_STILL);
-	climber->setBackWinch(Climber::ROBOT_STILL);
+	climber->setFrontWinchDirection(Climber::ROBOT_STILL);
+	climber->setBackWinchDirection(Climber::ROBOT_STILL);
 }
 
 // Called when another command which requires one or more of the same

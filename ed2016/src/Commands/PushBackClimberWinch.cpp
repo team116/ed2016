@@ -17,7 +17,7 @@ void PushBackClimberWinch::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void PushBackClimberWinch::Execute()
 {
-	climber->setBackWinch(Climber::WinchDirection::ROBOT_PULL_UP);
+	climber->setBackWinchDirection(Climber::WinchDirection::ROBOT_PULL_UP);
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -29,7 +29,7 @@ bool PushBackClimberWinch::IsFinished()
 // Called once after isFinished returns true
 void PushBackClimberWinch::End()
 {
-	climber->setBackWinch(Climber::WinchDirection::ROBOT_STILL);
+	climber->setBackWinchDirection(Climber::WinchDirection::ROBOT_STILL);
 }
 
 // Called when another command which requires one or more of the same

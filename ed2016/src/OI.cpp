@@ -8,7 +8,7 @@
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
-#include <Commands/WinchControls.h>
+#include <Commands/ManualWinchControl.h>
 #include <Commands/PullFrontClimberWinch.h>
 #include <Commands/PushFrontClimberWinch.h>
 #include <Commands/PullBackClimberWinch.h>
@@ -71,7 +71,7 @@ OI::OI()
 	b_clear_commands->WhenPressed(new ClearCommands());
 
 	//Set Joystick Switch Events
-	s_manual_winch_enable->WhileHeld(new WinchControls());
+	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
 	s_shooter_wheels->WhileHeld(new RunShooterWheels());
 	s_intake_belt_inward->WhileHeld(new MoveIntake(Intake::INTAKE_IN));
 	s_intake_belt_outward->WhileHeld(new MoveIntake(Intake::INTAKE_OUT));
@@ -198,12 +198,12 @@ float OI::getJoystickRightY()
 
 float OI::getFrontWinchY()
 {
-	return joystick_buttons1->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK);
+	return joystick_buttons2->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK);
 }
 
 float OI::getBackWinchY()
 {
-	return joystick_buttons1->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK);
+	return joystick_buttons2->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK);
 }
 
 int OI::getShooterSpeedPosition()
