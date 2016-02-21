@@ -5,6 +5,7 @@
 #include <CommandBase.h>
 #include <Subsystems/Shooter.h>
 
+
 const float Shooter::RPM_PRESETS[] = {
 	666.67,
 	1333.34,
@@ -29,7 +30,7 @@ const float Shooter::SPEED_PRESETS[] = {
 	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::BOTTOM_SHOOTER_MOTOR);
 	SetInputRange(0.0, 4000.0);
 	SetOutputRange(0.0, 1.0);
-
+	SetSetpoint(Shooter::RPM_PRESETS[CommandBase::oi->getShooterSpeedPosition()]);
 	// Use these to get going:
 	// SetSetpoint() -  Sets where the PID controller should move the system
 	//                  to
