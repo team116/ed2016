@@ -103,7 +103,7 @@ void OI::process()
 			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(75, 1));
 			break;
 		default:
-			DriverStation::ReportWarning("Manual Aim Dial invalid position: " +
+			DriverStation::ReportError("Manual Aim Dial invalid position: " +
 					std::to_string(Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0)) + "\n");
 			break;
 	}
@@ -173,6 +173,7 @@ float OI::getBackWinchY()
 
 int OI::getShooterSpeedPosition()
 {
-	// assumes GetRawAxis returns in the range [0.0, 1.0]
-	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0, 6, 2.0);
+	// needs to convert the return of GetRawAxis from [-1.0, 1.0] to [0.0, 2.0]
+	// also needs to flip the switch so that the higher the voltage, the slower the shooter
+	return Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0), 6, 2.0);
 }
