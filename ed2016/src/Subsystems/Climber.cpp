@@ -53,39 +53,46 @@ void Climber::setClimber(ClimberArmDirection direction, float speed) //function 
 		climber_armed_motor->Set(0.0);
 	}
 }
-void Climber::setFrontWinch(WinchDirection direction)
+void Climber::setFrontWinchDirection(WinchDirection direction)
 {
 	front_winch_direction = direction;
 	if (direction == WinchDirection::ROBOT_PULL_UP)
 	{
-		front_winch->Set(WINCH_SPEED);
+		setFrontWinchSpeed(WINCH_SPEED);
 	}
 	else if (direction == WinchDirection::ROBOT_PULL_DOWN)
 	{
-		front_winch->Set(-WINCH_SPEED);
+		setFrontWinchSpeed(-WINCH_SPEED);
 	}
 	else
 	{
-		front_winch->Set(0.0);
+		setFrontWinchSpeed(0.0);
 	}
 }
 
-void Climber::setBackWinch (WinchDirection direction)
+void Climber::setBackWinchDirection (WinchDirection direction)
 {
 	back_winch_direction = direction;
 	if (direction == WinchDirection::ROBOT_PULL_UP)
 	{
-		back_winch->Set(WINCH_SPEED);
+		setBackWinchSpeed(WINCH_SPEED);
 	}
 	else if (direction == WinchDirection::ROBOT_PULL_DOWN)
 	{
-		back_winch->Set(WINCH_SPEED);
+		setBackWinchSpeed(-WINCH_SPEED);
 	}
 	else
 	{
-		back_winch->Set(0.0);
+		setBackWinchSpeed(0.0);
 	}
+}
 
+void Climber::setFrontWinchSpeed(float speed) {
+	front_winch->Set(Utils::boundaryCheck(speed, -1.0, 1.0));
+}
+
+void Climber::setBackWinchSpeed(float speed) {
+	back_winch->Set(Utils::boundaryCheck(speed, -1.0, 1.0));
 }
 
 bool Climber::isWinchCurrentSpiking()

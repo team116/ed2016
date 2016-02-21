@@ -27,8 +27,11 @@ public:
 			ROBOT_PULL_DOWN,
 			ROBOT_STILL
 	};
-	void setFrontWinch (WinchDirection direction);
-	void setBackWinch (WinchDirection direction);
+	void setFrontWinchDirection (WinchDirection direction);
+	void setBackWinchDirection (WinchDirection direction);
+
+	void setFrontWinchSpeed(float);
+	void setBackWinchSpeed(float);
 
 	WinchDirection getFrontWinchDirection();
 	WinchDirection getBackWinchDirection();
