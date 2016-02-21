@@ -1,43 +1,41 @@
-#include <Commands/MoveIntake.h>
-#include <CommandBase.h>
+#include "MoveFrontWinch.h"
 
-
-MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
+MoveFrontWinch::MoveFrontWinch(Utils::VerticalDirection dir)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires (&*intake);
+	Requires(&*climber);
 
-	 this->direction = direction;
+	movement_direction = dir;
 }
 
 // Called just before this Command runs the first time
-void MoveIntake::Initialize()
+void MoveFrontWinch::Initialize()
 {
-
+	climber->setFrontWinchDirection(movement_direction);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveIntake::Execute()
+void MoveFrontWinch::Execute()
 {
-	CommandBase::intake->setIntakeDirection(direction);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveIntake::IsFinished()
+bool MoveFrontWinch::IsFinished()
 {
 	return false;
 }
 
 // Called once after isFinished returns true
-void MoveIntake::End()
+void MoveFrontWinch::End()
 {
-	CommandBase::intake->setIntakeDirection(Utils::HorizontalDirection::H_STILL);
+	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveIntake::Interrupted()
+void MoveFrontWinch::Interrupted()
 {
 	End();
 }

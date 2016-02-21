@@ -9,15 +9,9 @@
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
 #include <Commands/ManualWinchControl.h>
-#include <Commands/PullFrontClimberWinch.h>
-#include <Commands/PushFrontClimberWinch.h>
-#include <Commands/PullBackClimberWinch.h>
-#include <Commands/PushBackClimberWinch.h>
-#include <Commands/LowerClimberArm.h>
-#include <Commands/RaiseClimberArm.h>
+#include <Commands/MoveClimberArm.h>
 #include <Commands/AngleIntake.h>
-#include <Commands/RaiseIntake.h>
-#include <Commands/LowerIntake.h>
+#include <Commands/MoveIntakeAngle.h>
 #include <Subsystems/Intake.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
@@ -62,8 +56,8 @@ OI::OI()
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
-	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
+	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
+	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
@@ -73,8 +67,8 @@ OI::OI()
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
 	s_shooter_wheels->WhileHeld(new RunShooterWheels());
-	s_intake_belt_inward->WhileHeld(new MoveIntake(Intake::INTAKE_IN));
-	s_intake_belt_outward->WhileHeld(new MoveIntake(Intake::INTAKE_OUT));
+	s_intake_belt_inward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::IN));
+	s_intake_belt_outward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::OUT));
 
 	//Set Joystick Analog Dial Events
 

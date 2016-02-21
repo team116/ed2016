@@ -16,7 +16,7 @@ AngleIntake::AngleIntake(float ang, float error)
 	current_angle = 0.0;
 	angle = ang;
 	accepted_error = error;
-	direction = Intake::INTAKE_STOP;
+	direction = Utils::VerticalDirection::V_STILL;
 	interrupted = false;
 }
 
@@ -36,15 +36,15 @@ void AngleIntake::Execute()
 
 	if (angle > current_angle)
 	{
-		direction = Intake::INTAKE_UP;
+		direction = Utils::VerticalDirection::UP;
 	}
 	else if (angle < current_angle)
 	{
-		direction = Intake::INTAKE_DOWN;
+		direction = Utils::VerticalDirection::DOWN;
 	}
 	else
 	{
-		direction = Intake::INTAKE_STOP;
+		direction = Utils::VerticalDirection::V_STILL;
 	}
 	intake->setIntakeAngleDirection(direction);
 }
@@ -64,7 +64,7 @@ bool AngleIntake::IsFinished()
 
 void AngleIntake::End()
 {
-	intake->setIntakeAngleDirection(Intake::INTAKE_STOP);
+	intake->setIntakeAngleDirection(Utils::VerticalDirection::V_STILL);
 }
 
 void AngleIntake::Interrupted()

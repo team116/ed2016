@@ -7,14 +7,14 @@
 class MoveIntake: public CommandBase
 {
 public:
-	MoveIntake(Intake::IntakeDirection direction);
+	MoveIntake(Utils::HorizontalDirection direction);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 
-	Intake::IntakeDirection direction;
+	Utils::HorizontalDirection direction;
 };
 
 #endif

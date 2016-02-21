@@ -123,6 +123,19 @@ namespace OI_Ports
 
 namespace Utils
 {
+	enum VerticalDirection
+	{
+		UP,
+		V_STILL,
+		DOWN
+	};
+	enum HorizontalDirection
+	{
+		IN,
+		H_STILL,
+		OUT
+	};
+
 	int voltageConversion(const float voltage, const int voltage_levels, const float max_voltage);
 	float boundaryCheck(float target, float min, float max);
 }

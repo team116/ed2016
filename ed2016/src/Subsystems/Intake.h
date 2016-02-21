@@ -13,21 +13,8 @@ public:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
-	enum IntakeDirection
-	{
-		INTAKE_IN,
-		INTAKE_STILL,
-		INTAKE_OUT
-	};
-
-	enum IntakeAngleDirection
-	{
-		INTAKE_UP,
-		INTAKE_STOP,
-		INTAKE_DOWN
-	};
-	void setIntakeDirection(IntakeDirection);
-	void setIntakeAngleDirection(IntakeAngleDirection);
+	void setIntakeDirection(Utils::HorizontalDirection);
+	void setIntakeAngleDirection(Utils::VerticalDirection);
 
 private:
 	MOTOR_TYPE* intake_roller;

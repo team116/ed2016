@@ -1,43 +1,41 @@
-#include <Commands/MoveIntake.h>
-#include <CommandBase.h>
+#include "MoveClimberArm.h"
 
-
-MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
+MoveClimberArm::MoveClimberArm(Utils::VerticalDirection dir)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires (&*intake);
+	Requires(&*climber);
 
-	 this->direction = direction;
+	movement_direction = dir;
 }
 
 // Called just before this Command runs the first time
-void MoveIntake::Initialize()
+void MoveClimberArm::Initialize()
 {
-
+	climber->setClimber(movement_direction);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveIntake::Execute()
+void MoveClimberArm::Execute()
 {
-	CommandBase::intake->setIntakeDirection(direction);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveIntake::IsFinished()
+bool MoveClimberArm::IsFinished()
 {
 	return false;
 }
 
 // Called once after isFinished returns true
-void MoveIntake::End()
+void MoveClimberArm::End()
 {
-	CommandBase::intake->setIntakeDirection(Utils::HorizontalDirection::H_STILL);
+	climber->setClimber(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveIntake::Interrupted()
+void MoveClimberArm::Interrupted()
 {
 	End();
 }
