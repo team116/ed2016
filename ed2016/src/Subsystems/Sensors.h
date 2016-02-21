@@ -16,8 +16,8 @@ public:
 	float shooterAngle();	//read the encoder
 	float robotAngle();
 	//a method to read the LIDAR, the return type of which we do not yet know
-	float speedLeftShooterWheel();
-	float speedRightShooterWheel();
+	float speedTopShooterWheel();
+	float speedBottomShooterWheel();
 	float intakeAngle();
 	int lidarDistance();
 	void refreshLidar();
@@ -50,8 +50,11 @@ private:
 	DigitalInput* top_shooter_wheel_tach_input;
 	DigitalInput* bottom_shooter_wheel_tach_input;
 	//DigitalInput* shooter_ready_to_shoot;
-	Counter* top_shooter_wheel_tach;
-	Counter* bottom_shooter_wheel_tach;
+	Counter* top_shooter_wheel_tach_counter;
+	Counter* bottom_shooter_wheel_tach_counter;
+
+	Encoder* top_shooter_wheel_tach;
+	Encoder* bottom_shooter_wheel_tach;
 
 	static const float DRIVE_WHEEL_DIAMETER; // inches
 	static const int DRIVE_WHEEL_PPR;
