@@ -62,8 +62,8 @@ OI::OI()
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
-	b_extend_scaling_arm->WhenPressed(new RaiseClimberArm());
-	b_retract_scaling_arm->WhenPressed(new LowerClimberArm());
+	b_extend_scaling_arm->WhileHeld(new RaiseClimberArm());
+	b_retract_scaling_arm->WhileHeld(new LowerClimberArm());
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
@@ -109,7 +109,6 @@ void OI::process()
 		intake_angle_position_process = intake_angle_curr;
 	}
 	else if(angle_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		DriverStation::ReportError("Updating Angle Dial: " + std::to_string(intake_angle_position_process));
 		switch(intake_angle_position_process) {
 				case 1:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
@@ -144,7 +143,6 @@ void OI::process()
 		shooter_speed_position_process = shooter_speed_curr;
 	}
 	else if(speed_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		DriverStation::ReportError("Updating Speed Dial: " + std::to_string(shooter_speed_position_process));
 		shooter_speed_position = shooter_speed_position_process;
 		speed_temmie->Reset();
 		speed_temmie->Stop();
@@ -157,7 +155,6 @@ void OI::process()
 		manual_aim_position_process = manual_aim_curr;
 	}
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		DriverStation::ReportError("Updating Pitch Dial: " + std::to_string(manual_aim_position_process));
 		switch(manual_aim_position_process) {
 			case 0:
 				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));

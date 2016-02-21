@@ -116,7 +116,7 @@ namespace OI_Ports
 	const unsigned int AUTO_WINCH_BUTTON = 4;
 	const unsigned int MANUAL_WINCH_ENABLE_SWITCH = 5;
 
-	// buttons joystick 3, analog
+	// buttons joystick 2, analog
 	const unsigned int FRONT_WINCH_JOYSTICK = 0; // X
 	const unsigned int BACK_WINCH_JOYSTICK = 1; // Y
 }
