@@ -16,6 +16,10 @@ const int Sensors::SHOOTER_WHEEL_PPR = 64;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
+	last_count = 0;
+
+	timer = new Timer();
+
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 
@@ -31,10 +35,14 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	top_shooter_wheel_tach_counter = new Counter(top_shooter_wheel_tach_input);
 	bottom_shooter_wheel_tach_counter = new Counter(bottom_shooter_wheel_tach_input);
-	/*
+
 	top_shooter_wheel_tach_counter->SetUpSource(top_shooter_wheel_tach_input);
 	bottom_shooter_wheel_tach_counter->SetUpSource(bottom_shooter_wheel_tach_input);
-	*/
+
+	top_shooter_wheel_tach_counter->ClearDownSource();
+	bottom_shooter_wheel_tach_counter->ClearDownSource();
+
+
 
 	bottom_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	top_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
@@ -249,4 +257,14 @@ float Sensors::getSpeedLeft()
 float Sensors::getSpeedRight()
 {
 		return 0.0;
+}
+
+float Sensors::getTachRate(){
+	timer->Start();
+	timer->Reset();
+	top_shooter_wheel_tach_counter->Reset();
+	float diff_t = timer->Get();
+	float diff_c = top_shooter_wheel_tach_counter->Get();
+	float rate = diff_c / diff_t;
+	return rate;
 }
