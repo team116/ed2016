@@ -19,6 +19,7 @@ SetShooterPitch::SetShooterPitch(float angle, float error)
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
+	interrupted = false;
 	SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
 }
 

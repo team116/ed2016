@@ -24,6 +24,7 @@ ExtendScalingArm::ExtendScalingArm()
 // Called just before this Command runs the first time
 void ExtendScalingArm::Initialize()
 {
+	interrupted = false;
 	temmie->Reset();
 	temmie_sp->Reset();
 	temmie_sp->Start();

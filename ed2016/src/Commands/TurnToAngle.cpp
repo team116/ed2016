@@ -16,7 +16,7 @@ TurnToAngle::TurnToAngle(float target, float err)
 // Called just before this Command runs the first time
 void TurnToAngle::Initialize()
 {
-
+	interrupted = false;
 }
 
 // Called repeatedly when this Command is scheduled to run

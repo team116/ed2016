@@ -19,6 +19,8 @@ public:
 
 	int getShooterSpeedPosition();
 
+	bool getShooterWheelsSwitch();
+
 	void process();
 
 private:
@@ -45,7 +47,6 @@ private:
 	JoystickButton* b_auto_winch;
 	JoystickButton* b_auto_climber_deploy;
 	JoystickButton* b_shooter_engage;
-	JoystickButton* b_shooter_disengage;
 	JoystickButton* b_auto_aim;
 	JoystickButton* b_clear_commands;
 
@@ -55,10 +56,6 @@ private:
 	JoystickButton* s_intake_belt_outward;
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
-
-	AnalogTrigger* d_intake_angle;
-	AnalogTrigger* d_shooter_speed;
-	AnalogTrigger* d_manual_aim;
 
 	static const float DIAL_UPDATE_TIME;
 

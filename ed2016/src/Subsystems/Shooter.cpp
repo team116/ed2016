@@ -30,7 +30,7 @@ Shooter::Shooter() : Subsystem("Shooter")
 
 void Shooter::InitDefaultCommand()
 {
-	// no default command
+	SetDefaultCommand(new RunShooterWheels());
 }
 
 // Put methods for controlling this subsystem
