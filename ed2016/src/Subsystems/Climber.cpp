@@ -1,9 +1,8 @@
 #include <Subsystems/Climber.h>
 #include <RobotMap.h>
 
-Climber* Climber::INSTANCE = nullptr;
-
 const float Climber::WINCH_SPEED = 2.2; //temporary speed
+const float Climber::CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea what this number is actually supposed to look like
 
 Climber::Climber():Subsystem("Climber")
 {
@@ -11,6 +10,8 @@ Climber::Climber():Subsystem("Climber")
 	climber_armed_motor = new MOTOR_TYPE(RobotPorts::CLIMBER_ARMED_MOTOR);
 	front_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_FRONT);
 	back_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_BACK);
+
+	pdp = new PowerDistributionPanel(RobotPorts::PDP);
 
 	back_winch_direction = WinchDirection::ROBOT_STILL;
 	front_winch_direction = WinchDirection::ROBOT_STILL;
@@ -68,6 +69,7 @@ void Climber::setFrontWinch(WinchDirection direction)
 		front_winch->Set(0.0);
 	}
 }
+
 void Climber::setBackWinch (WinchDirection direction)
 {
 	back_winch_direction = direction;
@@ -86,11 +88,13 @@ void Climber::setBackWinch (WinchDirection direction)
 
 }
 
-Climber* Climber::getInstance()
+bool Climber::isWinchCurrentSpiking()
 {
-	if (INSTANCE == nullptr)
+	if (pdp->GetCurrent(RobotPorts::WINCH_MOTOR_FRONT) > CURRENT_SPIKE_THRESHHOLD
+			&& pdp->GetCurrent(RobotPorts::WINCH_MOTOR_BACK) > CURRENT_SPIKE_THRESHHOLD)
 	{
-		INSTANCE = new Climber();
+		return true;
 	}
-	return INSTANCE;
+	else
+		return false;
 }

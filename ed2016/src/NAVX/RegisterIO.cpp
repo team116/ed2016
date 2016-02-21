@@ -22,6 +22,12 @@ RegisterIO::RegisterIO( IRegisterIO *io_provider,
     ahrspos_update  = {0};
     board_state     = {0};
     board_id        = {0};
+
+    byte_count = 0;
+    last_update_time = 0.0;
+    stop = nullptr;
+    task = nullptr;
+    update_count = 0;
 }
 
 static const double IO_TIMEOUT_SECONDS = 1.0;
@@ -122,12 +128,12 @@ void RegisterIO::GetCurrentData() {
     } else {
         buffer_len = NAVX_REG_QUAT_OFFSET_Z_H + 1 - first_address;
     }
-    long timestamp_low, timestamp_high;
-    long sensor_timestamp;
+    //long timestamp_low, timestamp_high;
+    //long sensor_timestamp;
     if ( io_provider->Read(first_address,(uint8_t *)curr_data, buffer_len) ) {
-        timestamp_low = (long)IMURegisters::decodeProtocolUint16(curr_data + NAVX_REG_TIMESTAMP_L_L-first_address);
-        timestamp_high = (long)IMURegisters::decodeProtocolUint16(curr_data + NAVX_REG_TIMESTAMP_H_L-first_address);
-        sensor_timestamp               = (timestamp_high << 16) + timestamp_low;
+        //timestamp_low = (long)IMURegisters::decodeProtocolUint16(curr_data + NAVX_REG_TIMESTAMP_L_L-first_address);
+        //timestamp_high = (long)IMURegisters::decodeProtocolUint16(curr_data + NAVX_REG_TIMESTAMP_H_L-first_address);
+        //sensor_timestamp               = (timestamp_high << 16) + timestamp_low;
         ahrspos_update.op_status       = curr_data[NAVX_REG_OP_STATUS - first_address];
         ahrspos_update.selftest_status = curr_data[NAVX_REG_SELFTEST_STATUS - first_address];
         ahrspos_update.cal_status      = curr_data[NAVX_REG_CAL_STATUS];

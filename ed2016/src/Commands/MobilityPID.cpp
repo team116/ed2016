@@ -1,14 +1,17 @@
+/*
 #include <Commands/MobilityPID.h>
 #include <Subsystems/MobilityPIDOutput.h>
 #include <Subsystems/Sensors.h>
+#include <PIDController.h>
+
 const float MobilityPID::P_VAL = 1;
 const float MobilityPID::I_VAL = 0;
 const float MobilityPID::D_VAL = 0;
 
 MobilityPID::MobilityPID()
 {
-	left_shark = new PIDController(P_VAL, I_VAL, D_VAL, sensors->getMobilityLeftPIDInput(), new MobilityPIDOutput(MobilityPIDOutput::LEFT));
-	right_shark  = new PIDController(P_VAL, I_VAL, D_VAL, sensors->getMobilityRightPIDInput(), new MobilityPIDOutput(MobilityPIDOutput::RIGHT));
+	left_shark = new PIDController(P_VAL, I_VAL, D_VAL, new MobilityPIDOutput(MobilityPIDOutput::LEFT));
+	right_shark  = new PIDController(P_VAL, I_VAL, D_VAL, 0.0, new MobilityPIDOutput(MobilityPIDOutput::RIGHT));
 
 	interrupted = false;
 }
@@ -59,3 +62,4 @@ void MobilityPID::Interrupted()
 	End();
 	interrupted = true;
 }
+*/

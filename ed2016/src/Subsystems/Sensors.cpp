@@ -8,8 +8,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Sensors* Sensors::INSTANCE = nullptr;
-
 const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
@@ -22,19 +20,20 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 
 
-
 	top_shooter_wheel_tach_input = new DigitalInput(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
 	bottom_shooter_wheel_tach_input = new DigitalInput(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 	top_shooter_wheel_tach = new Encoder(top_shooter_wheel_tach_input, nullptr);
 	bottom_shooter_wheel_tach = new Encoder(bottom_shooter_wheel_tach_input, nullptr);
 	top_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
 	bottom_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	left_drive_encoder = new Encoder(RobotPorts::LEFT_ENCODER_A, RobotPorts::LEFT_ENCODER_B);
 	right_drive_encoder = new Encoder(RobotPorts::RIGHT_ENCODER_A, RobotPorts::RIGHT_ENCODER_B);
 	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
+	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
@@ -46,7 +45,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	shooter_angle_enabled = true;
 	robot_angle_enabled = true;
 	intake_angle_enabled = true;
-	ready_to_shoot_enabled = true;
+	ready_to_shoot_enabled = false;
 	shooter_wheel_tachometer_enabled = true;
 }
 
@@ -54,18 +53,13 @@ void Sensors::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
-	SetDefaultCommand(new CheckLidar());
+
+	//Default commands must require the subsystem
+	//SetDefaultCommand(new CheckLidar());
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-bool Sensors::isReadyToShoot()
-{
-	if (ready_to_shoot_enabled);
-{
-	return false;
-}
-}
 
 float Sensors::shooterAngle()
 {
@@ -148,6 +142,7 @@ int Sensors::lidarDistance()
 		return 0.0;
 	}
 }
+
 void Sensors::refreshLidar()
 {
 	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
@@ -155,9 +150,9 @@ void Sensors::refreshLidar()
 		uint8_t buffer[2];
 		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
 
-			 lidar_distance = (buffer[0] << 8) + buffer[1];
-		}
+		lidar_distance = (buffer[0] << 8) + buffer[1];
 	}
+}
 
 float Sensors::getDistanceLeft()
 {
@@ -182,16 +177,6 @@ float Sensors::getDistanceRight()
 	{
 		return 0.0;
 	}
-}
-
-Sensors* Sensors::getInstance()
-{
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Sensors();
-	}
-	return INSTANCE;
-
 }
 
 void Sensors::resetEncoderLeft()
@@ -227,29 +212,30 @@ bool Sensors::areIntakeAngleEnabled()
 }
 bool Sensors::readyToShoot()
 {
-	return ready_to_shoot_enabled;
+	return ready_to_shoot_balls_switch->Get();
 }
 bool Sensors::shooterWheelTachometerEnabled()
 {
 	return shooter_wheel_tachometer_enabled;
 }
 
+bool Sensors::isShooterHomeSwitchHorizontal()
+{
+	if(ready_to_shoot_enabled) {
+		return shooter_home_switch->Get();
+	}
+	else {
+		return false;
+	}
+}
 
-PIDSource* Sensors::getMobilityRightPIDInput()
+float Sensors::getSpeedLeft()
 {
-	return right_drive_encoder;
+		return 0.0;
 }
-PIDSource* Sensors::getMobilityLeftPIDInput()
+
+float Sensors::getSpeedRight()
 {
-	return left_drive_encoder;
-}
-PIDSource* Sensors::getShooterPIDInput()
-{
-	return shooter_angle_encoder;
-}
-float Sensors::getTopTachRate(){
-	return top_shooter_wheel_tach->GetRate();
-}
-float Sensors::getBottomTachRate(){
-	return bottom_shooter_wheel_tach->GetRate();
+		return 0.0;
+>>>>>>> master
 }

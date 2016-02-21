@@ -3,6 +3,7 @@
 
 #include "../CommandBase.h"
 #include "WPILib.h"
+#include <PIDController.h>
 
 class MobilityPID: public CommandBase
 {

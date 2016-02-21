@@ -3,9 +3,9 @@
 #include "SmartDashboard/SmartDashboard.h"
 #include "LiveWindow/LiveWindow.h"
 #include <Subsystems/Sensors.h>
-#include <../CommandBase.h>
+#include <CommandBase.h>
 
-const float Shooter::RPM_PRESETS[] = {
+const float ShooterPID::RPM_PRESETS[] = {
 	666.67,
 	1333.34,
 	2000.01,
@@ -14,7 +14,7 @@ const float Shooter::RPM_PRESETS[] = {
 	4000.0
 };
 
-const float Shooter::SPEED_PRESETS[] = {
+const float ShooterPID::SPEED_PRESETS[] = {
 	0.1666666666666,
 	0.3333333333333,
 	0.5,
@@ -22,12 +22,12 @@ const float Shooter::SPEED_PRESETS[] = {
 	0.8333333333333,
 	1.0
 };
-
-ShooterPID::ShooterPID() :
+	ShooterPID::ShooterPID() :
 		PIDSubsystem("ShooterPID", 1.0, 0.0, 0.0)
 {
 	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::TOP_SHOOTER_MOTOR);
 	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::BOTTOM_SHOOTER_MOTOR);
+
 	// Use these to get going:
 	// SetSetpoint() -  Sets where the PID controller should move the system
 	//                  to
@@ -39,14 +39,19 @@ double ShooterPID::ReturnPIDInput()
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
 	return ((CommandBase::sensors->getTopTachRate() + CommandBase::sensors->getBottomTachRate()) /2);
-}
 
+	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
+	return 0;
+}
 void ShooterPID::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
+
 	top_shooter_wheel->Set(output);
 	bottom_shooter_wheel->Set(output);
+
+
 }
 
 void ShooterPID::InitDefaultCommand()
@@ -55,12 +60,17 @@ void ShooterPID::InitDefaultCommand()
 	//setDefaultCommand(new MySpecialCommand());
 }
 
-float Shooter::getRPMPreset(int preset)
+float ShooterPID::getRPMPreset(int preset)
 {
 	return RPM_PRESETS[preset];
 }
 
-float Shooter::getSpeedPreset(int preset)
+float ShooterPID::getSpeedPreset(int preset)
 {
 	return SPEED_PRESETS[preset];
+}
+
+void ShooterPID::setShooterSpeed(float speed){
+	top_shooter_wheel->Set(speed);
+	bottom_shooter_wheel->Set(speed);
 }

@@ -8,12 +8,17 @@
 class HolderWheel: public Subsystem
 {
 public:
-	static HolderWheel* getInstance();
-	void turnHolderWheelOn(bool);
-private:
 	HolderWheel();
+	enum HolderWheelDirection
+		{
+			WHEEL_IN,
+			WHEEL_OUT,
+			WHEEL_STILL
+		};
+	void holderWheelDirection(HolderWheelDirection direction);
+
+private:
 	void InitDefaultCommand();
-	static HolderWheel* INSTANCE;
 
 	MOTOR_TYPE* holder_wheel;
 };

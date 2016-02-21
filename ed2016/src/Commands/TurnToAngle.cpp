@@ -6,7 +6,7 @@ const float TurnToAngle::TURN_SPEED = 0.75;
 
 TurnToAngle::TurnToAngle(float target, float err)
 {
-	Requires(mobility);
+	Requires(&*mobility);
 	target_angle = target;
 	angle = 0.0;
 	error = err;

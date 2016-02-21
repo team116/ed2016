@@ -1,14 +1,16 @@
 #include <Commands/Shoot.h>
-#include <Subsystems/Shooter.h>
+#include <OI.h>
+#include <Subsystems/ShooterPID.h>
 #include <Subsystems/HolderWheel.h>
+#include <Subsystems/Sensors.h>
 
 const float Shoot::SPEED_UP_TIME = 1.0;
 const float Shoot::PUSH_BOULDER = 1.5;
 
 Shoot::Shoot()
 {
-	Requires(shooter);
-	Requires(holder_wheel);
+	Requires(&*shooter);
+	Requires(&*holder_wheel);
 
 	timer = new Timer();
 	interrupted = false;
@@ -24,11 +26,13 @@ void Shoot::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void Shoot::Execute()
 {
-	shooter->turnShooterOn(true);
+	float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
+	shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
 
-	if (timer->HasPeriodPassed(SPEED_UP_TIME))
+	if ((sensors->speedTopShooterWheel() > ideal_speed && sensors->speedBottomShooterWheel() > ideal_speed) ||
+		 timer->Get() > SPEED_UP_TIME)
 	{
-		holder_wheel->turnHolderWheelOn(true);
+		holder_wheel->holderWheelDirection(HolderWheel::HolderWheelDirection::WHEEL_OUT);
 	}
 }
 
@@ -39,7 +43,7 @@ bool Shoot::IsFinished()
 	{
 		return true;
 	}
-	if (timer->HasPeriodPassed(PUSH_BOULDER))
+	if (timer->Get() > PUSH_BOULDER)
 	{
 		return true;
 	}
@@ -49,8 +53,8 @@ bool Shoot::IsFinished()
 // Called once after isFinished returns true
 void Shoot::End()
 {
-	shooter->turnShooterOn(false);
-	holder_wheel->turnHolderWheelOn(false);
+	shooter->setShooterSpeed(0.0);
+	holder_wheel->holderWheelDirection(HolderWheel::HolderWheelDirection::WHEEL_STILL);
 }
 
 // Called when another command which requires one or more of the same

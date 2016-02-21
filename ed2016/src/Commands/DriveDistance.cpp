@@ -6,14 +6,13 @@ const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 1.0;
 
 DriveDistance::DriveDistance(float dist)
 {
-	Requires(mobility);
+	Requires(&*mobility);
 	distance = dist;
 	starting_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0;
 	current_distance = starting_distance;
 	dir = 0.0;
 	interrupted = false;
-
-	SetTimeout(DRIVE_DISTANCE_TIMEOUT * distance);
+	SetTimeout(dist * DRIVE_DISTANCE_TIMEOUT);
 }
 
 // Called just before this Command runs the first time
@@ -43,6 +42,12 @@ void DriveDistance::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished()
 {
+
+	if(IsTimedOut())
+	{
+		DriverStation::ReportError("DriveDistance HasTimedOut");
+		return true;
+	}
 	if(interrupted)
 	{
 		return true;

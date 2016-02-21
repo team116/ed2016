@@ -2,8 +2,6 @@
 #include <RobotMap.h>
 #include <Commands/JoystickDrive.h>
 
-Mobility* Mobility::INSTANCE = nullptr;
-
 Mobility::Mobility() : Subsystem("Mobility")
 {
 	leftFront = new MOTOR_TYPE(RobotPorts::LEFT_FRONT_MOTOR);
@@ -63,11 +61,11 @@ void Mobility::useFrontOrientation(bool front)
 	front_orientation = front;
 }
 
-Mobility* Mobility::getInstance()
+float Mobility::getLeft()
 {
-	if (INSTANCE == nullptr)
-	{
-		INSTANCE = new Mobility();
-	}
-	return INSTANCE;
+	return leftBack->Get();
+}
+float Mobility::getRight()
+{
+	return rightBack->Get();
 }

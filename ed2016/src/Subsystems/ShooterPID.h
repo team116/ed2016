@@ -12,6 +12,8 @@ public:
 	double ReturnPIDInput();
 	void UsePIDOutput(double output);
 	void InitDefaultCommand();
+
+	void setShooterSpeed(float speed);
 	void checkLimits();
 
 	float getRPMPreset(int preset); // 0 to 5

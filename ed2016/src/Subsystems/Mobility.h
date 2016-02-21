@@ -8,21 +8,21 @@
 class Mobility: public Subsystem
 {
 public:
+	Mobility();
 	void InitDefaultCommand();
-	static Mobility* getInstance();
 
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 	void setLeft(float speed);
 	void setRight(float speed);
 	void setStraight(float speed);
+	float getLeft();
+	float getRight();
 
 	void useFrontOrientation(bool front);
 
 
 private:
-	Mobility();
-	static Mobility* INSTANCE;
 	MOTOR_TYPE* leftFront;
 	MOTOR_TYPE* leftBack;
 	MOTOR_TYPE* rightFront;
