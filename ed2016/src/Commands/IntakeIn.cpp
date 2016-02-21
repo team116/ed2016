@@ -1,11 +1,15 @@
-#include "IntakeIn.h"
+#include <Commands/IntakeIn.h>
 #include <Subsystems/Intake.h>
+#include <Commands/MoveIntake.h>
+#include <CommandBase.h>
 
-IntakeIn::IntakeIn()
+IntakeIn::IntakeIn(Intake::IntakeDirection direction)
 {
 	Requires(&*intake);
 	// Use Requires(&*) here to declare subsystem dependencies
 	// eg. Requires(&*chassis);
+
+	this->direction = direction;
 }
 
 // Called just before this Command runs the first time
@@ -17,7 +21,7 @@ void IntakeIn::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void IntakeIn::Execute()
 {
-	intake->setIntakeDirection(Intake::IntakeDirection::INTAKE_IN);
+	CommandBase::intake->setIntakeDirection(direction);
 }
 
 // Make this return true when this Command no longer needs to run execute()

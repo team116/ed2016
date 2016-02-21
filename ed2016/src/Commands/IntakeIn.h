@@ -1,18 +1,20 @@
 #ifndef IntakeIn_H
 #define IntakeIn_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <WPILib.h>
 
 class IntakeIn: public CommandBase
 {
 public:
-	IntakeIn();
+	IntakeIn(Intake::IntakeDirection direction);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
+
+	Intake::IntakeDirection direction;
 };
 
 #endif

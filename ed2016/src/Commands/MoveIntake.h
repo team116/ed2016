@@ -13,6 +13,8 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
+
+	Intake::IntakeDirection direction;
 };
 
 #endif

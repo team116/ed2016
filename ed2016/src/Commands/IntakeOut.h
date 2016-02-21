@@ -7,12 +7,14 @@
 class IntakeOut: public CommandBase
 {
 public:
-	IntakeOut();
+	IntakeOut(Intake::IntakeDirection direction);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
+
+	Intake::IntakeDirection direction;
 };
 
 #endif
