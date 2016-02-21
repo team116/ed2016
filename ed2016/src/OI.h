@@ -18,7 +18,20 @@ public:
 
 	int getShooterSpeedPosition();
 
+	void process();
+
 private:
+	const static float DIAL_TOLERANCE;
+	//Analog Dial Positions
+	const static float DIAL_1;
+	const static float DIAL_2;
+	const static float DIAL_3;
+	const static float DIAL_4;
+	const static float DIAL_5;
+	const static float DIAL_6;
+
+	int GetDialPosition(float);
+
 	Joystick* joystick_left;
 	Joystick* joystick_right;
 	Joystick* joystick_buttons1;
@@ -54,9 +67,5 @@ private:
 	AnalogTrigger* d_intake_angle;
 	AnalogTrigger* d_shooter_speed;
 	AnalogTrigger* d_manual_aim;
-
-	//Analog Inputs
-	AnalogInput* intake_angle;
-	AnalogInput* manual_aim;
 };
 #endif

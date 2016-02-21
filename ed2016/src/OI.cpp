@@ -6,7 +6,7 @@
 #include <Commands/ClearCommands.h>
 #include <Commands/IntakeIn.h>
 #include <Commands/IntakeOut.h>
-
+#include <Commands/SetShooterPitch.h>
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
 #include <Commands/Shoot.h>
@@ -20,6 +20,15 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/RaiseIntake.h>
 #include <Commands/LowerIntake.h>
+
+const float OI::DIAL_TOLERANCE = 0.2;
+
+const float OI::DIAL_1 = 1.0;
+const float OI::DIAL_2 = 0.6;
+const float OI::DIAL_3 = 0.2;
+const float OI::DIAL_4 = -0.2;
+const float OI::DIAL_5 = -0.6;
+const float OI::DIAL_6 = -1.0;
 
 OI::OI()
 {
@@ -41,6 +50,10 @@ OI::OI()
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
 	s_intake_belt_outward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
+
+	d_intake_angle = new AnalogTrigger(OI_Ports::INTAKE_ANGLE_DIAL);
+	d_shooter_speed = new AnalogTrigger(OI_Ports::SHOOTER_SPEED_DIAL);
+	d_manual_aim = new AnalogTrigger(OI_Ports::MANUAL_AIM_DIAL);
 
 	// Instantiate Joystick Buttons 2's Buttons
 	b_extend_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::EXTEND_SCALING_ARM_BUTTON);
@@ -64,12 +77,109 @@ OI::OI()
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new WinchControls());
-	s_shooter_wheels->WhileHeld(new RunShooterWheels());
+	s_shooter_wheels->WhileHeld(new RunShooterWheels(0.75));
 	s_intake_belt_inward->WhileHeld(new IntakeIn());
 	s_intake_belt_outward->WhileHeld(new IntakeOut());
 
+	//Set Joystick Analog Dial Events
 
 	// Process operator interface input here.
+}
+
+void OI::process()
+{
+	int manual_aim = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0)a
+
+	switch() {
+		case 0:
+			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));
+			break;
+		case 1:
+			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(15, 1));
+			break;
+		case 2:
+			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(30, 1));
+			break;
+		case 3:
+			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(45, 1));
+			break;
+		case 4:
+			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(60, 1));
+			break;
+		case 5:
+			Scheduler::GetInstance()->AddCommand(new SetShooterPitch(75, 1));
+			break;
+		default:
+			DriverStation::ReportWarning("Manual Aim Dial invalid position: " +
+					std::to_string(Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0)) + "\n");
+			break;
+	}
+
+	/*switch(GetDialPosition(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL))) {
+		case 1:
+			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0));
+			break;
+		case 2:
+			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.2));
+			break;
+		case 3:
+			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.4));
+			break;
+		case 4:
+			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.6));
+			break;
+		case 5:
+			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(0.8));
+			break;
+		case 6:
+			Scheduler::GetInstance()->AddCommand(new RunShooterWheels(1.0));
+			break;
+	}
+
+	switch(GetDialPosition(joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL))) {
+		case 1:
+			Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
+			break;
+		case 2:
+			Scheduler::GetInstance()->AddCommand(new AngleIntake(18, 1));
+			break;
+		case 3:
+			Scheduler::GetInstance()->AddCommand(new AngleIntake(36, 1));
+			break;
+		case 4:
+			Scheduler::GetInstance()->AddCommand(new AngleIntake(54, 1));
+			break;
+		case 5:
+			Scheduler::GetInstance()->AddCommand(new AngleIntake(72, 1));
+			break;
+		case 6:
+			Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
+			break;
+	}*/
+}
+
+//Returns position of dial 1-6
+int OI::GetDialPosition(float joystick_axis)
+{
+	if((joystick_axis > (DIAL_1 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_1 + DIAL_TOLERANCE))) {
+		return 1;
+	}
+	else if((joystick_axis > (DIAL_2 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_2 + DIAL_TOLERANCE))) {
+		return 2;
+	}
+	else if((joystick_axis > (DIAL_3 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_3 + DIAL_TOLERANCE))) {
+		return 3;
+	}
+	else if((joystick_axis > (DIAL_4 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_4 + DIAL_TOLERANCE))) {
+		return 4;
+	}
+	else if((joystick_axis > (DIAL_5 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_5 + DIAL_TOLERANCE))) {
+		return 5;
+	}
+	else if((joystick_axis > (DIAL_6 - DIAL_TOLERANCE)) && (joystick_axis < (DIAL_6 + DIAL_TOLERANCE))) {
+		return 6;
+	}
+	return 0;
 }
 
 float OI::getJoystickLeftY()

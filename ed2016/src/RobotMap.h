@@ -66,10 +66,12 @@ namespace RobotPorts
 	const unsigned int SHOOTER_PITCH_MOTOR = 8;
 	const unsigned int SHOOTER_PUSH_MOTOR = 9;
 
-	const unsigned int INTAKE_ROLLER_MOTOR = 10;
-	const unsigned int INTAKE_ANGLE_MOTOR = 11;
-
-	const unsigned int CLIMBER_ARMED_MOTOR = 12;
+	//NAVX
+	const unsigned int INTAKE_ROLLER_MOTOR = 11;//N0
+	const unsigned int INTAKE_ANGLE_MOTOR = 12;//N1
+	const unsigned int SHOOTER_AZIMUTH_MOTOR = 13;//N2
+	const unsigned int MANIPULATOR_ARM_MOTOR = 14;//N3
+	const unsigned int CLIMBER_ARMED_MOTOR = 10;//N4
 
 	// I2C
 	const unsigned int LIDAR_ADDRESS = 0x62;
