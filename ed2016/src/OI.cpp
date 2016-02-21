@@ -98,9 +98,9 @@ OI::OI()
 
 void OI::process()
 {
-	int intake_angle_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL) + 1.0, 6, 2.0);
-	int shooter_speed_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0, 6, 2.0);
-	int manual_aim_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0, 6, 2.0);
+	int intake_angle_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL) + 1.0), 6, 2.0);
+	int shooter_speed_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0), 6, 2.0);
+	int manual_aim_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0), 6, 2.0);
 
 	//Intake Angle Dial
 	if(intake_angle_curr != intake_angle_position_process) {
