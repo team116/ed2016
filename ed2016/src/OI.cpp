@@ -21,6 +21,7 @@
 #include <Commands/LowerIntake.h>
 #include <Subsystems/Intake.h>
 #include <Commands/MoveIntake.h>
+#include <Commands/DriveStraight.h>
 
 OI::OI()
 {
@@ -52,8 +53,10 @@ OI::OI()
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
 	//Set Joystick Left Events
+	b_drive_align_left->WhileHeld(new DriveStraight(0, DriveStraight::GYRO));
 
 	//Set Joystick Right Events
+	b_drive_align_right->WhileHeld(new DriveStraight(1, DriveStraight::GYRO));
 
 	//Set Joystick Buttons 2's Events
 	b_extend_scaling_arm->WhileHeld(new IntakeIn());
