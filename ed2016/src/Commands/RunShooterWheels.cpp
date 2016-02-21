@@ -35,5 +35,5 @@ void RunShooterWheels::End()
 // subsystems is scheduled to run
 void RunShooterWheels::Interrupted()
 {
-
+	End();
 }

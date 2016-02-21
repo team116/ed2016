@@ -79,7 +79,7 @@ OI::OI()
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new WinchControls());
-	s_shooter_wheels->WhileHeld(new RunShooterWheels(0.75));
+	s_shooter_wheels->WhileHeld(new RunShooterWheels());
 	s_intake_belt_inward->WhileHeld(new MoveIntake(Intake::INTAKE_IN));
 	s_intake_belt_outward->WhileHeld(new MoveIntake(Intake::INTAKE_OUT));
 
@@ -183,5 +183,5 @@ float OI::getBackWinchY()
 int OI::getShooterSpeedPosition()
 {
 	// assumes GetRawAxis returns in the range [0.0, 1.0]
-	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL), 6, 1.0);
+	return Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0, 6, 2.0);
 }
