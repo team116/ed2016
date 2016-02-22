@@ -28,13 +28,14 @@ OI::OI()
 	joystick_buttons1 = new Joystick(OI_Ports::BUTTONS_JOYSTICK1);
 	joystick_buttons2 = new Joystick(OI_Ports::BUTTONS_JOYSTICK2);
 
-	//Instantiate Joystick Left Buttons
-	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
-
 	//Instantiate Joystick Right Buttons
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
 
+	//Instantiate Joystick Left Buttons
+	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
+
 	//Instantiate Joystick Buttons 1's Buttons
+	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOT_BUTTON);
 	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
@@ -63,6 +64,7 @@ OI::OI()
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoAim());
 	b_clear_commands->WhenPressed(new ClearCommands());
+	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());

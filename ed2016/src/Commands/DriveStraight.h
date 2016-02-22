@@ -17,8 +17,8 @@ class DriveStraight : public CommandBase
 public:
 	enum JoystickSide
 	{
-		LEFT,
-		RIGHT
+		LEFT = 1,
+		RIGHT = 2
 	};
 	enum SensorType
 	{
@@ -27,6 +27,7 @@ public:
 	};
 
 	DriveStraight(JoystickSide, SensorType);
+	DriveStraight(float, SensorType);
 	void Initialize ();
 	void Execute();
 	bool IsFinished();

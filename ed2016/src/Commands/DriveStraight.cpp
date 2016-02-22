@@ -6,7 +6,7 @@ const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 
 const float DriveStraight::DEGREE_TOLERANCE = 1.0;
-const float DriveStraight::GYRO_SPEED_OFFSET = 0.1;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
 
 DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
@@ -15,6 +15,21 @@ DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 	curr_left_speed = 0.0;
 	curr_right_speed = 0.0;
 	sensor_type = type;
+
+	joystick_value = 0.0;
+	starting_robot_angle = 0.0;
+}
+
+DriveStraight::DriveStraight(float speed, SensorType type)
+{
+	Requires(&*mobility);
+	joystick_used = (JoystickSide)-1;
+	curr_left_speed = 0.0;
+	curr_right_speed = 0.0;
+	sensor_type = type;
+
+	joystick_value = speed;
+	starting_robot_angle = 0.0;
 }
 
 void DriveStraight::Initialize()
@@ -24,13 +39,13 @@ void DriveStraight::Initialize()
 }
 void DriveStraight::Execute()
 {
-	if(joystick_used == JoystickSide::LEFT)
-	{
+	switch(joystick_used) {
+	case JoystickSide::LEFT:
 		joystick_value = oi -> getJoystickLeftY();
-	}
-	else if (joystick_used == JoystickSide::RIGHT)
-	{
+		break;
+	case JoystickSide::RIGHT:
 		joystick_value = oi ->getJoystickRightY();
+		break;
 	}
 
 	switch(sensor_type)

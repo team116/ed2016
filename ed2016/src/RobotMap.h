@@ -80,12 +80,14 @@ namespace OI_Ports
 	const unsigned int RIGHT_JOYSTICK = 1;
 	const unsigned int BUTTONS_JOYSTICK1 = 2;
 	const unsigned int BUTTONS_JOYSTICK2 = 3;
+
 	const unsigned int B_DRIVE_ALIGN_BUTTON_LEFT = 2;
 	const unsigned int B_DRVIE_ALIGN_BUTTON_RIGHT = 2;
 
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
 	const unsigned int SHOOT_BUTTON = 2;
+	const unsigned int TEST_BUTTON = 3;
 	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
 
 	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
