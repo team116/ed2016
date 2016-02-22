@@ -8,6 +8,7 @@
 #include <Commands/Autonomous/DoNothing.h>
 #include <Commands/Autonomous/MoveToDefense.h>
 #include <Commands/Autonomous/CrossDefAndShoot.h>
+#include <Log.h>
 #include <Subsystems/ShooterPitch.h>
 
 using namespace Autonomous;
@@ -17,30 +18,22 @@ class Robot: public IterativeRobot
 {
 private:
 	Command* auto_command;
-	SendableChooser *chooser;
 
 	AnalogInput* shoot_switch;
 	AnalogInput* position_switch;
 	AnalogInput* defense_switch;
 
+	Log* log;
+
 	void RobotInit()
 	{
 		CommandBase::init();
-		//chooser = new SendableChooser();
-		//chooser->AddDefault("Default Auto", new ExampleCommand());
-		//chooser->AddObject("My Auto", new MyAutoCommand());
-		//SmartDashboard::PutData("Auto Modes", chooser);
 
-		/*int var = 0;
-		switch (var)
-		{
-		case 0:
-			break;
-		case 1:
-			break;
-		default:
-		*/
+		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
+		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
+		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
 
+		log = Log::getInstance();
 	}
 
 	/**
@@ -68,18 +61,18 @@ private:
 	 */
 	void AutonomousInit()
 	{
-		/* std::string autoSelected = SmartDashboard::GetString("Auto Selector", "Default");
-		if(autoSelected == "My Auto") {
-			autonomousCommand.reset(new MyAutoCommand());
-		} else {
-			autonomousCommand.reset(new ExampleCommand());
-		} */
+		float shoot_voltage = shoot_switch->GetVoltage();
+		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);
 
-		int shoot_value = voltageConversion(shoot_switch->GetVoltage(), 3, 5.0);
-		int position_value = voltageConversion(position_switch->GetVoltage(), 6, 5.0);
-		int defense_value = voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
+		float position_voltage = position_switch->GetVoltage();
+		int position_value = voltageConversion(position_voltage, 6, 5.0);
 
-		//int AutoPlays = pow(8, 0)*voltageConversion(shoot_switch->GetVoltage(), 3, 5.0) + pow(8, 1)*voltageConversion(position_switch->GetVoltage(), 6, 5.0) + pow(8, 2)*voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
+		float defense_voltage = defense_switch->GetVoltage();
+		int defense_value = voltageConversion(defense_voltage, 8, 5.0);
+
+		log->write(Log::TRACE_LEVEL, " Shooter Auto Switch value: %d, voltage: %f, port: %d", shoot_value, shoot_voltage, (int)shoot_switch->GetChannel());
+		log->write(Log::TRACE_LEVEL, "Position Auto Switch value: %d, voltage: %f, port: %d", position_value, position_voltage, (int)position_switch->GetChannel());
+		log->write(Log::TRACE_LEVEL, " Defense Auto Switch value: %d, voltage: %f, port: %d", defense_value, defense_voltage, (int)defense_switch->GetChannel());
 
 		if (shoot_value == 0 && position_value == 0 && defense_value == 0)
 		{
@@ -130,9 +123,31 @@ private:
 		CommandBase::shooter_pitch->checkLimits();
 	}
 
+	void TestInit()
+	{
+		float shoot_voltage = shoot_switch->GetVoltage();
+		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);
+
+		float position_voltage = position_switch->GetVoltage();
+		int position_value = voltageConversion(position_voltage, 6, 5.0);
+
+		float defense_voltage = defense_switch->GetVoltage();
+		int defense_value = voltageConversion(defense_voltage, 8, 5.0);
+
+		log->write(Log::INFO_LEVEL, " Shooter Auto Switch value: %d, voltage: %f, port: %d", shoot_value, shoot_voltage, (int)shoot_switch->GetChannel());
+		log->write(Log::INFO_LEVEL, "Position Auto Switch value: %d, voltage: %f, port: %d", position_value, position_voltage, (int)position_switch->GetChannel());
+		log->write(Log::INFO_LEVEL, " Defense Auto Switch value: %d, voltage: %f, port: %d", defense_value, defense_voltage, (int)defense_switch->GetChannel());
+	}
+
 	void TestPeriodic()
 	{
 		LiveWindow::GetInstance()->Run();
+
+		/*
+		static char log[255];
+		snprintf(log, 255, "Shoot volt: %f, Pos volt: %f, Def volt: %f", shoot_switch->GetVoltage(), position_switch->GetVoltage(), defense_switch->GetVoltage());
+		DriverStation::ReportError(log);
+		*/
 	}
 };
 
