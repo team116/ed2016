@@ -42,9 +42,9 @@ namespace RobotPorts
 	const unsigned int SHOOTER_ANGLE_ENCODER = 0;
 	const unsigned int INTAKE_ANGLE_ENCODER = 1;
 	const unsigned int SHOOTER_AZIMUTH_ENCODER = 2;
-	const unsigned int AUTONOMOUS_NAVX_A = 3;
-	const unsigned int AUTONOMOUS_NAVX_B = 4;
-	const unsigned int AUTONOMOUS_NAVX_C = 5;
+	const unsigned int AUTONOMOUS_NAVX_A = 4;
+	const unsigned int AUTONOMOUS_NAVX_B = 5;
+	const unsigned int AUTONOMOUS_NAVX_C = 6;
 
 	//motors
 	const unsigned int LEFT_FRONT_MOTOR = 0;
