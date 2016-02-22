@@ -14,7 +14,7 @@ MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 // Called just before this Command runs the first time
 void MoveIntake::Initialize()
 {
-
+	log->write(Log::TRACE_LEVEL, "MoveIntake Initialized");
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -32,6 +32,7 @@ bool MoveIntake::IsFinished()
 // Called once after isFinished returns true
 void MoveIntake::End()
 {
+	log->write(Log::TRACE_LEVEL, "MoveIntake Ended");
 	CommandBase::intake->setIntakeDirection(Utils::HorizontalDirection::H_STILL);
 }
 
@@ -39,5 +40,6 @@ void MoveIntake::End()
 // subsystems is scheduled to run
 void MoveIntake::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "MoveIntake Interrupted");
 	End();
 }

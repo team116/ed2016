@@ -14,6 +14,7 @@ ManualWinchControl::ManualWinchControl()
 // Called just before this Command runs the first time
 void ManualWinchControl::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "ManualWinchControl Initialized");
 	back_winch = 0.0;
 	front_winch = 0.0;
 }
@@ -37,6 +38,7 @@ bool ManualWinchControl::IsFinished()
 // Called once after isFinished returns true
 void ManualWinchControl::End()
 {
+	log->write(Log::TRACE_LEVEL, "ManualWinchControl Ended");
 	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
 	climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 }
@@ -45,5 +47,6 @@ void ManualWinchControl::End()
 // subsystems is scheduled to run
 void ManualWinchControl::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "ManualWinchControl Interrupted");
 	End();
 }

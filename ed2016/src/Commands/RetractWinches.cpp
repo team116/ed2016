@@ -17,6 +17,7 @@ RetractWinches::RetractWinches()
 // Called just before this Command runs the first time
 void RetractWinches::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "RetractWinches Initialized");
 	interrupted = false;
 	temmie_a->Reset();
 	temmie_w->Reset();
@@ -71,6 +72,7 @@ bool RetractWinches::IsFinished()
 // Called once after isFinished returns true
 void RetractWinches::End()
 {
+	log->write(Log::TRACE_LEVEL, "RetractWinches Ended");
 	climber->setClimber(Utils::VerticalDirection::V_STILL);
 
 	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
@@ -81,6 +83,7 @@ void RetractWinches::End()
 // subsystems is scheduled to run
 void RetractWinches::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "RetractWinches Interrupted");
 	End();
 	interrupted = true;
 }

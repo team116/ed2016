@@ -16,6 +16,7 @@ TurnToAngle::TurnToAngle(float target, float err)
 // Called just before this Command runs the first time
 void TurnToAngle::Initialize()
 {
+	log->write(Log::TRACE_LEVEL,"TurnToAngle Initialized (target, %f)", target_angle);
 	interrupted = false;
 }
 
@@ -68,6 +69,7 @@ bool TurnToAngle::IsFinished()
 // Called once after isFinished returns true
 void TurnToAngle::End()
 {
+	log->write(Log::TRACE_LEVEL,"TurnToAngle Ended");
 	mobility->setStraight(0.0);
 }
 
@@ -75,6 +77,7 @@ void TurnToAngle::End()
 // subsystems is scheduled to run
 void TurnToAngle::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"TurnToAngle Interrupted");
 	End();
 	interrupted = true;
 }

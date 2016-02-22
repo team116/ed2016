@@ -11,6 +11,7 @@ CheckLidar::CheckLidar()
 // Called just before this Command runs the first time
 void CheckLidar::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "Check Lidar Initialized");
 
 }
 
@@ -35,6 +36,7 @@ bool CheckLidar::IsFinished()
 // Called once after isFinished returns true
 void CheckLidar::End()
 {
+	log->write(Log::TRACE_LEVEL, "Check Lidar Ended");
 
 }
 
@@ -42,5 +44,6 @@ void CheckLidar::End()
 // subsystems is scheduled to run
 void CheckLidar::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "Check Lidar Interrupted");
 
 }

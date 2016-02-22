@@ -18,6 +18,7 @@ DriveDistance::DriveDistance(float dist)
 // Called just before this Command runs the first time
 void DriveDistance::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "DriveDistance Initialized (distance, %f)", distance);
 	interrupted = false;
 	if (distance > 0)
 	{
@@ -65,6 +66,7 @@ bool DriveDistance::IsFinished()
 // Called once after isFinished returns true
 void DriveDistance::End()
 {
+	log->write(Log::TRACE_LEVEL, "DriveDistance Ended");
 	mobility->setStraight(0.0);
 }
 
@@ -72,6 +74,7 @@ void DriveDistance::End()
 // subsystems is scheduled to run
 void DriveDistance::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "DriveDistance Interrupted");
 	End();
 	interrupted = true;
 }

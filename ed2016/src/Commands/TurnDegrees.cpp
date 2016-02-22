@@ -22,6 +22,7 @@ TurnDegrees::TurnDegrees(float degrees, float error)
 // Called just before this Command runs the first time
 void TurnDegrees::Initialize()
 {
+	log->write(Log::TRACE_LEVEL,"TurnDegrees (degrees %f)", degrees);
 	starting_angle = sensors->robotAngle();
 	target_angle = starting_angle + degrees;
 
@@ -78,6 +79,7 @@ bool TurnDegrees::IsFinished()
 // Called once after isFinished returns true
 void TurnDegrees::End()
 {
+	log->write(Log::TRACE_LEVEL,"TurnDegres Ended");
 	mobility->setStraight(0.0);
 }
 
@@ -85,6 +87,7 @@ void TurnDegrees::End()
 // subsystems is scheduled to run
 void TurnDegrees::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"TurnDegrees Interrupted");
 	End();
 	// Use an interrupted flag instead of setting target_angle to current_angle because
 	// our current_angle will change between now and the next IsFinished call

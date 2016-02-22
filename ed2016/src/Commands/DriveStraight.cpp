@@ -19,6 +19,7 @@ DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 
 void DriveStraight::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d)", (int) joystick_used, (int) sensor_type);
 	starting_robot_angle = sensors->robotAngle();
 }
 void DriveStraight::Execute()
@@ -96,9 +97,9 @@ bool DriveStraight::IsFinished()
 }
 void DriveStraight::End()
 {
-
+	log->write(Log::TRACE_LEVEL, "DriveStraight Ended");
 }
 void DriveStraight::Interrupted()
 {
-
+	log->write(Log::TRACE_LEVEL, "DriveStraight Interrupted");
 }

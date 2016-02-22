@@ -12,6 +12,7 @@ MoveFrontWinch::MoveFrontWinch(Utils::VerticalDirection dir)
 // Called just before this Command runs the first time
 void MoveFrontWinch::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "MoveFrontWinch Initialized");
 	climber->setFrontWinchDirection(movement_direction);
 }
 
@@ -30,6 +31,7 @@ bool MoveFrontWinch::IsFinished()
 // Called once after isFinished returns true
 void MoveFrontWinch::End()
 {
+	log->write(Log::TRACE_LEVEL, "MoveFrontWinch Ended");
 	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
@@ -37,5 +39,6 @@ void MoveFrontWinch::End()
 // subsystems is scheduled to run
 void MoveFrontWinch::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "MoveFrontWinch Interrupted");
 	End();
 }

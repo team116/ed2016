@@ -19,6 +19,7 @@ Shoot::Shoot() : CommandBase("Shoot")
 // Called just before this Command runs the first time
 void Shoot::Initialize()
 {
+	log->write(Log::TRACE_LEVEL,"Shoot Initialized");
 	interrupted = false;
 	timer->Start();
 	timer->Reset();
@@ -55,6 +56,7 @@ bool Shoot::IsFinished()
 // Called once after isFinished returns true
 void Shoot::End()
 {
+	log->write(Log::TRACE_LEVEL,"Shoot Ended");
 	holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
 }
 
@@ -62,6 +64,7 @@ void Shoot::End()
 // subsystems is scheduled to run
 void Shoot::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"Shoot Interrupted");
 	interrupted = true;
 	End();
 }

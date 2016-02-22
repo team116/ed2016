@@ -16,6 +16,7 @@ SweepForGoal::SweepForGoal(int init_pos)
 // Called just before this Command runs the first time
 void SweepForGoal::Initialize()
 {
+	log->write(Log::TRACE_LEVEL,"SweepForGoal Initialized (init_pos %d)", initial_position);
 	interrupted = false;
 }
 
@@ -113,6 +114,7 @@ bool SweepForGoal::IsFinished()
 // Called once after isFinished returns true
 void SweepForGoal::End()
 {
+	log->write(Log::TRACE_LEVEL,"SweepForGoal Ended");
 	mobility->setLeft(0.0);
 	mobility->setRight(0.0);
 }
@@ -121,6 +123,7 @@ void SweepForGoal::End()
 // subsystems is scheduled to run
 void SweepForGoal::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"SweepForGoal Interrupted");
 	End();
 	interrupted = true;
 }

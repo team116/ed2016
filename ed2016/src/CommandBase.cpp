@@ -11,7 +11,7 @@ std::unique_ptr<ShooterPitch> CommandBase::shooter_pitch;
 std::unique_ptr<HolderWheel> CommandBase::holder_wheel;
 std::unique_ptr<Cameras> CommandBase::cameras;
 std::unique_ptr<Intake> CommandBase::intake;
-
+Log* CommandBase::log;
 CommandBase::CommandBase(const std::string &name) :
 		Command(name)
 {
@@ -27,6 +27,7 @@ void CommandBase::init()
 {
 	// Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
+	log = Log::getInstance();
 	mobility.reset(new Mobility());
 	climber.reset(new Climber());
 	sensors.reset(new Sensors());
