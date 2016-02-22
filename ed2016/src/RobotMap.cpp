@@ -10,9 +10,9 @@ namespace Utils
 
 	SpeedController* constructMotor(unsigned int port)
 	{
-		if (getRobotType() == RobotType::ANDERSON_BOT)
+		if (getRobotType() == RobotType::CAN_MOTOR_BOT)
 		{
-			return new CANTalon(port);
+			return new CANTalon(port + 1);
 		}
 		else if (getRobotType() == RobotType::ED2016_BOT)
 		{
