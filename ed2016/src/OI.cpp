@@ -190,12 +190,12 @@ float OI::getJoystickRightY()
 
 float OI::getFrontWinchY()
 {
-	return joystick_buttons2->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK);
+	return pow(Utils::deadZoneCheck(joystick_buttons2->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK), DEAD_ZONE_AMOUNT), 3);
 }
 
 float OI::getBackWinchY()
 {
-	return joystick_buttons2->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK);
+	return pow(Utils::deadZoneCheck(joystick_buttons2->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK), DEAD_ZONE_AMOUNT), 3);
 }
 
 int OI::getShooterSpeedPosition()
