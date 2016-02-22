@@ -128,7 +128,7 @@ namespace Utils
 	};
 	enum RobotType
 	{
-		ANDERSON_BOT,
+		CAN_MOTOR_BOT,
 		ED2016_BOT
 	};
 	RobotType getRobotType();
