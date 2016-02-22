@@ -59,10 +59,7 @@ void Log::write(Log::debugLevelType debug_level, const char* str, ...)
 				DriverStation::ReportError(buffer);
 				break;
 			case Log::WARNING_LEVEL:
-				DriverStation::ReportWarning(buffer);
-				break;
-			default:
-				DriverStation::ReportWarning(buffer);
+				DriverStation::ReportError(buffer);
 				break;
 			}
 		}
