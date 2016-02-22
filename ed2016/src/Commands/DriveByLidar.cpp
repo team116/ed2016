@@ -14,7 +14,7 @@ DriveByLidar::DriveByLidar(float dist, float err)
 // Called just before this Command runs the first time
 void DriveByLidar::Initialize()
 {
-
+	interrupted = false;
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -1,14 +1,13 @@
-#ifndef WinchControls_H
-#define WinchControls_H
+#ifndef ManualWinchControl_H
+#define ManualWinchControl_H
 
 #include "../CommandBase.h"
 #include "WPILib.h"
-#include "OI.h"
 
-class WinchControls: public CommandBase
+class ManualWinchControl: public CommandBase
 {
 public:
-	WinchControls();
+	ManualWinchControl();
 	void Initialize();
 	void Execute();
 	bool IsFinished();

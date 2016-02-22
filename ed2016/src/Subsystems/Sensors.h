@@ -4,6 +4,7 @@
 #include <NAVX/AHRS.h>
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
+#include <Counter.h>
 
 class Sensors: public Subsystem
 {
@@ -24,7 +25,6 @@ public:
 	float getDistanceRight();
 	float getSpeedLeft();
 	float getSpeedRight();
-	float getTach();
 	float getTopTachRate();
 	float getBottomTachRate();
 	void resetEncoderLeft();
@@ -36,6 +36,11 @@ public:
 	bool areIntakeAngleEnabled();
 	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
+	float getTachRate();
+	float getTach();
+
+	float last_count;
+	Timer* timer;
 
 	bool isShooterHomeSwitchHorizontal();
 
@@ -49,14 +54,20 @@ private:
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 
-	DigitalInput* top_shooter_wheel_tach_input;
-	DigitalInput* bottom_shooter_wheel_tach_input;
 
 	DigitalInput* ready_to_shoot_balls_switch;
 
 	//DigitalInput* shooter_ready_to_shoot;
 	Encoder* top_shooter_wheel_tach;
 	Encoder* bottom_shooter_wheel_tach;
+
+	DigitalInput* top_shooter_wheel_tach_input;
+	DigitalInput* bottom_shooter_wheel_tach_input;
+	//DigitalInput* shooter_ready_to_shoot;
+	Counter* top_shooter_wheel_tach_counter;
+	Counter* bottom_shooter_wheel_tach_counter;
+
+
 
 
 	static const float DRIVE_WHEEL_DIAMETER; // inches

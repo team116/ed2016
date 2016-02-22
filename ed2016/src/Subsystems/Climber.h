@@ -10,30 +10,19 @@ class Climber: public Subsystem
 public:
 	Climber();
 
-	enum ClimberArmDirection
-		{
-			CLIMBER_ARM_UP,
-			CLIMBER_ARM_DOWN,
-			CLIMBER_ARM_STILL
-		};
-
 	void InitDefaultCommand();
+	void setClimber(Utils::VerticalDirection direction, float speed = 1.0);
+	Utils::VerticalDirection getDirectionClimber();
 
-	void setClimber(ClimberArmDirection direction, float speed = 1.0);
+	void setFrontWinchDirection (Utils::VerticalDirection direction);
+	void setBackWinchDirection (Utils::VerticalDirection direction);
 
-	ClimberArmDirection getDirectionClimber();
 
-	enum WinchDirection
-	{
-			ROBOT_PULL_UP,
-			ROBOT_PULL_DOWN,
-			ROBOT_STILL
-	};
-	void setFrontWinch (WinchDirection direction);
-	void setBackWinch (WinchDirection direction);
+	void setFrontWinchSpeed(float);
+	void setBackWinchSpeed(float);
 
-	WinchDirection getFrontWinchDirection();
-	WinchDirection getBackWinchDirection();
+	Utils::VerticalDirection getFrontWinchDirection();
+	Utils::VerticalDirection getBackWinchDirection();
 
 	bool isWinchCurrentSpiking();
 
@@ -45,9 +34,9 @@ private:
 	const static float WINCH_SPEED;
 	const static float CURRENT_SPIKE_THRESHHOLD;
 
-	ClimberArmDirection climber_arm_direction;
-	WinchDirection front_winch_direction;
-	WinchDirection back_winch_direction;
+	Utils::VerticalDirection climber_arm_direction;
+	Utils::VerticalDirection front_winch_direction;
+	Utils::VerticalDirection back_winch_direction;
 
 	MOTOR_TYPE* climber_armed_motor;
 	MOTOR_TYPE* front_winch;

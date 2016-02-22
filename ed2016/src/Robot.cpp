@@ -126,6 +126,7 @@ private:
 	void TeleopPeriodic()
 	{
 		Scheduler::GetInstance()->Run();
+		CommandBase::oi->process();
 		CommandBase::shooter_pitch->checkLimits();
 	}
 

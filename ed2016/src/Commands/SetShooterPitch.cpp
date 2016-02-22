@@ -1,7 +1,11 @@
 #include <Commands/SetShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Log.h>
 
+const float SetShooterPitch::TIMEOUT = 0.05;
+
+//Angle in degrees
 SetShooterPitch::SetShooterPitch(float angle, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
@@ -15,7 +19,8 @@ SetShooterPitch::SetShooterPitch(float angle, float error)
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
-
+	interrupted = false;
+	SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -48,6 +53,10 @@ bool SetShooterPitch::IsFinished()
 	}
 	else if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
 	{
+		return true;
+	}
+	else if(IsTimedOut()) {
+		Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
 		return true;
 	}
 	return false;

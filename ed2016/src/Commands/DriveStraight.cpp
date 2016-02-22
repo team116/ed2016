@@ -5,10 +5,10 @@
 const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 
-const float DriveStraight::DEGREE_TOLERANCE = 1.0;
-const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
+const float DriveStraight::DEGREE_TOLERANCE = 3.0;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.1;
 
-DriveStraight::DriveStraight(int joystick, SensorType type)
+DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
 	Requires(&*mobility);
 	joystick_used = joystick;
@@ -23,11 +23,11 @@ void DriveStraight::Initialize()
 }
 void DriveStraight::Execute()
 {
-	if(joystick_used == 0)
+	if(joystick_used == JoystickSide::LEFT)
 	{
 		joystick_value = oi -> getJoystickLeftY();
 	}
-	else if (joystick_used == 1)
+	else if (joystick_used == JoystickSide::RIGHT)
 	{
 		joystick_value = oi ->getJoystickRightY();
 	}
@@ -36,18 +36,19 @@ void DriveStraight::Execute()
 	{
 		case GYRO:
 		{
-			/*
+
 			if(sensors->robotAngle()> (DEGREE_TOLERANCE + starting_robot_angle))
 			{
-				mobility->setLeft(Utils::boundryCheck(mobility->getLeft()-SPEED_OFFSET, -1.0, 1.0));
-
-				mobility->setRight(Utils::boundryCheck(mobility->getRight()+SPEED_OFFSET, -1.0, 1.0));
+				DriverStation::ReportError("\n Turning Left. Speed: " + std::to_string(joystick_value));
+				mobility->setLeft(Utils::boundaryCheck(joystick_value - GYRO_SPEED_OFFSET,-1.0, 1.0));
+				mobility->setRight(Utils::boundaryCheck(joystick_value + GYRO_SPEED_OFFSET, -1.0, 1.0));
 			}
 			else if(sensors->robotAngle() < (starting_robot_angle - DEGREE_TOLERANCE))
 			{
-				mobility->setLeft(Utils::boundryCheck(mobility->getLeft()+SPEED_OFFSET, -1.0, 1.0));
-				mobility->setRight(Utils::boundryCheck(mobility->getRight()-SPEED_OFFSET, -1.0, 1.0));
-			}*/
+				DriverStation::ReportError("\n Turning Right. Speed: " + std::to_string(joystick_value));
+				mobility->setLeft(Utils::boundaryCheck(joystick_value + GYRO_SPEED_OFFSET, -1.0, 1.0));
+				mobility->setRight(Utils::boundaryCheck(joystick_value - GYRO_SPEED_OFFSET, -1.0, 1.0));
+			}
 			break;
 		}
 		case ENCODER:

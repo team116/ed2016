@@ -16,7 +16,7 @@ SweepForGoal::SweepForGoal(int init_pos)
 // Called just before this Command runs the first time
 void SweepForGoal::Initialize()
 {
-
+	interrupted = false;
 }
 
 // Called repeatedly when this Command is scheduled to run

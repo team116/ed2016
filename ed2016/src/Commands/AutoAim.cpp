@@ -32,7 +32,7 @@ AutoAim::~AutoAim() {
 
 void AutoAim::Initialize()
 {
-
+	interrupted = false;
 }
 
 void AutoAim::Execute()
