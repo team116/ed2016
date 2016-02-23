@@ -247,11 +247,19 @@ bool Sensors::isShooterHomeSwitchHorizontal()
 
 float Sensors::getSpeedLeft()
 {
+	if (areDriveEncoderEnabled())
+	{
+		return left_drive_encoder->GetRate();
+	}
 	return 0.0;
 }
 
 float Sensors::getSpeedRight()
 {
+	if (areDriveEncoderEnabled())
+	{
+		return right_drive_encoder->GetRate();
+	}
 	return 0.0;
 }
 
