@@ -3,6 +3,7 @@
 
 MoveToDefense::MoveToDefense()
 {
+	DriverStation::ReportError("entered MoveToDefense constructor");
 	AddSequential(new DriveDistance(152));
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());

@@ -5,7 +5,7 @@ namespace Utils
 {
 	RobotType getRobotType()
 	{
-		return RobotType::ED2016_BOT;
+		return RobotType::CAN_MOTOR_BOT;
 	}
 
 	SpeedController* constructMotor(unsigned int port)
