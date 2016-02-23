@@ -13,33 +13,36 @@ public:
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	float shooterAngle();	//read the encoder
+	float shooterAngle();
 	float robotAngle();
-	//a method to read the LIDAR, the return type of which we do not yet know
-	float speedTopShooterWheel();
-	float speedBottomShooterWheel();
 	float intakeAngle();
+
 	int lidarDistance();
 	void refreshLidar();
+
+	float getCycleTime();
+	void updateCycleTime();
+
+	float speedTopShooterWheel();
+	float speedBottomShooterWheel();
+	void updateTachometers();
+
 	float getDistanceLeft();
 	float getDistanceRight();
 	float getSpeedLeft();
 	float getSpeedRight();
 	void resetEncoderLeft();
 	void resetEncoderRight();
+
+	bool readyToShoot();
+	bool isShooterHomeSwitchHorizontal();
+
 	bool areDriveEncoderEnabled();
 	bool areLidarEnabled();
 	bool areShooterAngleEnabled();
 	bool areRobotAngleEnabled();
 	bool areIntakeAngleEnabled();
-	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
-	float getTachRate();
-
-	float last_count;
-	Timer* timer;
-
-	bool isShooterHomeSwitchHorizontal();
 
 private:
 	DigitalInput* ready_to_shoot_balls_switch;
@@ -51,14 +54,15 @@ private:
 	AnalogInput*  intake_angle_encoder;
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
-	DigitalInput* top_shooter_wheel_tach_input;
-	DigitalInput* bottom_shooter_wheel_tach_input;
-	//DigitalInput* shooter_ready_to_shoot;
-	Counter* top_shooter_wheel_tach_counter;
-	Counter* bottom_shooter_wheel_tach_counter;
+	Counter* top_shooter_wheel_tach;
+	Counter* bottom_shooter_wheel_tach;
+	unsigned int prev_top_tach_count;
+	unsigned int prev_bottom_tach_count;
+	float top_tach_rate;
+	float bottom_tach_rate;
 
-	Encoder* top_shooter_wheel_tach;
-	Encoder* bottom_shooter_wheel_tach;
+	Timer* cycle_timer;
+	float prev_time_stamp;
 
 	static const float DRIVE_WHEEL_DIAMETER; // inches
 	static const int DRIVE_WHEEL_PPR;
