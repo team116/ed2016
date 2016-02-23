@@ -13,25 +13,12 @@ public:
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	float shooterAngle();	//read the encoder
+	float shooterAngle();
 	float robotAngle();
-	//a method to read the LIDAR, the return type of which we do not yet know
 	float intakeAngle();
+
 	int lidarDistance();
 	void refreshLidar();
-	float getDistanceLeft();
-	float getDistanceRight();
-	float getSpeedLeft();
-	float getSpeedRight();
-	void resetEncoderLeft();
-	void resetEncoderRight();
-	bool areDriveEncoderEnabled();
-	bool areLidarEnabled();
-	bool areShooterAngleEnabled();
-	bool areRobotAngleEnabled();
-	bool areIntakeAngleEnabled();
-	bool readyToShoot();
-	bool shooterWheelTachometerEnabled();
 
 	float getCycleTime();
 	void updateCycleTime();
@@ -40,10 +27,22 @@ public:
 	float speedBottomShooterWheel();
 	void updateTachometers();
 
-	float last_count;
-	Timer* timer;
+	float getDistanceLeft();
+	float getDistanceRight();
+	float getSpeedLeft();
+	float getSpeedRight();
+	void resetEncoderLeft();
+	void resetEncoderRight();
 
+	bool readyToShoot();
 	bool isShooterHomeSwitchHorizontal();
+
+	bool areDriveEncoderEnabled();
+	bool areLidarEnabled();
+	bool areShooterAngleEnabled();
+	bool areRobotAngleEnabled();
+	bool areIntakeAngleEnabled();
+	bool shooterWheelTachometerEnabled();
 
 private:
 	DigitalInput* ready_to_shoot_balls_switch;
