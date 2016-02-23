@@ -95,7 +95,7 @@ float Sensors::robotAngle()
 {
 	if(robot_angle_enabled)
 	{
-		if (Utils::getRobotType() == Utils::ANDERSON_BOT)
+		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
 		{
 			return navx->GetYaw();
 		}
