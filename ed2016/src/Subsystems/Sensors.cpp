@@ -12,7 +12,7 @@ const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
-const int Sensors::SHOOTER_WHEEL_PPR = 64;
+const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
@@ -23,26 +23,24 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 
-	top_shooter_wheel_tach = new Encoder(top_shooter_wheel_tach_input, nullptr);
-	bottom_shooter_wheel_tach = new Encoder(bottom_shooter_wheel_tach_input, nullptr);
-
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
-	top_shooter_wheel_tach_input = new DigitalInput(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
-	bottom_shooter_wheel_tach_input = new DigitalInput(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
-	top_shooter_wheel_tach_counter = new Counter(top_shooter_wheel_tach_input);
-	bottom_shooter_wheel_tach_counter = new Counter(bottom_shooter_wheel_tach_input);
+	top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
+	bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
-	top_shooter_wheel_tach_counter->SetUpSource(top_shooter_wheel_tach_input);
-	bottom_shooter_wheel_tach_counter->SetUpSource(bottom_shooter_wheel_tach_input);
+	top_shooter_wheel_tach->ClearDownSource();
+	bottom_shooter_wheel_tach->ClearDownSource();
+	prev_top_tach_count = 0;
+	prev_bottom_tach_count = 0;
+	top_tach_rate = 0.0;
+	bottom_tach_rate = 0.0;
 
-	top_shooter_wheel_tach_counter->ClearDownSource();
-	bottom_shooter_wheel_tach_counter->ClearDownSource();
-
-	bottom_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
-	top_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	cycle_timer = new Timer();
+	cycle_timer->Start();
+	cycle_timer->Reset();
+	prev_time_stamp = cycle_timer->Get();
 
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
@@ -69,11 +67,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 void Sensors::InitDefaultCommand()
 {
-	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
-
-	//Default commands must require the subsystem
-	//SetDefaultCommand(new CheckLidar());
+	SetDefaultCommand(new CheckLidar());
 }
 
 // Put methods for controlling this subsystem
@@ -119,7 +113,7 @@ float Sensors::speedTopShooterWheel()
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return top_shooter_wheel_tach->GetRate();
+			return top_tach_rate;
 		}
 		else
 		{
@@ -133,7 +127,7 @@ float Sensors::speedBottomShooterWheel()
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return bottom_shooter_wheel_tach->GetRate();
+			return bottom_tach_rate;
 		}
 		else
 		{
@@ -253,20 +247,34 @@ bool Sensors::isShooterHomeSwitchHorizontal()
 
 float Sensors::getSpeedLeft()
 {
-		return 0.0;
+	return 0.0;
 }
 
 float Sensors::getSpeedRight()
 {
-		return 0.0;
+	return 0.0;
 }
 
-float Sensors::getTachRate(){
-	timer->Start();
-	timer->Reset();
-	top_shooter_wheel_tach_counter->Reset();
-	float diff_t = timer->Get();
-	float diff_c = top_shooter_wheel_tach_counter->Get();
-	float rate = diff_c / diff_t;
-	return rate;
+void Sensors::updateTachometers()
+{
+	unsigned int cur_top_count = top_shooter_wheel_tach->Get();
+	unsigned int cur_bottom_count = bottom_shooter_wheel_tach->Get();
+	float cycle_time = getCycleTime();
+
+	// multiply by 60 to convert to RPM
+	top_tach_rate = (float)(cur_top_count - prev_top_tach_count) / cycle_time * 60.0;
+	bottom_tach_rate = (float)(cur_bottom_count - prev_bottom_tach_count) / cycle_time * 60.0;
+
+	prev_top_tach_count = cur_top_count;
+	prev_bottom_tach_count = cur_bottom_count;
+}
+
+float Sensors::getCycleTime()
+{
+	return cycle_timer->Get() - prev_time_stamp;
+}
+
+void Sensors::updateCycleTime()
+{
+	prev_time_stamp = cycle_timer->Get();
 }
