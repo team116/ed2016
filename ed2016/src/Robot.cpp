@@ -8,6 +8,8 @@
 #include <Commands/Autonomous/DoNothing.h>
 #include <Commands/Autonomous/MoveToDefense.h>
 #include <Commands/Autonomous/CrossDefAndShoot.h>
+#include <Commands/Autonomous/SpyBoxShoot.h>
+#include <Commands/Autonomous/SpyBoxShootAndReach.h>
 #include <Log.h>
 #include <Subsystems/ShooterPitch.h>
 
@@ -89,8 +91,18 @@ private:
 		{
 			auto_command = new CrossDefense((Defense)defense_value);
 		}
+		//SpyBoxShoot
+		else if ((shoot_value == 1 || shoot_value == 2) && position_value == 0 && defense_value == 0)
+		{
+			auto_command = new SpyBoxShoot((Goals)shoot_value);
+		}
+		//SpyBoxShootAndReach
+		else if ((shoot_value == 1 || shoot_value == 2) && position_value == 0 && defense_value != 0)
+		{
+			auto_command = new SpyBoxShootAndReach((Goals)shoot_value);
+		}
 		//CrossDefAndShoot plays
-		else if ((shoot_value == 1 || shoot_value == 2) && defense_value != 0 && position_value != 0)
+		else if ((shoot_value == 1 || shoot_value == 2) && position_value != 0 && defense_value != 0)
 		{
 			auto_command = new CrossDefAndShoot((Defense)defense_value, (Goals)shoot_value, position_value);
 		}
