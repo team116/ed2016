@@ -5,7 +5,7 @@
 ShooterPitch::ShooterPitch() :
 		Subsystem("ShooterPitch")
 {
-	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
+	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
 }
 
 void ShooterPitch::InitDefaultCommand()

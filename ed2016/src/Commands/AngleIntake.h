@@ -22,11 +22,12 @@ public:
 	void End();
 	void Interrupted();
 private:
-	Intake::IntakeAngleDirection direction;
+	static const float TIMEOUT;
+
+	Utils::VerticalDirection direction;
 	float current_angle;
 	float angle;
 	float accepted_error;
-
 	bool interrupted;
 };
 

@@ -19,6 +19,7 @@ ClearCommands::ClearCommands()
 // Called just before this Command runs the first time
 void ClearCommands::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "Clear Commands Initialized");
 
 }
 
@@ -37,6 +38,7 @@ bool ClearCommands::IsFinished()
 // Called once after isFinished returns true
 void ClearCommands::End()
 {
+	log->write(Log::TRACE_LEVEL, "Clear Commands Ended");
 
 }
 
@@ -44,5 +46,6 @@ void ClearCommands::End()
 // subsystems is scheduled to run
 void ClearCommands::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "Clear Commands Interrupted");
 
 }

@@ -11,7 +11,7 @@ private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
-	MOTOR_TYPE* pitch_angle;
+	SpeedController* pitch_angle;
 
 public:
 	ShooterPitch();

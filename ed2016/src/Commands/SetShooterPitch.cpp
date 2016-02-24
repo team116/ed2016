@@ -1,7 +1,11 @@
 #include <Commands/SetShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Log.h>
 
+const float SetShooterPitch::TIMEOUT = 0.05;
+
+//Angle in degrees
 SetShooterPitch::SetShooterPitch(float angle, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
@@ -15,7 +19,9 @@ SetShooterPitch::SetShooterPitch(float angle, float error)
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
-
+	log->write(Log::TRACE_LEVEL, "SetShooterPitch (angle %f)", pitch);
+	interrupted = false;
+	SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -50,12 +56,17 @@ bool SetShooterPitch::IsFinished()
 	{
 		return true;
 	}
+	else if(IsTimedOut()) {
+		Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
+		return true;
+	}
 	return false;
 }
 
 // Called once after isFinished returns true
 void SetShooterPitch::End()
 {
+	log->write(Log::TRACE_LEVEL,"SetShooterPitch Ended");
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 }
 
@@ -63,6 +74,7 @@ void SetShooterPitch::End()
 // subsystems is scheduled to run
 void SetShooterPitch::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"SeShooterPitch Interrupted");
 	interrupted = true;
 	End();
 }

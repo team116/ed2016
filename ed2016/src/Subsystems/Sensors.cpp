@@ -12,7 +12,7 @@ const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
-const int Sensors::SHOOTER_WHEEL_PPR = 64;
+const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
@@ -21,12 +21,23 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
-	left_shooter_wheel_tach_input = new DigitalInput(RobotPorts::LEFT_SHOOTER_WHEEL_TACH);
-	right_shooter_wheel_tach_input = new DigitalInput(RobotPorts::RIGHT_SHOOTER_WHEEL_TACH);
-	left_shooter_wheel_tach = new Encoder(left_shooter_wheel_tach_input, nullptr);
-	right_shooter_wheel_tach = new Encoder(right_shooter_wheel_tach_input, nullptr);
-	right_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
-	left_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
+
+	top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
+	bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
+
+	top_shooter_wheel_tach->ClearDownSource();
+	bottom_shooter_wheel_tach->ClearDownSource();
+	prev_top_tach_count = 0;
+	prev_bottom_tach_count = 0;
+	top_tach_rate = 0.0;
+	bottom_tach_rate = 0.0;
+
+	cycle_timer = new Timer();
+	cycle_timer->Start();
+	cycle_timer->Reset();
+	prev_time_stamp = cycle_timer->Get();
+
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	left_drive_encoder = new Encoder(RobotPorts::LEFT_ENCODER_A, RobotPorts::LEFT_ENCODER_B);
@@ -34,6 +45,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
+
 
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
@@ -51,11 +63,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 void Sensors::InitDefaultCommand()
 {
-	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
-
-	//Default commands must require the subsystem
-	//SetDefaultCommand(new CheckLidar());
+	SetDefaultCommand(new CheckLidar());
 }
 
 // Put methods for controlling this subsystem
@@ -76,27 +84,32 @@ float Sensors::shooterAngle()
 float Sensors::robotAngle()
 {
 	if(robot_angle_enabled)
-{
-	#if ROBOT_TYPE == ANDERSON_BOT
-		return navx->GetYaw();
-	#elif ROBOT_TYPE == ED2016_BOT
-		return navx->GetRoll();
-	#else
-		return 0.0;
-	#endif
-}
+	{
+		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
+		{
+			return navx->GetYaw();
+		}
+		else if (Utils::getRobotType() == Utils::ED2016_BOT)
+		{
+			return navx->GetRoll();
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
 	else
 	{
 		return 0.0;
 	}
 }
 
-float Sensors::speedLeftShooterWheel()
+float Sensors::speedTopShooterWheel()
 {
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return left_shooter_wheel_tach->GetRate();
+			return top_tach_rate;
 		}
 		else
 		{
@@ -105,12 +118,12 @@ float Sensors::speedLeftShooterWheel()
 	}
 }
 
-float Sensors::speedRightShooterWheel()
+float Sensors::speedBottomShooterWheel()
 {
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return left_shooter_wheel_tach->GetRate();
+			return bottom_tach_rate;
 		}
 		else
 		{
@@ -142,6 +155,7 @@ int Sensors::lidarDistance()
 		return 0.0;
 	}
 }
+
 void Sensors::refreshLidar()
 {
 	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
@@ -149,9 +163,9 @@ void Sensors::refreshLidar()
 		uint8_t buffer[2];
 		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
 
-			 lidar_distance = (buffer[0] << 8) + buffer[1];
-		}
+		lidar_distance = (buffer[0] << 8) + buffer[1];
 	}
+}
 
 float Sensors::getDistanceLeft()
 {
@@ -225,4 +239,46 @@ bool Sensors::isShooterHomeSwitchHorizontal()
 	else {
 		return false;
 	}
+}
+
+float Sensors::getSpeedLeft()
+{
+	if (areDriveEncoderEnabled())
+	{
+		return left_drive_encoder->GetRate();
+	}
+	return 0.0;
+}
+
+float Sensors::getSpeedRight()
+{
+	if (areDriveEncoderEnabled())
+	{
+		return right_drive_encoder->GetRate();
+	}
+	return 0.0;
+}
+
+void Sensors::updateTachometers()
+{
+	unsigned int cur_top_count = top_shooter_wheel_tach->Get();
+	unsigned int cur_bottom_count = bottom_shooter_wheel_tach->Get();
+	float cycle_time = getCycleTime();
+
+	// multiply by 60 to convert to RPM
+	top_tach_rate = (float)(cur_top_count - prev_top_tach_count) / cycle_time * 60.0;
+	bottom_tach_rate = (float)(cur_bottom_count - prev_bottom_tach_count) / cycle_time * 60.0;
+
+	prev_top_tach_count = cur_top_count;
+	prev_bottom_tach_count = cur_bottom_count;
+}
+
+float Sensors::getCycleTime()
+{
+	return cycle_timer->Get() - prev_time_stamp;
+}
+
+void Sensors::updateCycleTime()
+{
+	prev_time_stamp = cycle_timer->Get();
 }

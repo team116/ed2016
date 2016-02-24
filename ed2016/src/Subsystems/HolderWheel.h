@@ -9,18 +9,15 @@ class HolderWheel: public Subsystem
 {
 public:
 	HolderWheel();
-	enum HolderWheelDirection
-		{
-			WHEEL_IN,
-			WHEEL_OUT,
-			WHEEL_STILL
-		};
-	void holderWheelDirection(HolderWheelDirection direction);
+	void setWheelDirection(Utils::HorizontalDirection direction);
+	Utils::HorizontalDirection getWheelDirection();
 
 private:
 	void InitDefaultCommand();
 
-	MOTOR_TYPE* holder_wheel;
+	SpeedController* holder_wheel;
+
+	Utils::HorizontalDirection wheel_direction;
 };
 
 #endif

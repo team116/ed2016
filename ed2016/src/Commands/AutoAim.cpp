@@ -32,7 +32,8 @@ AutoAim::~AutoAim() {
 
 void AutoAim::Initialize()
 {
-
+	log->write(Log::TRACE_LEVEL, "Auto Aim Initialized");
+	interrupted = false;
 }
 
 void AutoAim::Execute()
@@ -91,12 +92,14 @@ bool AutoAim::IsFinished()
 
 void AutoAim::End()
 {
+	log->write(Log::TRACE_LEVEL, "Auto Aim Ended");
 	mobility->setStraight(0.0);
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 }
 
 void AutoAim::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "Auto Aim Interrupted");
 	End();
 	interrupted = true;
 }

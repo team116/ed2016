@@ -3,8 +3,8 @@
 
 Intake::Intake() : Subsystem("Intake")
 {
-	intake_roller = new MOTOR_TYPE(RobotPorts::INTAKE_ROLLER_MOTOR);
-	intake_angle = new MOTOR_TYPE(RobotPorts::INTAKE_ANGLE_MOTOR);
+	intake_roller = Utils::constructMotor(RobotPorts::INTAKE_ROLLER_MOTOR);
+	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
 }
 
 void Intake::InitDefaultCommand()
@@ -13,34 +13,34 @@ void Intake::InitDefaultCommand()
 	//SetDefaultCommand(new MySpecialCommand());
 }
 
-void Intake::setIntakeDirection(Intake::IntakeDirection value)
+void Intake::setIntakeDirection(Utils::HorizontalDirection value)
 {
-	if (value == IntakeDirection::INTAKE_IN)
+	if (value == Utils::HorizontalDirection::IN)
 	{
 		intake_roller->Set(-1.0);
 	}
-	else if (value == IntakeDirection::INTAKE_OUT)
+	else if (value == Utils::HorizontalDirection::OUT)
 	{
 		intake_roller->Set(1.0);
 	}
-	else if (value == IntakeDirection::INTAKE_STILL)
+	else if (value == Utils::HorizontalDirection::H_STILL)
 	{
 		intake_roller->Set(0.0);
 	}
 }
 
-void Intake::setIntakeAngleDirection(IntakeAngleDirection value)
+void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 {
 	/* Note: may need to switch 1 and -1 */
-	if (value == IntakeAngleDirection::INTAKE_UP)
+	if (value == Utils::VerticalDirection::UP)
 		{
 			intake_angle->Set(1.0);
 		}
-		else if (value == IntakeAngleDirection::INTAKE_DOWN)
+		else if (value == Utils::VerticalDirection::DOWN)
 		{
 			intake_angle->Set(-1.0);
 		}
-		else if (value == IntakeAngleDirection::INTAKE_STOP)
+		else if (value == Utils::VerticalDirection::V_STILL)
 		{
 			intake_angle->Set(0.0);
 		}

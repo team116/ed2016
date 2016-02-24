@@ -14,6 +14,7 @@
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Log.h>
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -36,6 +37,7 @@ public:
 	static std::unique_ptr<Cameras> cameras;
 	static std::unique_ptr<OI> oi;
 	static std::unique_ptr<Intake> intake;
+	static Log* log;
 };
 
 #endif

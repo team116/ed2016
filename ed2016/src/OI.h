@@ -4,6 +4,7 @@
 #include <Joystick.h>
 #include <Subsystems/Intake.h>
 #include <WPILib.h>
+#include <Log.h>
 
 class OI
 {
@@ -17,6 +18,10 @@ public:
 	float getFrontWinchY();
 
 	int getShooterSpeedPosition();
+
+	bool getShooterWheelsSwitch();
+
+	void process();
 
 private:
 	Joystick* joystick_left;
@@ -42,7 +47,6 @@ private:
 	JoystickButton* b_auto_winch;
 	JoystickButton* b_auto_climber_deploy;
 	JoystickButton* b_shooter_engage;
-	JoystickButton* b_shooter_disengage;
 	JoystickButton* b_auto_aim;
 	JoystickButton* b_clear_commands;
 
@@ -50,13 +54,24 @@ private:
 	JoystickButton* s_shooter_wheels;
 	JoystickButton* s_intake_belt_inward;
 	JoystickButton* s_intake_belt_outward;
+	JoystickButton* b_drive_align_left;
+	JoystickButton* b_drive_align_right;
 
-	AnalogTrigger* d_intake_angle;
-	AnalogTrigger* d_shooter_speed;
-	AnalogTrigger* d_manual_aim;
+	JoystickButton* b_test_button;
 
-	//Analog Inputs
-	AnalogInput* intake_angle;
-	AnalogInput* manual_aim;
+	static const float DIAL_UPDATE_TIME;
+	static const float DEAD_ZONE_AMOUNT;
+
+	int intake_angle_position_process;
+	int shooter_speed_position_process;
+	int manual_aim_position_process;
+
+	int shooter_speed_position;
+
+	Timer* angle_temmie;
+	Timer* speed_temmie;
+	Timer* aim_temmie;
+
+	Log* log;
 };
 #endif

@@ -22,15 +22,14 @@ const float Shooter::SPEED_PRESETS[] = {
 
 Shooter::Shooter() : Subsystem("Shooter")
 {
-	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::LEFT_SHOOTER_MOTOR);
-	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::RIGHT_SHOOTER_MOTOR);
-	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
+	top_shooter_wheel = Utils::constructMotor(RobotPorts::LEFT_SHOOTER_MOTOR);
+	bottom_shooter_wheel = Utils::constructMotor(RobotPorts::RIGHT_SHOOTER_MOTOR);
 }
 
 
 void Shooter::InitDefaultCommand()
 {
-	// no default command
+	SetDefaultCommand(new RunShooterWheels());
 }
 
 // Put methods for controlling this subsystem

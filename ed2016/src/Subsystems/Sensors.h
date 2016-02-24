@@ -4,6 +4,7 @@
 #include <NAVX/AHRS.h>
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
+#include <Counter.h>
 
 class Sensors: public Subsystem
 {
@@ -12,29 +13,36 @@ public:
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
-	float shooterAngle();	//read the encoder
+	float shooterAngle();
 	float robotAngle();
-	//a method to read the LIDAR, the return type of which we do not yet know
-	float speedLeftShooterWheel();
-	float speedRightShooterWheel();
 	float intakeAngle();
+
 	int lidarDistance();
 	void refreshLidar();
+
+	float getCycleTime();
+	void updateCycleTime();
+
+	float speedTopShooterWheel();
+	float speedBottomShooterWheel();
+	void updateTachometers();
+
 	float getDistanceLeft();
 	float getDistanceRight();
 	float getSpeedLeft();
 	float getSpeedRight();
 	void resetEncoderLeft();
 	void resetEncoderRight();
+
+	bool readyToShoot();
+	bool isShooterHomeSwitchHorizontal();
+
 	bool areDriveEncoderEnabled();
 	bool areLidarEnabled();
 	bool areShooterAngleEnabled();
 	bool areRobotAngleEnabled();
 	bool areIntakeAngleEnabled();
-	bool readyToShoot();
 	bool shooterWheelTachometerEnabled();
-
-	bool isShooterHomeSwitchHorizontal();
 
 private:
 	DigitalInput* ready_to_shoot_balls_switch;
@@ -46,11 +54,15 @@ private:
 	AnalogInput*  intake_angle_encoder;
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
-	DigitalInput* left_shooter_wheel_tach_input;
-	DigitalInput* right_shooter_wheel_tach_input;
-	//DigitalInput* shooter_ready_to_shoot;
-	Encoder* left_shooter_wheel_tach;
-	Encoder* right_shooter_wheel_tach;
+	Counter* top_shooter_wheel_tach;
+	Counter* bottom_shooter_wheel_tach;
+	unsigned int prev_top_tach_count;
+	unsigned int prev_bottom_tach_count;
+	float top_tach_rate;
+	float bottom_tach_rate;
+
+	Timer* cycle_timer;
+	float prev_time_stamp;
 
 	static const float DRIVE_WHEEL_DIAMETER; // inches
 	static const int DRIVE_WHEEL_PPR;
@@ -72,8 +84,8 @@ private:
 	bool ready_to_shoot_enabled;
 	bool shooter_wheel_tachometer_enabled;
 
+	DigitalInput* intake_limit_switch;
 	DigitalInput* shooter_home_switch;
-
 
 };
 

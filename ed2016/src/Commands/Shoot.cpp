@@ -5,9 +5,9 @@
 #include <Subsystems/Sensors.h>
 
 const float Shoot::SPEED_UP_TIME = 1.0;
-const float Shoot::PUSH_BOULDER = 1.5;
+const float Shoot::PUSH_BOULDER = 0.5;
 
-Shoot::Shoot()
+Shoot::Shoot() : CommandBase("Shoot")
 {
 	Requires(&*shooter);
 	Requires(&*holder_wheel);
@@ -19,6 +19,8 @@ Shoot::Shoot()
 // Called just before this Command runs the first time
 void Shoot::Initialize()
 {
+	log->write(Log::TRACE_LEVEL,"Shoot Initialized");
+	interrupted = false;
 	timer->Start();
 	timer->Reset();
 }
@@ -29,10 +31,11 @@ void Shoot::Execute()
 	float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
 	shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
 
-	if ((sensors->speedLeftShooterWheel() > ideal_speed && sensors->speedRightShooterWheel() > ideal_speed) ||
+	if ((sensors->speedTopShooterWheel() > ideal_speed && sensors->speedBottomShooterWheel() > ideal_speed) ||
 		 timer->Get() > SPEED_UP_TIME)
 	{
-		holder_wheel->holderWheelDirection(HolderWheel::HolderWheelDirection::WHEEL_OUT);
+		holder_wheel->setWheelDirection(Utils::HorizontalDirection::OUT);
+		timer->Reset();
 	}
 }
 
@@ -43,7 +46,7 @@ bool Shoot::IsFinished()
 	{
 		return true;
 	}
-	if (timer->Get() > PUSH_BOULDER)
+	if ((holder_wheel->getWheelDirection() == Utils::HorizontalDirection::OUT) && (timer->Get() > PUSH_BOULDER))
 	{
 		return true;
 	}
@@ -53,13 +56,15 @@ bool Shoot::IsFinished()
 // Called once after isFinished returns true
 void Shoot::End()
 {
-	shooter->setShooterSpeed(0.0);
-	holder_wheel->holderWheelDirection(HolderWheel::HolderWheelDirection::WHEEL_STILL);
+	log->write(Log::TRACE_LEVEL,"Shoot Ended");
+	holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void Shoot::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"Shoot Interrupted");
 	interrupted = true;
+	End();
 }
