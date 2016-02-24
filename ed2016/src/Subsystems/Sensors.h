@@ -71,6 +71,8 @@ private:
 
 	static const float WINCH_SPEED;
 
+	Timer* lidar_timer;
+	unsigned int lidar_stage;
 	I2C* lidar;
 	int lidar_distance; // centimeters
 
