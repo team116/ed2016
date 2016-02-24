@@ -12,7 +12,9 @@ DriveDistance::DriveDistance(float dist)
 	current_distance = starting_distance;
 	dir = 0.0;
 	interrupted = false;
-	SetTimeout(dist * DRIVE_DISTANCE_TIMEOUT);
+	timeout = dist * DRIVE_DISTANCE_TIMEOUT;
+
+	temmie = new Timer();
 }
 
 // Called just before this Command runs the first time
@@ -30,12 +32,15 @@ void DriveDistance::Initialize()
 	{
 		dir = 0.0;
 	}
+
+	temmie->Reset();
+	temmie->Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveDistance::Execute()
 {
-	current_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0;
+	current_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0 - starting_distance;
 	mobility->setStraight(dir);
 }
 
@@ -43,7 +48,7 @@ void DriveDistance::Execute()
 bool DriveDistance::IsFinished()
 {
 
-	if(IsTimedOut())
+	if(temmie->Get() > timeout)
 	{
 		DriverStation::ReportError("DriveDistance HasTimedOut");
 		return true;
