@@ -18,11 +18,13 @@ DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 
 	joystick_value = 0.0;
 	starting_robot_angle = 0.0;
+
+	interrupted = false;
 }
 
 DriveStraight::DriveStraight(float speed, SensorType type)
 {
-	Requires(&*mobility);
+	//Requires(&*mobility);
 	joystick_used = (JoystickSide)-1;
 	curr_left_speed = 0.0;
 	curr_right_speed = 0.0;
@@ -30,6 +32,8 @@ DriveStraight::DriveStraight(float speed, SensorType type)
 
 	joystick_value = speed;
 	starting_robot_angle = 0.0;
+
+	interrupted = false;
 }
 
 void DriveStraight::Initialize()
@@ -108,7 +112,7 @@ void DriveStraight::Execute()
 }
 bool DriveStraight::IsFinished()
 {
-	return false;
+	return interrupted;
 }
 void DriveStraight::End()
 {
@@ -116,5 +120,7 @@ void DriveStraight::End()
 }
 void DriveStraight::Interrupted()
 {
+	interrupted = true;
 	log->write(Log::TRACE_LEVEL, "DriveStraight Interrupted");
+
 }

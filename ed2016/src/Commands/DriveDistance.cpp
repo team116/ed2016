@@ -13,8 +13,13 @@ DriveDistance::DriveDistance(float dist)
 	current_distance = starting_distance;
 	dir = 0.0;
 	interrupted = false;
-	SetTimeout(dist * DRIVE_DISTANCE_TIMEOUT);
+
 	auto_drive_straight = new DriveStraight(0.5, DriveStraight::GYRO);
+
+	timeout = dist * DRIVE_DISTANCE_TIMEOUT;
+
+	temmie = new Timer();
+
 }
 
 // Called just before this Command runs the first time
@@ -35,24 +40,28 @@ void DriveDistance::Initialize()
 	{
 		dir = 0.0;
 	}
+
 	Scheduler::GetInstance()->AddCommand(auto_drive_straight);
+
+
+	temmie->Reset();
+	temmie->Start();
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveDistance::Execute()
 {
-	DriverStation::ReportError("DriveDistance execute");
-	current_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0;
-
+	current_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0 - starting_distance;
+	mobility->setStraight(dir);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished()
 {
 
-	if(IsTimedOut())
+	if(temmie->Get() >= timeout)
 	{
-		DriverStation::ReportError("DriveDistance HasTimedOut");
 		return true;
 	}
 	if(interrupted)
@@ -73,8 +82,7 @@ void DriveDistance::End()
 {
 	log->write(Log::TRACE_LEVEL, "DriveDistance Ended");
 	mobility->setStraight(0.0);
-	Scheduler::GetInstance()->Remove(auto_drive_straight);
-	DriverStation::ReportError("DriveDistance End");
+	auto_drive_straight->Interrupted();
 }
 
 // Called when another command which requires one or more of the same

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
+#include <driverStation.h>
 #include <WPILib.h>
 
 Log* Log::INSTANCE = nullptr;
