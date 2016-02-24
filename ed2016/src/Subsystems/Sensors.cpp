@@ -46,7 +46,10 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
-
+	lidar_stage = 0;
+	lidar_timer = new Timer();
+	lidar_timer->Start();
+	lidar_timer->Reset();
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
 
@@ -158,12 +161,30 @@ int Sensors::lidarDistance()
 
 void Sensors::refreshLidar()
 {
-	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
+	uint8_t lidar_range_copy;
+	if (lidar_timer->Get() > (0.04 * (float)lidar_stage))
 	{
-		uint8_t buffer[2];
-		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
-
-		lidar_distance = (buffer[0] << 8) + buffer[1];
+		switch (lidar_stage)
+		{
+		case 0:
+			lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4);
+			++lidar_stage;
+			break;
+		case 1:
+			lidar_range_copy = RobotPorts::LIDAR_RANGE_REGISTER;
+			lidar->WriteBulk(&lidar_range_copy, 1);
+			++lidar_stage;
+			break;
+		case 2:
+			uint8_t buffer[2];
+			lidar->ReadOnly(2, buffer);
+			lidar_distance = (buffer[0] << 8) + buffer[1];
+			++lidar_stage;
+			break;
+		case 3:
+			lidar_timer->Reset();
+			lidar_stage = 0;
+		}
 	}
 }
 
