@@ -10,7 +10,7 @@ Mobility::Mobility() : Subsystem("Mobility")
 	rightBack = Utils::constructMotor(RobotPorts::RIGHT_BACK_MOTOR);
 
 	front_orientation = true; // just to get rid of uninitialized warning
-	useFrontOrientation(true); // this is the actual initializer
+	useFrontOrientation(false); // this is the actual initializer
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

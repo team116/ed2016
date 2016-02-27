@@ -16,6 +16,7 @@
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
+#include <Commands/DriveDistance.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
@@ -57,13 +58,15 @@ OI::OI()
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
+	b_test_button->WhenPressed(new DriveDistance(500));
+
 	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
 	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoAim());
-	b_clear_commands->WhenPressed(new ClearCommands());
+	//b_clear_commands->WhenPressed(new ClearCommands());
 	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
 
 	//Set Joystick Switch Events
@@ -176,6 +179,12 @@ void OI::process()
 		}
 		aim_temmie->Reset();
 		aim_temmie->Stop();
+
+		if (b_clear_commands->Get())
+		{
+			DriverStation::ReportError("\nClearing commands.");
+			Scheduler::GetInstance()->RemoveAll();
+		}
 	}
 }
 

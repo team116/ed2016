@@ -45,11 +45,11 @@ void AutoAim::Execute()
 		azimuth = cameras->AzimuthDegreesFromTarget();
 
 
-		if (pitch < current_pitch)
+		if (pitch + ACCEPTED_ERROR < current_pitch)
 		{
 			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
 		}
-		else if (pitch > current_pitch)
+		else if (pitch - ACCEPTED_ERROR > current_pitch)
 		{
 			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
 		}
@@ -60,15 +60,20 @@ void AutoAim::Execute()
 
 
 
-		if (azimuth < 0.0)
+		if (azimuth < -ACCEPTED_ERROR)
 		{
 			mobility->setLeft(-TURN_SPEED);
 			mobility->setRight(TURN_SPEED);
 		}
-		else
+		else if (azimuth > ACCEPTED_ERROR)
 		{
 			mobility->setLeft(TURN_SPEED);
 			mobility->setRight(-TURN_SPEED);
+		}
+		else
+		{
+			mobility->setLeft(0.0);
+			mobility->setRight(0.0);
 		}
 
 	}
