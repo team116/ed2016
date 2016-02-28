@@ -23,8 +23,8 @@ public:
 	float getCycleTime();
 	void updateCycleTime();
 
-	float speedTopShooterWheel();
-	float speedBottomShooterWheel();
+
+	float speedShooterWheel();
 	void updateTachometers();
 
 	float getDistanceLeft();
@@ -53,12 +53,9 @@ private:
 	AnalogInput*  intake_angle_encoder;
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
-	Counter* top_shooter_wheel_tach;
-	Counter* bottom_shooter_wheel_tach;
-	unsigned int prev_top_tach_count;
-	unsigned int prev_bottom_tach_count;
-	float top_tach_rate;
-	float bottom_tach_rate;
+	Counter* shooter_wheel_tach;
+	unsigned int prev_shooter_wheel_tach_count;
+	float shooter_wheel_tach_rate;
 
 	Timer* cycle_timer;
 	float prev_time_stamp;

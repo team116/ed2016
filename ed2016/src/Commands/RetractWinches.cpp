@@ -34,7 +34,7 @@ void RetractWinches::Execute()
 		temmie_a->Start();
 	}
 
-	if (temmie_a->Get() < ARM_TIMEOUT && temmie_a->Get() > 0.0)
+	if ((temmie_a->Get() < ARM_TIMEOUT) && (temmie_a->Get() > 0.0) && !climber->isClimberCurrentSpiking())
 	{
 		climber->setClimber(Utils::VerticalDirection::DOWN);
 	}

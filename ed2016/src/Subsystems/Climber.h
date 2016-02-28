@@ -25,6 +25,7 @@ public:
 	Utils::VerticalDirection getBackWinchDirection();
 
 	bool isWinchCurrentSpiking();
+	bool isClimberCurrentSpiking();
 
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -32,7 +33,8 @@ public:
 private:
 
 	const static float WINCH_SPEED;
-	const static float CURRENT_SPIKE_THRESHHOLD;
+	const static float WINCH_CURRENT_SPIKE_THRESHHOLD;
+	const static float CLIMBER_CURRENT_SPIKE_THRESHHOLD;
 
 	Utils::VerticalDirection climber_arm_direction;
 	Utils::VerticalDirection front_winch_direction;

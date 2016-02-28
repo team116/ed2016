@@ -13,7 +13,14 @@ private:
 
 	SpeedController* pitch_angle;
 
+	static const float TARGET_HEIGHT;
+
 public:
+	enum PitchType {
+		CAMERA,
+		LIDAR
+	};
+
 	ShooterPitch();
 	void InitDefaultCommand();
 
@@ -25,6 +32,8 @@ public:
 
 	void setShooterPitchDirection(ShooterPitchDirection);
 	void checkLimits();
+
+	float getPitchToTarget(PitchType);
 };
 
 #endif

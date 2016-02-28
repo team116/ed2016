@@ -1,7 +1,11 @@
 #include <CommandBase.h>
 #include <RobotMap.h>
+#include <Subsystems/Cameras.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
+#include <math.h>
+
+const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
 
 ShooterPitch::ShooterPitch() :
 		Subsystem("ShooterPitch")
@@ -46,5 +50,22 @@ void ShooterPitch::checkLimits()
 	if (CommandBase::sensors->isShooterHomeSwitchHorizontal())
 	{
 		pitch_angle->Set(0.0);
+	}
+}
+
+//In degrees
+float ShooterPitch::getPitchToTarget(PitchType type)
+{
+	switch (type) {
+	case PitchType::CAMERA:
+		return CommandBase::cameras->PitchFromHorizontal();
+		break;
+	case PitchType::LIDAR:
+		return atan(TARGET_HEIGHT / CommandBase::sensors->lidarDistance());
+		break;
+	default:
+		CommandBase::log->write(Log::WARNING_LEVEL, "Somehow you managed to have an invalid PitchType: %d", type);
+		return atan(TARGET_HEIGHT / CommandBase::sensors->lidarDistance());
+		break;
 	}
 }

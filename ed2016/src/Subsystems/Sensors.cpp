@@ -26,15 +26,19 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
 
-	top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
-	bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
+	shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
+	//top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
+	//bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
-	top_shooter_wheel_tach->ClearDownSource();
-	bottom_shooter_wheel_tach->ClearDownSource();
-	prev_top_tach_count = 0;
-	prev_bottom_tach_count = 0;
-	top_tach_rate = 0.0;
-	bottom_tach_rate = 0.0;
+	shooter_wheel_tach->ClearDownSource();
+	//top_shooter_wheel_tach->ClearDownSource();
+	//bottom_shooter_wheel_tach->ClearDownSource();
+	prev_shooter_wheel_tach_count = 0;
+	//prev_top_tach_count = 0;
+	//prev_bottom_tach_count = 0;
+	shooter_wheel_tach_rate = 0.0;
+	//top_tach_rate = 0.0;
+	//bottom_tach_rate = 0.0;
 
 	cycle_timer = new Timer();
 	cycle_timer->Start();
@@ -110,26 +114,12 @@ float Sensors::robotAngle()
 	}
 }
 
-float Sensors::speedTopShooterWheel()
+float Sensors::speedShooterWheel()
 {
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-			return top_tach_rate;
-		}
-		else
-		{
-			return 0.0;
-		}
-	}
-}
-
-float Sensors::speedBottomShooterWheel()
-{
-	{
-		if (shooter_wheel_tachometer_enabled)
-		{
-			return bottom_tach_rate;
+			return shooter_wheel_tach_rate;
 		}
 		else
 		{
@@ -286,16 +276,13 @@ float Sensors::getSpeedRight()
 
 void Sensors::updateTachometers()
 {
-	unsigned int cur_top_count = top_shooter_wheel_tach->Get();
-	unsigned int cur_bottom_count = bottom_shooter_wheel_tach->Get();
+	unsigned int cur_shooter_wheel_count = shooter_wheel_tach->Get();
 	float cycle_time = getCycleTime();
 
 	// multiply by 60 to convert to RPM
-	top_tach_rate = (float)(cur_top_count - prev_top_tach_count) / cycle_time * 60.0;
-	bottom_tach_rate = (float)(cur_bottom_count - prev_bottom_tach_count) / cycle_time * 60.0;
+	shooter_wheel_tach_rate = (float)(cur_shooter_wheel_count - prev_shooter_wheel_tach_count) / cycle_time * 60.0;
 
-	prev_top_tach_count = cur_top_count;
-	prev_bottom_tach_count = cur_bottom_count;
+	prev_shooter_wheel_tach_count = cur_shooter_wheel_count;
 }
 
 float Sensors::getCycleTime()

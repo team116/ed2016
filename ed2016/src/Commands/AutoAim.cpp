@@ -41,9 +41,8 @@ void AutoAim::Execute()
 	if (cameras->canSeeGoal())
 	{
 		current_pitch = sensors->shooterAngle();
-		pitch = cameras->PitchFromHorizontal();
+		pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR);
 		azimuth = cameras->AzimuthDegreesFromTarget();
-
 
 		if (pitch + ACCEPTED_ERROR < current_pitch)
 		{
