@@ -38,9 +38,9 @@ private:
 	Utils::VerticalDirection front_winch_direction;
 	Utils::VerticalDirection back_winch_direction;
 
-	MOTOR_TYPE* climber_armed_motor;
-	MOTOR_TYPE* front_winch;
-	MOTOR_TYPE* back_winch;
+	SpeedController* climber_armed_motor;
+	SpeedController* front_winch;
+	SpeedController* back_winch;
 
 	PowerDistributionPanel* pdp;
 

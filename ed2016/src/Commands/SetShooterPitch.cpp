@@ -19,6 +19,7 @@ SetShooterPitch::SetShooterPitch(float angle, float error)
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "SetShooterPitch (angle %f)", pitch);
 	interrupted = false;
 	SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
 }
@@ -65,6 +66,7 @@ bool SetShooterPitch::IsFinished()
 // Called once after isFinished returns true
 void SetShooterPitch::End()
 {
+	log->write(Log::TRACE_LEVEL,"SetShooterPitch Ended");
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 }
 
@@ -72,6 +74,7 @@ void SetShooterPitch::End()
 // subsystems is scheduled to run
 void SetShooterPitch::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL,"SeShooterPitch Interrupted");
 	interrupted = true;
 	End();
 }

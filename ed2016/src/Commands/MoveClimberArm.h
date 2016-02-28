@@ -2,7 +2,7 @@
 #define MoveClimberArm_H
 
 #include <CommandBase.h>
-#include <WPILib.h>
+#include <RobotMap.h>
 
 class MoveClimberArm: public CommandBase
 {

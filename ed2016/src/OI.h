@@ -57,7 +57,10 @@ private:
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
 
+	JoystickButton* b_test_button;
+
 	static const float DIAL_UPDATE_TIME;
+	static const float DEAD_ZONE_AMOUNT;
 
 	int intake_angle_position_process;
 	int shooter_speed_position_process;

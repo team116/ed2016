@@ -16,9 +16,10 @@
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
-#include <Commands/ManualWinchControl.h>
+#include <Commands/DriveDistance.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
+const float OI::DEAD_ZONE_AMOUNT = 0.1;
 
 OI::OI()
 {
@@ -28,6 +29,9 @@ OI::OI()
 	joystick_buttons1 = new Joystick(OI_Ports::BUTTONS_JOYSTICK1);
 	joystick_buttons2 = new Joystick(OI_Ports::BUTTONS_JOYSTICK2);
 
+	//Instantiate Joystick Right Buttons
+	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRIVE_ALIGN_BUTTON_RIGHT);
+
 	//Instantiate Joystick Left Buttons
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
 
@@ -35,6 +39,7 @@ OI::OI()
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRIVE_ALIGN_BUTTON_RIGHT);
 
 	//Instantiate Joystick Buttons 1's Buttons
+	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOT_BUTTON);
 	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
@@ -47,11 +52,15 @@ OI::OI()
 	b_retract_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::RETRACT_SCALING_ARM_BUTTON);
 	b_auto_winch = new JoystickButton(joystick_buttons2, OI_Ports::AUTO_WINCH_BUTTON);
 	b_auto_climber_deploy = new JoystickButton(joystick_buttons2, OI_Ports::AUTO_CLIMBER_DEPLOY_BUTTON);
-
 	s_manual_winch_enable = new JoystickButton(joystick_buttons2, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRIVE_ALIGN_BUTTON_RIGHT);
+
 	//Set Joystick Left Events
+	b_drive_align_left->WhileHeld(new DriveStraight(DriveStraight::LEFT, DriveStraight::GYRO));
+
+	//Set Joystick Right Events
+	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons 2's Events
 	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
@@ -70,8 +79,7 @@ OI::OI()
 
 	s_manual_winch_enable = new JoystickButton(joystick_buttons2, OI_Ports::MANUAL_WINCH_ENABLE_SWITCH);
 
-
-		//Set Joystick Analog Dial Events
+	//Set Joystick Analog Dial Events
 
 	//Set any other variables here
 	intake_angle_position_process = -1;
@@ -79,6 +87,7 @@ OI::OI()
 	manual_aim_position_process = -1;
 
 	shooter_speed_position = 0;
+
 	angle_temmie = new Timer();
 	speed_temmie = new Timer();
 	aim_temmie = new Timer();
@@ -88,29 +97,9 @@ OI::OI()
 	aim_temmie->Start();
 
 	log = Log::getInstance();
-
-
-
-	// Process operator interface input here.
-}
-
-float OI::getJoystickLeftY()
-{
-	return joystick_left->GetY();
-}
-
-float OI::getJoystickRightY()
-{
-	return joystick_right->GetY();
-}
-
-float OI::getFrontWinchY()
-{
-	return joystick_buttons1->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK);
 }
 
 void OI::process()
-
 {
 	int intake_angle_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL) + 1.0, 6, 2.0);
 	int shooter_speed_curr = Utils::voltageConversion(joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0, 6, 2.0);
@@ -125,19 +114,19 @@ void OI::process()
 	else if(angle_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
 		switch(intake_angle_position_process) {
 				case 0:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(0, 1));
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(-15, 1));
 					break;
 				case 1:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(18, 1));
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(6, 1));
 					break;
 				case 2:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(36, 1));
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(27, 1));
 					break;
 				case 3:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(54, 1));
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(48, 1));
 					break;
 				case 4:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(72, 1));
+					Scheduler::GetInstance()->AddCommand(new AngleIntake(69, 1));
 					break;
 				case 5:
 					Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
@@ -194,12 +183,34 @@ void OI::process()
 		}
 		aim_temmie->Reset();
 		aim_temmie->Stop();
+
+		if (b_clear_commands->Get())
+		{
+			DriverStation::ReportError("\nClearing commands.");
+			Scheduler::GetInstance()->RemoveAll();
+		}
 	}
+}
+
+float OI::getJoystickLeftY()
+{
+	return pow(Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT), 3);
+
+}
+
+float OI::getJoystickRightY()
+{
+	return pow(Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT), 3);
+}
+
+float OI::getFrontWinchY()
+{
+	return pow(Utils::deadZoneCheck(joystick_buttons2->GetRawAxis(OI_Ports::FRONT_WINCH_JOYSTICK), DEAD_ZONE_AMOUNT), 3);
 }
 
 float OI::getBackWinchY()
 {
-	return joystick_buttons2->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK);
+	return pow(Utils::deadZoneCheck(joystick_buttons2->GetRawAxis(OI_Ports::BACK_WINCH_JOYSTICK), DEAD_ZONE_AMOUNT), 3);
 }
 
 int OI::getShooterSpeedPosition()

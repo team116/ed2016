@@ -1,6 +1,8 @@
-#include "WPILib.h"
+#include <Log.h>
+#include <WPILib.h>
 
 #define MOTOR_COUNT 13
+#define AUTO_SWITCH_COUNT 3
 
 class Robot: public SampleRobot
 {
@@ -9,15 +11,34 @@ class Robot: public SampleRobot
 
 	VictorSP* victors[MOTOR_COUNT];
 
+	AnalogInput* auto_switches[AUTO_SWITCH_COUNT];
+
+	Log* log;
+
 public:
 	Robot()
 	{
+		log = Log::getInstance();
+
 		joystick1 = new Joystick(0);
 		joystick2 = new Joystick(1);
 
 		for (int i = 0; i < MOTOR_COUNT; ++i)
 		{
 			victors[i] = new VictorSP(i);
+		}
+
+		for (int i = 0; i < AUTO_SWITCH_COUNT; ++i)
+		{
+			auto_switches[i] = new AnalogInput(i + 4);
+		}
+	}
+
+	void logAutoSwitches()
+	{
+		for (int i = 0; i < AUTO_SWITCH_COUNT; ++i)
+		{
+			log->write(Log::INFO_LEVEL, "Auto Switch %d, voltage: %f, port: %d", i, auto_switches[i]->GetVoltage(), auto_switches[i]->GetChannel());
 		}
 	}
 
@@ -27,6 +48,8 @@ public:
 
 	void Autonomous() // Automatically go through every single motor, forward and backwards for 1 second
 	{
+		logAutoSwitches();
+
 		Timer* timer = new Timer();
 		timer->Start();
 		timer->Reset();
@@ -54,6 +77,8 @@ public:
 
 	void OperatorControl()
 	{
+		logAutoSwitches();
+
 		JoystickButton* buttons[13];
 		JoystickButton reverse_button(joystick1, 11);
 
@@ -100,7 +125,15 @@ public:
 
 	void Test()
 	{
+		logAutoSwitches();
 
+		static char log[255];
+		while (IsTest() && IsEnabled())
+		{
+			snprintf(log, 255, "Switch0 volts: %f, Switch1 volts: %f, Switch2 volts: %f",
+					auto_switches[0]->GetVoltage(), auto_switches[1]->GetVoltage(), auto_switches[2]->GetVoltage());
+			DriverStation::ReportError(log);
+		}
 	}
 };
 

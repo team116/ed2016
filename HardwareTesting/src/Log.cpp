@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
-#include <DriverStation.h>
 #include <WPILib.h>
 
 Log* Log::INSTANCE = nullptr;
@@ -60,7 +59,10 @@ void Log::write(Log::debugLevelType debug_level, const char* str, ...)
 				DriverStation::ReportError(buffer);
 				break;
 			case Log::WARNING_LEVEL:
-				DriverStation::ReportError(buffer);
+				DriverStation::ReportWarning(buffer);
+				break;
+			default:
+				DriverStation::ReportWarning(buffer);
 				break;
 			}
 		}

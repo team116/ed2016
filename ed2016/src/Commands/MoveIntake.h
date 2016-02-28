@@ -2,7 +2,7 @@
 #define MoveIntake_H
 
 #include <CommandBase.h>
-#include <WPILib.h>
+#include <RobotMap.h>
 
 class MoveIntake: public CommandBase
 {

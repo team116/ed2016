@@ -5,8 +5,8 @@
 const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 
-const float DriveStraight::DEGREE_TOLERANCE = 3.0;
-const float DriveStraight::GYRO_SPEED_OFFSET = 0.1;
+const float DriveStraight::DEGREE_TOLERANCE = 1.0;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
 
 DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
@@ -15,39 +15,68 @@ DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 	curr_left_speed = 0.0;
 	curr_right_speed = 0.0;
 	sensor_type = type;
+
+	joystick_value = 0.0;
+	starting_robot_angle = 0.0;
+
+	interrupted = false;
+}
+
+DriveStraight::DriveStraight(float speed, SensorType type)
+{
+	//Requires(&*mobility);
+	joystick_used = (JoystickSide)-1;
+	curr_left_speed = 0.0;
+	curr_right_speed = 0.0;
+	sensor_type = type;
+
+	joystick_value = speed;
+	starting_robot_angle = 0.0;
+
+	interrupted = false;
 }
 
 void DriveStraight::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d)", (int) joystick_used, (int) sensor_type);
 	starting_robot_angle = sensors->robotAngle();
 }
 void DriveStraight::Execute()
 {
-	if(joystick_used == JoystickSide::LEFT)
-	{
+	switch(joystick_used) {
+	case JoystickSide::LEFT:
 		joystick_value = oi -> getJoystickLeftY();
-	}
-	else if (joystick_used == JoystickSide::RIGHT)
-	{
+		break;
+	case JoystickSide::RIGHT:
 		joystick_value = oi ->getJoystickRightY();
+		break;
 	}
 
 	switch(sensor_type)
 	{
 		case GYRO:
 		{
-
-			if(sensors->robotAngle()> (DEGREE_TOLERANCE + starting_robot_angle))
-			{
-				DriverStation::ReportError("\n Turning Left. Speed: " + std::to_string(joystick_value));
-				mobility->setLeft(Utils::boundaryCheck(joystick_value - GYRO_SPEED_OFFSET,-1.0, 1.0));
-				mobility->setRight(Utils::boundaryCheck(joystick_value + GYRO_SPEED_OFFSET, -1.0, 1.0));
+			float degrees_off = (starting_robot_angle - sensors->robotAngle()) * -1;
+			while(degrees_off > 180) {
+				degrees_off -= 360;
 			}
-			else if(sensors->robotAngle() < (starting_robot_angle - DEGREE_TOLERANCE))
+			while(degrees_off < -180) {
+				degrees_off += 360;
+			}
+
+			if(degrees_off > DEGREE_TOLERANCE)
 			{
-				DriverStation::ReportError("\n Turning Right. Speed: " + std::to_string(joystick_value));
-				mobility->setLeft(Utils::boundaryCheck(joystick_value + GYRO_SPEED_OFFSET, -1.0, 1.0));
-				mobility->setRight(Utils::boundaryCheck(joystick_value - GYRO_SPEED_OFFSET, -1.0, 1.0));
+				mobility->setLeft(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)),-1.0, 1.0));
+				mobility->setRight(Utils::boundaryCheck(joystick_value + (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+			}
+			else if(degrees_off < -DEGREE_TOLERANCE)
+			{
+				mobility->setLeft(Utils::boundaryCheck(joystick_value + (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+				mobility->setRight(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+			}
+			else {
+				mobility->setLeft(joystick_value);
+				mobility->setRight(joystick_value);
 			}
 			break;
 		}
@@ -83,13 +112,15 @@ void DriveStraight::Execute()
 }
 bool DriveStraight::IsFinished()
 {
-	return false;
+	return interrupted;
 }
 void DriveStraight::End()
 {
-
+	log->write(Log::TRACE_LEVEL, "DriveStraight Ended");
 }
 void DriveStraight::Interrupted()
 {
+	interrupted = true;
+	log->write(Log::TRACE_LEVEL, "DriveStraight Interrupted");
 
 }

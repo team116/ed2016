@@ -28,7 +28,6 @@ private:
 	float current_angle;
 	float angle;
 	float accepted_error;
-
 	bool interrupted;
 };
 

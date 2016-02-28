@@ -3,7 +3,7 @@
 
 MoveToDefense::MoveToDefense()
 {
-	AddSequential(new DriveDistance(152));
+	AddSequential(new DriveDistance(152.0)); //temporary time
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());
 	//      AddSequential(new Command2());

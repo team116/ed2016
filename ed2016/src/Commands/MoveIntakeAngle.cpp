@@ -1,4 +1,6 @@
-#include "MoveIntakeAngle.h"
+#include <Commands/MoveIntakeAngle.h>
+#include <RobotMap.h>
+#include <Subsystems/Intake.h>
 
 MoveIntakeAngle::MoveIntakeAngle(Utils::VerticalDirection dir)
 {
@@ -12,6 +14,7 @@ MoveIntakeAngle::MoveIntakeAngle(Utils::VerticalDirection dir)
 // Called just before this Command runs the first time
 void MoveIntakeAngle::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "MoveIntakeAngle Initialized");
 	intake->setIntakeAngleDirection(movement_direction);
 }
 
@@ -30,6 +33,7 @@ bool MoveIntakeAngle::IsFinished()
 // Called once after isFinished returns true
 void MoveIntakeAngle::End()
 {
+	log->write(Log::TRACE_LEVEL, "MoveIntakeAngle Ended");
 	intake->setIntakeAngleDirection(Utils::VerticalDirection::V_STILL);
 }
 
@@ -37,5 +41,6 @@ void MoveIntakeAngle::End()
 // subsystems is scheduled to run
 void MoveIntakeAngle::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "MoveIntakeAngle Interrupted");
 	End();
 }

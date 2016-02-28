@@ -3,7 +3,7 @@
 
 HolderWheel::HolderWheel() : Subsystem("HolderWheel")
 {
-	holder_wheel = new MOTOR_TYPE(RobotPorts::SHOOTER_PUSH_MOTOR);
+	holder_wheel = Utils::constructMotor(RobotPorts::SHOOTER_PUSH_MOTOR);
 
 	wheel_direction = Utils::H_STILL;
 }

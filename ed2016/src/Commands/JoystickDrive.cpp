@@ -15,11 +15,10 @@ JoystickDrive::JoystickDrive()
 // Called just before this Command runs the first time
 void JoystickDrive::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "JoystickDrive Initialized");
 	leftInput = 0;
 	rightInput = 0;
 }
-
-
 
 // Called repeatedly when this Command is scheduled to run
 void JoystickDrive::Execute()
@@ -41,12 +40,12 @@ bool JoystickDrive::IsFinished()
 // Called once after isFinished returns true
 void JoystickDrive::End()
 {
-
+	log->write(Log::TRACE_LEVEL, "JoystickDrive Ended");
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void JoystickDrive::Interrupted()
 {
-
+	log->write(Log::TRACE_LEVEL, "JoystickDrive Interrupted");
 }

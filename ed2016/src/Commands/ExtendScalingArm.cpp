@@ -1,5 +1,7 @@
 #include <Commands/ExtendScalingArm.h>
 #include <Subsystems/Climber.h>
+#include <Subsystems/Sensors.h>
+#include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
 
 const float ExtendScalingArm::TIMEOUT_1 = 3.0;
@@ -24,6 +26,7 @@ ExtendScalingArm::ExtendScalingArm()
 // Called just before this Command runs the first time
 void ExtendScalingArm::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "ExtendScalingArm Initialized");
 	interrupted = false;
 	temmie->Reset();
 	temmie_sp->Reset();
@@ -78,6 +81,7 @@ bool ExtendScalingArm::IsFinished()
 // Called once after isFinished returns true
 void ExtendScalingArm::End()
 {
+	log->write(Log::TRACE_LEVEL, "ExtendScalingArm Ended");
 	climber->setClimber(Utils::VerticalDirection::V_STILL);
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 	temmie->Stop();
@@ -87,6 +91,7 @@ void ExtendScalingArm::End()
 // subsystems is scheduled to run
 void ExtendScalingArm::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "ExtendScalingArm Interrupted");
 	End();
 	interrupted = true;
 }

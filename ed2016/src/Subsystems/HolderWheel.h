@@ -15,7 +15,7 @@ public:
 private:
 	void InitDefaultCommand();
 
-	MOTOR_TYPE* holder_wheel;
+	SpeedController* holder_wheel;
 
 	Utils::HorizontalDirection wheel_direction;
 };

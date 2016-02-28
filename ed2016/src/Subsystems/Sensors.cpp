@@ -15,41 +15,31 @@ const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
-const int Sensors::SHOOTER_WHEEL_PPR = 64;
+const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
-	last_count = 0;
-
-	timer = new Timer();
-
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
-
-
-	top_shooter_wheel_tach = new Encoder(top_shooter_wheel_tach_input, nullptr);
-	bottom_shooter_wheel_tach = new Encoder(bottom_shooter_wheel_tach_input, nullptr);
 
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
-	top_shooter_wheel_tach_input = new DigitalInput(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
-	bottom_shooter_wheel_tach_input = new DigitalInput(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
+	top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
+	bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
-	top_shooter_wheel_tach_counter = new Counter(top_shooter_wheel_tach_input);
-	bottom_shooter_wheel_tach_counter = new Counter(bottom_shooter_wheel_tach_input);
+	top_shooter_wheel_tach->ClearDownSource();
+	bottom_shooter_wheel_tach->ClearDownSource();
+	prev_top_tach_count = 0;
+	prev_bottom_tach_count = 0;
+	top_tach_rate = 0.0;
+	bottom_tach_rate = 0.0;
 
-	top_shooter_wheel_tach_counter->SetUpSource(top_shooter_wheel_tach_input);
-	bottom_shooter_wheel_tach_counter->SetUpSource(bottom_shooter_wheel_tach_input);
-
-	top_shooter_wheel_tach_counter->ClearDownSource();
-	bottom_shooter_wheel_tach_counter->ClearDownSource();
-
-
-
-	bottom_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
-	top_shooter_wheel_tach->SetDistancePerPulse(1.0 / (float)SHOOTER_WHEEL_PPR);
+	cycle_timer = new Timer();
+	cycle_timer->Start();
+	cycle_timer->Reset();
+	prev_time_stamp = cycle_timer->Get();
 
 	ready_to_shoot_balls_switch = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
@@ -59,7 +49,10 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
-
+	lidar_stage = 0;
+	lidar_timer = new Timer();
+	lidar_timer->Start();
+	lidar_timer->Reset();
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
 
@@ -76,11 +69,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 void Sensors::InitDefaultCommand()
 {
-	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
-
-	//Default commands must require the subsystem
-	//SetDefaultCommand(new CheckLidar());
+	SetDefaultCommand(new CheckLidar());
 }
 
 // Put methods for controlling this subsystem
@@ -101,15 +90,20 @@ float Sensors::shooterAngle()
 float Sensors::robotAngle()
 {
 	if(robot_angle_enabled)
-{
-	#if ROBOT_TYPE == ANDERSON_BOT
-		return navx->GetYaw();
-	#elif ROBOT_TYPE == ED2016_BOT
-		return navx->GetRoll();
-	#else
-		return 0.0;
-	#endif
-}
+	{
+		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
+		{
+			return navx->GetYaw();
+		}
+		else if (Utils::getRobotType() == Utils::ED2016_BOT)
+		{
+			return navx->GetRoll();
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
 	else
 	{
 		return 0.0;
@@ -121,7 +115,7 @@ float Sensors::speedTopShooterWheel()
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return top_shooter_wheel_tach->GetRate();
+			return top_tach_rate;
 		}
 		else
 		{
@@ -135,7 +129,7 @@ float Sensors::speedBottomShooterWheel()
 	{
 		if (shooter_wheel_tachometer_enabled)
 		{
-	return bottom_shooter_wheel_tach->GetRate();
+			return bottom_tach_rate;
 		}
 		else
 		{
@@ -170,12 +164,30 @@ int Sensors::lidarDistance()
 
 void Sensors::refreshLidar()
 {
-	if (lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4) != 0)
+	uint8_t lidar_range_copy;
+	if (lidar_timer->Get() > (0.04 * (float)lidar_stage))
 	{
-		uint8_t buffer[2];
-		while (lidar->Read(RobotPorts::LIDAR_RANGE_REGISTER, 2, buffer) != 0) { } // the Read function does everything
-
-		lidar_distance = (buffer[0] << 8) + buffer[1];
+		switch (lidar_stage)
+		{
+		case 0:
+			lidar->Write(RobotPorts::LIDAR_INIT_REGISTER, 4);
+			++lidar_stage;
+			break;
+		case 1:
+			lidar_range_copy = RobotPorts::LIDAR_RANGE_REGISTER;
+			lidar->WriteBulk(&lidar_range_copy, 1);
+			++lidar_stage;
+			break;
+		case 2:
+			uint8_t buffer[2];
+			lidar->ReadOnly(2, buffer);
+			lidar_distance = (buffer[0] << 8) + buffer[1];
+			++lidar_stage;
+			break;
+		case 3:
+			lidar_timer->Reset();
+			lidar_stage = 0;
+		}
 	}
 }
 
@@ -256,39 +268,42 @@ bool Sensors::isShooterHomeSwitchHorizontal()
 
 float Sensors::getSpeedLeft()
 {
-		return 0.0;
+	if (areDriveEncoderEnabled())
+	{
+		return left_drive_encoder->GetRate();
+	}
+	return 0.0;
 }
 
 float Sensors::getSpeedRight()
 {
-		return 0.0;
+	if (areDriveEncoderEnabled())
+	{
+		return right_drive_encoder->GetRate();
+	}
+	return 0.0;
 }
 
-float Sensors::getBottomTachRate(){
-	return bottom_shooter_wheel_tach->GetRate();
-}
-float Sensors::getTopTachRate(){
-	return top_shooter_wheel_tach->GetRate();
-}
-float Sensors::getTach(){
-	float top = getTopTachRate();
-	float bottom = getBottomTachRate();
-	float difference = fabs(top - bottom);
-	if(difference >= 10){
-		if(top < 5) return getBottomTachRate();
-		if(bottom < 5) return getTopTachRate();
-	}
-	else{
-		return ((getTopTachRate() + getBottomTachRate()) / 2.0);
-	}
+void Sensors::updateTachometers()
+{
+	unsigned int cur_top_count = top_shooter_wheel_tach->Get();
+	unsigned int cur_bottom_count = bottom_shooter_wheel_tach->Get();
+	float cycle_time = getCycleTime();
+
+	// multiply by 60 to convert to RPM
+	top_tach_rate = (float)(cur_top_count - prev_top_tach_count) / cycle_time * 60.0;
+	bottom_tach_rate = (float)(cur_bottom_count - prev_bottom_tach_count) / cycle_time * 60.0;
+
+	prev_top_tach_count = cur_top_count;
+	prev_bottom_tach_count = cur_bottom_count;
 }
 
-float Sensors::getTachRate(){
-	timer->Start();
-	timer->Reset();
-	top_shooter_wheel_tach_counter->Reset();
-	float diff_t = timer->Get();
-	float diff_c = top_shooter_wheel_tach_counter->Get();
-	float rate = diff_c / diff_t;
-	return rate;
+float Sensors::getCycleTime()
+{
+	return cycle_timer->Get() - prev_time_stamp;
+}
+
+void Sensors::updateCycleTime()
+{
+	prev_time_stamp = cycle_timer->Get();
 }

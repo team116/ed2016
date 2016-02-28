@@ -29,6 +29,7 @@ AngleIntake::~AngleIntake()
 
 void AngleIntake::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "Angle Intake Initialized (angle, %f)", angle);
 	SetTimeout(TIMEOUT * fabs(angle - sensors->intakeAngle()));
 }
 
@@ -70,11 +71,13 @@ bool AngleIntake::IsFinished()
 
 void AngleIntake::End()
 {
+	log->write(Log::TRACE_LEVEL, "AngleIntake Ended");
 	intake->setIntakeAngleDirection(Utils::VerticalDirection::V_STILL);
 }
 
 void AngleIntake::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "AngleIntake Interrupted");
 	End();
 	interrupted = true;
 }

@@ -1,8 +1,8 @@
 #ifndef MoveIntakeAngle_H
 #define MoveIntakeAngle_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <RobotMap.h>
 
 class MoveIntakeAngle: public CommandBase
 {

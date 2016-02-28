@@ -1,5 +1,14 @@
 #include <CommandBase.h>
 #include <Commands/Scheduler.h>
+#include <OI.h>
+#include <Subsystems/Cameras.h>
+#include <Subsystems/Climber.h>
+#include <Subsystems/HolderWheel.h>
+#include <Subsystems/Intake.h>
+#include <Subsystems/Mobility.h>
+#include <Subsystems/Sensors.h>
+#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPitch.h>
 
 // Initialize a single static instance of all of your subsystems to NULL
 std::unique_ptr<OI> CommandBase::oi;
@@ -11,6 +20,7 @@ std::unique_ptr<ShooterPitch> CommandBase::shooter_pitch;
 std::unique_ptr<HolderWheel> CommandBase::holder_wheel;
 std::unique_ptr<Cameras> CommandBase::cameras;
 std::unique_ptr<Intake> CommandBase::intake;
+Log* CommandBase::log = nullptr;
 
 CommandBase::CommandBase(const std::string &name) :
 		Command(name)
@@ -27,6 +37,7 @@ void CommandBase::init()
 {
 	// Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
+	log = Log::getInstance();
 	mobility.reset(new Mobility());
 	climber.reset(new Climber());
 	sensors.reset(new Sensors());

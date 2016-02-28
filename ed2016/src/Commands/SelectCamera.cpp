@@ -16,6 +16,7 @@ SelectCamera::SelectCamera(Cameras::CameraDirection direction)
 // Called just before this Command runs the first time
 void SelectCamera::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "SelectCamera Initialized");
 	is_finished = false;
 	//DriverStation::ReportError("|Init SelectCamera: " + std::to_string(camera_num) + "," + std::to_string(is_finished) + "|\n");
 
@@ -44,6 +45,7 @@ bool SelectCamera::IsFinished()
 // Called once after isFinished returns true
 void SelectCamera::End()
 {
+	log->write(Log::TRACE_LEVEL, "SelectCamera Ended");
 	//DriverStation::ReportError("|Ending SelectCamera: " + std::to_string(camera_num) + "|\n");
 	cameras->StopCamera(camera_direction);
 }
@@ -52,6 +54,7 @@ void SelectCamera::End()
 // subsystems is scheduled to run
 void SelectCamera::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "SelectCamera Interrupted");
 	//DriverStation::ReportError("|Interrupting SelectCamera: " + std::to_string(camera_num) + "|\n");
 	End();
 }

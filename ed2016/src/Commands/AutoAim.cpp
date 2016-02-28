@@ -32,6 +32,7 @@ AutoAim::~AutoAim() {
 
 void AutoAim::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "Auto Aim Initialized");
 	interrupted = false;
 }
 
@@ -44,11 +45,11 @@ void AutoAim::Execute()
 		azimuth = cameras->AzimuthDegreesFromTarget();
 
 
-		if (pitch < current_pitch)
+		if (pitch + ACCEPTED_ERROR < current_pitch)
 		{
 			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
 		}
-		else if (pitch > current_pitch)
+		else if (pitch - ACCEPTED_ERROR > current_pitch)
 		{
 			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
 		}
@@ -59,15 +60,20 @@ void AutoAim::Execute()
 
 
 
-		if (azimuth < 0.0)
+		if (azimuth < -ACCEPTED_ERROR)
 		{
 			mobility->setLeft(-TURN_SPEED);
 			mobility->setRight(TURN_SPEED);
 		}
-		else
+		else if (azimuth > ACCEPTED_ERROR)
 		{
 			mobility->setLeft(TURN_SPEED);
 			mobility->setRight(-TURN_SPEED);
+		}
+		else
+		{
+			mobility->setLeft(0.0);
+			mobility->setRight(0.0);
 		}
 
 	}
@@ -91,12 +97,14 @@ bool AutoAim::IsFinished()
 
 void AutoAim::End()
 {
+	log->write(Log::TRACE_LEVEL, "Auto Aim Ended");
 	mobility->setStraight(0.0);
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 }
 
 void AutoAim::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "Auto Aim Interrupted");
 	End();
 	interrupted = true;
 }

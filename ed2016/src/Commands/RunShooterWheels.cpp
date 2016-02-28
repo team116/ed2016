@@ -10,7 +10,7 @@ RunShooterWheels::RunShooterWheels()
 // Called just before this Command runs the first time
 void RunShooterWheels::Initialize()
 {
-
+	log->write(Log::TRACE_LEVEL, "RunShooterWheels Initialized");
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -33,12 +33,13 @@ bool RunShooterWheels::IsFinished()
 // Called once after isFinished returns true
 void RunShooterWheels::End()
 {
-
+	log->write(Log::TRACE_LEVEL, "RunShooterWheels Ended");
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void RunShooterWheels::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "RunShooterWheels Interrupted");
 	End();
 }

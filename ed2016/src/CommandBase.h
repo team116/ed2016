@@ -3,17 +3,17 @@
 
 #include <string>
 #include <Commands/Command.h>
-#include <WPILib.h>
-#include <OI.h>
+#include <Log.h>
 
-#include <Subsystems/Cameras.h>
-#include <Subsystems/Climber.h>
-#include <Subsystems/HolderWheel.h>
-#include <Subsystems/Intake.h>
-#include <Subsystems/Mobility.h>
-#include <Subsystems/Sensors.h>
-#include <Subsystems/Shooter.h>
-#include <Subsystems/ShooterPitch.h>
+class Cameras;
+class Climber;
+class HolderWheel;
+class Intake;
+class Mobility;
+class OI;
+class Sensors;
+class Shooter;
+class ShooterPitch;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -36,6 +36,7 @@ public:
 	static std::unique_ptr<Cameras> cameras;
 	static std::unique_ptr<OI> oi;
 	static std::unique_ptr<Intake> intake;
+	static Log* log;
 };
 
 #endif

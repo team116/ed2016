@@ -1,4 +1,6 @@
-#include "MoveBackWinch.h"
+#include <Commands/MoveBackWinch.h>
+#include <RobotMap.h>
+#include <Subsystems/Climber.h>
 
 MoveBackWinch::MoveBackWinch(Utils::VerticalDirection dir)
 {
@@ -12,6 +14,7 @@ MoveBackWinch::MoveBackWinch(Utils::VerticalDirection dir)
 // Called just before this Command runs the first time
 void MoveBackWinch::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "MoveBackWinch Initialized");
 	climber->setBackWinchDirection(movement_direction);
 }
 
@@ -30,6 +33,7 @@ bool MoveBackWinch::IsFinished()
 // Called once after isFinished returns true
 void MoveBackWinch::End()
 {
+	log->write(Log::TRACE_LEVEL, "MoveBackWinch Ended");
 	climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
@@ -37,5 +41,6 @@ void MoveBackWinch::End()
 // subsystems is scheduled to run
 void MoveBackWinch::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "MoveBackWinch Interrupted");
 	End();
 }

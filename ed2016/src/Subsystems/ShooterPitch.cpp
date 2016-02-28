@@ -1,11 +1,12 @@
-#include "ShooterPitch.h"
-#include "../RobotMap.h"
 #include <CommandBase.h>
+#include <RobotMap.h>
+#include <Subsystems/Sensors.h>
+#include <Subsystems/ShooterPitch.h>
 
 ShooterPitch::ShooterPitch() :
 		Subsystem("ShooterPitch")
 {
-	pitch_angle = new MOTOR_TYPE(RobotPorts::SHOOTER_PITCH_MOTOR);
+	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
 }
 
 void ShooterPitch::InitDefaultCommand()
@@ -26,9 +27,9 @@ void ShooterPitch::setShooterPitchDirection(ShooterPitchDirection dir)
 	}
 	else if (dir == SHOOTER_DOWN){
 		if (CommandBase::sensors->isShooterHomeSwitchHorizontal() )
-			{
+		{
 			pitch_angle->Set(0.0);
-			}
+		}
 		else
 		{
 			pitch_angle->Set(-1.0);

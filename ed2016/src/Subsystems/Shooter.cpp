@@ -1,11 +1,8 @@
-
-#include "../RobotMap.h"
-#include "SmartDashboard/SmartDashboard.h"
-#include "LiveWindow/LiveWindow.h"
+#include <Commands/RunShooterWheels.h>
+#include <OI.h>
+#include <RobotMap.h>
 #include <Subsystems/Sensors.h>
-#include <CommandBase.h>
 #include <Subsystems/Shooter.h>
-
 
 const float Shooter::RPM_PRESETS[] = {
 	666.67,
@@ -24,11 +21,12 @@ const float Shooter::SPEED_PRESETS[] = {
 	0.8333333333333,
 	1.0
 };
-	Shooter::Shooter() :
-		PIDSubsystem("ShooterPID", 1.0, 0.0, 0.0)
+
+Shooter::Shooter() :
+	PIDSubsystem("ShooterPID", 1.0, 0.0, 0.0)
 {
-	top_shooter_wheel = new MOTOR_TYPE(RobotPorts::TOP_SHOOTER_MOTOR);
-	bottom_shooter_wheel = new MOTOR_TYPE(RobotPorts::BOTTOM_SHOOTER_MOTOR);
+	top_shooter_wheel = Utils::constructMotor(RobotPorts::LEFT_SHOOTER_MOTOR);
+	bottom_shooter_wheel = Utils::constructMotor(RobotPorts::RIGHT_SHOOTER_MOTOR);
 	SetInputRange(0.0, 4000.0);
 	SetOutputRange(0.0, 1.0);
 	SetSetpoint(Shooter::RPM_PRESETS[CommandBase::oi->getShooterSpeedPosition()]);
@@ -43,7 +41,7 @@ double Shooter::ReturnPIDInput()
 {
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
-	float test =  (CommandBase::sensors->getTach());
+	float test =  (CommandBase::sensors->speedTopShooterWheel());
 	test = (test * 60);
 	return test;
 
@@ -56,8 +54,6 @@ void Shooter::UsePIDOutput(double output)
 
 	top_shooter_wheel->Set(output);
 	bottom_shooter_wheel->Set(output);
-
-
 }
 
 void Shooter::InitDefaultCommand()
@@ -76,8 +72,8 @@ float Shooter::getSpeedPreset(int preset)
 	return SPEED_PRESETS[preset];
 }
 
-void Shooter::setShooterSpeed(float speed){
+void Shooter::setShooterSpeed(float speed)
+{
 	top_shooter_wheel->Set(speed);
-	bottom_shooter_wheel->Set(speed);
+	bottom_shooter_wheel->Set(-speed);
 }
-

@@ -14,6 +14,7 @@ DriveByLidar::DriveByLidar(float dist, float err)
 // Called just before this Command runs the first time
 void DriveByLidar::Initialize()
 {
+	log->write(Log::TRACE_LEVEL, "DriveByLidar Initialized (distance, %f)", distance);
 	interrupted = false;
 }
 
@@ -52,6 +53,7 @@ bool DriveByLidar::IsFinished()
 // Called once after isFinished returns true
 void DriveByLidar::End()
 {
+	log->write(Log::TRACE_LEVEL, "DriveByLidar Ended");
 	mobility->setStraight(0.0);
 }
 
@@ -59,6 +61,7 @@ void DriveByLidar::End()
 // subsystems is scheduled to run
 void DriveByLidar::Interrupted()
 {
+	log->write(Log::TRACE_LEVEL, "DriveByLidar Interrupted");
 	End();
 	interrupted = true;
 }

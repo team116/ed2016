@@ -7,9 +7,9 @@ const float Climber::CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea wh
 Climber::Climber():Subsystem("Climber")
 {
 	climber_arm_direction = Utils::VerticalDirection::V_STILL;
-	climber_armed_motor = new MOTOR_TYPE(RobotPorts::CLIMBER_ARMED_MOTOR);
-	front_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_FRONT);
-	back_winch = new MOTOR_TYPE(RobotPorts::WINCH_MOTOR_BACK);
+	climber_armed_motor = Utils::constructMotor(RobotPorts::CLIMBER_ARMED_MOTOR);
+	front_winch = Utils::constructMotor(RobotPorts::WINCH_MOTOR_FRONT);
+	back_winch = Utils::constructMotor(RobotPorts::WINCH_MOTOR_BACK);
 
 	pdp = new PowerDistributionPanel(RobotPorts::PDP);
 
