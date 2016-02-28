@@ -20,8 +20,7 @@ public:
 	float getSpeedPreset(int preset); // 0 to 5
 
 private:
-	SpeedController* top_shooter_wheel;
-	SpeedController* bottom_shooter_wheel;
+	SpeedController* shooter_wheel;
 
 	static const float RPM_PRESETS[];
 	static const float SPEED_PRESETS[];

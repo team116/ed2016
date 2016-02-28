@@ -22,12 +22,11 @@ const float Shooter::SPEED_PRESETS[] = {
 
 Shooter::Shooter() : Subsystem("Shooter")
 {
-	top_shooter_wheel = Utils::constructMotor(RobotPorts::LEFT_SHOOTER_MOTOR);
-	bottom_shooter_wheel = Utils::constructMotor(RobotPorts::RIGHT_SHOOTER_MOTOR);
+	shooter_wheel = Utils::constructMotor(RobotPorts::SHOOTER_MOTOR);
 }
 
 
-void Shooter::InitDefaultCommand()
+void Shooter::	InitDefaultCommand()
 {
 	SetDefaultCommand(new RunShooterWheels());
 }
@@ -37,8 +36,7 @@ void Shooter::InitDefaultCommand()
 
 void Shooter::setShooterSpeed(float speed)
 {
-	top_shooter_wheel->Set(speed);
-	bottom_shooter_wheel->Set(-speed);
+	shooter_wheel->Set(speed);
 }
 
 float Shooter::getRPMPreset(int preset)

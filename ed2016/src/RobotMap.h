@@ -54,11 +54,12 @@ namespace RobotPorts
 	const unsigned int WINCH_MOTOR_FRONT = 4;
 	const unsigned int WINCH_MOTOR_BACK = 5;
 
-	const unsigned int LEFT_SHOOTER_MOTOR = 6;
+	const unsigned int SHOOTER_MOTOR = 6;
+	//const unsigned int LEFT_SHOOTER_MOTOR = 6;
 	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
 
 	const unsigned int SHOOTER_PITCH_MOTOR = 8;
-	const unsigned int SHOOTER_PUSH_MOTOR = 9;
+	const unsigned int SHOOTER_PUSH_MOTOR = 9;  //the holder wheels, the ball loader, theyre all the same thing
 
 	//NAVX
 	const unsigned int INTAKE_ROLLER_MOTOR = 10;//N0
