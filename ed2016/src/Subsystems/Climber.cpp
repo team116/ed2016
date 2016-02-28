@@ -113,7 +113,7 @@ bool Climber::isWinchCurrentSpiking()
 bool Climber::isClimberCurrentSpiking()
 {
 	Log::getInstance()->write(Log::INFO_LEVEL, "Current Climber Current"
-			"\: %f", pdp->GetCurrent(RobotPorts::CLIMBER_ARMED_MOTOR));
+			": %f", pdp->GetCurrent(RobotPorts::CLIMBER_ARMED_MOTOR));
 	if(pdp->GetCurrent(RobotPorts::CLIMBER_ARMED_MOTOR) > CLIMBER_CURRENT_SPIKE_THRESHHOLD) {
 		return true;
 	}

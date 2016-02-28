@@ -3,7 +3,7 @@
 #include <CommandBase.h>
 #include <Math.h>
 
-const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters
+const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
 
 ShooterPitch::ShooterPitch() :
 		Subsystem("ShooterPitch")
