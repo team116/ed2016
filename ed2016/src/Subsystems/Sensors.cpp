@@ -10,7 +10,7 @@
 
 const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
-const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
+const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
 const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
@@ -64,7 +64,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	shooter_angle_enabled = true;
 	robot_angle_enabled = true;
 	intake_angle_enabled = true;
-	ready_to_shoot_enabled = false;
+	ready_to_shoot_enabled = true;
 	shooter_wheel_tachometer_enabled = true;
 }
 
