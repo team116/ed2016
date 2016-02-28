@@ -1,8 +1,10 @@
 #include <Subsystems/Climber.h>
 #include <RobotMap.h>
+#include <Log.h>
 
 const float Climber::WINCH_SPEED = 2.2; //temporary speed
-const float Climber::CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea what this number is actually supposed to look like
+const float Climber::WINCH_CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea what this number is actually supposed to look like
+const float Climber::CLIMBER_CURRENT_SPIKE_THRESHHOLD = 10.0; //Ditto
 
 Climber::Climber():Subsystem("Climber")
 {
@@ -97,11 +99,25 @@ void Climber::setBackWinchSpeed(float speed) {
 
 bool Climber::isWinchCurrentSpiking()
 {
-	if (pdp->GetCurrent(RobotPorts::WINCH_MOTOR_FRONT) > CURRENT_SPIKE_THRESHHOLD
-			&& pdp->GetCurrent(RobotPorts::WINCH_MOTOR_BACK) > CURRENT_SPIKE_THRESHHOLD)
+	Log::getInstance()->write(Log::INFO_LEVEL, "Current Winch Current Front: %f Back: %f", pdp->GetCurrent(RobotPorts::WINCH_MOTOR_FRONT),
+			pdp->GetCurrent(RobotPorts::WINCH_MOTOR_BACK));
+	if (pdp->GetCurrent(RobotPorts::WINCH_MOTOR_FRONT) > WINCH_CURRENT_SPIKE_THRESHHOLD
+			&& pdp->GetCurrent(RobotPorts::WINCH_MOTOR_BACK) > WINCH_CURRENT_SPIKE_THRESHHOLD)
 	{
 		return true;
 	}
 	else
 		return false;
+}
+
+bool Climber::isClimberCurrentSpiking()
+{
+	Log::getInstance()->write(Log::INFO_LEVEL, "Current Climber Current"
+			"\: %f", pdp->GetCurrent(RobotPorts::CLIMBER_ARMED_MOTOR));
+	if(pdp->GetCurrent(RobotPorts::CLIMBER_ARMED_MOTOR) > CLIMBER_CURRENT_SPIKE_THRESHHOLD) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
