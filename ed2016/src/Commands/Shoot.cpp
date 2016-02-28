@@ -31,8 +31,7 @@ void Shoot::Execute()
 	float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
 	shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
 
-	if ((sensors->speedTopShooterWheel() > ideal_speed && sensors->speedBottomShooterWheel() > ideal_speed) ||
-		 timer->Get() > SPEED_UP_TIME)
+	if (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME)
 	{
 		holder_wheel->setWheelDirection(Utils::HorizontalDirection::OUT);
 		timer->Reset();
