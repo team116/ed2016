@@ -30,6 +30,7 @@ public:
 		SHOOTER_DOWN
 	};
 
+	void setShooterPitchSpeed(float speed);
 	void setShooterPitchDirection(ShooterPitchDirection);
 	void checkLimits();
 

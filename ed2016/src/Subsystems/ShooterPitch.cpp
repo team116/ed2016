@@ -1,6 +1,7 @@
 #include "ShooterPitch.h"
 #include "../RobotMap.h"
 #include <CommandBase.h>
+#include <Commands/MaintainShooterAngle.h>
 #include <math.h>
 
 const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
@@ -13,33 +14,37 @@ ShooterPitch::ShooterPitch() :
 
 void ShooterPitch::InitDefaultCommand()
 {
-	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
+	SetDefaultCommand(new MaintainShooterAngle());
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+
+void ShooterPitch::setShooterPitchSpeed(float speed)
+{
+	pitch_angle->Set(speed);
+}
 
 void ShooterPitch::setShooterPitchDirection(ShooterPitchDirection dir)
 {
 	//Note: 1.0 and -1.0 may need to be reversed
 	if(dir == SHOOTER_UP)
 	{
-		pitch_angle->Set(1.0);
+		setShooterPitchSpeed(1.0);
 	}
 	else if (dir == SHOOTER_DOWN){
 		if (CommandBase::sensors->isShooterHomeSwitchHorizontal() )
-			{
-			pitch_angle->Set(0.0);
-			}
+		{
+			setShooterPitchSpeed(0.0);
+		}
 		else
 		{
-			pitch_angle->Set(-1.0);
+			setShooterPitchSpeed(-1.0);
 		}
 	}
 	else
 	{
-		pitch_angle->Set(0.0);
+		setShooterPitchSpeed(0.0);
 	}
 }
 
