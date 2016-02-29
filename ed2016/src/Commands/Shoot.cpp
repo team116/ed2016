@@ -5,7 +5,7 @@
 #include <Subsystems/Sensors.h>
 
 const float Shoot::SPEED_UP_TIME = 1.0;
-const float Shoot::PUSH_BOULDER = 0.5;
+const float Shoot::PUSH_BOULDER = 2.0;
 
 Shoot::Shoot() : CommandBase("Shoot")
 {
@@ -34,7 +34,6 @@ void Shoot::Execute()
 	if (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME)
 	{
 		holder_wheel->setWheelDirection(Utils::HorizontalDirection::OUT);
-		timer->Reset();
 	}
 }
 
