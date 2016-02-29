@@ -12,6 +12,7 @@ class Robot: public SampleRobot
 	VictorSP* victors[MOTOR_COUNT];
 
 	AnalogInput* auto_switches[AUTO_SWITCH_COUNT];
+	AnalogInput* shooter_pitch_encoder;
 
 	Log* log;
 
@@ -32,6 +33,8 @@ public:
 		{
 			auto_switches[i] = new AnalogInput(i + 4);
 		}
+
+		shooter_pitch_encoder = new AnalogInput(1);
 	}
 
 	void logAutoSwitches()
@@ -130,8 +133,9 @@ public:
 		static char log[255];
 		while (IsTest() && IsEnabled())
 		{
-			snprintf(log, 255, "Switch0 volts: %f, Switch1 volts: %f, Switch2 volts: %f",
-					auto_switches[0]->GetVoltage(), auto_switches[1]->GetVoltage(), auto_switches[2]->GetVoltage());
+			// snprintf(log, 255, "Switch0 volts: %f, Switch1 volts: %f, Switch2 volts: %f",
+			//	 	auto_switches[0]->GetVoltage(), auto_switches[1]->GetVoltage(), auto_switches[2]->GetVoltage());
+			snprintf(log, 255, "Shooter Pitch Encoder volts: %f\n", shooter_pitch_encoder->GetVoltage());
 			DriverStation::ReportError(log);
 		}
 	}
