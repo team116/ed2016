@@ -15,6 +15,8 @@ public:
 	void End();
 	void Interrupted();
 
+	static void zeroTimedAngleTracker();
+
 private:
 	static const float TIMEOUT;
 

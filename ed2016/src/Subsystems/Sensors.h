@@ -13,6 +13,8 @@ public:
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
+
+	void zeroShooterAngle();
 	float shooterAngle();
 	float robotAngle();
 	float intakeAngle();
@@ -22,7 +24,6 @@ public:
 
 	float getCycleTime();
 	void updateCycleTime();
-
 
 	float speedShooterWheel();
 	void updateTachometers();
@@ -45,10 +46,13 @@ public:
 	bool shooterWheelTachometerEnabled();
 
 private:
+	float shooterAngleActual();
+
 	DigitalInput* ready_to_shoot_balls_switch;
 
 	static const float MAX_SHOOTER_ANGLE_VOLT;
 	static const float MIN_SHOOTER_ANGLE_VOLT;
+	float shooter_angle_offset;
 	AnalogInput* shooter_angle_encoder;
 
 	static const float INTAKE_ANGLE_OFFSET;

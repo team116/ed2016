@@ -104,3 +104,8 @@ void SetShooterPitch::Interrupted()
 	interrupted = true;
 	End();
 }
+
+void SetShooterPitch::zeroTimedAngleTracker()
+{
+	last_angle = 0.0;
+}

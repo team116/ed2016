@@ -1,4 +1,4 @@
-#include <Commands/CheckLidar.h>
+#include <Commands/UpdateSensors.h>
 #include <Subsystems/Sensors.h>
 #include <RobotMap.h>
 #include <WPILib.h>
@@ -18,8 +18,9 @@ const int Sensors::SHOOTER_WHEEL_PPR = 2;
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
-	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 
+	shooter_angle_offset = 0.0;
+	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
 	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
@@ -70,22 +71,32 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 void Sensors::InitDefaultCommand()
 {
-	SetDefaultCommand(new CheckLidar());
+	SetDefaultCommand(new UpdateSensors());
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
+void Sensors::zeroShooterAngle()
+{
+	shooter_angle_offset = shooterAngleActual();
+}
+
 float Sensors::shooterAngle()
 {
 	if (shooter_angle_enabled)
 	{
-		return 90.0 * (shooter_angle_encoder->GetVoltage() - MIN_SHOOTER_ANGLE_VOLT) / (MAX_SHOOTER_ANGLE_VOLT - MIN_SHOOTER_ANGLE_VOLT);
+		return shooterAngleActual() - shooter_angle_offset;
 	}
 	else
 	{
 		return 0.0;
 	}
+}
+
+float Sensors::shooterAngleActual()
+{
+	return 90.0 * (shooter_angle_encoder->GetVoltage() - MIN_SHOOTER_ANGLE_VOLT) / (MAX_SHOOTER_ANGLE_VOLT - MIN_SHOOTER_ANGLE_VOLT);
 }
 
 float Sensors::robotAngle()

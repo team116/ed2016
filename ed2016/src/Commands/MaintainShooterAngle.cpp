@@ -21,9 +21,13 @@ void MaintainShooterAngle::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void MaintainShooterAngle::Execute()
 {
+	if (sensors->isShooterHomeSwitchHorizontal())
+	{
+		shooter_pitch->setShooterPitchSpeed(0.0);
+	}
 	if (sensors->areShooterAngleEnabled())
 	{
-		shooter_pitch->setShooterPitchSpeed(ANGLE_POWER_SCALE * cos(M_PI * sensors->shooterAngle() / 180.0));
+		shooter_pitch->setShooterPitchSpeed(ANGLE_POWER_SCALE * (1.0 - sin(M_PI * sensors->shooterAngle() / 180.0)));
 	}
 	else
 	{
