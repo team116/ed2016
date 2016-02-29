@@ -8,7 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::SHOOTER_ANGLE_OFFSET = 0.0;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.01;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.25;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 3.13;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -48,7 +49,6 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	right_drive_encoder = new Encoder(RobotPorts::RIGHT_ENCODER_A, RobotPorts::RIGHT_ENCODER_B);
 	left_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
 	right_drive_encoder->SetDistancePerPulse(2.0 * M_PI * DRIVE_WHEEL_DIAMETER / (float)DRIVE_WHEEL_PPR);
-	//shooter_ready_to_shoot = new DigitalInput(RobotPorts::BALL_PREP_CHECK_LIMIT);
 
 	lidar_stage = 0;
 	lidar_timer = new Timer();
@@ -79,9 +79,9 @@ void Sensors::InitDefaultCommand()
 float Sensors::shooterAngle()
 {
 	if (shooter_angle_enabled)
-{
-		return 360.0 * shooter_angle_encoder->GetVoltage() / 5.0 - SHOOTER_ANGLE_OFFSET;
-}
+	{
+		return 90.0 * (shooter_angle_encoder->GetVoltage() - MIN_SHOOTER_ANGLE_VOLT) / (MAX_SHOOTER_ANGLE_VOLT - MIN_SHOOTER_ANGLE_VOLT);
+	}
 	else
 	{
 		return 0.0;

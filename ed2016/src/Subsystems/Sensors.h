@@ -47,7 +47,8 @@ public:
 private:
 	DigitalInput* ready_to_shoot_balls_switch;
 
-	static const float SHOOTER_ANGLE_OFFSET;
+	static const float MAX_SHOOTER_ANGLE_VOLT;
+	static const float MIN_SHOOTER_ANGLE_VOLT;
 	AnalogInput* shooter_angle_encoder;
 
 	static const float INTAKE_ANGLE_OFFSET;

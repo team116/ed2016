@@ -10,6 +10,7 @@
 #include <Commands/Shoot.h>
 #include <Commands/ManualWinchControl.h>
 #include <Commands/MoveClimberArm.h>
+#include <Commands/MoveHolderWheel.h>
 #include <Commands/AngleIntake.h>
 #include <Commands/MoveIntakeAngle.h>
 #include <Subsystems/Intake.h>
@@ -58,7 +59,6 @@ OI::OI()
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 
 	//Set Joystick Buttons Events
-	b_test_button->WhenPressed(new DriveDistance(500));
 
 	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
 	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
@@ -156,7 +156,7 @@ void OI::process()
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
 		switch(manual_aim_position_process) {
 			case 0:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(0, 1));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(4, 1));
 				break;
 			case 1:
 				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(15, 1));
