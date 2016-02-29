@@ -23,6 +23,8 @@ private:
 
 	bool interrupted;
 
+	static float last_angle;
+
 };
 
 #endif

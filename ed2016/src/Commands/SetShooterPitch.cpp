@@ -3,7 +3,8 @@
 #include <Subsystems/ShooterPitch.h>
 #include <Log.h>
 
-const float SetShooterPitch::TIMEOUT = 0.05;
+const float SetShooterPitch::TIMEOUT = 0.025;
+float SetShooterPitch::last_angle = 0.0;
 
 //Angle in degrees
 SetShooterPitch::SetShooterPitch(float angle, float error)
@@ -21,13 +22,29 @@ void SetShooterPitch::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "SetShooterPitch (angle %f)", pitch);
 	interrupted = false;
-	SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
+	if (sensors->areShooterAngleEnabled())
+	{
+		SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
+	}
+	else
+	{
+		SetTimeout(TIMEOUT * fabs(pitch - last_angle));
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetShooterPitch::Execute()
 {
-	float current_angle = sensors->shooterAngle();
+	float current_angle;
+	if (sensors->areShooterAngleEnabled())
+	{
+		current_angle = sensors->shooterAngle();
+	}
+	else
+	{
+		current_angle = last_angle;
+	}
+
 	if (pitch > current_angle)
 	{
 		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
@@ -46,7 +63,15 @@ void SetShooterPitch::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool SetShooterPitch::IsFinished()
 {
-	float current_angle = sensors->shooterAngle();
+	float current_angle;
+	if (sensors->areShooterAngleEnabled())
+	{
+		current_angle = sensors->shooterAngle();
+	}
+	else
+	{
+		current_angle = last_angle;
+	}
 
 	if (interrupted)
 	{
@@ -68,6 +93,7 @@ void SetShooterPitch::End()
 {
 	log->write(Log::TRACE_LEVEL,"SetShooterPitch Ended");
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+	last_angle = pitch;
 }
 
 // Called when another command which requires one or more of the same

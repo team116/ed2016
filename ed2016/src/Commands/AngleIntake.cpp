@@ -11,6 +11,7 @@
 #include <cmath>
 
 const float AngleIntake::TIMEOUT = 0.05;
+float AngleIntake::last_angle = 0.0;
 
 AngleIntake::AngleIntake(float ang, float error)
 {
@@ -30,12 +31,26 @@ AngleIntake::~AngleIntake()
 void AngleIntake::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "Angle Intake Initialized (angle, %f)", angle);
-	SetTimeout(TIMEOUT * fabs(angle - sensors->intakeAngle()));
+	if (sensors->areIntakeAngleEnabled())
+	{
+		SetTimeout(TIMEOUT * fabs(angle - sensors->intakeAngle()));
+	}
+	else
+	{
+		SetTimeout(TIMEOUT * fabs(angle - last_angle));
+	}
 }
 
 void AngleIntake::Execute()
 {
-	current_angle = sensors->intakeAngle();
+	if (sensors->areIntakeAngleEnabled())
+	{
+		current_angle = sensors->intakeAngle();
+	}
+	else
+	{
+		current_angle = last_angle;
+	}
 
 	if (angle > current_angle)
 	{
@@ -73,6 +88,7 @@ void AngleIntake::End()
 {
 	log->write(Log::TRACE_LEVEL, "AngleIntake Ended");
 	intake->setIntakeAngleDirection(Utils::VerticalDirection::V_STILL);
+	last_angle = angle;
 }
 
 void AngleIntake::Interrupted()

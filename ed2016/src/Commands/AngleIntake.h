@@ -29,6 +29,8 @@ private:
 	float angle;
 	float accepted_error;
 	bool interrupted;
+
+	static float last_angle;
 };
 
 #endif /* SRC_COMMANDS_ANGLEINTAKE_H_ */
