@@ -1,7 +1,7 @@
 #include "ShooterPitch.h"
 #include "../RobotMap.h"
 #include <CommandBase.h>
-#include <Math.h>
+#include <math.h>
 
 const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
 
