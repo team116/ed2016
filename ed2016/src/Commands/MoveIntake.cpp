@@ -15,12 +15,14 @@ MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 void MoveIntake::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "MoveIntake Initialized");
+	CommandBase::intake->setIntakeDirection(direction);
+	CommandBase::holder_wheel->setWheelDirection(Utils::HorizontalDirection::IN);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveIntake::Execute()
 {
-	CommandBase::intake->setIntakeDirection(direction);
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -34,6 +36,7 @@ void MoveIntake::End()
 {
 	log->write(Log::TRACE_LEVEL, "MoveIntake Ended");
 	CommandBase::intake->setIntakeDirection(Utils::HorizontalDirection::H_STILL);
+	CommandBase::holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
 }
 
 // Called when another command which requires one or more of the same
