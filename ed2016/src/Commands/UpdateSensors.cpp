@@ -12,9 +12,8 @@ UpdateSensors::UpdateSensors()
 // Called just before this Command runs the first time
 void UpdateSensors::Initialize()
 {
-	log->write(Log::TRACE_LEVEL, "Check Lidar Initialized");
+	log->write(Log::TRACE_LEVEL, "Update Sensors Initialized");
 }
-
 // Called repeatedly when this Command is scheduled to run
 void UpdateSensors::Execute()
 {
@@ -42,13 +41,12 @@ bool UpdateSensors::IsFinished()
 // Called once after isFinished returns true
 void UpdateSensors::End()
 {
-	log->write(Log::TRACE_LEVEL, "Check Lidar Ended");
+	log->write(Log::TRACE_LEVEL, "Update Sensors Ended");
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void UpdateSensors::Interrupted()
 {
-	log->write(Log::TRACE_LEVEL, "Check Lidar Interrupted");
-
+	log->write(Log::TRACE_LEVEL, "Update Sensors Interrupted");
 }

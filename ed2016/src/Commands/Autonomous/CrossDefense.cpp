@@ -6,6 +6,8 @@
 
 CrossDefense::CrossDefense(Autonomous::Defense def)
 {
+	log = Log::getInstance();
+
 	AddSequential(new MoveToDefense());
 
 	if (def == MOAT || def == RAMPARTS || def == ROUGH_TERRAIN )
@@ -14,6 +16,7 @@ CrossDefense::CrossDefense(Autonomous::Defense def)
 	}
 	else if (def == PORTCULLIS)
 	{
+		log->write(Log::TRACE_LEVEL, "Crossing defense PORTCULLIS");
 		AddSequential(new DriveDistance(150));	//rough estimate, probably needs to be fixed
 		AddSequential(new AngleIntake(75.0));		//rough estimate, probably needs to be fixed
 		AddParallel(new DriveDistance(122));	//rough estimate, probably needs to be fixed
