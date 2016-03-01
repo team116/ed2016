@@ -2,6 +2,7 @@
 #include "../RobotMap.h"
 #include <CommandBase.h>
 #include <Commands/MaintainShooterAngle.h>
+#include <Log.h>
 #include <math.h>
 
 const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
@@ -50,9 +51,9 @@ void ShooterPitch::setShooterPitchDirection(ShooterPitchDirection dir)
 
 void ShooterPitch::checkLimits()
 {
-	if (CommandBase::sensors->isShooterHomeSwitchHorizontal())
+	if (CommandBase::sensors->isShooterHomeSwitchHorizontal() && pitch_angle->Get() < 0.0)
 	{
-		pitch_angle->Set(0.0);
+		setShooterPitchSpeed(0.0);
 	}
 }
 

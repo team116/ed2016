@@ -22,7 +22,7 @@ void UpdateSensors::Execute()
 
 	if (sensors->isShooterHomeSwitchHorizontal())
 	{
-		sensors->zeroShooterAngle();
+		sensors->zeroShooterPitch();
 		SetShooterPitch::zeroTimedAngleTracker();
 	}
 

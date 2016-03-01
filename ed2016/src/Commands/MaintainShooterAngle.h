@@ -16,7 +16,9 @@ public:
 
 private:
 	static const float UNKNOWN_ANGLE_POWER;
-	static const float ANGLE_POWER_SCALE;
+	static const float ANGLE_POWER_SCALE1;
+	static const float ANGLE_POWER_SCALE2;
+	static const float POWER_SCALE_FENCE;
 
 };
 

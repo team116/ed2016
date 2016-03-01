@@ -17,6 +17,7 @@ const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
+	shooter_angle_offset = 0.0;
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
 
 	shooter_angle_offset = 0.0;
@@ -66,6 +67,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	robot_angle_enabled = true;
 	intake_angle_enabled = true;
 	ready_to_shoot_enabled = true;
+	shooter_home_switch_enabled = false;
 	shooter_wheel_tachometer_enabled = true;
 }
 
@@ -77,9 +79,14 @@ void Sensors::InitDefaultCommand()
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
-void Sensors::zeroShooterAngle()
+void Sensors::zeroShooterPitch()
 {
 	shooter_angle_offset = shooterAngleActual();
+}
+
+float Sensors::shooterAngleActual()
+{
+	return 90.0 * (shooter_angle_encoder->GetVoltage() - MIN_SHOOTER_ANGLE_VOLT) / (MAX_SHOOTER_ANGLE_VOLT - MIN_SHOOTER_ANGLE_VOLT);
 }
 
 float Sensors::shooterAngle()
@@ -92,11 +99,6 @@ float Sensors::shooterAngle()
 	{
 		return 0.0;
 	}
-}
-
-float Sensors::shooterAngleActual()
-{
-	return 90.0 * (shooter_angle_encoder->GetVoltage() - MIN_SHOOTER_ANGLE_VOLT) / (MAX_SHOOTER_ANGLE_VOLT - MIN_SHOOTER_ANGLE_VOLT);
 }
 
 float Sensors::robotAngle()
@@ -249,13 +251,20 @@ bool Sensors::readyToShoot()
 {
 	return ready_to_shoot_balls_switch->Get();
 }
+
+bool Sensors::isShooterHomeSwitchEnabled()
+{
+	return shooter_home_switch_enabled;
+}
+
 bool Sensors::shooterWheelTachometerEnabled()
 {
 	return shooter_wheel_tachometer_enabled;
 }
+
 bool Sensors::isShooterHomeSwitchHorizontal()
 {
-	if(ready_to_shoot_enabled) {
+	if (isShooterHomeSwitchEnabled()) {
 		return shooter_home_switch->Get();
 	}
 	else {

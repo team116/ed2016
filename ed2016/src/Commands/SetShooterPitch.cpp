@@ -3,6 +3,7 @@
 #include <Subsystems/ShooterPitch.h>
 #include <Log.h>
 
+const float SetShooterPitch::DEFAULT_ACCEPTABLE_ERROR = 1.0;
 const float SetShooterPitch::TIMEOUT = 0.025;
 float SetShooterPitch::last_angle = 0.0;
 
@@ -91,9 +92,19 @@ bool SetShooterPitch::IsFinished()
 // Called once after isFinished returns true
 void SetShooterPitch::End()
 {
-	log->write(Log::TRACE_LEVEL,"SetShooterPitch Ended");
 	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
 	last_angle = pitch;
+
+	float angle;
+	if (sensors->areShooterAngleEnabled())
+	{
+		angle = sensors->shooterAngle();
+	}
+	else
+	{
+		angle = last_angle;
+	}
+	log->write(Log::TRACE_LEVEL,"SetShooterPitch Ended (angle %f)", angle);
 }
 
 // Called when another command which requires one or more of the same

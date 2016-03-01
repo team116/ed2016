@@ -43,7 +43,10 @@ public:
 	bool areShooterAngleEnabled();
 	bool areRobotAngleEnabled();
 	bool areIntakeAngleEnabled();
+	bool isShooterHomeSwitchEnabled();
 	bool shooterWheelTachometerEnabled();
+
+	void zeroShooterPitch();
 
 private:
 	float shooterAngleActual();
@@ -86,6 +89,7 @@ private:
 	bool robot_angle_enabled;
 	bool intake_angle_enabled;
 	bool ready_to_shoot_enabled;
+	bool shooter_home_switch_enabled;
 	bool shooter_wheel_tachometer_enabled;
 
 	DigitalInput* intake_limit_switch;

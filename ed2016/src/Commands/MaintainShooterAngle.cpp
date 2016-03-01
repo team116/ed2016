@@ -1,11 +1,14 @@
 #include <Commands/MaintainShooterAngle.h>
+#include <Commands/SetShooterPitch.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 
 const float MaintainShooterAngle::UNKNOWN_ANGLE_POWER = 0.08;
-const float MaintainShooterAngle::ANGLE_POWER_SCALE = 0.18;
+const float MaintainShooterAngle::ANGLE_POWER_SCALE1 = 0.145;
+const float MaintainShooterAngle::ANGLE_POWER_SCALE2 = 0.155;
+const float MaintainShooterAngle::POWER_SCALE_FENCE = 10.0;
 
 MaintainShooterAngle::MaintainShooterAngle()
 {
@@ -27,7 +30,17 @@ void MaintainShooterAngle::Execute()
 	}
 	if (sensors->areShooterAngleEnabled())
 	{
-		shooter_pitch->setShooterPitchSpeed(ANGLE_POWER_SCALE * (1.0 - sin(M_PI * sensors->shooterAngle() / 180.0)));
+		float pitch = sensors->shooterAngle();
+		float scale;
+		if (pitch < POWER_SCALE_FENCE)
+		{
+			scale = ANGLE_POWER_SCALE1;
+		}
+		else
+		{
+			scale = ANGLE_POWER_SCALE2;
+		}
+		shooter_pitch->setShooterPitchSpeed(scale * (1.0 - sin(M_PI * pitch / 180.0)));
 	}
 	else
 	{

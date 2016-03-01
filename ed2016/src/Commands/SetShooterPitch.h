@@ -7,8 +7,9 @@
 class SetShooterPitch: public CommandBase
 {
 public:
+	static const float DEFAULT_ACCEPTABLE_ERROR;
 	//Angle in degrees
-	SetShooterPitch(float, float);
+	SetShooterPitch(float angle, float error = DEFAULT_ACCEPTABLE_ERROR);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
