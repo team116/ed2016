@@ -155,22 +155,22 @@ void OI::process()
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
 		switch(manual_aim_position_process) {
 			case 0:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(4.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::ONE));
 				break;
 			case 1:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(15.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::TWO));
 				break;
 			case 2:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(30.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::THREE));
 				break;
 			case 3:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(45.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::FOUR));
 				break;
 			case 4:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(60.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::FIVE));
 				break;
 			case 5:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(75.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::SIX));
 				break;
 			default:
 				log->write(Log::WARNING_LEVEL, "Manual aim dial invalid position: %d", manual_aim_position_process);

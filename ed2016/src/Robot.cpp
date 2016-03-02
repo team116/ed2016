@@ -129,7 +129,7 @@ private:
 		if (auto_command != NULL)
 			auto_command->Cancel();
 		DriverStation::ReportError("Starting Robot");
-		CommandBase::sensors->zeroShooterPitch();
+		//CommandBase::sensors->zeroShooterPitch();
 	}
 
 	void TeleopPeriodic()
