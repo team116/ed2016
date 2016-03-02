@@ -5,7 +5,7 @@
 #include <CommandBase.h>
 
 const float ShooterPitchPID::MANUAL_SPEED = 1.0;
-const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
+const float ShooterPitchPID::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
 
 ShooterPitchPID::ShooterPitchPID() :
 		PIDSubsystem("ShooterPitchPID", 1.0, 0.0, 0.0)
