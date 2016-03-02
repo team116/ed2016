@@ -3,6 +3,8 @@
 
 MoveToDefense::MoveToDefense()
 {
+	log = Log::getInstance();
+	log->write(Log::TRACE_LEVEL, "Moving to Defense");
 	AddSequential(new DriveDistance(152.0)); //temporary time
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());

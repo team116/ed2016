@@ -76,7 +76,6 @@ private:
 		log->write(Log::TRACE_LEVEL, "Position Auto Switch value: %d, voltage: %f, port: %d", position_value, position_voltage, (int)position_switch->GetChannel());
 		log->write(Log::TRACE_LEVEL, " Defense Auto Switch value: %d, voltage: %f, port: %d", defense_value, defense_voltage, (int)defense_switch->GetChannel());
 
-
 		if (shoot_value == 0 && position_value == 0 && defense_value == 0)
 		{
 			auto_command = new DoNothing();
@@ -107,8 +106,11 @@ private:
 		{
 			auto_command = new CrossDefAndShoot((Defense)defense_value, (Goals)shoot_value, position_value);
 		}
-
-
+		else
+		{
+			auto_command = new DoNothing();
+		}
+		//Failsafe
 		//auto_command->Start();
 		Scheduler::GetInstance()->AddCommand(auto_command);
 	}

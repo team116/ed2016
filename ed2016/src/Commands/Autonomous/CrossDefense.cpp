@@ -12,6 +12,7 @@ CrossDefense::CrossDefense(Autonomous::Defense def)
 
 	if (def == MOAT || def == RAMPARTS || def == ROUGH_TERRAIN )
 	{
+		log->write(Log::TRACE_LEVEL, "Crossing defense MOAT/RAMPARTS/ROUGH TERRAIN");
 		AddSequential(new DriveDistance(259)); //Intentionally 2.5 feet over estimate
 	}
 	else if (def == PORTCULLIS)
@@ -24,16 +25,19 @@ CrossDefense::CrossDefense(Autonomous::Defense def)
 	}
 	else if (def == DRAWBRIDGE)
 	{
+		log->write(Log::TRACE_LEVEL, "Crossing defense DRAWBRIDGE");
 		AddSequential(new DriveDistance(274));	//rough estimate, probably needs to be fixed
 		//figure out how to move the drawbridge arm later
 	}
 	else if (def == SALLY_PORT)
 	{
+		log->write(Log::TRACE_LEVEL, "Crossing defense SALLY_PORT");
 		AddSequential(new DriveDistance(274));	//rough estimate, probably needs to be fixed
 		//figure out how to move the drawbridge arm later
 	}
 	else if (def == CHEVAL_DE_FRISES)
 	{
+		log->write(Log::TRACE_LEVEL, "Crossing defense CHEVAL_DE_FRISES");
 		AddSequential(new DriveDistance(150));
 		AddSequential(new AngleIntake(50));		//blah blah rough blah blah estimate
 		AddSequential(new DriveDistance(122));

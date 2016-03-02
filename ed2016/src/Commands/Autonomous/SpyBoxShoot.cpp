@@ -8,14 +8,17 @@
 const float SpyBoxShoot::SHOOTER_PITCH_ERROR = 1;
 
 SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
-{
+{	log = Log::getInstance();
+
 	if (goal == Autonomous::HIGH)	//AS FUUUUUUUUUUUUUUUUUhydrangeasUUUUUUUUUUUUUUUUUUUUUUCK
 	{
+		log->write(Log::TRACE_LEVEL, "Shooting HIGH from Spy Box");
 		AddSequential(new AutoAim());
 		AddSequential(new Shoot());
 	}
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
 	{
+		log->write(Log::TRACE_LEVEL, "Shooting LOW from Spy Box");
 		AddSequential(new TurnDegrees(45));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
 		AddSequential(new DriveDistance(165));
 		AddSequential(new TurnDegrees(-75));
