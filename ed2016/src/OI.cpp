@@ -185,6 +185,10 @@ void OI::process()
 			Scheduler::GetInstance()->RemoveAll();
 		}
 	}
+
+	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
+	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
+	CommandBase::shooter_pitch_pid->setD(SmartDashboard::GetNumber("d-val", CommandBase::shooter_pitch_pid->getD()));
 }
 
 float OI::getJoystickLeftY()

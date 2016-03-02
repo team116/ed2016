@@ -15,10 +15,15 @@ ShooterPitchPID::ShooterPitchPID() :
 	//                  to
 	// Enable() - Enables the PID controller.
 
+	SmartDashboard::PutNumber("p-val", CommandBase::shooter_pitch_pid->getP());
+	SmartDashboard::PutNumber("i-val", CommandBase::shooter_pitch_pid->getI());
+	SmartDashboard::PutNumber("d-val", CommandBase::shooter_pitch_pid->getD());
+
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
 
 	SetInputRange(0, 360);
 	SetOutputRange(-1.0,1.0);
+	GetPIDController()->SetContinuous(false);
 }
 
 double ShooterPitchPID::ReturnPIDInput()
@@ -69,7 +74,7 @@ void ShooterPitchPID::setDirection(Utils::VerticalDirection direction)
 }
 
 //In degrees
-float ShooterPitch::getPitchToTarget(PitchType type)
+float ShooterPitchPID::getPitchToTarget(PitchType type)
 {
 	switch (type) {
 	case PitchType::CAMERA:
@@ -83,4 +88,30 @@ float ShooterPitch::getPitchToTarget(PitchType type)
 		return atan(TARGET_HEIGHT / CommandBase::sensors->lidarDistance());
 		break;
 	}
+}
+
+float ShooterPitchPID::getP()
+{
+	return GetPIDController()->GetP();
+}
+float ShooterPitchPID::getI()
+{
+	return GetPIDController()->GetI();
+}
+float ShooterPitchPID::getD()
+{
+	return GetPIDController()->GetD();
+}
+
+void ShooterPitchPID::setP(float p)
+{
+	GetPIDController()->SetPID(p, getI(), getD());
+}
+void ShooterPitchPID::setI(float i)
+{
+	GetPIDController()->SetPID(getP(), i, getD());
+}
+void ShooterPitchPID::setD(float d)
+{
+	GetPIDController()->SetPID(getP(), getI(), d);
 }

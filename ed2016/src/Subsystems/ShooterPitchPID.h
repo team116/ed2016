@@ -34,6 +34,13 @@ public:
 
 	float getPitchToTarget(PitchType);
 
+	float getP();
+	float getI();
+	float getD();
+	void setP(float);
+	void setI(float);
+	void setD(float);
+
 private:
 	static const float MANUAL_SPEED;
 	static const float TARGET_HEIGHT;
