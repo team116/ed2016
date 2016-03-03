@@ -6,6 +6,7 @@
 #include <WPILib.h>
 #include <Commands/Autonomous/CrossDefense.h>
 #include <Autonomous.h>
+#include <Log.h>
 
 class CrossDefAndShoot: public CommandGroup
 {
@@ -22,6 +23,8 @@ public:
 	void End();
 	void Interrupted();
 	*/
+private:
+	Log* log;
 };
 
 #endif

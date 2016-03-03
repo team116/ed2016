@@ -15,7 +15,7 @@ ShooterPitch::ShooterPitch() :
 
 void ShooterPitch::InitDefaultCommand()
 {
-	SetDefaultCommand(new MaintainShooterAngle());
+	//SetDefaultCommand(new MaintainShooterAngle());
 }
 
 // Put methods for controlling this subsystem

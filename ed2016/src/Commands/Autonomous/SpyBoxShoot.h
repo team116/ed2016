@@ -4,6 +4,7 @@
 #include "Commands/CommandGroup.h"
 #include "WPILib.h"
 #include <Autonomous.h>
+#include <Log.h>
 
 class SpyBoxShoot: public CommandGroup
 {
@@ -11,6 +12,7 @@ public:
 	SpyBoxShoot(Autonomous::Goals);
 private:
 	static const float SHOOTER_PITCH_ERROR;
+	Log* log;
 };
 
 #endif

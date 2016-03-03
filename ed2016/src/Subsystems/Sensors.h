@@ -14,7 +14,6 @@ public:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
-	void zeroShooterAngle();
 	float shooterAngle();
 	float robotAngle();
 	float intakeAngle();

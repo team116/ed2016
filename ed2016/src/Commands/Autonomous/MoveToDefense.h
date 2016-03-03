@@ -4,7 +4,6 @@
 #include "Commands/CommandGroup.h"
 #include <Log.h>
 
-
 class MoveToDefense: public CommandGroup
 {
 public:

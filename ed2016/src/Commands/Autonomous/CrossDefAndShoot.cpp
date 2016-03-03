@@ -14,10 +14,13 @@
 
 CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals goal, int initial_position)
 {
+	log = Log::getInstance();
+
 	AddSequential(new CrossDefense(def));
 
 	if (goal == Autonomous::HIGH)
 		{
+		log->write(Log::TRACE_LEVEL, "Shooting HIGH");
 			AddSequential(new SweepForGoal(initial_position));
 			AddSequential(new AutoAim());
 			AddSequential(new Shoot());
@@ -28,6 +31,7 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 			AddParallel(new AngleIntake(0.0));
 			if (initial_position == 1)
 			{
+				log->write(Log::TRACE_LEVEL, "Shooting LOW from defense 1");
 				AddSequential(new TurnToAngle(0.0));
 				AddSequential(new DriveByLidar(53));
 				AddSequential(new TurnToAngle(84.9));
@@ -36,6 +40,7 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 			}
 			else if (initial_position == 2)
 			{
+				log->write(Log::TRACE_LEVEL, "Shooting LOW from defense 2");
 				AddSequential(new TurnToAngle(0.0));
 				AddSequential(new DriveByLidar(53));
 				AddSequential(new TurnToAngle(81));
@@ -44,18 +49,21 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 			}
 			else if (initial_position == 3)
 			{
+				log->write(Log::TRACE_LEVEL, "Shooting LOW from defense 3");
 				AddSequential(new TurnToAngle(11.4));
 				AddSequential(new DriveByLidar(61));
 				AddSequential(new Shoot());
 			}
 			else if (initial_position == 4)
 			{
+				log->write(Log::TRACE_LEVEL, "Shooting LOW from defense 4");
 				AddSequential(new TurnToAngle(5.2));
 				AddSequential(new DriveByLidar(61));
 				AddSequential(new Shoot());
 			}
 			else if (initial_position == 5)
 			{
+				log->write(Log::TRACE_LEVEL, "Shooting LOW from defense 5");
 				AddSequential(new TurnToAngle(0.0));
 				AddSequential(new DriveByLidar(53));
 				AddSequential(new TurnToAngle(282));
