@@ -5,6 +5,7 @@
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
 #include <Counter.h>
+#include <Log.h>
 
 class Sensors: public Subsystem
 {
@@ -48,6 +49,8 @@ public:
 	void zeroShooterPitch();
 
 private:
+	Log* log;
+
 	float shooterAngleActual();
 
 	DigitalInput* ready_to_shoot_balls_switch;

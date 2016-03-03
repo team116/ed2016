@@ -10,20 +10,31 @@ const float ShooterPitchPID::TARGET_HEIGHT = 246.38;//Centimeters to middle of t
 ShooterPitchPID::ShooterPitchPID() :
 		PIDSubsystem("ShooterPitchPID", 1.0, 0.0, 0.0)
 {
+	log = Log::getInstance();
+	log->write(Log::DEBUG_LEVEL, "ShooterPitchPID Constructor begin");
 	// Use these to get going:
 	// SetSetpoint() -  Sets where the PID controller should move the system
 	//                  to
 	// Enable() - Enables the PID controller.
 
-	SmartDashboard::PutNumber("p-val", CommandBase::shooter_pitch_pid->getP());
-	SmartDashboard::PutNumber("i-val", CommandBase::shooter_pitch_pid->getI());
-	SmartDashboard::PutNumber("d-val", CommandBase::shooter_pitch_pid->getD());
+	SmartDashboard::PutNumber("p-val", getP());
+	log->write(Log::DEBUG_LEVEL, "After getP()");
+	SmartDashboard::PutNumber("i-val", getI());
+	log->write(Log::DEBUG_LEVEL, "After getI()");
+	SmartDashboard::PutNumber("d-val", getD());
+	log->write(Log::DEBUG_LEVEL, "After getD()");
 
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
+	log->write(Log::DEBUG_LEVEL, "After constructMotor()");
 
 	SetInputRange(0, 360);
+	log->write(Log::DEBUG_LEVEL, "After SetInputRange");
+
 	SetOutputRange(-1.0,1.0);
+	log->write(Log::DEBUG_LEVEL, "After SetOutputRange");
+
 	GetPIDController()->SetContinuous(false);
+	log->write(Log::DEBUG_LEVEL, "ShooterPitchPID Constructor end");
 }
 
 double ShooterPitchPID::ReturnPIDInput()

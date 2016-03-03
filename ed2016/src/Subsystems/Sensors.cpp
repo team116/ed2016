@@ -17,6 +17,8 @@ const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
+	log = Log::getInstance();
+
 	shooter_angle_offset = 0.0;
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
 
@@ -59,7 +61,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	lidar_distance = 0;
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
 
-	navx = new AHRS(I2C::Port::kMXP);
+	navx = new AHRS(SPI::Port::kMXP);
 
 	drive_encoders_enabled = true;
 	lidar_sensor_enabled = true;
@@ -107,6 +109,7 @@ float Sensors::robotAngle()
 	{
 		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
 		{
+			//log->write(Log::TRACE_LEVEL, "Robot angle: %f, %f, %f", navx->GetYaw(), navx->GetRoll(), navx->GetPitch());
 			return navx->GetYaw();
 		}
 		else if (Utils::getRobotType() == Utils::ED2016_BOT)

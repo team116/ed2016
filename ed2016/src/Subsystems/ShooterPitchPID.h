@@ -4,6 +4,7 @@
 #include "Commands/PIDSubsystem.h"
 #include "WPILib.h"
 #include <RobotMap.h>
+#include <Log.h>
 
 class ShooterPitchPID: public PIDSubsystem
 {
@@ -46,6 +47,7 @@ private:
 	static const float TARGET_HEIGHT;
 
 	SpeedController* pitch_angle;
+	Log* log;
 };
 
 #endif

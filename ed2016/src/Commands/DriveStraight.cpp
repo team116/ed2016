@@ -39,8 +39,8 @@ DriveStraight::DriveStraight(float speed, SensorType type)
 
 void DriveStraight::Initialize()
 {
-	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d)", (int) joystick_used, (int) sensor_type);
 	starting_robot_angle = sensors->robotAngle();
+	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d), Starting Angle = %f,", (int) joystick_used, (int) sensor_type, starting_robot_angle);
 }
 void DriveStraight::Execute()
 {
@@ -64,7 +64,6 @@ void DriveStraight::Execute()
 			while(degrees_off < -180) {
 				degrees_off += 360;
 			}
-			log->write(Log::TRACE_LEVEL, "Driving straight, using gyro, off by %d degrees", degrees_off);
 			if(degrees_off > DEGREE_TOLERANCE)
 			{
 				mobility->setLeft(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)),-1.0, 1.0));
