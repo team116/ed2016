@@ -10,7 +10,7 @@
 #include <Subsystems/Sensors.h>
 #include <cmath>
 
-const float AngleIntake::TIMEOUT = 0.05;
+const float AngleIntake::TIMEOUT = 1;
 float AngleIntake::last_angle = 0.0;
 
 AngleIntake::AngleIntake(float ang, float error)

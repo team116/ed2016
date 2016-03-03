@@ -1,8 +1,12 @@
 #include "MoveToDefense.h"
 #include <Commands/DriveDistance.h>
+#include <RobotMap.h>
+#include <Log.h>
 
 MoveToDefense::MoveToDefense()
 {
+	log = Log::getInstance();
+	log->write(Log::TRACE_LEVEL, "Move to defense.");
 	AddSequential(new DriveDistance(152.0)); //temporary time
 	// Add Commands here:
 	// e.g. AddSequential(new Command1());

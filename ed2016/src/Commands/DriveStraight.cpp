@@ -1,6 +1,7 @@
 #include <Commands/DriveStraight.h>
 #include <Subsystems/Mobility.h>
 #include <RobotMap.h>
+#include <Subsystems/Sensors.h>
 
 const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
@@ -63,7 +64,7 @@ void DriveStraight::Execute()
 			while(degrees_off < -180) {
 				degrees_off += 360;
 			}
-
+			log->write(Log::TRACE_LEVEL, "Driving straight, using gyro, off by %d degrees", degrees_off);
 			if(degrees_off > DEGREE_TOLERANCE)
 			{
 				mobility->setLeft(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)),-1.0, 1.0));
