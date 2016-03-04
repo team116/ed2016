@@ -36,16 +36,17 @@ void TurnDegrees::Initialize()
 		target_angle -= 360.0;
 	}
 
+	log->write(Log::TRACE_LEVEL,"TARGET ANGLE = %f", target_angle);
 	interrupted = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void TurnDegrees::Execute()
 {
-	float current_offset = sensors->robotAngle() - target_angle;
-
+	float current_offset = sensors->robotAngle() + target_angle;
+	log->write(Log::TRACE_LEVEL,"TurnDegrees CURRENT OFFSET = %f", current_offset);
 	if ((current_offset < 0.0 && current_offset > -180.0) ||
-		(current_offset > 0.0 && current_offset > 180.0))
+		(current_offset > 180.0 && current_offset < 360.0))
 	{
 		mobility->setLeft(-TURN_SPEED);
 		mobility->setRight(TURN_SPEED);
@@ -68,7 +69,7 @@ bool TurnDegrees::IsFinished()
 	float current_offset = fabs(sensors->robotAngle() - target_angle);
 
 	if (current_offset < acceptable_error ||
-		(360 - current_offset) < acceptable_error)
+		(180 - current_offset) < acceptable_error)
 	{
 		return true;
 	}
