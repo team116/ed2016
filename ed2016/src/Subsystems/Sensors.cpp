@@ -8,8 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.01;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.25;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 2.667;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 3.898;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -95,7 +95,15 @@ float Sensors::shooterAngle()
 {
 	if (shooter_angle_enabled)
 	{
-		return shooterAngleActual() - shooter_angle_offset;
+		float actual = shooterAngleActual();
+		if (actual > 270.0)
+		{
+			return -(360.0 - actual);
+		}
+		else
+		{
+			return actual;
+		}
 	}
 	else
 	{
@@ -114,7 +122,7 @@ float Sensors::robotAngle()
 		}
 		else if (Utils::getRobotType() == Utils::ED2016_BOT)
 		{
-			return navx->GetRoll();
+			return navx->GetYaw();
 		}
 		else
 		{

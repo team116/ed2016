@@ -46,15 +46,15 @@ void AutoAim::Execute()
 
 		if (pitch + ACCEPTED_ERROR < current_pitch)
 		{
-			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
+			shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
 		}
 		else if (pitch - ACCEPTED_ERROR > current_pitch)
 		{
-			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
+			shooter_pitch->setDirection(Utils::VerticalDirection::UP);
 		}
 		else
 		{
-			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+			shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 		}
 
 
@@ -98,7 +98,7 @@ void AutoAim::End()
 {
 	log->write(Log::TRACE_LEVEL, "Auto Aim Ended");
 	mobility->setStraight(0.0);
-	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 }
 
 void AutoAim::Interrupted()

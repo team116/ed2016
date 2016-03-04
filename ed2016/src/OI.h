@@ -23,6 +23,8 @@ public:
 
 	void process();
 
+	bool getPIDEnableSwitch();
+
 private:
 	Joystick* joystick_left;
 	Joystick* joystick_right;
@@ -54,6 +56,7 @@ private:
 	JoystickButton* s_shooter_wheels;
 	JoystickButton* s_intake_belt_inward;
 	JoystickButton* s_intake_belt_outward;
+	JoystickButton* s_pid_enable;
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
 

@@ -40,11 +40,11 @@ void ExtendScalingArm::Execute()
 	//Move shooter out of the way
 	if (!shooter_ready && temmie_sp->Get() < SHOOTER_TIMEOUT)
 	{
-		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
+		shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
 	}
 	else if (temmie->Get() == 0 && (shooter_ready || temmie_sp->Get() > SHOOTER_TIMEOUT))
 	{
-		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+		shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 		shooter_ready = true;
 		temmie->Reset();
 		temmie->Start();
@@ -88,7 +88,7 @@ void ExtendScalingArm::End()
 {
 	log->write(Log::TRACE_LEVEL, "ExtendScalingArm Ended");
 	climber->setClimber(Utils::VerticalDirection::V_STILL);
-	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 	temmie->Stop();
 }
 

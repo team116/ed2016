@@ -26,7 +26,7 @@ void MaintainShooterAngle::Execute()
 {
 	if (sensors->isShooterHomeSwitchHorizontal())
 	{
-		shooter_pitch->setShooterPitchSpeed(0.0);
+		shooter_pitch->setSpeed(0.0);
 	}
 	if (sensors->areShooterAngleEnabled())
 	{
@@ -40,11 +40,11 @@ void MaintainShooterAngle::Execute()
 		{
 			scale = ANGLE_POWER_SCALE2;
 		}
-		shooter_pitch->setShooterPitchSpeed(scale * (1.0 - sin(M_PI * pitch / 180.0)));
+		shooter_pitch->setSpeed(scale * (1.0 - sin(M_PI * pitch / 180.0)));
 	}
 	else
 	{
-		shooter_pitch->setShooterPitchSpeed(UNKNOWN_ANGLE_POWER);
+		shooter_pitch->setSpeed(UNKNOWN_ANGLE_POWER);
 	}
 }
 
@@ -57,7 +57,7 @@ bool MaintainShooterAngle::IsFinished()
 // Called once after isFinished returns true
 void MaintainShooterAngle::End()
 {
-	shooter_pitch->setShooterPitchDirection(ShooterPitch::ShooterPitchDirection::SHOOTER_STILL);
+	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same

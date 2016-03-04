@@ -10,6 +10,7 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/SpyBoxShoot.h>
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
+#include <Commands/TogglePID.h>
 #include <Log.h>
 #include <Subsystems/ShooterPitch.h>
 
@@ -45,6 +46,7 @@ private:
      */
 	void DisabledInit()
 	{
+		Scheduler::GetInstance()->AddCommand(new TogglePID(false));
 	}
 
 	void DisabledPeriodic()
@@ -132,8 +134,9 @@ private:
 		// this line or comment it out.
 		if (auto_command != NULL)
 			auto_command->Cancel();
-		DriverStation::ReportError("Starting Robot");
+		DriverStation::ReportError("Starting Robot " + std::to_string(CommandBase::oi->getPIDEnableSwitch()));
 		//CommandBase::sensors->zeroShooterPitch();
+		Scheduler::GetInstance()->AddCommand(new TogglePID(CommandBase::oi->getPIDEnableSwitch()));
 	}
 
 	void TeleopPeriodic()
@@ -141,6 +144,7 @@ private:
 		Scheduler::GetInstance()->Run();
 		CommandBase::oi->process();
 		CommandBase::shooter_pitch->checkLimits();
+		log->write(Log::TRACE_LEVEL, "Robot Angle: %f Shooter Pitch: %f", CommandBase::sensors->robotAngle(), CommandBase::sensors->shooterAngle());
 	}
 
 	void TestInit()
