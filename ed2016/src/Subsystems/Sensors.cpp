@@ -114,7 +114,7 @@ float Sensors::robotAngle()
 		}
 		else if (Utils::getRobotType() == Utils::ED2016_BOT)
 		{
-			return navx->GetRoll();
+			return navx->GetYaw();
 		}
 		else
 		{

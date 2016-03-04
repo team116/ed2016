@@ -7,7 +7,7 @@ const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 
 const float DriveStraight::DEGREE_TOLERANCE = 1.0;
-const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.01;
 
 DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
@@ -40,6 +40,7 @@ DriveStraight::DriveStraight(float speed, SensorType type)
 void DriveStraight::Initialize()
 {
 	starting_robot_angle = sensors->robotAngle();
+	interrupted = false;
 	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d), Starting Angle = %f,", (int) joystick_used, (int) sensor_type, starting_robot_angle);
 }
 void DriveStraight::Execute()
