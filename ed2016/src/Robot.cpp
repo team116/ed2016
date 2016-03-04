@@ -134,8 +134,9 @@ private:
 		// this line or comment it out.
 		if (auto_command != NULL)
 			auto_command->Cancel();
-		DriverStation::ReportError("Starting Robot");
+		DriverStation::ReportError("Starting Robot " + std::to_string(CommandBase::oi->getPIDEnableSwitch()));
 		//CommandBase::sensors->zeroShooterPitch();
+		Scheduler::GetInstance()->AddCommand(new TogglePID(CommandBase::oi->getPIDEnableSwitch()));
 	}
 
 	void TeleopPeriodic()

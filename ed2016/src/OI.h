@@ -23,6 +23,8 @@ public:
 
 	void process();
 
+	bool getPIDEnableSwitch();
+
 private:
 	Joystick* joystick_left;
 	Joystick* joystick_right;
