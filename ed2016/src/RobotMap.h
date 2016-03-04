@@ -95,6 +95,8 @@ namespace OI_Ports
 
 	const unsigned SHOOTER_WHEELS_SWITCH = 9;
 
+	const unsigned PID_TOGGLE_SWITCH = 5;
+
 	// buttons joystick 1, analog
 	const unsigned int MANUAL_AIM_DIAL = 0; // X
 	const unsigned int SHOOTER_SPEED_DIAL = 1; // Y

@@ -10,6 +10,7 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/SpyBoxShoot.h>
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
+#include <Commands/TogglePID.h>
 #include <Log.h>
 #include <Subsystems/ShooterPitch.h>
 
@@ -45,6 +46,7 @@ private:
      */
 	void DisabledInit()
 	{
+		Scheduler::GetInstance()->AddCommand(new TogglePID(false));
 	}
 
 	void DisabledPeriodic()
@@ -141,6 +143,7 @@ private:
 		Scheduler::GetInstance()->Run();
 		CommandBase::oi->process();
 		CommandBase::shooter_pitch->checkLimits();
+		log->write(Log::TRACE_LEVEL, "Robot Angle: %f Shooter Pitch: %f", CommandBase::sensors->robotAngle(), CommandBase::sensors->shooterAngle());
 	}
 
 	void TestInit()

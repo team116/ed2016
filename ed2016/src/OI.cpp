@@ -17,6 +17,7 @@
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveDistance.h>
+#include <Commands/TogglePID.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
@@ -43,6 +44,7 @@ OI::OI()
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
 	s_intake_belt_outward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
+	s_pid_enable = new JoystickButton(joystick_buttons1, OI_Ports::PID_TOGGLE_SWITCH);
 
 	// Instantiate Joystick Buttons 2's Buttons
 	b_extend_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::EXTEND_SCALING_ARM_BUTTON);
@@ -70,7 +72,8 @@ OI::OI()
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
-	//s_shooter_wheels->WhileHeld(new RunShooterWheels());
+	s_pid_enable->WhenPressed(new TogglePID(true));
+	s_pid_enable->WhenReleased(new TogglePID(false));
 	s_intake_belt_inward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::IN));
 	s_intake_belt_outward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::OUT));
 
@@ -155,22 +158,22 @@ void OI::process()
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
 		switch(manual_aim_position_process) {
 			case 0:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::ONE));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::ONE, 5.0));
 				break;
 			case 1:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::TWO));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::TWO, 5.0));
 				break;
 			case 2:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::THREE));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::THREE, 5.0));
 				break;
 			case 3:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::FOUR));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FOUR, 5.0));
 				break;
 			case 4:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::FIVE));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FIVE, 5.0));
 				break;
 			case 5:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitchPID::AnglePresets::SIX));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::SIX, 5.0));
 				break;
 			default:
 				log->write(Log::WARNING_LEVEL, "Manual aim dial invalid position: %d", manual_aim_position_process);
@@ -186,9 +189,15 @@ void OI::process()
 		}
 	}
 
-	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
-	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
-	CommandBase::shooter_pitch_pid->setD(SmartDashboard::GetNumber("d-val", CommandBase::shooter_pitch_pid->getD()));
+	if(b_test_button->Get()) {
+		CommandBase::log->write(Log::ERROR_LEVEL, "Test Button Firing");
+		CommandBase::shooter_pitch->setDirection(Utils::VerticalDirection::UP);
+	}
+
+	CommandBase::shooter_pitch->setP(std::stof(SmartDashboard::GetString("DB/String 0", std::to_string(CommandBase::shooter_pitch->getP()))));
+	CommandBase::shooter_pitch->setI(std::stof(SmartDashboard::GetString("DB/String 1", std::to_string(CommandBase::shooter_pitch->getI()))));
+	CommandBase::shooter_pitch->setD(std::stof(SmartDashboard::GetString("DB/String 2", std::to_string(CommandBase::shooter_pitch->getD()))));
+	CommandBase::shooter_pitch->setF(std::stof(SmartDashboard::GetString("DB/String 3", std::to_string(CommandBase::shooter_pitch->getF()))));
 }
 
 float OI::getJoystickLeftY()

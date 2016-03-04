@@ -7,26 +7,15 @@ const float SetShooterPitch::TIMEOUT = 0.025;
 float SetShooterPitch::last_angle = 0.0;
 
 //Angle in degrees
-SetShooterPitch::SetShooterPitch(float angle, float error)
+SetShooterPitch::SetShooterPitch(float angle, bool use_pid, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
-	Requires(&*shooter_pitch_pid);
+	Requires(&*shooter_pitch);
 
 	pitch = angle;
 	accepted_error = error;
 	interrupted = false;
-	pid_mode = false;
-}
-
-//PID constructor
-SetShooterPitch::SetShooterPitch(ShooterPitchPID::AnglePresets angle, float error)
-{
-	Requires(&*shooter_pitch_pid);
-
-	pitch = angle;
-	accepted_error = error;
-	interrupted = false;
-	pid_mode = true;
+	pid_mode = use_pid;
 }
 
 // Called just before this Command runs the first time
@@ -47,12 +36,12 @@ void SetShooterPitch::Initialize()
 		SetTimeout(TIMEOUT * fabs(pitch - last_angle));
 	}
 	if(pid_mode) {
-		shooter_pitch_pid->SetSetpoint(pitch);
-		shooter_pitch_pid->SetAbsoluteTolerance(accepted_error);
-		shooter_pitch_pid->Enable();
+		shooter_pitch->SetSetpoint(pitch);
+		shooter_pitch->SetAbsoluteTolerance(accepted_error);
+		shooter_pitch->Enable();
 	}
 	else {
-		shooter_pitch_pid->Disable();
+		shooter_pitch->Disable();
 	}
 }
 
@@ -72,15 +61,15 @@ void SetShooterPitch::Execute()
 
 		if (pitch > current_angle)
 		{
-			shooter_pitch_pid->setDirection(Utils::VerticalDirection::UP);
+			shooter_pitch->setDirection(Utils::VerticalDirection::UP);
 		}
 		else if (pitch < current_angle)
 		{
-			shooter_pitch_pid->setDirection(Utils::VerticalDirection::DOWN);
+			shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
 		}
 		else
 		{
-			shooter_pitch_pid->setDirection(Utils::VerticalDirection::V_STILL);
+			shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 		}
 	}
 }
@@ -103,12 +92,12 @@ bool SetShooterPitch::IsFinished()
 		return true;
 	}
 	if(pid_mode) {
-		if(IsTimedOut() && !(current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)) {
+		/*if(IsTimedOut() && !(current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)) {
 			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out while in PID mode. Sensor may be broken or the loop"
 					"may need tuning. (Target: %f, Current: %f)", pitch, current_angle);
-			shooter_pitch_pid->Disable();
+			shooter_pitch->Disable();
 			return true;
-		}
+		}*/
 	}
 	else {
 		if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
@@ -127,7 +116,7 @@ bool SetShooterPitch::IsFinished()
 void SetShooterPitch::End()
 {
 
-	shooter_pitch_pid->setDirection(Utils::VerticalDirection::V_STILL);
+	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 	last_angle = pitch;
 
 	float angle;
