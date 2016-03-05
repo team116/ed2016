@@ -31,9 +31,9 @@ private:
 	{
 		CommandBase::init();
 
-		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
-		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
-		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
+		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
+		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
+		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
 
 		log = Log::getInstance();
 	}

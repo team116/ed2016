@@ -65,7 +65,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	drive_encoders_enabled = true;
 	lidar_sensor_enabled = true;
-	shooter_angle_enabled = true;
+	shooter_angle_enabled = false;
 	robot_angle_enabled = false;
 	intake_angle_enabled = false;
 	ready_to_shoot_enabled = true;
