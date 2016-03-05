@@ -4,6 +4,8 @@
 #include <Commands/RetractWinches.h>
 #include <Commands/AutoAim.h>
 #include <Commands/ClearCommands.h>
+#include <Commands/LiftIntake.h>
+#include <Commands/MoveShooter.h>
 #include <Commands/SetShooterPitch.h>
 #include <Commands/RunShooterWheels.h>
 #include <Commands/SelectCamera.h>
@@ -12,11 +14,11 @@
 #include <Commands/MoveClimberArm.h>
 #include <Commands/MoveHolderWheel.h>
 #include <Commands/AngleIntake.h>
-#include <Subsystems/Intake.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveDistance.h>
+#include <Subsystems/Intake.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
@@ -63,8 +65,12 @@ OI::OI()
 	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
-	b_shooter_engage->WhenPressed(new Shoot());
-	b_auto_aim->WhenPressed(new AutoAim());
+	b_shooter_engage->WhenPressed(new MoveShooter(Utils::VerticalDirection::UP));
+	b_auto_aim->WhenPressed(new MoveShooter(Utils::VerticalDirection::DOWN));
+	b_shooter_engage->WhenReleased(new MoveShooter(Utils::V_STILL));
+	b_auto_aim->WhenReleased(new MoveShooter(Utils::V_STILL));
+	b_test_button->WhileHeld(new LiftIntake(Utils::VerticalDirection::UP));
+	b_clear_commands->WhileHeld(new LiftIntake(Utils::VerticalDirection::DOWN));
 	//b_clear_commands->WhenPressed(new ClearCommands());
 	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
 
@@ -98,7 +104,7 @@ void OI::process()
 {
 	int intake_angle_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL) + 1.0), 6, 2.0);
 	int shooter_speed_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0), 6, 2.0);
-	int manual_aim_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0), 6, 2.0);
+	//int manual_aim_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0), 6, 2.0);
 
 	//Intake Angle Dial
 	if(intake_angle_curr != intake_angle_position_process) {
@@ -147,6 +153,7 @@ void OI::process()
 	}
 
 	//Shooter Pitch Dial
+	/*
 	if(manual_aim_curr != manual_aim_position_process) {
 		aim_temmie->Reset();
 		aim_temmie->Start();
@@ -185,10 +192,12 @@ void OI::process()
 			Scheduler::GetInstance()->RemoveAll();
 		}
 	}
-
+	*/
+	/*
 	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
 	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
 	CommandBase::shooter_pitch_pid->setD(SmartDashboard::GetNumber("d-val", CommandBase::shooter_pitch_pid->getD()));
+	*/
 }
 
 float OI::getJoystickLeftY()

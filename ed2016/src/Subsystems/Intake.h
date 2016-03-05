@@ -2,6 +2,7 @@
 #define Yellow_H
 
 #include <Commands/Subsystem.h>
+#include <Log.h>
 #include <RobotMap.h>
 #include <WPILib.h>
 
@@ -19,6 +20,8 @@ public:
 private:
 	SpeedController* intake_roller;
 	SpeedController* intake_angle;
+
+	Log* log;
 
 };
 

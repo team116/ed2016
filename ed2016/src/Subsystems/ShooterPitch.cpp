@@ -26,14 +26,14 @@ void ShooterPitch::setShooterPitchSpeed(float speed)
 	pitch_angle->Set(speed);
 }
 
-void ShooterPitch::setShooterPitchDirection(ShooterPitchDirection dir)
+void ShooterPitch::setShooterPitchDirection(Utils::VerticalDirection dir)
 {
 	//Note: 1.0 and -1.0 may need to be reversed
-	if(dir == SHOOTER_UP)
+	if(dir == Utils::VerticalDirection::UP)
 	{
 		setShooterPitchSpeed(1.0);
 	}
-	else if (dir == SHOOTER_DOWN){
+	else if (dir == Utils::VerticalDirection::DOWN){
 		if (CommandBase::sensors->isShooterHomeSwitchHorizontal() )
 		{
 			setShooterPitchSpeed(0.0);

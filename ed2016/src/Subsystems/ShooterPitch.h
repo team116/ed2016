@@ -31,7 +31,7 @@ public:
 	};
 
 	void setShooterPitchSpeed(float speed);
-	void setShooterPitchDirection(ShooterPitchDirection);
+	void setShooterPitchDirection(Utils::VerticalDirection dir);
 	void checkLimits();
 
 	float getPitchToTarget(PitchType);

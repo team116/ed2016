@@ -28,13 +28,13 @@ namespace RobotPorts
 	// digital inputs
 
 	const unsigned int SHOOTER_WHEEL_TACH = 1;
-	const unsigned int LEFT_ENCODER_A = 3;
-	const unsigned int LEFT_ENCODER_B = 4;
-	const unsigned int RIGHT_ENCODER_A = 5;
-	const unsigned int RIGHT_ENCODER_B = 6;
-	const unsigned int INTAKE_LIMIT = 7;
-	const unsigned int BALL_PREP_CHECK_LIMIT = 8;
-	const unsigned int SHOOTER_HOME_SWITCH = 9;
+	const unsigned int LEFT_ENCODER_A = 2;
+	const unsigned int LEFT_ENCODER_B = 3;
+	const unsigned int RIGHT_ENCODER_A = 4;
+	const unsigned int RIGHT_ENCODER_B = 5;
+	const unsigned int SHOOTER_HOME_SWITCH = 6;
+	const unsigned int BALL_PREP_CHECK_LIMIT = 7;
+	const unsigned int INTAKE_LIMIT = 8;
 
 
 	// analog inputs
@@ -46,17 +46,15 @@ namespace RobotPorts
 	const unsigned int AUTONOMOUS_NAVX_C = 6;
 
 	//motors
-	const unsigned int LEFT_FRONT_MOTOR = 0;
-	const unsigned int LEFT_BACK_MOTOR = 1;
-	const unsigned int RIGHT_FRONT_MOTOR = 2;
-	const unsigned int RIGHT_BACK_MOTOR = 3;
+	const unsigned int RIGHT_FRONT_MOTOR = 0;
+	const unsigned int RIGHT_BACK_MOTOR = 1;
+	const unsigned int LEFT_FRONT_MOTOR = 2;
+	const unsigned int LEFT_BACK_MOTOR = 3;
 
 	const unsigned int WINCH_MOTOR_FRONT = 4;
 	const unsigned int WINCH_MOTOR_BACK = 5;
 
 	const unsigned int SHOOTER_MOTOR = 6;
-	//const unsigned int LEFT_SHOOTER_MOTOR = 6;
-	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
 
 	const unsigned int SHOOTER_PITCH_MOTOR = 8;
 	const unsigned int SHOOTER_PUSH_MOTOR = 9;  //the holder wheels, the ball loader, theyre all the same thing
@@ -90,8 +88,8 @@ namespace OI_Ports
 	const unsigned int TEST_BUTTON = 3;
 	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
 
-	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
-	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
+	const unsigned INTAKE_BELT_FORWARD_SWITCH = 7;
+	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 6;
 
 	const unsigned SHOOTER_WHEELS_SWITCH = 9;
 

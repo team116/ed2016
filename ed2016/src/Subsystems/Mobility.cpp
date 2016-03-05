@@ -32,13 +32,13 @@ void Mobility::setLeft(float speed)
 {
 	if (front_orientation)
 	{
-		leftFront->Set(-speed);
-		leftBack->Set(-speed);
+		leftFront->Set(speed);
+		leftBack->Set(speed);
 	}
 	else
 	{
-		leftFront->Set(speed);
-		leftBack->Set(speed);
+		leftFront->Set(-speed);
+		leftBack->Set(-speed);
 	}
 }
 
@@ -46,13 +46,13 @@ void Mobility::setRight(float speed)
 {
 	if (front_orientation)
 	{
-		rightFront->Set(speed);
-		rightBack->Set(speed);
+		rightFront->Set(-speed);
+		rightBack->Set(-speed);
 	}
 	else
 	{
-		rightFront->Set(-speed);
-		rightBack->Set(-speed);
+		rightFront->Set(speed);
+		rightBack->Set(speed);
 	}
 }
 

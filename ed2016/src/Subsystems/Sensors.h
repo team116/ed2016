@@ -48,12 +48,15 @@ public:
 
 	void zeroShooterPitch();
 
+	DigitalInput* ready_to_shoot_balls_switch;
+	DigitalInput* intake_limit_switch;
+	DigitalInput* shooter_home_switch;
+
 private:
 	Log* log;
 
 	float shooterAngleActual();
 
-	DigitalInput* ready_to_shoot_balls_switch;
 
 	static const float MAX_SHOOTER_ANGLE_VOLT;
 	static const float MIN_SHOOTER_ANGLE_VOLT;
@@ -93,9 +96,6 @@ private:
 	bool ready_to_shoot_enabled;
 	bool shooter_home_switch_enabled;
 	bool shooter_wheel_tachometer_enabled;
-
-	DigitalInput* intake_limit_switch;
-	DigitalInput* shooter_home_switch;
 
 };
 

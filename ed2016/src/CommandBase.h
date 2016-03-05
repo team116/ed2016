@@ -14,7 +14,6 @@
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
-#include <Subsystems/ShooterPitchPID.h>
 #include <Log.h>
 
 /**
@@ -34,7 +33,6 @@ public:
 	static std::unique_ptr<Sensors> sensors;
 	static std::unique_ptr<Shooter> shooter;
 	static std::unique_ptr<ShooterPitch> shooter_pitch;
-	static std::unique_ptr<ShooterPitchPID> shooter_pitch_pid;
 	static std::unique_ptr<HolderWheel> holder_wheel;
 	static std::unique_ptr<Cameras> cameras;
 	static std::unique_ptr<OI> oi;

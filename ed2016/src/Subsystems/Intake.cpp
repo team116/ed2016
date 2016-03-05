@@ -5,6 +5,8 @@ Intake::Intake() : Subsystem("Intake")
 {
 	intake_roller = Utils::constructMotor(RobotPorts::INTAKE_ROLLER_MOTOR);
 	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
+
+	log = Log::getInstance();
 }
 
 void Intake::InitDefaultCommand()
@@ -33,15 +35,16 @@ void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 {
 	/* Note: may need to switch 1 and -1 */
 	if (value == Utils::VerticalDirection::UP)
-		{
-			intake_angle->Set(1.0);
-		}
-		else if (value == Utils::VerticalDirection::DOWN)
-		{
-			intake_angle->Set(-1.0);
-		}
-		else if (value == Utils::VerticalDirection::V_STILL)
-		{
-			intake_angle->Set(0.0);
-		}
+	{
+		intake_angle->Set(1.0);
+	}
+	else if (value == Utils::VerticalDirection::DOWN)
+	{
+		intake_angle->Set(-1.0);
+	}
+	else if (value == Utils::VerticalDirection::V_STILL)
+	{
+		intake_angle->Set(0.0);
+	}
+	log->write(Log::ERROR_LEVEL, "intake angle speed: %f", intake_angle->Get());
 }

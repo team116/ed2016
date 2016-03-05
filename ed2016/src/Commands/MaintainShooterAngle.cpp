@@ -57,7 +57,7 @@ bool MaintainShooterAngle::IsFinished()
 // Called once after isFinished returns true
 void MaintainShooterAngle::End()
 {
-	shooter_pitch->setShooterPitchDirection(ShooterPitch::ShooterPitchDirection::SHOOTER_STILL);
+	shooter_pitch->setShooterPitchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same
