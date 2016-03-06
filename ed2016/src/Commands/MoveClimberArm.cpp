@@ -1,4 +1,5 @@
 #include "MoveClimberArm.h"
+#include <Subsystems/Climber.h>
 
 MoveClimberArm::MoveClimberArm(Utils::VerticalDirection dir)
 {
@@ -13,7 +14,19 @@ MoveClimberArm::MoveClimberArm(Utils::VerticalDirection dir)
 void MoveClimberArm::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "MoveClimberArm Initialized");
-	climber->setClimber(movement_direction);
+
+	switch (movement_direction)
+	{
+	case Utils::VerticalDirection::UP:
+		climber->setClimber(movement_direction, Climber::DEPLOY_ARM_SPEED);
+		break;
+	case Utils::VerticalDirection::DOWN:
+		climber->setClimber(movement_direction, Climber::RETRACT_ARM_SPEED);
+		break;
+	case Utils::VerticalDirection::V_STILL:
+		climber->setClimber(movement_direction);
+		break;
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run

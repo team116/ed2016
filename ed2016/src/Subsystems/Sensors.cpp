@@ -63,6 +63,8 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	navx = new AHRS(SPI::Port::kMXP);
 
+	pdp = new PowerDistributionPanel(RobotPorts::PDP);
+
 	drive_encoders_enabled = false;
 	lidar_sensor_enabled = true;
 	shooter_angle_enabled = false;
@@ -253,6 +255,11 @@ bool Sensors::areIntakeAngleEnabled()
 bool Sensors::readyToShoot()
 {
 	return ready_to_shoot_balls_switch->Get();
+}
+
+float Sensors::getCurrent(unsigned int port)
+{
+	return pdp->GetCurrent(port);
 }
 
 bool Sensors::isShooterHomeSwitchEnabled()

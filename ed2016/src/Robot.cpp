@@ -12,6 +12,7 @@
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
 #include <Log.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Subsystems/Sensors.h>
 
 using namespace Autonomous;
 using namespace Utils;

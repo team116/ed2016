@@ -1,10 +1,11 @@
 #include "MoveFrontWinch.h"
+#include <Subsystems/Winches.h>
 
 MoveFrontWinch::MoveFrontWinch(Utils::VerticalDirection dir)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(&*climber);
+	Requires(&*winches);
 
 	movement_direction = dir;
 }
@@ -13,7 +14,7 @@ MoveFrontWinch::MoveFrontWinch(Utils::VerticalDirection dir)
 void MoveFrontWinch::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "MoveFrontWinch Initialized");
-	climber->setFrontWinchDirection(movement_direction);
+	winches->setFrontWinchDirection(movement_direction);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -32,7 +33,7 @@ bool MoveFrontWinch::IsFinished()
 void MoveFrontWinch::End()
 {
 	log->write(Log::TRACE_LEVEL, "MoveFrontWinch Ended");
-	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+	winches->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same

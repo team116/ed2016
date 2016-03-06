@@ -1,12 +1,15 @@
 #include <Commands/MoveIntake.h>
 #include <CommandBase.h>
+#include <Subsystems/HolderWheel.h>
+#include <Subsystems/Intake.h>
 
 
 MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires (&*intake);
+	Requires(&*intake);
+	Requires(&*holder_wheel);
 
 	 this->direction = direction;
 }
