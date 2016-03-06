@@ -3,7 +3,7 @@
 #include <Subsystems/Sensors.h>
 #include <Commands/DriveStraight.h>
 
-const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 1.0/30.0;
+const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 0.1;
 
 DriveDistance::DriveDistance(float dist)
 {
@@ -16,9 +16,7 @@ DriveDistance::DriveDistance(float dist)
 
 	auto_drive_straight = new DriveStraight(0.5, DriveStraight::GYRO);
 
-	timeout = dist * DRIVE_DISTANCE_TIMEOUT;
-
-	temmie = new Timer();
+	SetTimeout(dist * DRIVE_DISTANCE_TIMEOUT);
 
 }
 
@@ -41,11 +39,7 @@ void DriveDistance::Initialize()
 		dir = 0.0;
 	}
 
-	Scheduler::GetInstance()->AddCommand(auto_drive_straight);
-
-
-	temmie->Reset();
-	temmie->Start();
+	//Scheduler::GetInstance()->AddCommand(auto_drive_straight);
 
 }
 
@@ -54,25 +48,27 @@ void DriveDistance::Execute()
 {
 	current_distance = (sensors->getDistanceLeft() + sensors->getDistanceRight())/2.0 - starting_distance;
 	mobility->setStraight(dir);
-
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished()
 {
 
-	if(temmie->Get() >= timeout)
+	if (IsTimedOut())
 	{
+		log->write(Log::TRACE_LEVEL, "DriveDistance finished (timeout)");
 		return true;
 	}
 	if(interrupted)
 	{
+		log->write(Log::TRACE_LEVEL, "DriveDistance finished (interrupt)");
 		return true;
 	}
-	if((distance == 0 ||
-			(current_distance - starting_distance >= distance && distance > 0)) ||
-			(current_distance - starting_distance <= distance && distance < 0))
+	if (sensors->areDriveEncoderEnabled() && (distance == 0.0 ||
+		((current_distance - starting_distance >= distance && distance > 0.0) ||
+		 (current_distance - starting_distance <= distance && distance < 0.0))))
 	{
+		log->write(Log::TRACE_LEVEL, "DriveDistance finished (distance)");
 		return true;
 	}
 	return false;
@@ -83,7 +79,7 @@ void DriveDistance::End()
 {
 	log->write(Log::TRACE_LEVEL, "DriveDistance Ended");
 	mobility->setStraight(0.0);
-	auto_drive_straight->Interrupted();
+	//auto_drive_straight->Interrupted();
 }
 
 // Called when another command which requires one or more of the same

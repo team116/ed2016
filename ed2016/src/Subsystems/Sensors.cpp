@@ -63,7 +63,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	navx = new AHRS(SPI::Port::kMXP);
 
-	drive_encoders_enabled = true;
+	drive_encoders_enabled = false;
 	lidar_sensor_enabled = true;
 	shooter_angle_enabled = false;
 	robot_angle_enabled = false;

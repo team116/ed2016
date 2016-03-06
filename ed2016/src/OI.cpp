@@ -202,7 +202,7 @@ void OI::process()
 
 float OI::getJoystickLeftY()
 {
-	float val = Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT);
+	float val = -1.0 * Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT);
 	if(val > 0) {
 		return pow(val, 2);
 	}
@@ -214,7 +214,7 @@ float OI::getJoystickLeftY()
 
 float OI::getJoystickRightY()
 {
-	float val = Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT);
+	float val = -1.0 * Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT);
 	if(val > 0) {
 		return pow(val, 2);
 	}
