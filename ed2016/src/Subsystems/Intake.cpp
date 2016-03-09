@@ -36,11 +36,11 @@ void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 	/* Note: may need to switch 1 and -1 */
 	if (value == Utils::VerticalDirection::UP)
 	{
-		intake_angle->Set(1.0);
+		intake_angle->Set(-1.0);
 	}
 	else if (value == Utils::VerticalDirection::DOWN)
 	{
-		intake_angle->Set(-1.0);
+		intake_angle->Set(1.0);
 	}
 	else if (value == Utils::VerticalDirection::V_STILL)
 	{

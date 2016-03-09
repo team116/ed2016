@@ -8,8 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.01;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.25;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.2;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.5;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -67,7 +67,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	drive_encoders_enabled = false;
 	lidar_sensor_enabled = true;
-	shooter_angle_enabled = false;
+	shooter_angle_enabled = true;
 	robot_angle_enabled = false;
 	intake_angle_enabled = false;
 	ready_to_shoot_enabled = true;
