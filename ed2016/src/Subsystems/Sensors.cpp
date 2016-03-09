@@ -26,8 +26,6 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
-	intake_limit_switch = new DigitalInput(RobotPorts::INTAKE_LIMIT);
-
 	shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
 	//top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
 	//bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
@@ -276,13 +274,12 @@ bool Sensors::shooterWheelTachometerEnabled()
 bool Sensors::isShooterHomeSwitchHorizontal()
 {
 	if (isShooterHomeSwitchEnabled()) {
-		return shooter_home_switch->Get();
+		return !shooter_home_switch->Get();
 	}
 	else {
 		return false;
 	}
 }
-
 float Sensors::getSpeedLeft()
 {
 	if (areDriveEncoderEnabled())
