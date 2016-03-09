@@ -39,7 +39,7 @@ public:
 
 		for (int i = 0; i < DIGITAL_INPUT_COUNT; ++i)
 		{
-
+			digital_ins[i] = new DigitalInput(i);
 		}
 
 		shooter_pitch_encoder = new AnalogInput(1);
@@ -128,16 +128,16 @@ public:
 			}
 			char buffer[255];
 			snprintf(buffer, 255, "%d%d%d%d%d%d%d%d%d%d",
-				digital_ins[0],
-				digital_ins[1],
-				digital_ins[2],
-				digital_ins[3],
-				digital_ins[4],
-				digital_ins[5],
-				digital_ins[6],
-				digital_ins[7],
-				digital_ins[8],
-				digital_ins[9]);
+				digital_ins[0]->Get(),
+				digital_ins[1]->Get(),
+				digital_ins[2]->Get(),
+				digital_ins[3]->Get(),
+				digital_ins[4]->Get(),
+				digital_ins[5]->Get(),
+				digital_ins[6]->Get(),
+				digital_ins[7]->Get(),
+				digital_ins[8]->Get(),
+				digital_ins[9]->Get());
 			DriverStation::ReportError(buffer);
 		}
 
