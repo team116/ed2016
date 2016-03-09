@@ -38,6 +38,8 @@ public:
 	bool readyToShoot();
 	bool isShooterHomeSwitchHorizontal();
 
+	float getCurrent(unsigned int port);
+
 	bool areDriveEncoderEnabled();
 	bool areLidarEnabled();
 	bool areShooterAngleEnabled();
@@ -84,6 +86,8 @@ private:
 	int lidar_distance; // centimeters
 
 	AHRS* navx;
+
+	PowerDistributionPanel* pdp;
 
 	bool drive_encoders_enabled;
 	bool lidar_sensor_enabled;

@@ -1,5 +1,6 @@
 #include <Commands/ExtendScalingArm.h>
 #include <Subsystems/Climber.h>
+#include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
 
 const float ExtendScalingArm::TIMEOUT_1 = 3.0;

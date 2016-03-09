@@ -3,6 +3,7 @@
 
 #define MOTOR_COUNT 13
 #define AUTO_SWITCH_COUNT 3
+#define DIGITAL_INPUT_COUNT 10
 
 class Robot: public SampleRobot
 {
@@ -13,6 +14,8 @@ class Robot: public SampleRobot
 
 	AnalogInput* auto_switches[AUTO_SWITCH_COUNT];
 	AnalogInput* shooter_pitch_encoder;
+
+	DigitalInput* digital_ins[DIGITAL_INPUT_COUNT];
 
 	Log* log;
 
@@ -32,6 +35,11 @@ public:
 		for (int i = 0; i < AUTO_SWITCH_COUNT; ++i)
 		{
 			auto_switches[i] = new AnalogInput(i + 4);
+		}
+
+		for (int i = 0; i < DIGITAL_INPUT_COUNT; ++i)
+		{
+			digital_ins[i] = new DigitalInput(i);
 		}
 
 		shooter_pitch_encoder = new AnalogInput(1);
@@ -118,6 +126,19 @@ public:
 					victors[i]->Set(0.0);
 				}
 			}
+			char buffer[255];
+			snprintf(buffer, 255, "%d%d%d%d%d%d%d%d%d%d",
+				digital_ins[0]->Get(),
+				digital_ins[1]->Get(),
+				digital_ins[2]->Get(),
+				digital_ins[3]->Get(),
+				digital_ins[4]->Get(),
+				digital_ins[5]->Get(),
+				digital_ins[6]->Get(),
+				digital_ins[7]->Get(),
+				digital_ins[8]->Get(),
+				digital_ins[9]->Get());
+			DriverStation::ReportError(buffer);
 		}
 
 		for (i = 0; i < 13; ++i)

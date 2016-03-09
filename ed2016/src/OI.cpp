@@ -12,12 +12,12 @@
 #include <Commands/MoveClimberArm.h>
 #include <Commands/MoveHolderWheel.h>
 #include <Commands/AngleIntake.h>
-#include <Subsystems/Intake.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/TogglePID.h>
+#include <Subsystems/Intake.h>
 
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
@@ -188,21 +188,17 @@ void OI::process()
 			Scheduler::GetInstance()->RemoveAll();
 		}
 	}
-
-	if(b_test_button->Get()) {
-		CommandBase::log->write(Log::ERROR_LEVEL, "Test Button Firing");
-		CommandBase::shooter_pitch->setDirection(Utils::VerticalDirection::UP);
-	}
-
-	CommandBase::shooter_pitch->setP(std::stof(SmartDashboard::GetString("DB/String 0", std::to_string(CommandBase::shooter_pitch->getP()))));
-	CommandBase::shooter_pitch->setI(std::stof(SmartDashboard::GetString("DB/String 1", std::to_string(CommandBase::shooter_pitch->getI()))));
-	CommandBase::shooter_pitch->setD(std::stof(SmartDashboard::GetString("DB/String 2", std::to_string(CommandBase::shooter_pitch->getD()))));
-	CommandBase::shooter_pitch->setF(std::stof(SmartDashboard::GetString("DB/String 3", std::to_string(CommandBase::shooter_pitch->getF()))));
+	
+	/*
+	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
+	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
+	CommandBase::shooter_pitch_pid->setD(SmartDashboard::GetNumber("d-val", CommandBase::shooter_pitch_pid->getD()));
+	*/
 }
 
 float OI::getJoystickLeftY()
 {
-	float val = Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT);
+	float val = -1.0 * Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT);
 	if(val > 0) {
 		return pow(val, 2);
 	}
@@ -214,7 +210,7 @@ float OI::getJoystickLeftY()
 
 float OI::getJoystickRightY()
 {
-	float val = Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT);
+	float val = -1.0 * Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT);
 	if(val > 0) {
 		return pow(val, 2);
 	}

@@ -1,4 +1,5 @@
 #include "TogglePID.h"
+#include <Subsystems/ShooterPitch.h>
 
 TogglePID::TogglePID(bool state)
 {

@@ -92,12 +92,12 @@ bool SetShooterPitch::IsFinished()
 		return true;
 	}
 	if(pid_mode) {
-		/*if(IsTimedOut() && !(current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)) {
+		if(IsTimedOut() && !(current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)) {
 			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out while in PID mode. Sensor may be broken or the loop"
 					"may need tuning. (Target: %f, Current: %f)", pitch, current_angle);
 			shooter_pitch->Disable();
 			return true;
-		}*/
+		}
 	}
 	else {
 		if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)

@@ -8,8 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 2.667;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 3.898;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.2;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.5;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -60,6 +60,8 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
 
 	navx = new AHRS(SPI::Port::kMXP);
+
+	pdp = new PowerDistributionPanel(RobotPorts::PDP);
 
 	drive_encoders_enabled = true;
 	lidar_sensor_enabled = true;
@@ -259,6 +261,11 @@ bool Sensors::areIntakeAngleEnabled()
 bool Sensors::readyToShoot()
 {
 	return ready_to_shoot_balls_switch->Get();
+}
+
+float Sensors::getCurrent(unsigned int port)
+{
+	return pdp->GetCurrent(port);
 }
 
 bool Sensors::isShooterHomeSwitchEnabled()

@@ -1,6 +1,9 @@
 #include "ShooterPitch.h"
 #include "../RobotMap.h"
 #include <CommandBase.h>
+#include <Commands/MaintainShooterAngle.h>
+#include <Subsystems/Sensors.h>
+#include <Subsystems/Cameras.h>
 #include <Log.h>
 #include <math.h>
 

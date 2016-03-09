@@ -10,8 +10,8 @@
 #include <Subsystems/Sensors.h>
 #include <cmath>
 
-const float AngleIntake::TIMEOUT = 1;
-float AngleIntake::last_angle = 0.0;
+const float AngleIntake::TIMEOUT = 0.0125;
+float AngleIntake::last_angle = 90.0;
 
 AngleIntake::AngleIntake(float ang, float error)
 {
@@ -54,11 +54,11 @@ void AngleIntake::Execute()
 
 	if (angle > current_angle)
 	{
-		direction = Utils::VerticalDirection::UP;
+		direction = Utils::VerticalDirection::DOWN;
 	}
 	else if (angle < current_angle)
 	{
-		direction = Utils::VerticalDirection::DOWN;
+		direction = Utils::VerticalDirection::UP;
 	}
 	else
 	{

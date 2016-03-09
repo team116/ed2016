@@ -1,12 +1,15 @@
 #include <Commands/MoveIntake.h>
 #include <CommandBase.h>
+#include <Subsystems/HolderWheel.h>
+#include <Subsystems/Intake.h>
 
 
 MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires (&*intake);
+	Requires(&*intake);
+	Requires(&*holder_wheel);
 
 	 this->direction = direction;
 }
@@ -16,20 +19,7 @@ void MoveIntake::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "MoveIntake Initialized");
 	intake->setIntakeDirection(direction);
-	intake->setIntakeDirection(direction);
-	switch (direction)
-	{
-	case Utils::HorizontalDirection::IN:
-	        holder_wheel->setWheelDirection(Utils::HorizontalDirection::OUT);
-	        break;
-	case Utils::HorizontalDirection::OUT:
-	        holder_wheel->setWheelDirection(Utils::HorizontalDirection::IN);
-	        break;
-	case Utils::HorizontalDirection::H_STILL:
-	        holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
-	}
-
-
+	holder_wheel->setWheelDirection(direction);
 }
 
 // Called repeatedly when this Command is scheduled to run

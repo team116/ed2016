@@ -1,5 +1,6 @@
 #include <Commands/RetractWinches.h>
 #include <Subsystems/Climber.h>
+#include <Subsystems/Winches.h>
 
 const float RetractWinches::ARM_TIMEOUT = 3.0;
 const float RetractWinches::WINCH_TIMEOUT = 3.0;
@@ -8,6 +9,7 @@ const float RetractWinches::CURRENT_SPIKE_TIMEOUT = 2.0;
 RetractWinches::RetractWinches()
 {
 	Requires(&*climber);
+	Requires(&*winches);
 	temmie_a = new Timer();
 	temmie_w = new Timer();
 
@@ -27,7 +29,7 @@ void RetractWinches::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void RetractWinches::Execute()
 {
-	if(climber->isWinchCurrentSpiking() || temmie_w->Get() > CURRENT_SPIKE_TIMEOUT)
+	if(winches->isWinchCurrentSpiking() || temmie_w->Get() > CURRENT_SPIKE_TIMEOUT)
 	{
 		temmie_a->Start();
 	}
@@ -45,13 +47,13 @@ void RetractWinches::Execute()
 
 	if (temmie_w->Get() < WINCH_TIMEOUT)
 	{
-		climber->setFrontWinchDirection(Utils::VerticalDirection::UP);
-		climber->setBackWinchDirection(Utils::VerticalDirection::UP);
+		winches->setFrontWinchDirection(Utils::VerticalDirection::UP);
+		winches->setBackWinchDirection(Utils::VerticalDirection::UP);
 	}
 	else
 	{
-		climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
-		climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
+		winches->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+		winches->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 	}
 }
 
@@ -75,8 +77,8 @@ void RetractWinches::End()
 	log->write(Log::TRACE_LEVEL, "RetractWinches Ended");
 	climber->setClimber(Utils::VerticalDirection::V_STILL);
 
-	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
-	climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
+	winches->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+	winches->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same

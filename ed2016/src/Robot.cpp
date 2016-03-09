@@ -13,6 +13,7 @@
 #include <Commands/TogglePID.h>
 #include <Log.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Subsystems/Sensors.h>
 
 using namespace Autonomous;
 using namespace Utils;
@@ -32,11 +33,26 @@ private:
 	{
 		CommandBase::init();
 
-		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
-		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
-		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
+		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
+		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
+		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
 
 		log = Log::getInstance();
+	}
+
+	int getShootSwitchValue()
+	{
+		return voltageConversion(shoot_switch->GetVoltage(), 3, 5.0);
+	}
+
+	int getPositionSwitchValue()
+	{
+		return voltageConversion(position_switch->GetVoltage(), 6, 5.0);
+	}
+
+	int getDefenseSwitchValue()
+	{
+		return voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 	}
 
 	/**
@@ -52,6 +68,17 @@ private:
 	void DisabledPeriodic()
 	{
 		Scheduler::GetInstance()->Run();
+		char text[255];
+		snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			CommandBase::sensors->shooterAngle(),
+			CommandBase::sensors->intakeAngle(),
+			CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+			CommandBase::sensors->readyToShoot(),
+			CommandBase::sensors->speedShooterWheel(),
+			getShootSwitchValue(),
+			getPositionSwitchValue(),
+			getDefenseSwitchValue());
+		DriverStation::ReportError(text);
 	}
 
 	/**
@@ -66,21 +93,17 @@ private:
 	void AutonomousInit()
 	{
 		float shoot_voltage = shoot_switch->GetVoltage();
-		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);
+		int shoot_value = getShootSwitchValue();
 
 		float position_voltage = position_switch->GetVoltage();
-		int position_value = voltageConversion(position_voltage, 6, 5.0);
+		int position_value = getPositionSwitchValue();
 
 		float defense_voltage = defense_switch->GetVoltage();
-		int defense_value = voltageConversion(defense_voltage, 8, 5.0);
+		int defense_value = getDefenseSwitchValue();
 
 		log->write(Log::TRACE_LEVEL, " Shooter Auto Switch value: %d, voltage: %f, port: %d", shoot_value, shoot_voltage, (int)shoot_switch->GetChannel());
 		log->write(Log::TRACE_LEVEL, "Position Auto Switch value: %d, voltage: %f, port: %d", position_value, position_voltage, (int)position_switch->GetChannel());
 		log->write(Log::TRACE_LEVEL, " Defense Auto Switch value: %d, voltage: %f, port: %d", defense_value, defense_voltage, (int)defense_switch->GetChannel());
-
-		shoot_value = 0;
-		position_value = 1;
-		defense_value = 0;
 
 		if (shoot_value == 0 && position_value == 0 && defense_value == 0)
 		{
@@ -144,7 +167,17 @@ private:
 		Scheduler::GetInstance()->Run();
 		CommandBase::oi->process();
 		CommandBase::shooter_pitch->checkLimits();
-		log->write(Log::TRACE_LEVEL, "Robot Angle: %f Shooter Pitch: %f", CommandBase::sensors->robotAngle(), CommandBase::sensors->shooterAngle());
+		char text[255];
+		snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			CommandBase::sensors->shooterAngle(),
+			CommandBase::sensors->intakeAngle(),
+			CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+			CommandBase::sensors->readyToShoot(),
+			CommandBase::sensors->speedShooterWheel(),
+			getShootSwitchValue(),
+			getPositionSwitchValue(),
+			getDefenseSwitchValue());
+		DriverStation::ReportError(text);
 	}
 
 	void TestInit()
@@ -167,12 +200,17 @@ private:
 	void TestPeriodic()
 	{
 		LiveWindow::GetInstance()->Run();
-
-		/*
-		static char log[255];
-		snprintf(log, 255, "Shoot volt: %f, Pos volt: %f, Def volt: %f", shoot_switch->GetVoltage(), position_switch->GetVoltage(), defense_switch->GetVoltage());
-		DriverStation::ReportError(log);
-		*/
+		char text[255];
+		snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			CommandBase::sensors->shooterAngle(),
+			CommandBase::sensors->intakeAngle(),
+			CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+			CommandBase::sensors->readyToShoot(),
+			CommandBase::sensors->speedShooterWheel(),
+			getShootSwitchValue(),
+			getPositionSwitchValue(),
+			getDefenseSwitchValue());
+		DriverStation::ReportError(text);
 	}
 };
 
