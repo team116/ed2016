@@ -10,6 +10,21 @@ MoveHolderWheel::MoveHolderWheel(Utils::HorizontalDirection dir)
 // Called just before this Command runs the first time
 void MoveHolderWheel::Initialize()
 {
+	switch (direction)
+	{
+	case Utils::HorizontalDirection::IN:
+		log->write(Log::TRACE_LEVEL, "MoveHolderWheel initialized (direction IN)");
+		break;
+	case Utils::HorizontalDirection::OUT:
+		log->write(Log::TRACE_LEVEL, "MoveHolderWheel initialized (direction OUT)");
+		break;
+	case Utils::HorizontalDirection::H_STILL:
+		log->write(Log::TRACE_LEVEL, "MoveHolderWheel initialized (direction H_STILL)");
+		break;
+	default:
+		log->write(Log::WARNING_LEVEL, "MoveHolderWheel initialized with unknown direction");
+		break;
+	}
 	holder_wheel->setWheelDirection(direction);
 }
 

@@ -24,6 +24,9 @@ void LiftIntake::Initialize()
 	case Utils::VerticalDirection::V_STILL:
 		log->write(Log::TRACE_LEVEL, "LiftIntake initialized (direction V_STILL)");
 		break;
+	default:
+		log->write(Log::WARNING_LEVEL, "LiftIntake initialized with unknown direction");
+		break;
 	}
 }
 

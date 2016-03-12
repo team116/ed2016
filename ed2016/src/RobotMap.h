@@ -38,8 +38,8 @@ namespace RobotPorts
 
 
 	// analog inputs
-	const unsigned int SHOOTER_ANGLE_ENCODER = 0;
-	const unsigned int INTAKE_ANGLE_ENCODER = 1;
+	const unsigned int INTAKE_ANGLE_ENCODER = 0;
+	const unsigned int SHOOTER_ANGLE_ENCODER = 1;
 	const unsigned int SHOOTER_AZIMUTH_ENCODER = 2;
 	const unsigned int AUTONOMOUS_NAVX_A = 4;
 	const unsigned int AUTONOMOUS_NAVX_B = 5;
@@ -88,8 +88,8 @@ namespace OI_Ports
 	const unsigned int TEST_BUTTON = 3;
 	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
 
-	const unsigned INTAKE_BELT_FORWARD_SWITCH = 7;
-	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 6;
+	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
+	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
 
 	const unsigned SHOOTER_WHEELS_SWITCH = 9;
 

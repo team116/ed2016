@@ -14,7 +14,6 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
-#include <Commands/MoveIntake.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>

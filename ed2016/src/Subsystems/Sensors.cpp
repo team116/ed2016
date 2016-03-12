@@ -13,6 +13,7 @@ const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.5;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
+
 const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
@@ -31,14 +32,13 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	//bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
 	shooter_wheel_tach->ClearDownSource();
-	//top_shooter_wheel_tach->ClearDownSource();
-	//bottom_shooter_wheel_tach->ClearDownSource();
-	prev_shooter_wheel_tach_count = 0;
-	//prev_top_tach_count = 0;
-	//prev_bottom_tach_count = 0;
 	shooter_wheel_tach_rate = 0.0;
-	//top_tach_rate = 0.0;
-	//bottom_tach_rate = 0.0;
+	cur_tach_period_index = 0;
+	for (int i = 0; i < TACH_PERIOD_COUNT; ++i)
+	{
+		prev_tach_timestamps[i] = 0.0;
+		prev_tach_counts[i] = 0;
+	}
 
 	cycle_timer = new Timer();
 	cycle_timer->Start();
@@ -93,7 +93,7 @@ float Sensors::shooterAngleActual()
 
 float Sensors::shooterAngle()
 {
-	if (shooter_angle_enabled)
+	if (areShooterAngleEnabled())
 	{
 		float actual = shooterAngleActual();
 		if (actual > 270.0)
@@ -138,7 +138,7 @@ float Sensors::robotAngle()
 float Sensors::speedShooterWheel()
 {
 	{
-		if (shooter_wheel_tachometer_enabled)
+		if (shooterWheelTachometerEnabled())
 		{
 			return shooter_wheel_tach_rate;
 		}
@@ -163,7 +163,7 @@ float Sensors::intakeAngle()
 
 int Sensors::lidarDistance()
 {
-	if (lidar_sensor_enabled)
+	if (areLidarEnabled())
 	{
 		return lidar_distance;
 	}
@@ -204,7 +204,7 @@ void Sensors::refreshLidar()
 
 float Sensors::getDistanceLeft()
 {
-	if (drive_encoders_enabled)
+	if (areDriveEncoderEnabled())
 	{
 		return (float)left_drive_encoder->GetDistance();
 	}
@@ -216,7 +216,7 @@ float Sensors::getDistanceLeft()
 
 float Sensors::getDistanceRight()
 {
-	if(drive_encoders_enabled)
+	if(areDriveEncoderEnabled())
 
 	{
 		return (float)right_drive_encoder->GetDistance();
@@ -258,9 +258,17 @@ bool Sensors::areIntakeAngleEnabled()
 {
 	return intake_angle_enabled;
 }
+
 bool Sensors::readyToShoot()
 {
-	return ready_to_shoot_balls_switch->Get();
+	if (ready_to_shoot_enabled)
+	{
+		return ready_to_shoot_balls_switch->Get();
+	}
+	else
+	{
+		return false;
+	}
 }
 
 float Sensors::getCurrent(unsigned int port)
@@ -307,6 +315,30 @@ float Sensors::getSpeedRight()
 
 void Sensors::updateTachometers()
 {
+	unsigned int cur_tach_count = shooter_wheel_tach->Get();
+	float cur_timestamp = cycle_timer->Get();
+
+	shooter_wheel_tach_rate = (float)(cur_tach_count - prev_tach_counts[cur_tach_period_index]) / (cur_timestamp - prev_tach_timestamps[cur_tach_period_index]) * 60.0;
+	char text[255];
+	snprintf(text, 255, "tach rate: %f, prev count: %d, cur count: %d, prev time: %f, cur time: %f",
+			shooter_wheel_tach_rate,
+			prev_tach_counts[cur_tach_period_index],
+			cur_tach_count,
+			prev_tach_timestamps[cur_tach_period_index],
+			cur_timestamp);
+	DriverStation::ReportError(text);
+	prev_tach_counts[cur_tach_period_index] = cur_tach_count;
+	prev_tach_timestamps[cur_tach_period_index] = cur_timestamp;
+
+	++cur_tach_period_index;
+	if (cur_tach_period_index == TACH_PERIOD_COUNT)
+	{
+		cur_tach_period_index = 0;
+	}
+}
+/*
+void Sensors::updateTachometers()
+{
 	unsigned int cur_shooter_wheel_count = shooter_wheel_tach->Get();
 	float cycle_time = getCycleTime();
 
@@ -315,6 +347,7 @@ void Sensors::updateTachometers()
 
 	prev_shooter_wheel_tach_count = cur_shooter_wheel_count;
 }
+*/
 
 float Sensors::getCycleTime()
 {
