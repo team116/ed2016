@@ -157,16 +157,16 @@ void OI::process()
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
 		switch(manual_aim_position_process) {
 			case 0:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::ONE, getPIDEnableSwitch(), 5.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::ONE, getPIDEnableSwitch()));
 				break;
 			case 1:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::TWO, getPIDEnableSwitch(), 5.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::TWO, getPIDEnableSwitch()));
 				break;
 			case 2:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::THREE, getPIDEnableSwitch(), 5.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::THREE, getPIDEnableSwitch()));
 				break;
 			case 3:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FOUR, getPIDEnableSwitch(), 5.0));
+				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FOUR, getPIDEnableSwitch()));
 				break;
 			case 4:
 				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FIVE, getPIDEnableSwitch(), 5.0));

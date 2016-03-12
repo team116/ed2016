@@ -2,7 +2,7 @@
 #include <Subsystems/Sensors.h>
 #include <Log.h>
 
-const float SetShooterPitch::DEFAULT_ACCEPTABLE_ERROR = 1.0;
+const float SetShooterPitch::DEFAULT_ACCEPTABLE_ERROR = 2.0;
 const float SetShooterPitch::TIMEOUT = 0.025;
 float SetShooterPitch::last_angle = 0.0;
 
@@ -37,7 +37,7 @@ void SetShooterPitch::Initialize()
 	}
 	if(pid_mode) {
 		shooter_pitch->SetSetpoint(pitch);
-		shooter_pitch->SetAbsoluteTolerance(accepted_error);
+		//shooter_pitch->SetAbsoluteTolerance(accepted_error);
 		shooter_pitch->Enable();
 	}
 	else {
@@ -91,20 +91,14 @@ bool SetShooterPitch::IsFinished()
 	{
 		return true;
 	}
-	if(pid_mode) {
-		if(IsTimedOut() && !(current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)) {
-			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out while in PID mode. Sensor may be broken or the loop"
-					"may need tuning. (Target: %f, Current: %f)", pitch, current_angle);
-			shooter_pitch->Disable();
-			return true;
-		}
-	}
-	else {
+	if(!pid_mode)
+	{
 		if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
 		{
 			return true;
 		}
-		else if(IsTimedOut()) {
+		else if(IsTimedOut())
+		{
 			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
 			return true;
 		}

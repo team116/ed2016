@@ -11,12 +11,12 @@ const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of targ
 const float ShooterPitch::MANUAL_SPEED = 1.0;
 
 ShooterPitch::ShooterPitch() :
-		PIDSubsystem("ShooterPitch", 0.1, 0.0, 0.0, 0.0)
+		PIDSubsystem("ShooterPitch", 0.09, 0.0, 0.0, 0.0)
 {
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
 
 	SetInputRange(-90, 270);
-
+	SetAbsoluteTolerance(0.0);
 	SetOutputRange(-1.0,1.0);
 
 	GetPIDController()->SetContinuous(false);

@@ -33,7 +33,7 @@ void Shoot::Execute()
 
 	if (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME)
 	{
-		holder_wheel->setWheelDirection(Utils::HorizontalDirection::OUT);
+		holder_wheel->setWheelDirection(Utils::HorizontalDirection::IN);
 	}
 }
 
