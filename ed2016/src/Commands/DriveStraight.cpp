@@ -7,7 +7,7 @@ const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 
 const float DriveStraight::DEGREE_TOLERANCE = 1.0;
-const float DriveStraight::GYRO_SPEED_OFFSET = 0.01;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.02;
 
 DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
@@ -65,6 +65,7 @@ void DriveStraight::Execute()
 			while(degrees_off < -180) {
 				degrees_off += 360;
 			}
+
 			if(degrees_off > DEGREE_TOLERANCE)
 			{
 				mobility->setLeft(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)),-1.0, 1.0));
