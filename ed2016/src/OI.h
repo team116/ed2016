@@ -21,11 +21,14 @@ public:
 
 	bool getShooterWheelsSwitch();
 
+	Utils::HorizontalDirection getIntakeDirectionSwitch();
+
 	void process();
 
 	bool getPIDEnableSwitch();
 
 private:
+	static const float DRIVE_JOYSTICK_SCALE;
 	Joystick* joystick_left;
 	Joystick* joystick_right;
 	Joystick* joystick_buttons1;
@@ -68,6 +71,7 @@ private:
 	int intake_angle_position_process;
 	int shooter_speed_position_process;
 	int manual_aim_position_process;
+	Utils::HorizontalDirection last_intake_direction;
 
 	int shooter_speed_position;
 

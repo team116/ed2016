@@ -17,6 +17,7 @@
 
 using namespace Autonomous;
 using namespace Utils;
+using namespace std;
 
 class Robot: public IterativeRobot
 {
@@ -29,6 +30,9 @@ private:
 
 	Log* log;
 
+	static const int MEMORY_RESERVATION_SIZE = 256;
+	uint8_t* out_of_memory_reservation;
+
 	void RobotInit()
 	{
 		CommandBase::init();
@@ -38,6 +42,8 @@ private:
 		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
 
 		log = Log::getInstance();
+
+		out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE];
 	}
 
 	int getShootSwitchValue()
@@ -67,18 +73,27 @@ private:
 
 	void DisabledPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
-		char text[255];
-		snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
-			CommandBase::sensors->shooterAngle(),
-			CommandBase::sensors->intakeAngle(),
-			CommandBase::sensors->isShooterHomeSwitchHorizontal(),
-			CommandBase::sensors->readyToShoot(),
-			CommandBase::sensors->speedShooterWheel(),
-			getShootSwitchValue(),
-			getPositionSwitchValue(),
-			getDefenseSwitchValue());
-		DriverStation::ReportError(text);
+		try
+		{
+			Scheduler::GetInstance()->Run();
+			char text[255];
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->intakeAngle(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->speedShooterWheel(),
+				getShootSwitchValue(),
+				getPositionSwitchValue(),
+				getDefenseSwitchValue());
+			DriverStation::ReportError(text);
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during TeleopPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 
 	/**
@@ -146,7 +161,16 @@ private:
 
 	void AutonomousPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
+		try
+		{
+			Scheduler::GetInstance()->Run();
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during AutonomousPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 
 	void TeleopInit()
@@ -164,20 +188,29 @@ private:
 
 	void TeleopPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
-		CommandBase::oi->process();
-		CommandBase::shooter_pitch->checkLimits();
-		char text[255];
-		snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
-			CommandBase::sensors->shooterAngle(),
-			CommandBase::sensors->intakeAngle(),
-			CommandBase::sensors->isShooterHomeSwitchHorizontal(),
-			CommandBase::sensors->readyToShoot(),
-			CommandBase::sensors->speedShooterWheel(),
-			getShootSwitchValue(),
-			getPositionSwitchValue(),
-			getDefenseSwitchValue());
-		DriverStation::ReportError(text);
+		try
+		{
+			Scheduler::GetInstance()->Run();
+			CommandBase::oi->process();
+			CommandBase::shooter_pitch->checkLimits();
+			char text[255];
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->intakeAngle(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->speedShooterWheel(),
+				getShootSwitchValue(),
+				getPositionSwitchValue(),
+				getDefenseSwitchValue());
+			DriverStation::ReportError(text);
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during TeleopPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 
 	void TestInit()
@@ -199,18 +232,27 @@ private:
 
 	void TestPeriodic()
 	{
-		LiveWindow::GetInstance()->Run();
-		char text[255];
-		snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
-			CommandBase::sensors->shooterAngle(),
-			CommandBase::sensors->intakeAngle(),
-			CommandBase::sensors->isShooterHomeSwitchHorizontal(),
-			CommandBase::sensors->readyToShoot(),
-			CommandBase::sensors->speedShooterWheel(),
-			getShootSwitchValue(),
-			getPositionSwitchValue(),
-			getDefenseSwitchValue());
-		DriverStation::ReportError(text);
+		try
+		{
+			LiveWindow::GetInstance()->Run();
+			char text[255];
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->intakeAngle(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->speedShooterWheel(),
+				getShootSwitchValue(),
+				getPositionSwitchValue(),
+				getDefenseSwitchValue());
+			DriverStation::ReportError(text);
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during TestPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 };
 

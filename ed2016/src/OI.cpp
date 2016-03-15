@@ -18,6 +18,7 @@
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
 
+const float OI::DRIVE_JOYSTICK_SCALE = 0.5;
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
 
@@ -73,15 +74,19 @@ OI::OI()
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
 	s_pid_enable->WhenPressed(new TogglePID(true));
 	s_pid_enable->WhenReleased(new TogglePID(false));
-	s_intake_belt_inward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::IN));
-	s_intake_belt_outward->WhileHeld(new MoveIntake(Utils::HorizontalDirection::OUT));
-
+	/*
+	s_intake_belt_inward->WhenPressed(new MoveIntake(Utils::HorizontalDirection::IN));
+	s_intake_belt_inward->WhenReleased(new MoveIntake(Utils::HorizontalDirection::H_STILL));
+	s_intake_belt_outward->WhenPressed(new MoveIntake(Utils::HorizontalDirection::OUT));
+	s_intake_belt_outward->WhenReleased(new MoveIntake(Utils::HorizontalDirection::H_STILL));
+	*/
 	//Set Joystick Analog Dial Events
 
 	//Set any other variables here
 	intake_angle_position_process = -1;
 	shooter_speed_position_process = -1;
 	manual_aim_position_process = -1;
+	last_intake_direction = Utils::HorizontalDirection::H_STILL;
 
 	shooter_speed_position = 0;
 
@@ -188,6 +193,12 @@ void OI::process()
 		}
 	}
 	
+	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
+	if (intake_direction != last_intake_direction)
+	{
+		Scheduler::GetInstance()->AddCommand(new MoveIntake(intake_direction));
+		last_intake_direction = intake_direction;
+	}
 	/*
 	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
 	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
@@ -198,25 +209,41 @@ void OI::process()
 float OI::getJoystickLeftY()
 {
 	float val = -1.0 * Utils::deadZoneCheck(joystick_left->GetY(), DEAD_ZONE_AMOUNT);
-	if(val > 0) {
-		return pow(val, 2);
+	float curved;
+
+	if(val > 0)
+	{
+		curved = pow(val, 2);
 	}
-	if(val < 0) {
-		return pow(val, 2) * -1;
+	else if(val < 0)
+	{
+		curved = pow(val, 2) * -1;
 	}
-	return 0;
+	else
+	{
+		return 0.0;
+	}
+	return curved * DRIVE_JOYSTICK_SCALE;
 }
 
 float OI::getJoystickRightY()
 {
 	float val = -1.0 * Utils::deadZoneCheck(joystick_right->GetY(), DEAD_ZONE_AMOUNT);
-	if(val > 0) {
-		return pow(val, 2);
+	float curved;
+
+	if(val > 0)
+	{
+		curved = pow(val, 2);
 	}
-	if(val < 0) {
-		return pow(val, 2) * -1;
+	else if(val < 0)
+	{
+		curved = pow(val, 2) * -1;
 	}
-	return 0;
+	else
+	{
+		return 0.0;
+	}
+	return curved * DRIVE_JOYSTICK_SCALE;
 }
 
 float OI::getFrontWinchY()
@@ -237,6 +264,19 @@ int OI::getShooterSpeedPosition()
 bool OI::getShooterWheelsSwitch()
 {
 	return s_shooter_wheels->Get();
+}
+
+Utils::HorizontalDirection OI::getIntakeDirectionSwitch()
+{
+	if (s_intake_belt_inward->Get())
+	{
+		return Utils::HorizontalDirection::IN;
+	}
+	else if (s_intake_belt_outward->Get())
+	{
+		return Utils::HorizontalDirection::OUT;
+	}
+	return Utils::HorizontalDirection::H_STILL;
 }
 
 bool OI::getPIDEnableSwitch()

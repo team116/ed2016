@@ -19,6 +19,7 @@ private:
 	static const float PUSH_BOULDER; // gives it time to get the boulder in position
 
 	bool interrupted;
+	bool past_speed_up_time;
 };
 
 #endif /* SRC_COMMANDS_SHOOT_H_ */
