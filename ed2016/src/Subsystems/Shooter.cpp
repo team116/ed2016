@@ -55,5 +55,5 @@ float Shooter::getSpeedPreset(int preset)
 float Shooter::getSpeedToTarget(float angle)
 {
 	//sqrt(-2gy)/sin(theta) * 60 / (2*pi*r)
-	return (sqrt(19.6 * CommandBase::shooter_pitch->TARGET_HEIGHT) / sin(angle) * 60) / (.1016 * M_PI);
+	return (sqrt(1960 * CommandBase::shooter_pitch->TARGET_HEIGHT) / sin(angle) * 60) / (10.16 * M_PI);
 }
