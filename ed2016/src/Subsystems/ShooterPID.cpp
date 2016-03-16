@@ -5,6 +5,7 @@
 #include <CommandBase.h>
 #include <Subsystems/Sensors.h>
 #include <Log.h>
+#include <Subsystems/ShooterPitch.h>
 
 const float ShooterPID::RPM_PRESETS[] = {
 	2250.0,
