@@ -5,10 +5,12 @@
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
 #include <Log.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 
-const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
+const float ShooterPitch::TARGET_HEIGHT = 185.42;//Centimeters to middle of target
 const float ShooterPitch::MANUAL_SPEED = 1.0;
+const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 33.01;
 
 ShooterPitch::ShooterPitch() :
 		PIDSubsystem("ShooterPitch", 0.09, 0.0, 0.0, 0.0)
@@ -84,14 +86,14 @@ void ShooterPitch::checkLimits()
 }
 
 //In degrees
-float ShooterPitch::getPitchToTarget(PitchType type)
+float ShooterPitch::getTargetPitch(PitchType type)
 {
 	switch (type) {
 	case PitchType::CAMERA:
 		return CommandBase::cameras->PitchFromHorizontal();
 		break;
 	case PitchType::LIDAR:
-		return atan(TARGET_HEIGHT / CommandBase::sensors->lidarDistance());
+		return  90 - ((atan(TARGET_HEIGHT / (CommandBase::sensors->lidarDistance() + LIDAR_TO_SHOOTER_DISTANCE)) * 180) / M_PI);
 		break;
 	default:
 		CommandBase::log->write(Log::WARNING_LEVEL, "Somehow you managed to have an invalid PitchType: %d", type);

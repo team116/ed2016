@@ -30,7 +30,7 @@ public:
 	void setDirection(Utils::VerticalDirection);
 	void checkLimits();
 
-	float getPitchToTarget(PitchType);
+	float getTargetPitch(PitchType);
 
 	float getP();
 	float getI();
@@ -49,6 +49,7 @@ private:
 
 	static const float MANUAL_SPEED;
 	static const float TARGET_HEIGHT;
+	static const float LIDAR_TO_SHOOTER_DISTANCE;
 };
 
 #endif

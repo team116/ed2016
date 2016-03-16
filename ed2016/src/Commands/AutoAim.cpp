@@ -38,24 +38,14 @@ void AutoAim::Initialize()
 
 void AutoAim::Execute()
 {
+	pitch = shooter_pitch->getTargetPitch(ShooterPitch::PitchType::LIDAR);
+	shooter_pitch->SetSetpoint(pitch);
+	DriverStation::ReportError("Setting pitch to " + std::to_string(pitch));
 	if (cameras->canSeeGoal())
 	{
-		current_pitch = sensors->shooterAngle();
-		pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR);
 		azimuth = cameras->AzimuthDegreesFromTarget();
 
-		if (pitch + ACCEPTED_ERROR < current_pitch)
-		{
-			shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
-		}
-		else if (pitch - ACCEPTED_ERROR > current_pitch)
-		{
-			shooter_pitch->setDirection(Utils::VerticalDirection::UP);
-		}
-		else
-		{
-			shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
-		}
+
 
 
 
