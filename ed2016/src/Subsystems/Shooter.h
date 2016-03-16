@@ -14,7 +14,6 @@ public:
 	void InitDefaultCommand();
 
 	void setShooterSpeed(float speed);
-	void checkLimits();
 
 	float getRPMPreset(int preset); // 0 to 5
 	float getSpeedPreset(int preset); // 0 to 5
