@@ -8,7 +8,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float ShooterPitch::TARGET_HEIGHT = 185.42;//Centimeters to middle of target
+const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
 const float ShooterPitch::MANUAL_SPEED = 1.0;
 const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 33.01;
 
@@ -50,11 +50,13 @@ void ShooterPitch::InitDefaultCommand()
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
+//Manual Control (Disable PID first)
 void ShooterPitch::setSpeed(float speed)
 {
 	pitch_angle->Set(speed);
 }
 
+//Manual Control (Disabled PID first)
 void ShooterPitch::setDirection(Utils::VerticalDirection dir)
 {
 	//Note: 1.0 and -1.0 may need to be reversed
@@ -86,20 +88,28 @@ void ShooterPitch::checkLimits()
 }
 
 //In degrees
-float ShooterPitch::getTargetPitch(PitchType type)
+//Accounts for gravitational acceleration
+float ShooterPitch::getPitchToTarget(PitchType type)
 {
+	float dis;
 	switch (type) {
 	case PitchType::CAMERA:
-		return CommandBase::cameras->PitchFromHorizontal();
+		CommandBase::cameras->RefreshContours();
+		dis = CommandBase::cameras->GetDistanceFromTarget();
 		break;
 	case PitchType::LIDAR:
-		return  90 - ((atan(TARGET_HEIGHT / (CommandBase::sensors->lidarDistance() + LIDAR_TO_SHOOTER_DISTANCE)) * 180) / M_PI);
+		dis = CommandBase::sensors->lidarDistance();
+		//return  90 - ((atan(TARGET_HEIGHT / (CommandBase::sensors->lidarDistance() + LIDAR_TO_SHOOTER_DISTANCE)) * 180) / M_PI);
 		break;
 	default:
 		CommandBase::log->write(Log::WARNING_LEVEL, "Somehow you managed to have an invalid PitchType: %d", type);
+		dis = 600;//Random number, went with 6 meters
 		return atan(TARGET_HEIGHT / CommandBase::sensors->lidarDistance());
 		break;
 	}
+
+	//arctan(2y/x)
+	return 90 - (atan(2 * TARGET_HEIGHT / (dis + LIDAR_TO_SHOOTER_DISTANCE)) * 180 / M_PI);
 }
 
 float ShooterPitch::getP()

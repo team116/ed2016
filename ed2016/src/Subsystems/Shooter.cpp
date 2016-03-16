@@ -1,5 +1,6 @@
 #include <Commands/RunShooterWheels.h>
 #include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPitch.h>
 #include <RobotMap.h>
 
 const float Shooter::RPM_PRESETS[] = {
@@ -47,4 +48,12 @@ float Shooter::getRPMPreset(int preset)
 float Shooter::getSpeedPreset(int preset)
 {
 	return SPEED_PRESETS[preset];
+}
+
+//Returns necessary shooter rpm speed
+//Angle of ball launch, NOT angle of shooter. Should be angle perpendicular to shooter
+float Shooter::getSpeedToTarget(float angle)
+{
+	//sqrt(-2gy)/sin(theta) * 60 / (2*pi*r)
+	return (sqrt(19.6 * CommandBase::shooter_pitch->TARGET_HEIGHT) / sin(angle) * 60) / (.1016 * M_PI);
 }

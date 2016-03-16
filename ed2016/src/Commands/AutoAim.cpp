@@ -21,6 +21,7 @@ AutoAim::AutoAim() {
 	Requires(&*mobility);
 
 	pitch = 0;
+	rpm = 0;
 	current_pitch = 0;
 	azimuth = 0;
 	interrupted = false;
@@ -38,16 +39,28 @@ void AutoAim::Initialize()
 
 void AutoAim::Execute()
 {
-	pitch = shooter_pitch->getTargetPitch(ShooterPitch::PitchType::LIDAR);
+	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR);
+	rpm = shooter->getSpeedToTarget(90 - pitch);
+	DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
+	DriverStation::ReportError("Calculated RPM: " + std::to_string(rpm));
 	shooter_pitch->SetSetpoint(pitch);
-	DriverStation::ReportError("Setting pitch to " + std::to_string(pitch));
+	if((rpm > shooter->getRPMPreset(5)) || (rpm < shooter->getRPMPreset(0)) || (pitch < 0) || (pitch > 90)) {
+		log->write(Log::INFO_LEVEL, "Target is out of range(Distance: %f Calculated RPM: %f)", pitch, rpm);
+	}
+	else {
+		shooter_pitch->SetSetpoint(pitch);
+
+		for(int x = 0; x < 6; x++) {
+			if(rpm < (shooter->getRPMPreset(x) + 225)) {
+				DriverStation::ReportError("Setting RPM to " + std::to_string(shooter->getRPMPreset(x)));
+				shooter->setShooterSpeed(shooter->getSpeedPreset(x));
+				break;
+			}
+		}
+	}
 	if (cameras->canSeeGoal())
 	{
 		azimuth = cameras->AzimuthDegreesFromTarget();
-
-
-
-
 
 		if (azimuth < -ACCEPTED_ERROR)
 		{

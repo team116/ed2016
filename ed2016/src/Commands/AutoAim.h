@@ -23,6 +23,7 @@ public:
 private:
 	bool interrupted;
 	float pitch;
+	float rpm;
 	float azimuth;
 
 	float current_pitch;

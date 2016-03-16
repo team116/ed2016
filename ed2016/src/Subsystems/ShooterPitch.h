@@ -30,7 +30,7 @@ public:
 	void setDirection(Utils::VerticalDirection);
 	void checkLimits();
 
-	float getTargetPitch(PitchType);
+	float getPitchToTarget(PitchType);
 
 	float getP();
 	float getI();
@@ -41,6 +41,8 @@ public:
 	void setD(float);
 	void setF(float);
 
+	static const float TARGET_HEIGHT;
+
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -48,7 +50,6 @@ private:
 	SpeedController* pitch_angle;
 
 	static const float MANUAL_SPEED;
-	static const float TARGET_HEIGHT;
 	static const float LIDAR_TO_SHOOTER_DISTANCE;
 };
 
