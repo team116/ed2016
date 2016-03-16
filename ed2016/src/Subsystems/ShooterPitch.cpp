@@ -30,7 +30,6 @@ double ShooterPitch::ReturnPIDInput()
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
 
-	CommandBase::log->write(Log::INFO_LEVEL, "PID Input: %f", CommandBase::sensors->shooterAngle());
 	return CommandBase::sensors->shooterAngle();
 }
 
@@ -38,7 +37,6 @@ void ShooterPitch::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
-	CommandBase::log->write(Log::INFO_LEVEL, "PID Output: %f", output);
 	setSpeed(output);
 }
 
