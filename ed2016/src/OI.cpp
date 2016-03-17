@@ -174,8 +174,7 @@ void OI::process()
 	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
 	if (intake_direction != last_intake_direction)
 	{
-		Scheduler::GetInstance()->AddCommand(new MoveIntake(intake_direction));
-		last_intake_direction = intake_direction;
+		resetIntakeDirectionSwitch();
 	}
 	/*
 	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
@@ -255,6 +254,13 @@ Utils::HorizontalDirection OI::getIntakeDirectionSwitch()
 		return Utils::HorizontalDirection::OUT;
 	}
 	return Utils::HorizontalDirection::H_STILL;
+}
+
+void OI::resetIntakeDirectionSwitch()
+{
+	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
+	Scheduler::GetInstance()->AddCommand(new MoveIntake(intake_direction));
+	last_intake_direction = intake_direction;
 }
 
 bool OI::getPIDEnableSwitch()

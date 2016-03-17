@@ -24,6 +24,7 @@ public:
 	bool getShooterWheelsSwitch();
 
 	Utils::HorizontalDirection getIntakeDirectionSwitch();
+	void resetIntakeDirectionSwitch();
 
 	void process();
 
