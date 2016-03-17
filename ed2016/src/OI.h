@@ -65,8 +65,6 @@ private:
 
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
-	JoystickButton* b_left_turn_drive;
-	JoystickButton* b_right_turn_drive;
 
 	JoystickButton* b_test_button;
 

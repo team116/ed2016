@@ -37,11 +37,9 @@ OI::OI()
 
 	//Instantiate Joystick Right Buttons
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
-	b_right_turn_drive = new JoystickButton(joystick_right, OI_Ports::RIGHT_TURN_DRIVE_BUTTON);
 
 	//Instantiate Joystick Left Buttons
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
-	b_left_turn_drive = new JoystickButton(joystick_left, OI_Ports::LEFT_TURN_DRIVE_BUTTON);
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
