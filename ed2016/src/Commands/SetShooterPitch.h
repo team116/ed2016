@@ -11,13 +11,14 @@ class SetShooterPitch: public CommandBase
 public:
 	static const float DEFAULT_ACCEPTABLE_ERROR;
 	//Angle in degrees
-	SetShooterPitch(float angle, bool use_pid, float error = DEFAULT_ACCEPTABLE_ERROR);
+	SetShooterPitch(float angle, float error = DEFAULT_ACCEPTABLE_ERROR);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
 	void End();
 	void Interrupted();
 
+	void enablePID();
 	static void zeroTimedAngleTracker();
 
 private:
@@ -27,8 +28,6 @@ private:
 	float accepted_error;
 
 	bool interrupted;
-
-	bool pid_mode;
 
 	static float last_angle;
 

@@ -9,10 +9,11 @@
 #define SRC_COMMANDS_ANGLEINTAKE_H_
 
 #include <CommandBase.h>
-#include <Subsystems/Intake.h>
+#include <RobotMap.h>
 #include <WPILib.h>
 
-class AngleIntake: public CommandBase {
+class AngleIntake: public CommandBase
+{
 public:
 	AngleIntake(float ang, float error = 5.0);
 	virtual ~AngleIntake();

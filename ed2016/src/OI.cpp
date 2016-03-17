@@ -17,10 +17,15 @@
 #include <Commands/DriveDistance.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
+#include <Subsystems/Shooter.h>
 
 const float OI::DRIVE_JOYSTICK_SCALE = 0.5;
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
+
+// stupid stuff has to be static.  wah
+SetShooterPitch** OI::set_shooter_pitch = new SetShooterPitch*[ShooterPitch::ANGLE_PRESET_COUNT];
+AngleIntake** OI::angle_intake = new AngleIntake*[Intake::ANGLE_PRESET_COUNT];
 
 OI::OI()
 {
@@ -32,9 +37,11 @@ OI::OI()
 
 	//Instantiate Joystick Right Buttons
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
+	b_right_turn_drive = new JoystickButton(joystick_right, OI_Ports::RIGHT_TURN_DRIVE_BUTTON);
 
 	//Instantiate Joystick Left Buttons
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
+	b_left_turn_drive = new JoystickButton(joystick_left, OI_Ports::LEFT_TURN_DRIVE_BUTTON);
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
@@ -90,6 +97,15 @@ OI::OI()
 
 	shooter_speed_position = 0;
 
+	for (int i = 0; i < ShooterPitch::ANGLE_PRESET_COUNT; ++i)
+	{
+		set_shooter_pitch[i] = new SetShooterPitch(ShooterPitch::getAnglePreset(i));
+	}
+	for (int i = 0; i < Intake::ANGLE_PRESET_COUNT; ++i)
+	{
+		angle_intake[i] = new AngleIntake(Intake::getAnglePreset(i));
+	}
+
 	angle_temmie = new Timer();
 	speed_temmie = new Timer();
 	aim_temmie = new Timer();
@@ -114,29 +130,7 @@ void OI::process()
 		intake_angle_position_process = intake_angle_curr;
 	}
 	else if(angle_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		switch(intake_angle_position_process) {
-				case 0:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(-15, 1));
-					break;
-				case 1:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(6, 1));
-					break;
-				case 2:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(27, 1));
-					break;
-				case 3:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(48, 1));
-					break;
-				case 4:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(69, 1));
-					break;
-				case 5:
-					Scheduler::GetInstance()->AddCommand(new AngleIntake(90, 1));
-					break;
-				default:
-					log->write(Log::WARNING_LEVEL, "Intake angle dial invalid position: %d",  intake_angle_position_process);
-					break;
-			}
+		Scheduler::GetInstance()->AddCommand(angle_intake[intake_angle_position_process]);
 		angle_temmie->Reset();
 		angle_temmie->Stop();
 	}
@@ -160,29 +154,15 @@ void OI::process()
 		manual_aim_position_process = manual_aim_curr;
 	}
 	else if(aim_temmie->HasPeriodPassed(DIAL_UPDATE_TIME)) {
-		switch(manual_aim_position_process) {
-			case 0:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::ONE, getPIDEnableSwitch()));
-				break;
-			case 1:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::TWO, getPIDEnableSwitch()));
-				break;
-			case 2:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::THREE, getPIDEnableSwitch()));
-				break;
-			case 3:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FOUR, getPIDEnableSwitch()));
-				break;
-			case 4:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::FIVE, getPIDEnableSwitch(), 5.0));
-				break;
-			case 5:
-				Scheduler::GetInstance()->AddCommand(new SetShooterPitch(ShooterPitch::AnglePresets::SIX, getPIDEnableSwitch(), 5.0));
-				break;
-			default:
-				log->write(Log::WARNING_LEVEL, "Manual aim dial invalid position: %d", manual_aim_position_process);
-				break;
+		if (getPIDEnableSwitch())
+		{
+			CommandBase::shooter_pitch->Enable();
 		}
+		else
+		{
+			CommandBase::shooter_pitch->Disable();
+		}
+		Scheduler::GetInstance()->AddCommand(set_shooter_pitch[manual_aim_position_process]);
 		aim_temmie->Reset();
 		aim_temmie->Stop();
 

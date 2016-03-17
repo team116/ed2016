@@ -1,6 +1,7 @@
 #include <CommandBase.h>
 #include <Commands/Scheduler.h>
 
+#include <OI.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Climber.h>
 #include <Subsystems/HolderWheel.h>
