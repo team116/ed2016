@@ -17,6 +17,8 @@
 #include <Commands/DriveDistance.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
+#include <Subsystems/ShooterPID.h>
+#include <Subsystems/ShooterPitch.h>
 
 const float OI::DRIVE_JOYSTICK_SCALE = 0.5;
 const float OI::DIAL_UPDATE_TIME = 0.05;
@@ -66,7 +68,7 @@ OI::OI()
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
-	b_auto_aim->WhenPressed(new AutoAim());
+	b_auto_aim->WhileHeld(new AutoAim());
 	//b_clear_commands->WhenPressed(new ClearCommands());
 	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
 

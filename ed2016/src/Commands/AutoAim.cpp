@@ -6,7 +6,7 @@
  */
 
 #include <Commands/AutoAim.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPID.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
@@ -45,18 +45,20 @@ void AutoAim::Execute()
 	DriverStation::ReportError("Calculated RPM: " + std::to_string(rpm));
 	shooter_pitch->SetSetpoint(pitch);
 	if((rpm > shooter->getRPMPreset(5)) || (rpm < shooter->getRPMPreset(0)) || (pitch < 0) || (pitch > 90)) {
-		log->write(Log::INFO_LEVEL, "Target is out of range(Distance: %f Calculated RPM: %f)", pitch, rpm);
+		log->write(Log::INFO_LEVEL, "Target is out of range(Angle: %f Calculated RPM: %f)", pitch, rpm);
 	}
 	else {
 		shooter_pitch->SetSetpoint(pitch);
+		shooter->Enable();
+		shooter->SetSetpoint(rpm);
 
-		for(int x = 0; x < 6; x++) {
+		/*for(int x = 0; x < 6; x++) {
 			if(rpm < (shooter->getRPMPreset(x) + 225)) {
 				DriverStation::ReportError("Setting RPM to " + std::to_string(shooter->getRPMPreset(x)));
 				shooter->setShooterSpeed(shooter->getSpeedPreset(x));
 				break;
 			}
-		}
+		}*/
 	}
 	if (cameras->canSeeGoal())
 	{

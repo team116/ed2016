@@ -33,6 +33,8 @@ private:
 
 	static const float RPM_PRESETS[];
 	static const float SPEED_PRESETS[];
+
+	float speed;
 };
 
 #endif

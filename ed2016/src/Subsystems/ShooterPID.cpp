@@ -6,6 +6,7 @@
 #include <Subsystems/Sensors.h>
 #include <Log.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Commands/RunShooterWheels.h>
 
 const float ShooterPID::RPM_PRESETS[] = {
 	2250.0,
@@ -26,7 +27,7 @@ const float ShooterPID::SPEED_PRESETS[] = {
 };
 
 ShooterPID::ShooterPID() :
-		PIDSubsystem("ShooterPID", 1.0, 0.0, 0.0)
+		PIDSubsystem("ShooterPID", 0.0000003, 0.00000000000001, 0.0)
 {
 	// Use these to get going:
 	// SetSetpoint() -  Sets where the PID controller should move the system
@@ -38,6 +39,8 @@ ShooterPID::ShooterPID() :
 	SetInputRange(0, 5000);
 	SetAbsoluteTolerance(10);
 	SetOutputRange(-1.0,1.0);
+
+	speed = 0;
 }
 
 double ShooterPID::ReturnPIDInput()
@@ -45,7 +48,8 @@ double ShooterPID::ReturnPIDInput()
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-	CommandBase::log->write(Log::DEBUG_LEVEL, "PID Input: %f", CommandBase::sensors->speedShooterWheel());
+	CommandBase::log->write(Log::DEBUG_LEVEL, "PID Input: %f Target: %f", CommandBase::sensors->speedShooterWheel(), GetSetpoint());
+	DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()));
 	return CommandBase::sensors->speedShooterWheel();
 }
 
@@ -53,14 +57,22 @@ void ShooterPID::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
-	CommandBase::log->write(Log::DEBUG_LEVEL, "PID Output: %f", output);
-	shooter_wheel->Set(output);
+	if(GetPIDController()->IsEnabled()) {
+		speed = Utils::boundaryCheck((speed + output), -1.0, 1.0);
+		CommandBase::log->write(Log::DEBUG_LEVEL, "PID Output: %f Set: %f", output, speed);
+		DriverStation::ReportError("Output: " + std::to_string(output) + " Speed: " + std::to_string(speed));
+		shooter_wheel->Set(speed);
+	}
+	else {
+		shooter_wheel->Set(0.0);
+	}
 }
 
 void ShooterPID::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//setDefaultCommand(new MySpecialCommand());
+	SetDefaultCommand(new RunShooterWheels());
 }
 
 void ShooterPID::setShooterSpeed(float speed)

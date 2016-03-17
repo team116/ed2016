@@ -1,6 +1,6 @@
 #include <Commands/RunShooterWheels.h>
 #include <OI.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPID.h>
 
 RunShooterWheels::RunShooterWheels()
 {
@@ -17,10 +17,13 @@ void RunShooterWheels::Initialize()
 void RunShooterWheels::Execute()
 {
 	if(oi->getShooterWheelsSwitch()) {
-		shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
+		shooter->Enable();
+		shooter->SetSetpoint(shooter->getRPMPreset(oi->getShooterSpeedPosition()));
 	}
 	else {
-		shooter->setShooterSpeed(0.0);
+		shooter->SetSetpoint(0);
+		shooter->Disable();
+		shooter->setShooterSpeed(0);
 	}
 }
 

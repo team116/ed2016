@@ -7,7 +7,7 @@
 #include <Subsystems/Intake.h>
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Sensors.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPID.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Winches.h>
 
@@ -16,7 +16,7 @@ std::unique_ptr<OI> CommandBase::oi;
 std::unique_ptr<Mobility> CommandBase::mobility;
 std::unique_ptr<Climber> CommandBase::climber;
 std::unique_ptr<Sensors> CommandBase::sensors;
-std::unique_ptr<Shooter> CommandBase::shooter;
+std::unique_ptr<ShooterPID> CommandBase::shooter;
 std::unique_ptr<ShooterPitch> CommandBase::shooter_pitch;
 std::unique_ptr<HolderWheel> CommandBase::holder_wheel;
 std::unique_ptr<Cameras> CommandBase::cameras;
@@ -43,7 +43,7 @@ void CommandBase::init()
 	sensors.reset(new Sensors());
 	mobility.reset(new Mobility());
 	climber.reset(new Climber());
-	shooter.reset(new Shooter());
+	shooter.reset(new ShooterPID());
 	shooter_pitch.reset(new ShooterPitch());
 	holder_wheel.reset(new HolderWheel());
 	cameras.reset(new Cameras());

@@ -1,6 +1,6 @@
 #include <Commands/Shoot.h>
 #include <OI.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPID.h>
 #include <Subsystems/HolderWheel.h>
 #include <Subsystems/Sensors.h>
 
@@ -31,7 +31,7 @@ void Shoot::Initialize()
 void Shoot::Execute()
 {
 	float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
-	shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
+	//shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
 
 	if (!past_speed_up_time && (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME))
 	{

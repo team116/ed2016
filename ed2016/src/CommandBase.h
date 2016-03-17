@@ -13,7 +13,7 @@ class HolderWheel;
 class Intake;
 class Mobility;
 class Sensors;
-class Shooter;
+class ShooterPID;
 class ShooterPitch;
 class Winches;
 
@@ -27,7 +27,7 @@ public:
 	static std::unique_ptr<Climber> climber;
 	static std::unique_ptr<Mobility> mobility;
 	static std::unique_ptr<Sensors> sensors;
-	static std::unique_ptr<Shooter> shooter;
+	static std::unique_ptr<ShooterPID> shooter;
 	static std::unique_ptr<ShooterPitch> shooter_pitch;
 	static std::unique_ptr<Winches> winches;
 	static std::unique_ptr<HolderWheel> holder_wheel;
