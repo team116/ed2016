@@ -77,7 +77,7 @@ private:
 		{
 			Scheduler::GetInstance()->Run();
 			char text[255];
-			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			/*snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
@@ -86,7 +86,7 @@ private:
 				getShootSwitchValue(),
 				getPositionSwitchValue(),
 				getDefenseSwitchValue());
-			DriverStation::ReportError(text);
+			DriverStation::ReportError(text);*/
 		}
 		catch (exception& e)
 		{
@@ -143,6 +143,7 @@ private:
 		//SpyBoxShootAndReach
 		else if ((shoot_value == 1 || shoot_value == 2) && position_value == 0 && defense_value != 0)
 		{
+
 			auto_command = new SpyBoxShootAndReach((Goals)shoot_value);
 		}
 		//CrossDefAndShoot plays
@@ -193,7 +194,7 @@ private:
 			Scheduler::GetInstance()->Run();
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
-			char text[255];
+			/*char text[255];
 			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->intakeAngle(),
@@ -203,7 +204,7 @@ private:
 				getShootSwitchValue(),
 				getPositionSwitchValue(),
 				getDefenseSwitchValue());
-			DriverStation::ReportError(text);
+			DriverStation::ReportError(text);*/
 		}
 		catch (exception& e)
 		{
