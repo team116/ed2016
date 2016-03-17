@@ -41,7 +41,14 @@ void ExtendScalingArm::Execute()
 	//Move shooter out of the way
 	if (!shooter_ready && temmie_sp->Get() < SHOOTER_TIMEOUT)
 	{
-		shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
+		if (shooter_pitch->isPIDEnabled())
+		{
+			shooter_pitch->SetSetpoint(0.0);
+		}
+		else
+		{
+			shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
+		}
 	}
 	else if (temmie->Get() == 0 && (shooter_ready || temmie_sp->Get() > SHOOTER_TIMEOUT))
 	{
