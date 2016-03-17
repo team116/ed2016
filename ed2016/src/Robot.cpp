@@ -12,6 +12,7 @@
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
 #include <Commands/TogglePID.h>
 #include <Log.h>
+#include <OI.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 

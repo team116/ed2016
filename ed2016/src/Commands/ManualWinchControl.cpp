@@ -1,4 +1,5 @@
 #include "ManualWinchControl.h"
+#include <OI.h>
 #include <Subsystems/Winches.h>
 
 ManualWinchControl::ManualWinchControl()

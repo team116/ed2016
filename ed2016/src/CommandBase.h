@@ -4,7 +4,6 @@
 #include <string>
 #include <Commands/Command.h>
 #include <WPILib.h>
-#include <OI.h>
 #include <Log.h>
 
 class Cameras;
@@ -12,6 +11,7 @@ class Climber;
 class HolderWheel;
 class Intake;
 class Mobility;
+class OI;
 class Sensors;
 class ShooterPID;
 class ShooterPitch;

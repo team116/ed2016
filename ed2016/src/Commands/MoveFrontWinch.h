@@ -1,8 +1,9 @@
 #ifndef MoveFrontWinch_H
 #define MoveFrontWinch_H
 
-#include "../CommandBase.h"
-#include "WPILib.h"
+#include <CommandBase.h>
+#include <RobotMap.h>
+#include <WPILib.h>
 
 class MoveFrontWinch: public CommandBase
 {

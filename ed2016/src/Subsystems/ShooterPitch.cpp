@@ -8,6 +8,16 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+const int ShooterPitch::ANGLE_PRESET_COUNT = 6;
+float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT];/* {
+	0.0,
+	15.0,
+	30.0,
+	45.0,
+	60.0,
+	75.0
+};*/
+
 const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
 const float ShooterPitch::MANUAL_SPEED = 1.0;
 const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 33.01;
@@ -16,6 +26,11 @@ ShooterPitch::ShooterPitch() :
 		PIDSubsystem("ShooterPitch", 0.09, 0.0, 0.0, 0.0)
 {
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
+
+	for (int i = 0; i < ANGLE_PRESET_COUNT; ++i)
+	{
+		ANGLE_PRESETS[i] = 15.0 * (float)i;
+	}
 
 	SetInputRange(-90, 270);
 	SetAbsoluteTolerance(0.0);
@@ -108,6 +123,24 @@ float ShooterPitch::getPitchToTarget(PitchType type)
 
 	//arctan(2y/x)
 	return 90 - (atan(2 * TARGET_HEIGHT / (dis + LIDAR_TO_SHOOTER_DISTANCE)) * 180 / M_PI);
+}
+
+float ShooterPitch::getAnglePreset(int index)
+{
+	if (index >= ANGLE_PRESET_COUNT)
+	{
+		index = ANGLE_PRESET_COUNT - 1;
+	}
+	else if (index < 0)
+	{
+		index = 0;
+	}
+	return ANGLE_PRESETS[index];
+}
+
+bool ShooterPitch::isPIDEnabled()
+{
+	return GetPIDController()->IsEnabled();
 }
 
 float ShooterPitch::getP()

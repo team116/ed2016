@@ -6,7 +6,6 @@
 #include <Commands/TurnDegrees.h>
 #include <Commands/SetShooterPitch.h>
 // fucking hydrangeas
-const float SpyBoxShoot::SHOOTER_PITCH_ERROR = 1;
 
 SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 {	log = Log::getInstance();
@@ -18,7 +17,7 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 		if(using_autoaim)
 			AddSequential(new AutoAim());
 		else
-			AddSequential(new SetShooterPitch(40.0, false));
+			AddSequential(new SetShooterPitch(40.0));
 		AddSequential(new Shoot());
 	}
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
@@ -27,7 +26,7 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 		AddSequential(new TurnDegrees(10));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
 		AddSequential(new DriveDistance(10));
 		AddSequential(new TurnDegrees(-10));
-		AddParallel(new SetShooterPitch(0, SHOOTER_PITCH_ERROR));
+		AddParallel(new SetShooterPitch(0));
 		AddSequential(new DriveDistance(250));
 		AddSequential(new Shoot());
 	}

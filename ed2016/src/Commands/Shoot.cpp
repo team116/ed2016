@@ -60,7 +60,7 @@ bool Shoot::IsFinished()
 void Shoot::End()
 {
 	log->write(Log::TRACE_LEVEL,"Shoot Ended");
-	holder_wheel->setWheelDirection(oi->getIntakeDirectionSwitch());
+	oi->resetIntakeDirectionSwitch();
 	shooter->setShooterSpeed(0.0);
 }
 
