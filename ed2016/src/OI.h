@@ -2,6 +2,8 @@
 #define OI_H
 
 #include <Joystick.h>
+#include <Commands/AngleIntake.h>
+#include <Commands/SetShooterPitch.h>
 #include <Subsystems/Intake.h>
 #include <WPILib.h>
 #include <Log.h>
@@ -24,11 +26,15 @@ public:
 
 	bool getShooterWheelsSwitch();
 
+	Utils::HorizontalDirection getIntakeDirectionSwitch();
+	void resetIntakeDirectionSwitch();
+
 	void process();
 
 	bool getPIDEnableSwitch();
 
 private:
+	static const float DRIVE_JOYSTICK_SCALE;
 	Joystick* joystick_left;
 	Joystick* joystick_right;
 	Joystick* joystick_buttons1;
@@ -60,6 +66,7 @@ private:
 	JoystickButton* s_intake_belt_inward;
 	JoystickButton* s_intake_belt_outward;
 	JoystickButton* s_pid_enable;
+
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
 
@@ -73,8 +80,12 @@ private:
 	int intake_angle_position_process;
 	int shooter_speed_position_process;
 	int manual_aim_position_process;
+	Utils::HorizontalDirection last_intake_direction;
 
 	int shooter_speed_position;
+
+	static SetShooterPitch** set_shooter_pitch;
+	static AngleIntake** angle_intake;
 
 	Timer* angle_temmie;
 	Timer* speed_temmie;

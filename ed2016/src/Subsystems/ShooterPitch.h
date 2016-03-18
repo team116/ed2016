@@ -8,18 +8,13 @@
 class ShooterPitch: public PIDSubsystem
 {
 public:
-	enum AnglePresets {
-		ONE = 0,
-		TWO = 15,
-		THREE = 30,
-		FOUR = 45,
-		FIVE = 60,
-		SIX = 75
-	};
+	static const int ANGLE_PRESET_COUNT;
+	static float getAnglePreset(int index);
+
 	enum PitchType {
-			CAMERA,
-			LIDAR
-		};
+		CAMERA,
+		LIDAR
+	};
 
 	ShooterPitch();
 	double ReturnPIDInput();
@@ -32,6 +27,7 @@ public:
 
 	float getPitchToTarget(PitchType);
 
+	bool isPIDEnabled();
 	float getP();
 	float getI();
 	float getD();
@@ -41,14 +37,18 @@ public:
 	void setD(float);
 	void setF(float);
 
+	static const float TARGET_HEIGHT;
+
 private:
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
 
 	SpeedController* pitch_angle;
 
+	static float* ANGLE_PRESETS;
+
 	static const float MANUAL_SPEED;
-	static const float TARGET_HEIGHT;
+	static const float LIDAR_TO_SHOOTER_DISTANCE;
 };
 
 #endif

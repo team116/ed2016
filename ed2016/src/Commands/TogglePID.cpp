@@ -1,5 +1,6 @@
 #include "TogglePID.h"
 #include <Subsystems/ShooterPitch.h>
+#include <Subsystems/ShooterPID.h>
 
 TogglePID::TogglePID(bool state)
 {
@@ -17,9 +18,11 @@ void TogglePID::Initialize()
 	finished = false;
 	if(use_pid) {
 		shooter_pitch->Enable();
+		shooter->Enable();
 	}
 	else {
 		shooter_pitch->Disable();
+		shooter->Disable();
 	}
 	finished = true;
 }

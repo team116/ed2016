@@ -2,12 +2,12 @@
 #include <Subsystems/Sensors.h>
 #include <Log.h>
 
-const float SetShooterPitch::DEFAULT_ACCEPTABLE_ERROR = 1.0;
+const float SetShooterPitch::DEFAULT_ACCEPTABLE_ERROR = 2.0;
 const float SetShooterPitch::TIMEOUT = 0.025;
 float SetShooterPitch::last_angle = 0.0;
 
 //Angle in degrees
-SetShooterPitch::SetShooterPitch(float angle, bool use_pid, float error)
+SetShooterPitch::SetShooterPitch(float angle, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
 	Requires(&*shooter_pitch);
@@ -15,13 +15,12 @@ SetShooterPitch::SetShooterPitch(float angle, bool use_pid, float error)
 	pitch = angle;
 	accepted_error = error;
 	interrupted = false;
-	pid_mode = use_pid;
 }
 
 // Called just before this Command runs the first time
 void SetShooterPitch::Initialize()
 {
-	log->write(Log::TRACE_LEVEL, "SetShooterPitch (angle: %f, pid mode: %d)", pitch, pid_mode);
+	log->write(Log::TRACE_LEVEL, "SetShooterPitch (angle: %f, pid mode: %d)", pitch, shooter_pitch->isPIDEnabled());
 	interrupted = false;
 	if (sensors->areShooterAngleEnabled())
 	{
@@ -29,15 +28,16 @@ void SetShooterPitch::Initialize()
 	}
 	else
 	{
-		if(pid_mode) {
-			pid_mode = false;
+		if(shooter_pitch->isPIDEnabled()) {
+			shooter_pitch->Disable();
 			log->write(Log::WARNING_LEVEL, "Warning: Shooter angle is disabled. Disabling PID mode");
 		}
 		SetTimeout(TIMEOUT * fabs(pitch - last_angle));
 	}
-	if(pid_mode) {
+
+	if(shooter_pitch->isPIDEnabled()) {
 		shooter_pitch->SetSetpoint(pitch);
-		shooter_pitch->SetAbsoluteTolerance(accepted_error);
+		//shooter_pitch->SetAbsoluteTolerance(accepted_error);
 		shooter_pitch->Enable();
 	}
 	else {
@@ -48,7 +48,7 @@ void SetShooterPitch::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void SetShooterPitch::Execute()
 {
-	if(!pid_mode) {
+	if(!shooter_pitch->isPIDEnabled()) {
 		float current_angle;
 		if (sensors->areShooterAngleEnabled())
 		{
@@ -91,20 +91,15 @@ bool SetShooterPitch::IsFinished()
 	{
 		return true;
 	}
-	if(pid_mode) {
-		if(IsTimedOut() && !(current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)) {
-			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out while in PID mode. Sensor may be broken or the loop"
-					"may need tuning. (Target: %f, Current: %f)", pitch, current_angle);
-			shooter_pitch->Disable();
-			return true;
-		}
-	}
-	else {
+
+	if(!shooter_pitch->isPIDEnabled())
+	{
 		if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
 		{
 			return true;
 		}
-		else if(IsTimedOut()) {
+		else if(IsTimedOut())
+		{
 			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
 			return true;
 		}

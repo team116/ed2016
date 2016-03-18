@@ -2,7 +2,7 @@
 #include <WPILib.h>
 
 #define MOTOR_COUNT 13
-#define AUTO_SWITCH_COUNT 3
+#define ANALOG_SWITCH_COUNT 4
 #define DIGITAL_INPUT_COUNT 10
 
 class Robot: public SampleRobot
@@ -12,8 +12,7 @@ class Robot: public SampleRobot
 
 	VictorSP* victors[MOTOR_COUNT];
 
-	AnalogInput* auto_switches[AUTO_SWITCH_COUNT];
-	AnalogInput* shooter_pitch_encoder;
+	AnalogInput* analog_ins[ANALOG_SWITCH_COUNT];
 
 	DigitalInput* digital_ins[DIGITAL_INPUT_COUNT];
 
@@ -32,9 +31,9 @@ public:
 			victors[i] = new VictorSP(i);
 		}
 
-		for (int i = 0; i < AUTO_SWITCH_COUNT; ++i)
+		for (int i = 0; i < ANALOG_SWITCH_COUNT; ++i)
 		{
-			auto_switches[i] = new AnalogInput(i + 4);
+			analog_ins[i] = new AnalogInput(i);
 		}
 
 		for (int i = 0; i < DIGITAL_INPUT_COUNT; ++i)
@@ -42,14 +41,13 @@ public:
 			digital_ins[i] = new DigitalInput(i);
 		}
 
-		shooter_pitch_encoder = new AnalogInput(1);
 	}
 
 	void logAutoSwitches()
 	{
-		for (int i = 0; i < AUTO_SWITCH_COUNT; ++i)
+		for (int i = 0; i < ANALOG_SWITCH_COUNT; ++i)
 		{
-			log->write(Log::INFO_LEVEL, "Auto Switch %d, voltage: %f, port: %d", i, auto_switches[i]->GetVoltage(), auto_switches[i]->GetChannel());
+			log->write(Log::INFO_LEVEL, "Auto Switch %d, voltage: %f, port: %d", i, analog_ins[i]->GetVoltage(), analog_ins[i]->GetChannel());
 		}
 	}
 
@@ -127,7 +125,7 @@ public:
 				}
 			}
 			char buffer[255];
-			snprintf(buffer, 255, "%d%d%d%d%d%d%d%d%d%d",
+			snprintf(buffer, 255, "%d%d%d%d%d%d%d%d%d%d : %f, %f,%f,%f",
 				digital_ins[0]->Get(),
 				digital_ins[1]->Get(),
 				digital_ins[2]->Get(),
@@ -137,7 +135,11 @@ public:
 				digital_ins[6]->Get(),
 				digital_ins[7]->Get(),
 				digital_ins[8]->Get(),
-				digital_ins[9]->Get());
+				digital_ins[9]->Get(),
+				analog_ins[0]->GetVoltage(),
+				analog_ins[1]->GetVoltage(),
+				analog_ins[2]->GetVoltage(),
+				analog_ins[3]->GetVoltage());
 			DriverStation::ReportError(buffer);
 		}
 
@@ -156,8 +158,6 @@ public:
 		{
 			// snprintf(log, 255, "Switch0 volts: %f, Switch1 volts: %f, Switch2 volts: %f",
 			//	 	auto_switches[0]->GetVoltage(), auto_switches[1]->GetVoltage(), auto_switches[2]->GetVoltage());
-			snprintf(log, 255, "Shooter Pitch Encoder volts: %f\n", shooter_pitch_encoder->GetVoltage());
-			DriverStation::ReportError(log);
 		}
 	}
 };

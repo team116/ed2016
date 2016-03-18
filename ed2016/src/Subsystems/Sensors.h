@@ -66,8 +66,11 @@ private:
 	AnalogInput*  intake_angle_encoder;
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
+	static const int TACH_PERIOD_COUNT = 10;
 	Counter* shooter_wheel_tach;
-	unsigned int prev_shooter_wheel_tach_count;
+	float prev_tach_timestamps[TACH_PERIOD_COUNT];
+	int prev_tach_counts[TACH_PERIOD_COUNT];
+	int cur_tach_period_index;
 	float shooter_wheel_tach_rate;
 
 	Timer* cycle_timer;

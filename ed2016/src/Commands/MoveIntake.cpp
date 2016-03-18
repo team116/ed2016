@@ -2,6 +2,7 @@
 #include <CommandBase.h>
 #include <Subsystems/HolderWheel.h>
 #include <Subsystems/Intake.h>
+#include <Subsystems/Sensors.h>
 
 
 MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
@@ -25,7 +26,17 @@ void MoveIntake::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void MoveIntake::Execute()
 {
-
+	if (direction == Utils::HorizontalDirection::IN)
+	{
+		if (sensors->readyToShoot())
+		{
+			holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
+		}
+		else
+		{
+			holder_wheel->setWheelDirection(direction);
+		}
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()

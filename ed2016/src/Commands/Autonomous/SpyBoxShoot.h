@@ -12,6 +12,7 @@ public:
 	SpyBoxShoot(Autonomous::Goals);
 private:
 	static const float SHOOTER_PITCH_ERROR;
+	bool using_autoaim;
 	Log* log;
 };
 
