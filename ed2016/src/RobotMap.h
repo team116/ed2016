@@ -27,14 +27,14 @@ namespace RobotPorts
 
 	// digital inputs
 
+	const unsigned int BOTTOM_SHOOTER_WHEEL_TACH = 0;
 	const unsigned int TOP_SHOOTER_WHEEL_TACH = 1;
-	const unsigned int BOTTOM_SHOOTER_WHEEL_TACH = 2;
-	const unsigned int LEFT_ENCODER_A = 3;
-	const unsigned int LEFT_ENCODER_B = 4;
-	const unsigned int RIGHT_ENCODER_A = 5;
-	const unsigned int RIGHT_ENCODER_B = 6;
-	const unsigned int INTAKE_LIMIT = 7;
-	const unsigned int BALL_PREP_CHECK_LIMIT = 8;
+	const unsigned int LEFT_ENCODER_A = 2;
+	const unsigned int LEFT_ENCODER_B = 3;
+	const unsigned int RIGHT_ENCODER_A = 4;
+	const unsigned int RIGHT_ENCODER_B = 5;
+	const unsigned int INTAKE_LIMIT = 6;
+	const unsigned int BALL_PREP_CHECK_LIMIT = 7;
 	const unsigned int SHOOTER_HOME_SWITCH = 9;
 
 
