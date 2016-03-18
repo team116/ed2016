@@ -1,7 +1,8 @@
-#include <Commands/CheckLidar.h>
+#include <Commands/SetShooterPitch.h>
+#include <Commands/UpdateSensors.h>
 #include <Subsystems/Sensors.h>
 
-CheckLidar::CheckLidar()
+UpdateSensors::UpdateSensors()
 {
 	Requires(&*sensors);
 	distance = 0.0;
@@ -9,16 +10,21 @@ CheckLidar::CheckLidar()
 }
 
 // Called just before this Command runs the first time
-void CheckLidar::Initialize()
+void UpdateSensors::Initialize()
 {
-	log->write(Log::TRACE_LEVEL, "Check Lidar Initialized");
+	log->write(Log::TRACE_LEVEL, "Update Sensors Initialized");
 }
-
 // Called repeatedly when this Command is scheduled to run
-void CheckLidar::Execute()
+void UpdateSensors::Execute()
 {
 	sensors->updateTachometers();
 	sensors->refreshLidar();
+
+	if (sensors->isShooterHomeSwitchHorizontal())
+	{
+		sensors->zeroShooterPitch();
+		SetShooterPitch::zeroTimedAngleTracker();
+	}
 
 	// this always needs to come last
 	// other update functions might require cycle time
@@ -27,21 +33,20 @@ void CheckLidar::Execute()
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool CheckLidar::IsFinished()
+bool UpdateSensors::IsFinished()
 {
 	return false;
 }
 
 // Called once after isFinished returns true
-void CheckLidar::End()
+void UpdateSensors::End()
 {
-	log->write(Log::TRACE_LEVEL, "Check Lidar Ended");
+	log->write(Log::TRACE_LEVEL, "Update Sensors Ended");
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CheckLidar::Interrupted()
+void UpdateSensors::Interrupted()
 {
-	log->write(Log::TRACE_LEVEL, "Check Lidar Interrupted");
-
+	log->write(Log::TRACE_LEVEL, "Update Sensors Interrupted");
 }

@@ -4,23 +4,19 @@
 #include <string>
 #include <Commands/Command.h>
 #include <WPILib.h>
-#include <OI.h>
-
-#include <Subsystems/Cameras.h>
-#include <Subsystems/Climber.h>
-#include <Subsystems/HolderWheel.h>
-#include <Subsystems/Intake.h>
-#include <Subsystems/Mobility.h>
-#include <Subsystems/Sensors.h>
-#include <Subsystems/Shooter.h>
-#include <Subsystems/ShooterPitch.h>
 #include <Log.h>
 
-/**
- * The base for all commands. All atomic commands should subclass CommandBase.
- * CommandBase stores creates and stores each control system. To access a
- * subsystem elsewhere in your code in your code use CommandBase.examplesubsystem
- */
+class Cameras;
+class Climber;
+class HolderWheel;
+class Intake;
+class Mobility;
+class OI;
+class Sensors;
+class ShooterPID;
+class ShooterPitch;
+class Winches;
+
 class CommandBase: public Command
 {
 public:
@@ -31,8 +27,9 @@ public:
 	static std::unique_ptr<Climber> climber;
 	static std::unique_ptr<Mobility> mobility;
 	static std::unique_ptr<Sensors> sensors;
-	static std::unique_ptr<Shooter> shooter;
+	static std::unique_ptr<ShooterPID> shooter;
 	static std::unique_ptr<ShooterPitch> shooter_pitch;
+	static std::unique_ptr<Winches> winches;
 	static std::unique_ptr<HolderWheel> holder_wheel;
 	static std::unique_ptr<Cameras> cameras;
 	static std::unique_ptr<OI> oi;

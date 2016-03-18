@@ -10,11 +10,15 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/SpyBoxShoot.h>
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
+#include <Commands/TogglePID.h>
 #include <Log.h>
+#include <OI.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Subsystems/Sensors.h>
 
 using namespace Autonomous;
 using namespace Utils;
+using namespace std;
 
 class Robot: public IterativeRobot
 {
@@ -27,15 +31,35 @@ private:
 
 	Log* log;
 
+	static const int MEMORY_RESERVATION_SIZE = 256;
+	uint8_t* out_of_memory_reservation;
+
 	void RobotInit()
 	{
 		CommandBase::init();
 
-		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
-		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
-		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
+		shoot_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_C);
+		position_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_A);
+		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
 
 		log = Log::getInstance();
+
+		out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE];
+	}
+
+	int getShootSwitchValue()
+	{
+		return voltageConversion(shoot_switch->GetVoltage(), 3, 5.0);
+	}
+
+	int getPositionSwitchValue()
+	{
+		return voltageConversion(position_switch->GetVoltage(), 6, 5.0);
+	}
+
+	int getDefenseSwitchValue()
+	{
+		return voltageConversion(defense_switch->GetVoltage(), 8, 5.0);
 	}
 
 	/**
@@ -45,11 +69,32 @@ private:
      */
 	void DisabledInit()
 	{
+		Scheduler::GetInstance()->AddCommand(new TogglePID(false));
 	}
 
 	void DisabledPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
+		try
+		{
+			Scheduler::GetInstance()->Run();
+			char text[255];
+			/*snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->intakeAngle(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->speedShooterWheel(),
+				getShootSwitchValue(),
+				getPositionSwitchValue(),
+				getDefenseSwitchValue());
+			DriverStation::ReportError(text);*/
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during TeleopPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 
 	/**
@@ -64,13 +109,13 @@ private:
 	void AutonomousInit()
 	{
 		float shoot_voltage = shoot_switch->GetVoltage();
-		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);
+		int shoot_value = getShootSwitchValue();
 
 		float position_voltage = position_switch->GetVoltage();
-		int position_value = voltageConversion(position_voltage, 6, 5.0);
+		int position_value = getPositionSwitchValue();
 
 		float defense_voltage = defense_switch->GetVoltage();
-		int defense_value = voltageConversion(defense_voltage, 8, 5.0);
+		int defense_value = getDefenseSwitchValue();
 
 		log->write(Log::TRACE_LEVEL, " Shooter Auto Switch value: %d, voltage: %f, port: %d", shoot_value, shoot_voltage, (int)shoot_switch->GetChannel());
 		log->write(Log::TRACE_LEVEL, "Position Auto Switch value: %d, voltage: %f, port: %d", position_value, position_voltage, (int)position_switch->GetChannel());
@@ -99,6 +144,7 @@ private:
 		//SpyBoxShootAndReach
 		else if ((shoot_value == 1 || shoot_value == 2) && position_value == 0 && defense_value != 0)
 		{
+
 			auto_command = new SpyBoxShootAndReach((Goals)shoot_value);
 		}
 		//CrossDefAndShoot plays
@@ -106,15 +152,27 @@ private:
 		{
 			auto_command = new CrossDefAndShoot((Defense)defense_value, (Goals)shoot_value, position_value);
 		}
-
-
-		auto_command->Start();
-
+		else
+		{
+			auto_command = new DoNothing();
+		}
+		//Failsafe
+		//auto_command->Start();
+		Scheduler::GetInstance()->AddCommand(auto_command);
 	}
 
 	void AutonomousPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
+		try
+		{
+			Scheduler::GetInstance()->Run();
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during AutonomousPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 
 	void TeleopInit()
@@ -125,18 +183,41 @@ private:
 		// this line or comment it out.
 		if (auto_command != NULL)
 			auto_command->Cancel();
-		DriverStation::ReportError("Starting Robot");
+		DriverStation::ReportError("Starting Robot " + std::to_string(CommandBase::oi->getPIDEnableSwitch()));
+		//CommandBase::sensors->zeroShooterPitch();
+		Scheduler::GetInstance()->AddCommand(new TogglePID(CommandBase::oi->getPIDEnableSwitch()));
 	}
 
 	void TeleopPeriodic()
 	{
-		Scheduler::GetInstance()->Run();
-		CommandBase::oi->process();
-		CommandBase::shooter_pitch->checkLimits();
+		try
+		{
+			Scheduler::GetInstance()->Run();
+			CommandBase::oi->process();
+			CommandBase::shooter_pitch->checkLimits();
+			/*char text[255];
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->intakeAngle(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->speedShooterWheel(),
+				getShootSwitchValue(),
+				getPositionSwitchValue(),
+				getDefenseSwitchValue());
+			DriverStation::ReportError(text);*/
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during TeleopPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 
 	void TestInit()
 	{
+		DriverStation::ReportError("my message");
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);
 
@@ -153,13 +234,27 @@ private:
 
 	void TestPeriodic()
 	{
-		LiveWindow::GetInstance()->Run();
-
-		/*
-		static char log[255];
-		snprintf(log, 255, "Shoot volt: %f, Pos volt: %f, Def volt: %f", shoot_switch->GetVoltage(), position_switch->GetVoltage(), defense_switch->GetVoltage());
-		DriverStation::ReportError(log);
-		*/
+		try
+		{
+			LiveWindow::GetInstance()->Run();
+			char text[255];
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->intakeAngle(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->speedShooterWheel(),
+				getShootSwitchValue(),
+				getPositionSwitchValue(),
+				getDefenseSwitchValue());
+			DriverStation::ReportError(text);
+		}
+		catch (exception& e)
+		{
+			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
+			log->write(Log::ERROR_LEVEL, "Exception thrown during TestPeriodic: %s", e.what());
+			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
+		}
 	}
 };
 

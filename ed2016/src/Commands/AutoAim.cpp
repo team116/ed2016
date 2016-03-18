@@ -6,7 +6,7 @@
  */
 
 #include <Commands/AutoAim.h>
-#include <Subsystems/Shooter.h>
+#include <Subsystems/ShooterPID.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
@@ -21,6 +21,7 @@ AutoAim::AutoAim() {
 	Requires(&*mobility);
 
 	pitch = 0;
+	rpm = 0;
 	current_pitch = 0;
 	azimuth = 0;
 	interrupted = false;
@@ -38,37 +39,45 @@ void AutoAim::Initialize()
 
 void AutoAim::Execute()
 {
+	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR);
+	rpm = shooter->getSpeedToTarget(90 - pitch);
+	DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
+	DriverStation::ReportError("Calculated RPM: " + std::to_string(rpm));
+	shooter_pitch->SetSetpoint(pitch);
+	if((rpm > shooter->getRPMPreset(5)) || (rpm < shooter->getRPMPreset(0)) || (pitch < 0) || (pitch > 90)) {
+		log->write(Log::INFO_LEVEL, "Target is out of range(Angle: %f Calculated RPM: %f)", pitch, rpm);
+	}
+	else {
+		shooter_pitch->SetSetpoint(pitch);
+		shooter->Enable();
+		shooter->SetSetpoint(rpm);
+
+		/*for(int x = 0; x < 6; x++) {
+			if(rpm < (shooter->getRPMPreset(x) + 225)) {
+				DriverStation::ReportError("Setting RPM to " + std::to_string(shooter->getRPMPreset(x)));
+				shooter->setShooterSpeed(shooter->getSpeedPreset(x));
+				break;
+			}
+		}*/
+	}
 	if (cameras->canSeeGoal())
 	{
-		current_pitch = sensors->shooterAngle();
-		pitch = cameras->PitchFromHorizontal();
 		azimuth = cameras->AzimuthDegreesFromTarget();
 
-
-		if (pitch < current_pitch)
-		{
-			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
-		}
-		else if (pitch > current_pitch)
-		{
-			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_UP);
-		}
-		else
-		{
-			shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
-		}
-
-
-
-		if (azimuth < 0.0)
+		if (azimuth < -ACCEPTED_ERROR)
 		{
 			mobility->setLeft(-TURN_SPEED);
 			mobility->setRight(TURN_SPEED);
 		}
-		else
+		else if (azimuth > ACCEPTED_ERROR)
 		{
 			mobility->setLeft(TURN_SPEED);
 			mobility->setRight(-TURN_SPEED);
+		}
+		else
+		{
+			mobility->setLeft(0.0);
+			mobility->setRight(0.0);
 		}
 
 	}
@@ -94,7 +103,7 @@ void AutoAim::End()
 {
 	log->write(Log::TRACE_LEVEL, "Auto Aim Ended");
 	mobility->setStraight(0.0);
-	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 }
 
 void AutoAim::Interrupted()

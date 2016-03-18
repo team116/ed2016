@@ -1,8 +1,9 @@
 #include "DriveDistance.h"
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Sensors.h>
+#include <Commands/DriveStraight.h>
 
-const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 1.0;
+const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 0.1;
 
 DriveDistance::DriveDistance(float dist)
 {
@@ -12,14 +13,17 @@ DriveDistance::DriveDistance(float dist)
 	current_distance = starting_distance;
 	dir = 0.0;
 	interrupted = false;
-	timeout = dist * DRIVE_DISTANCE_TIMEOUT;
 
-	temmie = new Timer();
+	auto_drive_straight = new DriveStraight(0.5, DriveStraight::GYRO);
+
+	SetTimeout(dist * DRIVE_DISTANCE_TIMEOUT);
+
 }
 
 // Called just before this Command runs the first time
 void DriveDistance::Initialize()
 {
+	DriverStation::ReportError("DriveDistance started");
 	log->write(Log::TRACE_LEVEL, "DriveDistance Initialized (distance, %f)", distance);
 	interrupted = false;
 	if (distance > 0)
@@ -35,8 +39,8 @@ void DriveDistance::Initialize()
 		dir = 0.0;
 	}
 
-	temmie->Reset();
-	temmie->Start();
+	//Scheduler::GetInstance()->AddCommand(auto_drive_straight);
+
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -50,19 +54,21 @@ void DriveDistance::Execute()
 bool DriveDistance::IsFinished()
 {
 
-	if(temmie->Get() > timeout)
+	if (IsTimedOut())
 	{
-		DriverStation::ReportError("DriveDistance HasTimedOut");
+		log->write(Log::TRACE_LEVEL, "DriveDistance finished (timeout)");
 		return true;
 	}
 	if(interrupted)
 	{
+		log->write(Log::TRACE_LEVEL, "DriveDistance finished (interrupt)");
 		return true;
 	}
-	if((distance == 0 ||
-			(current_distance - starting_distance >= distance && distance > 0)) ||
-			(current_distance - starting_distance <= distance && distance < 0))
+	if (sensors->areDriveEncoderEnabled() && (distance == 0.0 ||
+		((current_distance - starting_distance >= distance && distance > 0.0) ||
+		 (current_distance - starting_distance <= distance && distance < 0.0))))
 	{
+		log->write(Log::TRACE_LEVEL, "DriveDistance finished (distance)");
 		return true;
 	}
 	return false;
@@ -73,6 +79,7 @@ void DriveDistance::End()
 {
 	log->write(Log::TRACE_LEVEL, "DriveDistance Ended");
 	mobility->setStraight(0.0);
+	//auto_drive_straight->Interrupted();
 }
 
 // Called when another command which requires one or more of the same

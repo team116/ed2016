@@ -1,12 +1,13 @@
 #include <Commands/DriveStraight.h>
 #include <Subsystems/Mobility.h>
 #include <RobotMap.h>
+#include <Subsystems/Sensors.h>
 
 const float DriveStraight::MAX_ROBOT_SPEED = 60.0;
 const float DriveStraight::ENCODER_SPEED_OFFSET = .05;
 
 const float DriveStraight::DEGREE_TOLERANCE = 1.0;
-const float DriveStraight::GYRO_SPEED_OFFSET = 0.05;
+const float DriveStraight::GYRO_SPEED_OFFSET = 0.02;
 
 DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 {
@@ -18,11 +19,13 @@ DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 
 	joystick_value = 0.0;
 	starting_robot_angle = 0.0;
+
+	interrupted = false;
 }
 
 DriveStraight::DriveStraight(float speed, SensorType type)
 {
-	Requires(&*mobility);
+	//Requires(&*mobility);
 	joystick_used = (JoystickSide)-1;
 	curr_left_speed = 0.0;
 	curr_right_speed = 0.0;
@@ -30,12 +33,15 @@ DriveStraight::DriveStraight(float speed, SensorType type)
 
 	joystick_value = speed;
 	starting_robot_angle = 0.0;
+
+	interrupted = false;
 }
 
 void DriveStraight::Initialize()
 {
-	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d)", (int) joystick_used, (int) sensor_type);
 	starting_robot_angle = sensors->robotAngle();
+	interrupted = false;
+	log->write(Log::TRACE_LEVEL, "DriveStraight Initialized (side: %d type: %d), Starting Angle = %f,", (int) joystick_used, (int) sensor_type, starting_robot_angle);
 }
 void DriveStraight::Execute()
 {
@@ -108,7 +114,7 @@ void DriveStraight::Execute()
 }
 bool DriveStraight::IsFinished()
 {
-	return false;
+	return interrupted;
 }
 void DriveStraight::End()
 {
@@ -116,5 +122,7 @@ void DriveStraight::End()
 }
 void DriveStraight::Interrupted()
 {
+	interrupted = true;
 	log->write(Log::TRACE_LEVEL, "DriveStraight Interrupted");
+
 }

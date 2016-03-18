@@ -27,8 +27,7 @@ namespace RobotPorts
 
 	// digital inputs
 
-	const unsigned int BOTTOM_SHOOTER_WHEEL_TACH = 0;
-	const unsigned int TOP_SHOOTER_WHEEL_TACH = 1;
+	const unsigned int SHOOTER_WHEEL_TACH = 1;
 	const unsigned int LEFT_ENCODER_A = 2;
 	const unsigned int LEFT_ENCODER_B = 3;
 	const unsigned int RIGHT_ENCODER_A = 4;
@@ -38,28 +37,28 @@ namespace RobotPorts
 	const unsigned int SHOOTER_HOME_SWITCH = 9;
 
 
+
 	// analog inputs
-	const unsigned int SHOOTER_ANGLE_ENCODER = 0;
-	const unsigned int INTAKE_ANGLE_ENCODER = 1;
+	const unsigned int INTAKE_ANGLE_ENCODER = 0;
+	const unsigned int SHOOTER_ANGLE_ENCODER = 1;
 	const unsigned int SHOOTER_AZIMUTH_ENCODER = 2;
 	const unsigned int AUTONOMOUS_NAVX_A = 4;
 	const unsigned int AUTONOMOUS_NAVX_B = 5;
 	const unsigned int AUTONOMOUS_NAVX_C = 6;
 
 	//motors
-	const unsigned int LEFT_FRONT_MOTOR = 0;
-	const unsigned int LEFT_BACK_MOTOR = 1;
-	const unsigned int RIGHT_FRONT_MOTOR = 2;
-	const unsigned int RIGHT_BACK_MOTOR = 3;
+	const unsigned int RIGHT_FRONT_MOTOR = 0;
+	const unsigned int RIGHT_BACK_MOTOR = 1;
+	const unsigned int LEFT_FRONT_MOTOR = 2;
+	const unsigned int LEFT_BACK_MOTOR = 3;
 
 	const unsigned int WINCH_MOTOR_FRONT = 4;
 	const unsigned int WINCH_MOTOR_BACK = 5;
 
-	const unsigned int LEFT_SHOOTER_MOTOR = 6;
-	const unsigned int RIGHT_SHOOTER_MOTOR = 7;
+	const unsigned int SHOOTER_MOTOR = 6;
 
 	const unsigned int SHOOTER_PITCH_MOTOR = 8;
-	const unsigned int SHOOTER_PUSH_MOTOR = 9;
+	const unsigned int SHOOTER_PUSH_MOTOR = 9;  //the holder wheels, the ball loader, theyre all the same thing
 
 	//NAVX
 	const unsigned int INTAKE_ROLLER_MOTOR = 10;//N0
@@ -84,6 +83,9 @@ namespace OI_Ports
 	const unsigned int B_DRIVE_ALIGN_BUTTON_LEFT = 2;
 	const unsigned int B_DRVIE_ALIGN_BUTTON_RIGHT = 2;
 
+	const unsigned int B_TURN_X_AXIS_RIGHT = 3;
+	const unsigned int B_TURN_X_AXIS_LEFT = 3;
+
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
 	const unsigned int SHOOT_BUTTON = 2;
@@ -94,6 +96,8 @@ namespace OI_Ports
 	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
 
 	const unsigned SHOOTER_WHEELS_SWITCH = 9;
+
+	const unsigned PID_TOGGLE_SWITCH = 5;
 
 	// buttons joystick 1, analog
 	const unsigned int MANUAL_AIM_DIAL = 0; // X

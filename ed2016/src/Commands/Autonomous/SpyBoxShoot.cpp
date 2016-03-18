@@ -4,23 +4,30 @@
 #include <Commands/DriveDistance.h>
 #include <Commands/SetShooterPitch.h>
 #include <Commands/TurnDegrees.h>
-// fucking hydrangeas Wivwiv
-const float SpyBoxShoot::SHOOTER_PITCH_ERROR = 1;
+#include <Commands/SetShooterPitch.h>
+// fucking hydrangeas
 
 SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
-{
+{	log = Log::getInstance();
+	using_autoaim = false;
+
 	if (goal == Autonomous::HIGH)	//AS FUUUUUUUUUUUUUUUUUhydrangeasUUUUUUUUUUUUUUUUUUUUUUCK
 	{
-		AddSequential(new AutoAim());
+		log->write(Log::TRACE_LEVEL, "Shooting HIGH from Spy Box");
+		if(using_autoaim)
+			AddSequential(new AutoAim());
+		else
+			AddSequential(new SetShooterPitch(40.0));
 		AddSequential(new Shoot());
 	}
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
 	{
-		AddSequential(new TurnDegrees(45));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
-		AddSequential(new DriveDistance(165));
-		AddSequential(new TurnDegrees(-75));
-		AddParallel(new SetShooterPitch(0, SHOOTER_PITCH_ERROR));
-		AddSequential(new DriveDistance(198));
+		log->write(Log::TRACE_LEVEL, "Shooting LOW from Spy Box");
+		AddSequential(new TurnDegrees(10));	//tbh we don't got a clue what the hell the actual distance is, so fix this up homedog aka Wivwiv or Bunbunnininininini
+		AddSequential(new DriveDistance(10));
+		AddSequential(new TurnDegrees(-10));
+		AddParallel(new SetShooterPitch(0));
+		AddSequential(new DriveDistance(250));
 		AddSequential(new Shoot());
 	}
 	// Add Commands here:

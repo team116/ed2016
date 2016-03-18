@@ -36,6 +36,8 @@ public:
 
 
 private:
+	bool interrupted;
+
 	float curr_left_speed;
 	float curr_right_speed;
 	JoystickSide joystick_used;

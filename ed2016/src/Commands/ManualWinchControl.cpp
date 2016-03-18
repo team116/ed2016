@@ -1,11 +1,13 @@
 #include "ManualWinchControl.h"
+#include <OI.h>
+#include <Subsystems/Winches.h>
 
 ManualWinchControl::ManualWinchControl()
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
 
-	Requires(&*climber);
+	Requires(&*winches);
 
 	back_winch = 0.0;
 	front_winch = 0.0;
@@ -25,8 +27,8 @@ void ManualWinchControl::Execute()
 	back_winch = oi->getBackWinchY();
 	front_winch = oi->getFrontWinchY();
 
-	climber->setFrontWinchSpeed(front_winch);
-	climber->setBackWinchSpeed(back_winch);
+	winches->setFrontWinchSpeed(front_winch);
+	winches->setBackWinchSpeed(back_winch);
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -39,8 +41,8 @@ bool ManualWinchControl::IsFinished()
 void ManualWinchControl::End()
 {
 	log->write(Log::TRACE_LEVEL, "ManualWinchControl Ended");
-	climber->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
-	climber->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
+	winches->setFrontWinchDirection(Utils::VerticalDirection::V_STILL);
+	winches->setBackWinchDirection(Utils::VerticalDirection::V_STILL);
 }
 
 // Called when another command which requires one or more of the same

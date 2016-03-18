@@ -20,9 +20,11 @@ public:
 	bool IsFinished();
 	void End();
 	void Interrupted();
+
 private:
 	bool interrupted;
 	float pitch;
+	float rpm;
 	float azimuth;
 
 	float current_pitch;

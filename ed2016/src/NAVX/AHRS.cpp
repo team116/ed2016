@@ -832,7 +832,7 @@ float AHRS::GetDisplacementZ() {
 
 void AHRS::SPIInit( SPI::Port spi_port_id, uint32_t bitrate, uint8_t update_rate_hz ) {
     commonInit( update_rate_hz );
-    //io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id), bitrate), update_rate_hz, ahrs_internal, ahrs_internal);
+    io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id), bitrate), update_rate_hz, ahrs_internal, ahrs_internal);
     task = new Task("navX-MXP_IO", (FUNCPTR)AHRS::ThreadFunc,io);
 }
 

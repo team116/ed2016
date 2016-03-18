@@ -1,5 +1,6 @@
 #include <Commands/ExtendScalingArm.h>
 #include <Subsystems/Climber.h>
+#include <Subsystems/Sensors.h>
 #include <Subsystems/ShooterPitch.h>
 
 const float ExtendScalingArm::TIMEOUT_1 = 3.0;
@@ -37,23 +38,32 @@ void ExtendScalingArm::Initialize()
 void ExtendScalingArm::Execute()
 {
 
+	//Move shooter out of the way
 	if (!shooter_ready && temmie_sp->Get() < SHOOTER_TIMEOUT)
 	{
-		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_DOWN);
+		if (shooter_pitch->isPIDEnabled())
+		{
+			shooter_pitch->SetSetpoint(0.0);
+		}
+		else
+		{
+			shooter_pitch->setDirection(Utils::VerticalDirection::DOWN);
+		}
 	}
 	else if (temmie->Get() == 0 && (shooter_ready || temmie_sp->Get() > SHOOTER_TIMEOUT))
 	{
-		shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+		shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 		shooter_ready = true;
 		temmie->Reset();
 		temmie->Start();
 	}
 
-	if(temmie->Get() < TIMEOUT_1 && shooter_ready)
+
+	if((temmie->Get() < TIMEOUT_1) && shooter_ready)
 	{
 		climber->setClimber(Utils::VerticalDirection::UP, SPEED_1);
 	}
-	else if(temmie->Get() < TIMEOUT_2 && shooter_ready)
+	else if((temmie->Get() < TIMEOUT_2) && shooter_ready)
 	{
 		climber->setClimber(Utils::VerticalDirection::UP, SPEED_2);
 	}
@@ -74,6 +84,10 @@ bool ExtendScalingArm::IsFinished()
 	{
 		return true;
 	}
+	else if (climber->isClimberCurrentSpiking())
+	{
+		return true;
+	}
 	return false;
 }
 
@@ -82,7 +96,7 @@ void ExtendScalingArm::End()
 {
 	log->write(Log::TRACE_LEVEL, "ExtendScalingArm Ended");
 	climber->setClimber(Utils::VerticalDirection::V_STILL);
-	shooter_pitch->setShooterPitchDirection(ShooterPitch::SHOOTER_STILL);
+	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 	temmie->Stop();
 }
 

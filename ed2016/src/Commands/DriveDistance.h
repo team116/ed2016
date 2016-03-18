@@ -3,6 +3,7 @@
 
 #include "../CommandBase.h"
 #include "WPILib.h"
+#include <Commands/DriveStraight.h>
 
 
 class DriveDistance: public CommandBase
@@ -19,13 +20,12 @@ private:
 	float starting_distance;
 	float current_distance;
 	int dir;
-	float timeout;
 
 	bool interrupted;
 
-	Timer* temmie;
-
 	static const float DRIVE_DISTANCE_TIMEOUT;
+
+	DriveStraight* auto_drive_straight;
 
 
 };

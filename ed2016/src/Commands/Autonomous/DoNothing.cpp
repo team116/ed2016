@@ -8,6 +8,7 @@
 #include <Commands/Autonomous/DoNothing.h>
 
 DoNothing::DoNothing() {
+	DriverStation::ReportError("Doing Nothing \n");
 	// TODO Auto-generated constructor stub
 	//FIIIIIIIIIIIIIIIIIIIIINE
 }
