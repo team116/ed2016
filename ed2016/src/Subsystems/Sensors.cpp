@@ -263,7 +263,7 @@ bool Sensors::readyToShoot()
 {
 	if (ready_to_shoot_enabled)
 	{
-		return ready_to_shoot_balls_switch->Get();
+		return !ready_to_shoot_balls_switch->Get();
 	}
 	else
 	{
