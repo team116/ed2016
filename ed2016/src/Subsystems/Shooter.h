@@ -21,6 +21,8 @@ public:
 
 	float getSpeedToTarget(float angle);
 
+	float getMotorSpeed();
+
 	float getP();
 	float getI();
 	float getD();

@@ -18,6 +18,8 @@ private:
 	static const float SPEED_UP_TIME;
 	static const float PUSH_BOULDER; // gives it time to get the boulder in position
 
+	bool set_wheels;
+
 	bool interrupted;
 	bool past_speed_up_time;
 };

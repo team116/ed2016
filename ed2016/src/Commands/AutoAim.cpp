@@ -14,6 +14,7 @@
 
 const float AutoAim::TURN_SPEED = 0.5;
 const float AutoAim::ACCEPTED_ERROR = 2;
+const float AutoAim::TIMEOUT = 10;
 
 AutoAim::AutoAim() {
 	Requires(&*shooter);
@@ -25,6 +26,8 @@ AutoAim::AutoAim() {
 	current_pitch = 0;
 	azimuth = 0;
 	interrupted = false;
+
+	SetTimeout(TIMEOUT);
 }
 
 AutoAim::~AutoAim() {
@@ -42,7 +45,7 @@ void AutoAim::Execute()
 	rpm = shooter->getRPMPreset(5);
 	//rpm = shooter->getSpeedToTarget(90 - pitch);
 	float vel = M_PI * 0.1016 * rpm; // PI * D * RPM
-	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR, 15);
+	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR, 14.35);
 
 	DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
 	DriverStation::ReportError("Calculated RPM: " + std::to_string(rpm));

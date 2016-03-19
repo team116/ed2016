@@ -46,7 +46,7 @@ double Shooter::ReturnPIDInput()
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-	//CommandBase::log->write(Log::DEBUG_LEVEL, "PID Input: %f Target: %f", CommandBase::sensors->speedShooterWheel(), GetSetpoint());
+	CommandBase::log->write(Log::DEBUG_LEVEL, "PID Input: %f Target: %f P: %F I: %F D: %F", CommandBase::sensors->speedShooterWheel(), GetSetpoint(), GetPIDController()->GetP(), GetPIDController()->GetI(), GetPIDController()->GetD());
 	//DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));
 	return CommandBase::sensors->speedShooterWheel();
 }
@@ -57,8 +57,8 @@ void Shooter::UsePIDOutput(double output)
 	// e.g. yourMotor->Set(output);
 	if(GetPIDController()->IsEnabled()) {
 		speed = Utils::boundaryCheck((speed + output), -1.0, 1.0);
-		//CommandBase::log->write(Log::DEBUG_LEVEL, "PID Output: %f Set: %f", output, speed);
-		DriverStation::ReportError("Output: " + std::to_string(output) + " Speed: " + std::to_string(speed));
+		CommandBase::log->write(Log::DEBUG_LEVEL, "PID Output: %f Set: %f", output, speed);
+		//DriverStation::ReportError("Output: " + std::to_string(output) + " Speed: " + std::to_string(speed));
 		shooter_wheel->Set(speed);
 	}
 	else {
@@ -90,6 +90,11 @@ float Shooter::getSpeedToTarget(float angle)
 {
 	//sqrt(-2gy)/sin(theta) * 60 / (2*pi*r)
 	return (sqrt(1960 * CommandBase::shooter_pitch->SHOOTER_TO_TARGET_HEIGHT) / sin(angle) * 60) / (10.16 * M_PI);
+}
+
+float Shooter::getMotorSpeed()
+{
+	return shooter_wheel->Get();
 }
 
 float Shooter::getP()

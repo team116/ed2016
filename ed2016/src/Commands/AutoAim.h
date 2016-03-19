@@ -31,6 +31,7 @@ private:
 
 	static const float TURN_SPEED;
 	static const float ACCEPTED_ERROR;
+	static const float TIMEOUT;
 };
 
 #endif /* SRC_COMMANDS_AUTOAIM_H_ */

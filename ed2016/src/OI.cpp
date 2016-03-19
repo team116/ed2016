@@ -2,7 +2,7 @@
 #include <OI.h>
 #include <Commands/ExtendScalingArm.h>
 #include <Commands/RetractWinches.h>
-#include <Commands/AutoAim.h>
+#include <Commands/AutoShoot.h>
 #include <Commands/ClearCommands.h>
 #include <Commands/SetShooterPitch.h>
 #include <Commands/RunShooterWheels.h>
@@ -79,7 +79,7 @@ OI::OI()
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
-	b_auto_aim->WhileHeld(new AutoAim());
+	b_auto_aim->WhenPressed(new AutoShoot());
 	//b_clear_commands->WhenPressed(new ClearCommands());
 	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
 

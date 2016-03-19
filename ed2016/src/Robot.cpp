@@ -206,6 +206,7 @@ private:
 				getPositionSwitchValue(),
 				getDefenseSwitchValue());
 			DriverStation::ReportError(text);*/
+			DriverStation::ReportError("Shooter Angle: " + std::to_string(CommandBase::sensors->shooterAngle()));
 		}
 		catch (exception& e)
 		{
