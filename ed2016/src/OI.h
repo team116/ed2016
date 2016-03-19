@@ -16,6 +16,9 @@ public:
 	float getJoystickLeftY();
 	float getJoystickRightY();
 
+	float getJoystickRightZ();
+	float getJoystickLeftZ();
+
 	float getBackWinchY();
 	float getFrontWinchY();
 
@@ -68,6 +71,8 @@ private:
 	JoystickButton* b_drive_align_right;
 
 	JoystickButton* b_test_button;
+	JoystickButton* b_turn_x_axis_right;
+	JoystickButton* b_turn_x_axis_left;
 
 	static const float DIAL_UPDATE_TIME;
 	static const float DEAD_ZONE_AMOUNT;

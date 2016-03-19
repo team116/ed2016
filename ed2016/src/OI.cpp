@@ -15,6 +15,7 @@
 #include <Commands/MoveIntake.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
+#include <Commands/JoystickTurn.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
@@ -38,9 +39,12 @@ OI::OI()
 
 	//Instantiate Joystick Right Buttons
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
+	b_turn_x_axis_right = new JoystickButton(joystick_right, OI_Ports::B_TURN_X_AXIS_RIGHT);
+
 
 	//Instantiate Joystick Left Buttons
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
+	b_turn_x_axis_left = new JoystickButton(joystick_left, OI_Ports::B_TURN_X_AXIS_LEFT);
 
 	//Instantiate Joystick Buttons 1's Buttons
 	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
@@ -61,9 +65,12 @@ OI::OI()
 
 	//Set Joystick Left Events
 	b_drive_align_left->WhileHeld(new DriveStraight(DriveStraight::LEFT, DriveStraight::GYRO));
+	b_turn_x_axis_left->WhileHeld(new JoystickTurn(JoystickTurn::LEFT));
 
 	//Set Joystick Right Events
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
+	b_turn_x_axis_right->WhileHeld(new JoystickTurn(JoystickTurn::RIGHT));
+
 
 	//Set Joystick Buttons Events
 
@@ -222,6 +229,30 @@ float OI::getJoystickRightY()
 		return 0.0;
 	}
 	return curved * DRIVE_JOYSTICK_SCALE;
+}
+
+float OI::getJoystickLeftZ()
+{
+	float val = -1.0 * Utils::deadZoneCheck(joystick_left->GetZ(), DEAD_ZONE_AMOUNT);
+	if(val > 0) {
+		return pow(val, 2);
+	}
+	if (val < 0) {
+		return pow(val, 2) * -1;
+	}
+	return 0;
+}
+
+float OI::getJoystickRightZ()
+{
+	float val = -1.0 * Utils::deadZoneCheck(joystick_right->GetZ(), DEAD_ZONE_AMOUNT);
+	if (val > 0) {
+		return pow(val,2);
+	}
+	if (val < 0) {
+		return pow(val, 2) * -1;
+	}
+	return 0;
 }
 
 float OI::getFrontWinchY()

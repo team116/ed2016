@@ -32,9 +32,10 @@ namespace RobotPorts
 	const unsigned int LEFT_ENCODER_B = 3;
 	const unsigned int RIGHT_ENCODER_A = 4;
 	const unsigned int RIGHT_ENCODER_B = 5;
-	const unsigned int SHOOTER_HOME_SWITCH = 6;
+	const unsigned int INTAKE_LIMIT = 6;
 	const unsigned int BALL_PREP_CHECK_LIMIT = 7;
-	const unsigned int INTAKE_LIMIT = 8;
+	const unsigned int SHOOTER_HOME_SWITCH = 9;
+
 
 
 	// analog inputs
@@ -81,6 +82,9 @@ namespace OI_Ports
 
 	const unsigned int B_DRIVE_ALIGN_BUTTON_LEFT = 2;
 	const unsigned int B_DRVIE_ALIGN_BUTTON_RIGHT = 2;
+
+	const unsigned int B_TURN_X_AXIS_RIGHT = 3;
+	const unsigned int B_TURN_X_AXIS_LEFT = 3;
 
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
