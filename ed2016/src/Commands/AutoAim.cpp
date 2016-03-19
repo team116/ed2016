@@ -11,6 +11,7 @@
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Mobility.h>
+#include <OI.h>
 
 const float AutoAim::TURN_SPEED = 0.5;
 const float AutoAim::ACCEPTED_ERROR = 2;
@@ -42,13 +43,21 @@ void AutoAim::Initialize()
 
 void AutoAim::Execute()
 {
-	rpm = shooter->getRPMPreset(5);
+	current_pitch = CommandBase::sensors->shooterAngle();
+
+	rpm = shooter->getRPMPreset(CommandBase::oi->getShooterSpeedPosition());
 	//rpm = shooter->getSpeedToTarget(90 - pitch);
-	float vel = M_PI * 0.1016 * rpm; // PI * D * RPM
-	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR, 14.35);
+	float vel = M_PI * 0.1016 * rpm / 60; // PI * D * RPM / 60
+	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR, std::stof(SmartDashboard::GetString("DB/String 8", "0")));
+	if(pitch == -1) {
+		DriverStation::ReportError("Target out of range. Raise the speed and/or move closer");
+		log->write(Log::WARNING_LEVEL, "Warning: Target out of range");
+		interrupted = true;
+		return;
+	}
 
 	DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
-	DriverStation::ReportError("Calculated RPM: " + std::to_string(rpm));
+	DriverStation::ReportError("RPM: " + std::to_string(rpm));
 
 	if((rpm > shooter->getRPMPreset(5)) || (rpm < shooter->getRPMPreset(0)) || (pitch < 0) || (pitch > 90)) {
 		log->write(Log::INFO_LEVEL, "Target is out of range(Angle: %f Calculated RPM: %f)", pitch, rpm);
@@ -56,15 +65,7 @@ void AutoAim::Execute()
 	else {
 		shooter_pitch->SetSetpoint(pitch);
 		shooter->Enable();
-		shooter->SetSetpoint(rpm);
-
-		/*for(int x = 0; x < 6; x++) {
-			if(rpm < (shooter->getRPMPreset(x) + 225)) {
-				DriverStation::ReportError("Setting RPM to " + std::to_string(shooter->getRPMPreset(x)));
-				shooter->setShooterSpeed(shooter->getSpeedPreset(x));
-				break;
-			}
-		}*/
+		shooter->setRPM(rpm);
 	}
 	if (cameras->canSeeGoal())
 	{
@@ -99,8 +100,15 @@ bool AutoAim::IsFinished()
 	{
 		if(current_pitch > pitch - ACCEPTED_ERROR && current_pitch < pitch + ACCEPTED_ERROR)
 		{
-			return true;
+			if(shooter->OnTarget()) {
+				return true;
+			}
 		}
+	}
+	else if(IsTimedOut())
+	{
+		log->write(Log::WARNING_LEVEL, "Warning: AutoAim timed out after %f seconds (Pitch: %f Azimuth Deg Off: %f Shooter On Target: %d)", current_pitch, azimuth, shooter->OnTarget());
+		return true;
 	}
 	return false;
 }

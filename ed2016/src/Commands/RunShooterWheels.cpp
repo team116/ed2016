@@ -17,13 +17,14 @@ void RunShooterWheels::Initialize()
 void RunShooterWheels::Execute()
 {
 	if(oi->getShooterWheelsSwitch()) {
-		shooter->Enable();
-		shooter->SetSetpoint(shooter->getRPMPreset(oi->getShooterSpeedPosition()));
+		if(oi->getPIDEnableSwitch()) {
+			shooter->Enable();
+		}
+		shooter->setRPM(shooter->getRPMPreset(oi->getShooterSpeedPosition()));
 	}
 	else {
-		shooter->SetSetpoint(0);
 		shooter->Disable();
-		shooter->setShooterSpeed(0);
+		shooter->setSpeed(0);
 	}
 }
 

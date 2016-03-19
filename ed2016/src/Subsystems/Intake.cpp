@@ -44,7 +44,8 @@ double Intake::ReturnPIDInput()
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
 
-	CommandBase::log->write(Log::DEBUG_LEVEL, "\nIntake Angle: %f Target: %f P: %f I: %f D: %f", CommandBase::sensors->intakeAngle(), GetSetpoint(), getP(), getI(), getD());
+	//CommandBase::log->write(Log::DEBUG_LEVEL, "");
+	//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Angle: %f Target: %f P: %f I: %f D: %f", CommandBase::sensors->intakeAngle(), GetSetpoint(), getP(), getI(), getD());
 	return CommandBase::sensors->intakeAngle();
 }
 
@@ -52,8 +53,10 @@ void Intake::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
-	CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
-	intake_angle->Set(output);
+	if(GetPIDController()->IsEnabled()) {
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
+		intake_angle->Set(output);
+	}
 }
 
 void Intake::setIntakeDirection(Utils::HorizontalDirection value)

@@ -14,7 +14,7 @@ public:
 	void UsePIDOutput(double output);
 	void InitDefaultCommand();
 
-	void setShooterSpeed(float speed);
+	void setSpeed(float speed);
 
 	float getRPMPreset(int preset); // 0 to 5
 	float getSpeedPreset(int preset); // 0 to 5
@@ -27,10 +27,15 @@ public:
 	float getI();
 	float getD();
 	float getF();
+	float getIzone();
 	void setP(float);
 	void setI(float);
 	void setD(float);
 	void setF(float);
+
+	bool OnTarget();
+
+	void setRPM(float);
 
 private:
 	SpeedController* shooter_wheel;
@@ -39,6 +44,8 @@ private:
 	static const float SPEED_PRESETS[];
 
 	float speed;
+
+	float tolerance;
 };
 
 #endif

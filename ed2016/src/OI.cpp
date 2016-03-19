@@ -299,3 +299,8 @@ bool OI::getPIDEnableSwitch()
 {
 	return s_pid_enable->Get();
 }
+
+void OI::updateAngle()
+{
+	manual_aim_position_process = -1;
+}

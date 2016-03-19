@@ -20,11 +20,11 @@ float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT]
 	75.0
 };*/
 
-const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target
+const float ShooterPitch::TARGET_HEIGHT = 259.08;//Centimeters to middle of target 246.38
 const float ShooterPitch::SHOOTER_HEIGHT = 45.72;//cm
 const float ShooterPitch::SHOOTER_TO_TARGET_HEIGHT = (TARGET_HEIGHT - SHOOTER_HEIGHT) / 100.0;//METERS
 const float ShooterPitch::MANUAL_SPEED = 1.0;
-const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 33.01;
+const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;
 
 ShooterPitch::ShooterPitch() :
 		PIDSubsystem("ShooterPitch", 0.09, 0.0, 0.0, 0.0)
@@ -124,6 +124,7 @@ float ShooterPitch::getPitchToTarget(PitchType type, float velocity)
 		break;
 	}
 
+	//This line is for testing purposes
 	dis = DISTANCE;
 
 	dis += LIDAR_TO_SHOOTER_DISTANCE;
@@ -135,11 +136,17 @@ float ShooterPitch::getPitchToTarget(PitchType type, float velocity)
 
 	//arctan((v^2 - sqr(v^4 - g(gx^2 + 2yv^2))) / (gx))
 	float radicand = pow(velocity, 4) - 9.8 * (9.8 * pow(dis, 2) + 2 * SHOOTER_TO_TARGET_HEIGHT * pow(velocity, 2));
-	float numerator = pow(velocity, 2) - sqrt(radicand);
-	float denominator = 9.8 * dis;
-	angle = atan(numerator /  denominator);
+	if(radicand >= 0) {
+		float numerator = pow(velocity, 2) - sqrt(radicand);
+		float denominator = 9.8 * dis;
+		angle = atan(numerator /  denominator);
 
-	//CommandBase::log->write(Log::DEBUG_LEVEL, "Radicand: %f Numerator: %f Denominator: %f Angle: %f", radicand, numerator, denominator, angle);
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "Radicand: %f Numerator: %f Denominator: %f Angle: %f", radicand, numerator, denominator, angle);
+	}
+	else {
+		CommandBase::log->write(Log::WARNING_LEVEL, "Warning: Non-real angle (Radicand: %f Distance: %f Velocity: %f)", radicand, dis, velocity);
+		return -1;
+	}
 
 	//arctan(2y/x)
 	//angle =  90 - (atan(2 * TARGET_HEIGHT / (dis)) * 180 / M_PI);

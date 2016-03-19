@@ -8,11 +8,11 @@
 #include "LiveWindow/LiveWindow.h"
 
 const float Shooter::RPM_PRESETS[] = {
-	1350.0,
-	1620.0,
-	1890.0,
-	2160.0,
-	2430.0,
+	1000.0,
+	1340.0,
+	1680.0,
+	2020.0,
+	2360.0,
 	2700.0
 };
 
@@ -25,13 +25,15 @@ const float Shooter::SPEED_PRESETS[] = {
 	1.0
 };
 
-Shooter::Shooter() : PIDSubsystem("Shooter", 0.0000003, 0.00000000000001, 0.0)
+Shooter::Shooter() : PIDSubsystem("Shooter", 0.0005, 0.00001, 0.0)
 {
 	shooter_wheel = Utils::constructMotor(RobotPorts::SHOOTER_MOTOR);
 
-	SetInputRange(0, 5000);
-	SetAbsoluteTolerance(10);
-	SetOutputRange(-1.0,1.0);
+	tolerance = 100;
+
+	SetInputRange(0, RPM_PRESETS[5]);
+	SetAbsoluteTolerance(tolerance);
+	SetOutputRange(0.0,1.0);
 
 	speed = 0;
 }
@@ -46,8 +48,11 @@ double Shooter::ReturnPIDInput()
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-	CommandBase::log->write(Log::DEBUG_LEVEL, "\nShooter Angle: %f Target: %f P: %F I: %F D: %F", CommandBase::sensors->speedShooterWheel(), GetSetpoint(), GetPIDController()->GetP(), GetPIDController()->GetI(), GetPIDController()->GetD());
-	//DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));
+	/*CommandBase::log->write(Log::DEBUG_LEVEL, "");
+	CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Angle: %f Target: %f P: %F I: %F D: %F", CommandBase::sensors->speedShooterWheel(), GetSetpoint(), GetPIDController()->GetP(), GetPIDController()->GetI(), GetPIDController()->GetD());
+	CommandBase::log->write(Log::DEBUG_LEVEL, "OnTarget: %d", OnTarget());
+	DriverStation::ReportError("");
+	DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));*/
 	return CommandBase::sensors->speedShooterWheel();
 }
 
@@ -57,18 +62,46 @@ void Shooter::UsePIDOutput(double output)
 	// e.g. yourMotor->Set(output);
 	if(GetPIDController()->IsEnabled()) {
 		speed = Utils::boundaryCheck((speed + output), -1.0, 1.0);
-		CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Set: %f", output, speed);
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Set: %f", output, speed);
 		//DriverStation::ReportError("Output: " + std::to_string(output) + " Speed: " + std::to_string(speed));
-		shooter_wheel->Set(speed);
+		setSpeed(output);
 	}
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
-void Shooter::setShooterSpeed(float speed)
+void Shooter::setSpeed(float speed)
 {
+	DriverStation::ReportError("Speed: " + std::to_string(speed));
 	shooter_wheel->Set(speed);
+}
+
+void Shooter::setRPM(float rpm)
+{
+	SetSetpoint(rpm);
+	if(!GetPIDController()->IsEnabled())
+	{
+		float offset = (RPM_PRESETS[5] - RPM_PRESETS[0]) / 10; //Half of the number between each preset
+		int preset = -1;
+		for(int x = 0; x < 6; x++)
+		{
+			if(rpm < (RPM_PRESETS[x] + offset))
+			{
+				DriverStation::ReportError("Is preset " + std::to_string(x));
+				preset = x;
+				break;
+			}
+		}
+		if(preset != -1)
+		{
+			setSpeed(SPEED_PRESETS[preset]);
+		}
+		else
+		{
+			setSpeed(SPEED_PRESETS[5]);
+		}
+	}
 }
 
 float Shooter::getRPMPreset(int preset)
@@ -126,4 +159,13 @@ void Shooter::setD(float d)
 void Shooter::setF(float f)
 {
 	GetPIDController()->SetPID(getP(), getI(), getD(), f);
+}
+
+bool Shooter::OnTarget()
+{
+	if(fabs(GetSetpoint() - CommandBase::sensors->speedShooterWheel()) <= tolerance)
+	{
+		return true;
+	}
+	return false;
 }

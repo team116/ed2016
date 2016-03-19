@@ -33,6 +33,8 @@ public:
 
 	bool getPIDEnableSwitch();
 
+	void updateAngle();
+
 private:
 	static const float DRIVE_JOYSTICK_SCALE;
 	Joystick* joystick_left;

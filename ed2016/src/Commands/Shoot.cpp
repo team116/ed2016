@@ -40,7 +40,7 @@ void Shoot::Execute()
 {
 	if(set_wheels) {
 		float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
-		//shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
+		shooter->setRPM(ideal_speed);
 
 		if (!past_speed_up_time && (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME))
 		{
@@ -75,7 +75,8 @@ void Shoot::End()
 {
 	log->write(Log::TRACE_LEVEL,"Shoot Ended");
 	oi->resetIntakeDirectionSwitch();
-	shooter->setShooterSpeed(0.0);
+	shooter->setSpeed(0.0);
+	oi->updateAngle();
 }
 
 // Called when another command which requires one or more of the same
