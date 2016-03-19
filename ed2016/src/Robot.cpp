@@ -195,18 +195,14 @@ private:
 			Scheduler::GetInstance()->Run();
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
-			/*char text[255];
-			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			char text[255];
+			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f, tach rate: %f",
 				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->shooter_angle_encoder->GetVoltage(),
 				CommandBase::sensors->intakeAngle(),
-				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
-				CommandBase::sensors->readyToShoot(),
-				CommandBase::sensors->speedShooterWheel(),
-				getShootSwitchValue(),
-				getPositionSwitchValue(),
-				getDefenseSwitchValue());
-			DriverStation::ReportError(text);*/
-			DriverStation::ReportError("Shooter Angle: " + std::to_string(CommandBase::sensors->shooterAngle()));
+				CommandBase::sensors->intake_angle_encoder->GetVoltage(),
+				CommandBase::sensors->speedShooterWheel());
+			DriverStation::ReportError(text);
 		}
 		catch (exception& e)
 		{

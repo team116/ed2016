@@ -60,10 +60,14 @@ private:
 	static const float MAX_SHOOTER_ANGLE_VOLT;
 	static const float MIN_SHOOTER_ANGLE_VOLT;
 	float shooter_angle_offset;
+public:
 	AnalogInput* shooter_angle_encoder;
+private:
 
 	static const float INTAKE_ANGLE_OFFSET;
+public:
 	AnalogInput*  intake_angle_encoder;
+private:
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 	static const int TACH_PERIOD_COUNT = 10;
