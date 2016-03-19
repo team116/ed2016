@@ -318,7 +318,8 @@ void Sensors::updateTachometers()
 	unsigned int cur_tach_count = shooter_wheel_tach->Get();
 	float cur_timestamp = cycle_timer->Get();
 
-	shooter_wheel_tach_rate = (float)(cur_tach_count - prev_tach_counts[cur_tach_period_index]) / (cur_timestamp - prev_tach_timestamps[cur_tach_period_index]) * 60.0;
+	shooter_wheel_tach_rate = (float)(cur_tach_count - prev_tach_counts[cur_tach_period_index]) / (cur_timestamp - prev_tach_timestamps[cur_tach_period_index])
+			/ (float)SHOOTER_WHEEL_PPR * 60.0;
 	/*char text[255];
 	snprintf(text, 255, "tach rate: %f, prev count: %d, cur count: %d, prev time: %f, cur time: %f",
 			shooter_wheel_tach_rate,

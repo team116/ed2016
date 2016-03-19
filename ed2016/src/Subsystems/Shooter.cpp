@@ -8,12 +8,12 @@
 #include "LiveWindow/LiveWindow.h"
 
 const float Shooter::RPM_PRESETS[] = {
-	2250.0,
-	2700.0,
-	3150.0,
-	3600.0,
-	4050.0,
-	4500.0
+	1350.0,
+	1620.0,
+	1890.0,
+	2160.0,
+	2430.0,
+	2700.0
 };
 
 const float Shooter::SPEED_PRESETS[] = {
@@ -60,9 +60,6 @@ void Shooter::UsePIDOutput(double output)
 		CommandBase::log->write(Log::DEBUG_LEVEL, "PID Output: %f Set: %f", output, speed);
 		//DriverStation::ReportError("Output: " + std::to_string(output) + " Speed: " + std::to_string(speed));
 		shooter_wheel->Set(speed);
-	}
-	else {
-		shooter_wheel->Set(0.0);
 	}
 }
 
