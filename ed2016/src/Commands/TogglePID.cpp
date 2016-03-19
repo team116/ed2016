@@ -1,6 +1,6 @@
 #include "TogglePID.h"
 #include <Subsystems/ShooterPitch.h>
-#include <Subsystems/ShooterPID.h>
+#include <Subsystems/Shooter.h>
 
 TogglePID::TogglePID(bool state)
 {

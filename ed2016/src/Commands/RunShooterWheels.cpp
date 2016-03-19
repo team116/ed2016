@@ -1,6 +1,6 @@
 #include <Commands/RunShooterWheels.h>
 #include <OI.h>
-#include <Subsystems/ShooterPID.h>
+#include <Subsystems/Shooter.h>
 
 RunShooterWheels::RunShooterWheels()
 {

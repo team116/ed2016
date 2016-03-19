@@ -17,7 +17,7 @@
 #include <Commands/DriveDistance.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
-#include <Subsystems/ShooterPID.h>
+#include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
 
 const float OI::DRIVE_JOYSTICK_SCALE = 0.5;

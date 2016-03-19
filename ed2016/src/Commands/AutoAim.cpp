@@ -6,13 +6,13 @@
  */
 
 #include <Commands/AutoAim.h>
-#include <Subsystems/ShooterPID.h>
+#include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Mobility.h>
 
-const float AutoAim::TURN_SPEED = 0.75;
+const float AutoAim::TURN_SPEED = 0.5;
 const float AutoAim::ACCEPTED_ERROR = 2;
 
 AutoAim::AutoAim() {
@@ -39,11 +39,14 @@ void AutoAim::Initialize()
 
 void AutoAim::Execute()
 {
-	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR);
-	rpm = shooter->getSpeedToTarget(90 - pitch);
+	rpm = shooter->getRPMPreset(5);
+	//rpm = shooter->getSpeedToTarget(90 - pitch);
+	float vel = M_PI * 0.1016 * rpm; // PI * D * RPM
+	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR, 15);
+
 	DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
 	DriverStation::ReportError("Calculated RPM: " + std::to_string(rpm));
-	shooter_pitch->SetSetpoint(pitch);
+
 	if((rpm > shooter->getRPMPreset(5)) || (rpm < shooter->getRPMPreset(0)) || (pitch < 0) || (pitch > 90)) {
 		log->write(Log::INFO_LEVEL, "Target is out of range(Angle: %f Calculated RPM: %f)", pitch, rpm);
 	}

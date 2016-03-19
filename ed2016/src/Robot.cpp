@@ -77,8 +77,8 @@ private:
 		try
 		{
 			Scheduler::GetInstance()->Run();
-			char text[255];
-			/*snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			/*char text[255];
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->isShooterHomeSwitchHorizontal(),

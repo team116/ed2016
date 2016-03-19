@@ -6,8 +6,8 @@
 
 const bool kError = false;
 const bool kOk = true;
-const int IMAGE_WIDTH = 320;
-const int IMAGE_HEIGHT = 240;
+const int IMAGE_WIDTH = 640;
+const int IMAGE_HEIGHT = 360;
 const float CAMERA_MOUNT_ANGLE = 0;//TODO: Measure exact angle on real robot
 const float HEIGHT_DISTANCE_RATIO = 46.25;
 const float CAMERA_MOUNT_HEIGHT = 0.0;//centimeters TODO: Measure exact height on real robot
@@ -212,7 +212,7 @@ float Cameras::GetTargetY()
 float Cameras::PitchFromHorizontal()
 {
 	if(canSeeGoal()) {
-		return (CAMERA_MOUNT_ANGLE + atan((CommandBase::shooter_pitch->TARGET_HEIGHT - CAMERA_MOUNT_HEIGHT) / GetDistanceFromTarget()));
+		return (CAMERA_MOUNT_ANGLE + atan((CommandBase::shooter_pitch->SHOOTER_TO_TARGET_HEIGHT - CAMERA_MOUNT_HEIGHT) / GetDistanceFromTarget()));
 	}
 	DriverStation::ReportError("Error: Cannot calculate pitch from horizontal if no target in view (Do you need to call RefreshContours?)\n");
 	return 0.0f;
