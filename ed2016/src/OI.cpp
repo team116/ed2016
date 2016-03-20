@@ -184,11 +184,22 @@ void OI::process()
 	{
 		resetIntakeDirectionSwitch();
 	}
-	/*
-	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
-	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
-	CommandBase::shooter_pitch_pid->setD(SmartDashboard::GetNumber("d-val", CommandBase::shooter_pitch_pid->getD()));
-	*/
+
+    /*CommandBase::shooter->setP(std::stof(SmartDashboard::GetString("DB/String 0", "0")));
+    CommandBase::shooter->setI(std::stof(SmartDashboard::GetString("DB/String 1", "0")));
+    CommandBase::shooter->setD(std::stof(SmartDashboard::GetString("DB/String 2", "0")));
+    CommandBase::shooter->setF(std::stof(SmartDashboard::GetString("DB/String 3", "0")));
+    CommandBase::intake->setP(std::stof(SmartDashboard::GetString("DB/String 5", "0")));
+    CommandBase::intake->setI(std::stof(SmartDashboard::GetString("DB/String 6", "0")));
+    CommandBase::intake->setD(std::stof(SmartDashboard::GetString("DB/String 7", "0")));
+    CommandBase::intake->setF(std::stof(SmartDashboard::GetString("DB/String 8", "0")));
+    CommandBase::shooter_pitch->setP(std::stof(SmartDashboard::GetString("DB/String 5", "0")));
+    CommandBase::shooter_pitch->setI(std::stof(SmartDashboard::GetString("DB/String 6", "0")));
+    CommandBase::shooter_pitch->setD(std::stof(SmartDashboard::GetString("DB/String 7", "0")));
+    CommandBase::shooter_pitch->setF(std::stof(SmartDashboard::GetString("DB/String 8", "0")));*/
+
+	//CommandBase::shooter_pitch->DISTANCE = std::stof(SmartDashboard::GetString("DB/String 4", "0"));
+
 }
 
 float OI::getJoystickLeftY()

@@ -20,11 +20,11 @@ float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT]
 	75.0
 };*/
 
-const float ShooterPitch::TARGET_HEIGHT = 259.08;//Centimeters to middle of target 246.38
+const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target 246.38
 const float ShooterPitch::SHOOTER_HEIGHT = 45.72;//cm
 const float ShooterPitch::SHOOTER_TO_TARGET_HEIGHT = (TARGET_HEIGHT - SHOOTER_HEIGHT) / 100.0;//METERS
 const float ShooterPitch::MANUAL_SPEED = 1.0;
-const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;
+const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;//cm
 
 ShooterPitch::ShooterPitch() :
 		PIDSubsystem("ShooterPitch", 0.09, 0.0, 0.0, 0.0)
@@ -37,7 +37,7 @@ ShooterPitch::ShooterPitch() :
 	}
 
 	SetInputRange(-90, 270);
-	SetAbsoluteTolerance(0.0);
+	SetAbsoluteTolerance(0.5);
 	SetOutputRange(-1.0,1.0);
 
 	GetPIDController()->SetContinuous(false);
@@ -125,7 +125,7 @@ float ShooterPitch::getPitchToTarget(PitchType type, float velocity)
 	}
 
 	//This line is for testing purposes
-	dis = DISTANCE;
+	//dis = DISTANCE;
 
 	dis += LIDAR_TO_SHOOTER_DISTANCE;
 	dis /= 100.0;
