@@ -102,7 +102,7 @@ float Sensors::shooterAngle()
 		}
 		else
 		{
-			return actual;
+			return actual - shooter_angle_offset;
 		}
 	}
 	else

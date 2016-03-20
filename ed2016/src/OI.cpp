@@ -16,6 +16,7 @@
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/JoystickTurn.h>
+#include <Commands/ResetShooterAngle.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
@@ -81,7 +82,7 @@ OI::OI()
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoShoot());
 	//b_clear_commands->WhenPressed(new ClearCommands());
-	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
+	b_test_button->WhenPressed(new ResetShooterAngle());
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
