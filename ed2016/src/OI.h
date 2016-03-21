@@ -3,6 +3,7 @@
 
 #include <Joystick.h>
 #include <Commands/AngleIntake.h>
+#include <Commands/MoveIntake.h>
 #include <Commands/SetShooterPitch.h>
 #include <Subsystems/Intake.h>
 #include <WPILib.h>
@@ -86,8 +87,11 @@ private:
 
 	int shooter_speed_position;
 
-	static SetShooterPitch** set_shooter_pitch;
-	static AngleIntake** angle_intake;
+	SetShooterPitch** set_shooter_pitch;
+	AngleIntake** angle_intake;
+	MoveIntake* move_intake_in;
+	MoveIntake* move_intake_still;
+	MoveIntake* move_intake_out;
 
 	Timer* angle_temmie;
 	Timer* speed_temmie;
