@@ -63,13 +63,13 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	pdp = new PowerDistributionPanel(RobotPorts::PDP);
 
-	drive_encoders_enabled = true;
+	drive_encoders_enabled = false;
 	lidar_sensor_enabled = true;
 	shooter_angle_enabled = true;
 	robot_angle_enabled = true;
 	intake_angle_enabled = true;
 	ready_to_shoot_enabled = true;
-	shooter_home_switch_enabled = false;
+	shooter_home_switch_enabled = true;
 	shooter_wheel_tachometer_enabled = true;
 }
 
