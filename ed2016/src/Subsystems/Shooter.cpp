@@ -25,11 +25,11 @@ const float Shooter::SPEED_PRESETS[] = {
 	1.0
 };
 
-Shooter::Shooter() : PIDSubsystem("Shooter", 0.00005, 0.0, 0.0, 0.00034)
+Shooter::Shooter() : PIDSubsystem("Shooter", 0.001, 0.0, 0.001, 0.00034)
 {
 	shooter_wheel = Utils::constructMotor(RobotPorts::SHOOTER_MOTOR);
 
-	tolerance = 50;
+	tolerance = 10;
 
 	SetPIDSourceType(PIDSourceType::kRate);
 	GetPIDController()->SetContinuous(false);
@@ -64,9 +64,8 @@ void Shooter::UsePIDOutput(double output)
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
 	if(GetPIDController()->IsEnabled()) {
-		speed = Utils::boundaryCheck((speed + output), -1.0, 1.0);
 		CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Set: %f", output, speed);
-		DriverStation::ReportError("Output: " + std::to_string(output) + " Speed: " + std::to_string(speed));
+		DriverStation::ReportError("Output: " + std::to_string(output));
 		setSpeed(output);
 	}
 }
