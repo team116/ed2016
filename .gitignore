@@ -35,3 +35,4 @@ HardwareTesting/.settings/
 sysProps.xml
 .metadata
 RemoteSystemsTempFiles
+*.orig

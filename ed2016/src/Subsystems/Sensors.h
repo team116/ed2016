@@ -6,11 +6,16 @@
 #include <WPILib.h>
 #include <Counter.h>
 #include <Log.h>
+#include <thread>
+#include <mutex>
+
+using namespace std;
 
 class Sensors: public Subsystem
 {
 public:
 	Sensors();
+	~Sensors();
 	void InitDefaultCommand();
 	// It's desirable that everything possible under private except
 	// for methods that implement subsystem capabilities
@@ -26,7 +31,6 @@ public:
 	void updateCycleTime();
 
 	float speedShooterWheel();
-	void updateTachometers();
 
 	float getDistanceLeft();
 	float getDistanceRight();
@@ -55,6 +59,15 @@ private:
 
 	float shooterAngleActual();
 
+	static Timer* tach_pulse_timer;
+	static int last_tach_count;
+	static float last_tach_timestamp;
+	static bool continue_sensor_update_thread;
+	thread* sensor_update_thread;
+	static mutex* tach_speed_access;
+	static void updateSensorsThread();
+	static void setShooterSpeedTachValue(float rate);
+
 	DigitalInput* ready_to_shoot_balls_switch;
 
 	static const float MAX_SHOOTER_ANGLE_VOLT;
@@ -71,11 +84,11 @@ private:
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 	static const int TACH_PERIOD_COUNT = 10;
-	Counter* shooter_wheel_tach;
+	static Counter* shooter_wheel_tach;
 	float prev_tach_timestamps[TACH_PERIOD_COUNT];
 	int prev_tach_counts[TACH_PERIOD_COUNT];
 	int cur_tach_period_index;
-	float shooter_wheel_tach_rate;
+	static float shooter_wheel_tach_rate;
 
 	Timer* cycle_timer;
 	float prev_time_stamp;

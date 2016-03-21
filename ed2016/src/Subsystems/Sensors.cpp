@@ -16,9 +16,22 @@ const int Sensors::DRIVE_WHEEL_PPR = 128;
 
 const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
+// objects need to be initialized to null so that they don't try to use resources that haven't been set up statically
+Timer* Sensors::tach_pulse_timer = nullptr;
+int Sensors::last_tach_count = 0;
+float Sensors::last_tach_timestamp = 0.0;
+bool Sensors::continue_sensor_update_thread = true;
+mutex* Sensors::tach_speed_access = nullptr;
+Counter* Sensors::shooter_wheel_tach = nullptr;
+float Sensors::shooter_wheel_tach_rate = 0.0;
+
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
 	log = Log::getInstance();
+
+	tach_pulse_timer = new Timer();
+	tach_speed_access = new mutex();
+	shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
 
 	shooter_angle_offset = 0.0;
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
@@ -27,12 +40,12 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
-	shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
+	//shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
 	//top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
 	//bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
 	shooter_wheel_tach->ClearDownSource();
-	shooter_wheel_tach_rate = 0.0;
+	//shooter_wheel_tach_rate = 0.0;
 	cur_tach_period_index = 0;
 	for (int i = 0; i < TACH_PERIOD_COUNT; ++i)
 	{
@@ -71,6 +84,29 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	ready_to_shoot_enabled = true;
 	shooter_home_switch_enabled = true;
 	shooter_wheel_tachometer_enabled = true;
+
+	if (shooterWheelTachometerEnabled())
+	{
+		tach_pulse_timer->Start();
+		tach_pulse_timer->Reset();
+		sensor_update_thread = new thread(updateSensorsThread);
+		sensor_update_thread->detach(); // let the thread run separately
+	}
+	else
+	{
+		sensor_update_thread = nullptr;
+		continue_sensor_update_thread = false;
+	}
+}
+
+Sensors::~Sensors()
+{
+	continue_sensor_update_thread = false;
+	if (sensor_update_thread != nullptr)
+	{
+		sensor_update_thread->join();
+		delete sensor_update_thread;
+	}
 }
 
 void Sensors::InitDefaultCommand()
@@ -313,43 +349,6 @@ float Sensors::getSpeedRight()
 	return 0.0;
 }
 
-void Sensors::updateTachometers()
-{
-	unsigned int cur_tach_count = shooter_wheel_tach->Get();
-	float cur_timestamp = cycle_timer->Get();
-
-	shooter_wheel_tach_rate = (float)(cur_tach_count - prev_tach_counts[cur_tach_period_index]) / (cur_timestamp - prev_tach_timestamps[cur_tach_period_index])
-			/ (float)SHOOTER_WHEEL_PPR * 60.0;
-	/*char text[255];
-	snprintf(text, 255, "tach rate: %f, prev count: %d, cur count: %d, prev time: %f, cur time: %f",
-			shooter_wheel_tach_rate,
-			prev_tach_counts[cur_tach_period_index],
-			cur_tach_count,
-			prev_tach_timestamps[cur_tach_period_index],
-			cur_timestamp);
-	DriverStation::ReportError(text);*/
-	prev_tach_counts[cur_tach_period_index] = cur_tach_count;
-	prev_tach_timestamps[cur_tach_period_index] = cur_timestamp;
-
-	++cur_tach_period_index;
-	if (cur_tach_period_index == TACH_PERIOD_COUNT)
-	{
-		cur_tach_period_index = 0;
-	}
-}
-/*
-void Sensors::updateTachometers()
-{
-	unsigned int cur_shooter_wheel_count = shooter_wheel_tach->Get();
-	float cycle_time = getCycleTime();
-
-	// multiply by 60 to convert to RPM
-	shooter_wheel_tach_rate = (float)(cur_shooter_wheel_count - prev_shooter_wheel_tach_count) / cycle_time * 60.0;
-
-	prev_shooter_wheel_tach_count = cur_shooter_wheel_count;
-}
-*/
-
 float Sensors::getCycleTime()
 {
 	return cycle_timer->Get() - prev_time_stamp;
@@ -358,4 +357,26 @@ float Sensors::getCycleTime()
 void Sensors::updateCycleTime()
 {
 	prev_time_stamp = cycle_timer->Get();
+}
+
+void Sensors::updateSensorsThread()
+{
+	while (continue_sensor_update_thread)
+	{
+		if (shooter_wheel_tach->Get() > last_tach_count)
+		{
+			float timestamp = tach_pulse_timer->Get();
+			int count = shooter_wheel_tach->Get();
+			setShooterSpeedTachValue((float)(count - last_tach_count) / (timestamp - last_tach_timestamp) / (float)SHOOTER_WHEEL_PPR * 60.0);
+
+			last_tach_count = count;
+			last_tach_timestamp = timestamp;
+		}
+	}
+}
+
+void Sensors::setShooterSpeedTachValue(float rate)
+{
+	lock_guard<mutex> guard(*tach_speed_access);
+	shooter_wheel_tach_rate = rate;
 }

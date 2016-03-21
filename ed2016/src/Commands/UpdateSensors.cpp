@@ -17,7 +17,6 @@ void UpdateSensors::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void UpdateSensors::Execute()
 {
-	sensors->updateTachometers();
 	sensors->refreshLidar();
 
 	if (sensors->isShooterHomeSwitchHorizontal())
