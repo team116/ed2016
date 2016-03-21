@@ -62,7 +62,10 @@ private:
 	JoystickButton* b_auto_climber_deploy;
 	JoystickButton* b_shooter_engage;
 	JoystickButton* b_auto_aim;
-	JoystickButton* b_clear_commands;
+//	JoystickButton* b_test_button;
+//	JoystickButton* b_clear_commands;
+	JoystickButton* b_move_intake_up;
+	JoystickButton* b_move_intake_down;
 
 	JoystickButton* s_manual_winch_enable;
 	JoystickButton* s_shooter_wheels;
@@ -73,7 +76,6 @@ private:
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
 
-	JoystickButton* b_test_button;
 	JoystickButton* b_turn_x_axis_right;
 	JoystickButton* b_turn_x_axis_left;
 

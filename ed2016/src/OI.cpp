@@ -1,22 +1,23 @@
 #include <cstdlib>
 #include <OI.h>
-#include <Commands/ExtendScalingArm.h>
-#include <Commands/RetractWinches.h>
-#include <Commands/AutoShoot.h>
-#include <Commands/ClearCommands.h>
-#include <Commands/SetShooterPitch.h>
-#include <Commands/RunShooterWheels.h>
-#include <Commands/SelectCamera.h>
-#include <Commands/Shoot.h>
-#include <Commands/ManualWinchControl.h>
-#include <Commands/MoveClimberArm.h>
-#include <Commands/MoveHolderWheel.h>
 #include <Commands/AngleIntake.h>
-#include <Commands/MoveIntake.h>
+#include <Commands/AutoShoot.h>
+#include <Commands/ExtendScalingArm.h>
+#include <Commands/ClearCommands.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/JoystickTurn.h>
+#include <Commands/LiftIntake.h>
+#include <Commands/ManualWinchControl.h>
+#include <Commands/MoveClimberArm.h>
+#include <Commands/MoveHolderWheel.h>
+#include <Commands/MoveIntake.h>
 #include <Commands/ResetShooterAngle.h>
+#include <Commands/RetractWinches.h>
+#include <Commands/RunShooterWheels.h>
+#include <Commands/SelectCamera.h>
+#include <Commands/SetShooterPitch.h>
+#include <Commands/Shoot.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
@@ -44,10 +45,13 @@ OI::OI()
 	b_turn_x_axis_left = new JoystickButton(joystick_left, OI_Ports::B_TURN_X_AXIS_LEFT);
 
 	//Instantiate Joystick Buttons 1's Buttons
-	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
+//	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
+//	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
+	b_move_intake_up = new JoystickButton(joystick_buttons1, OI_Ports::MOVE_INTAKE_UP_BUTTON);
+	b_move_intake_down = new JoystickButton(joystick_buttons2, OI_Ports::MOVE_INTAKE_DOWN_BUTTON);
+
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOT_BUTTON);
-	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
 	s_intake_belt_outward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
@@ -77,8 +81,10 @@ OI::OI()
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoShoot());
+	b_move_intake_up->WhileHeld(new LiftIntake(Utils::VerticalDirection::UP));
+	b_move_intake_down->WhileHeld(new LiftIntake(Utils::VerticalDirection::DOWN));
 	//b_clear_commands->WhenPressed(new ClearCommands());
-	b_test_button->WhenPressed(new ResetShooterAngle());
+	//b_test_button->WhenPressed(new ResetShooterAngle());
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
@@ -175,11 +181,13 @@ void OI::process()
 		aim_temmie->Reset();
 		aim_temmie->Stop();
 
+		/*
 		if (b_clear_commands->Get())
 		{
 			DriverStation::ReportError("\nClearing commands.");
 			Scheduler::GetInstance()->RemoveAll();
 		}
+		*/
 	}
 	
 	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
