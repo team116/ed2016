@@ -11,11 +11,6 @@ public:
 	static const int ANGLE_PRESET_COUNT;
 	static float getAnglePreset(int index);
 
-	enum PitchType {
-		CAMERA,
-		LIDAR
-	};
-
 	ShooterPitch();
 	double ReturnPIDInput();
 	void UsePIDOutput(double output);
@@ -25,7 +20,7 @@ public:
 	void setDirection(Utils::VerticalDirection);
 	void checkLimits();
 
-	float getPitchToTarget(PitchType, float);
+	float getPitchToTarget(float, float);
 
 	bool isPIDEnabled();
 	float getP();
@@ -38,8 +33,6 @@ public:
 	void setF(float);
 
 	static const float SHOOTER_TO_TARGET_HEIGHT;
-
-	static float DISTANCE;
 
 private:
 	// It's desirable that everything possible under private except

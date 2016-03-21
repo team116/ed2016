@@ -9,7 +9,6 @@
 #include <math.h>
 
 const int ShooterPitch::ANGLE_PRESET_COUNT = 6;
-float ShooterPitch::DISTANCE = 300;
 
 float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT];/* {
 	0.0,
@@ -27,7 +26,7 @@ const float ShooterPitch::MANUAL_SPEED = 1.0;
 const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;//cm
 
 ShooterPitch::ShooterPitch() :
-		PIDSubsystem("ShooterPitch", 0.09, 0.0, 0.0, 0.0)
+		PIDSubsystem("ShooterPitch", 0.03, 0.00005, 0.0, 0.0)
 {
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
 
@@ -48,6 +47,8 @@ double ShooterPitch::ReturnPIDInput()
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
+
+	//DriverStation::ReportError("Angle: " + std::to_string(CommandBase::sensors->shooterAngle()) + " Target: " + std::to_string(GetSetpoint()));
 
 	return CommandBase::sensors->shooterAngle();
 }
@@ -106,27 +107,8 @@ void ShooterPitch::checkLimits()
 
 //In degrees
 //Accounts for gravitational acceleration
-float ShooterPitch::getPitchToTarget(PitchType type, float velocity)
+float ShooterPitch::getPitchToTarget(float dis, float velocity)//Distance in cm Velocity in m/s
 {
-	float dis;
-	switch (type) {
-	case PitchType::CAMERA:
-		CommandBase::cameras->RefreshContours();
-		dis = CommandBase::cameras->GetDistanceFromTarget();
-		break;
-	case PitchType::LIDAR:
-		dis = CommandBase::sensors->lidarDistance();
-		//return  90 - ((atan(TARGET_HEIGHT / (CommandBase::sensors->lidarDistance() + LIDAR_TO_SHOOTER_DISTANCE)) * 180) / M_PI);
-		break;
-	default:
-		CommandBase::log->write(Log::WARNING_LEVEL, "Somehow you managed to have an invalid PitchType: %d", type);
-		dis = 600;//Random number, went with 6 meters
-		break;
-	}
-
-	//This line is for testing purposes
-	//dis = DISTANCE;
-
 	dis += LIDAR_TO_SHOOTER_DISTANCE;
 	dis /= 100.0;
 

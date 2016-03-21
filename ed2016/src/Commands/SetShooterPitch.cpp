@@ -38,10 +38,6 @@ void SetShooterPitch::Initialize()
 	if(shooter_pitch->isPIDEnabled()) {
 		shooter_pitch->SetSetpoint(pitch);
 		//shooter_pitch->SetAbsoluteTolerance(accepted_error);
-		shooter_pitch->Enable();
-	}
-	else {
-		shooter_pitch->Disable();
 	}
 }
 

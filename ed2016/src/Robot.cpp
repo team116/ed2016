@@ -108,6 +108,8 @@ private:
 	 */
 	void AutonomousInit()
 	{
+		Scheduler::GetInstance()->AddCommand(new TogglePID(true));
+
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = getShootSwitchValue();
 

@@ -45,12 +45,13 @@ void AutoAim::Execute()
 {
 	current_pitch = CommandBase::sensors->shooterAngle();
 
-	rpm = shooter->getRPMPreset(5) - 1000;
+	rpm = shooter->getRPMPreset(5);
+	//rpm = shooter->getRPMPreset(oi->getShooterSpeedPosition());
 	//rpm = shooter->getSpeedToTarget(90 - pitch);
-	//float vel = M_PI * 0.1016 * rpm / 60; // PI * D * RPM / 60
+	//float vel = M_PI * 0.1016 * (rpm-1000) / 60; // PI * D * RPM / 60
 	//float vel = std::stof(SmartDashboard::GetString("DB/String 9", "0"));
 	float vel = 10;
-	pitch = shooter_pitch->getPitchToTarget(ShooterPitch::PitchType::LIDAR, vel);
+	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance(), vel);
 	if(pitch == -1) {
 		DriverStation::ReportError("Target out of range. Raise the speed and/or move closer");
 		log->write(Log::WARNING_LEVEL, "Warning: Target out of range");

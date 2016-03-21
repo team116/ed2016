@@ -1,10 +1,12 @@
 #include "SpyBoxShoot.h"
-#include <Commands/AutoAim.h>
+#include <Commands/AutoShoot.h>
 #include <Commands/Shoot.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/SetShooterPitch.h>
 #include <Commands/TurnDegrees.h>
 #include <Commands/SetShooterPitch.h>
+#include <Commands/SetShooterWheels.h>
+#include <Subsystems/Shooter.h>
 // fucking hydrangeas
 
 SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
@@ -15,10 +17,12 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 	{
 		log->write(Log::TRACE_LEVEL, "Shooting HIGH from Spy Box");
 		if(using_autoaim)
-			AddSequential(new AutoAim());
-		else
-			AddSequential(new SetShooterPitch(40.0));
-		AddSequential(new Shoot());
+			AddSequential(new AutoShoot());
+		else {
+			AddParallel(new SetShooterPitch(CommandBase::shooter_pitch->getPitchToTarget(349.61, 10)));
+			AddSequential(new SetShooterWheels(CommandBase::shooter->getRPMPreset(5)));
+			AddSequential(new Shoot());
+		}
 	}
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
 	{

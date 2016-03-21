@@ -91,7 +91,6 @@ void Shooter::setRPM(float rpm)
 		{
 			if(rpm < (RPM_PRESETS[x] + offset))
 			{
-				DriverStation::ReportError("Is preset " + std::to_string(x));
 				preset = x;
 				break;
 			}
