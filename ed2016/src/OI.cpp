@@ -26,10 +26,6 @@ const float OI::DRIVE_JOYSTICK_SCALE = 0.5;
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
 
-// stupid stuff has to be static.  wah
-SetShooterPitch** OI::set_shooter_pitch = new SetShooterPitch*[ShooterPitch::ANGLE_PRESET_COUNT];
-AngleIntake** OI::angle_intake = new AngleIntake*[Intake::ANGLE_PRESET_COUNT];
-
 OI::OI()
 {
 	//Instantiate Joysticks
@@ -104,6 +100,8 @@ OI::OI()
 
 	shooter_speed_position = 0;
 
+	set_shooter_pitch = new SetShooterPitch*[ShooterPitch::ANGLE_PRESET_COUNT];
+	angle_intake = new AngleIntake*[Intake::ANGLE_PRESET_COUNT];
 	for (int i = 0; i < ShooterPitch::ANGLE_PRESET_COUNT; ++i)
 	{
 		set_shooter_pitch[i] = new SetShooterPitch(ShooterPitch::getAnglePreset(i));
@@ -112,6 +110,10 @@ OI::OI()
 	{
 		angle_intake[i] = new AngleIntake(Intake::getAnglePreset(i));
 	}
+
+	move_intake_in = new MoveIntake(Utils::HorizontalDirection::IN);
+	move_intake_still = new MoveIntake(Utils::HorizontalDirection::H_STILL);
+	move_intake_out = new MoveIntake(Utils::HorizontalDirection::OUT);
 
 	angle_temmie = new Timer();
 	speed_temmie = new Timer();
@@ -303,7 +305,18 @@ Utils::HorizontalDirection OI::getIntakeDirectionSwitch()
 void OI::resetIntakeDirectionSwitch()
 {
 	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
-	Scheduler::GetInstance()->AddCommand(new MoveIntake(intake_direction));
+	switch (intake_direction)
+	{
+	case Utils::HorizontalDirection::IN:
+		Scheduler::GetInstance()->AddCommand(move_intake_in);
+		break;
+	case Utils::HorizontalDirection::H_STILL:
+		Scheduler::GetInstance()->AddCommand(move_intake_still);
+		break;
+	case Utils::HorizontalDirection::OUT:
+		Scheduler::GetInstance()->AddCommand(move_intake_out);
+		break;
+	}
 	last_intake_direction = intake_direction;
 }
 
