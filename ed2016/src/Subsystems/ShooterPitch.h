@@ -33,6 +33,8 @@ public:
 	void setF(float);
 
 	static const float SHOOTER_TO_TARGET_HEIGHT;
+	static const float LIDAR_TO_SHOOTER_DISTANCE;
+	static const float SHOOTER_HEIGHT;
 
 private:
 	// It's desirable that everything possible under private except
@@ -43,9 +45,6 @@ private:
 	static float* ANGLE_PRESETS;
 
 	static const float MANUAL_SPEED;
-	static const float LIDAR_TO_SHOOTER_DISTANCE;
-	static const float SHOOTER_HEIGHT;
-	static const float TARGET_HEIGHT;
 };
 
 #endif

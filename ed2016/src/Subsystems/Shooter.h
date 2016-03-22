@@ -34,6 +34,7 @@ public:
 	void setF(float);
 
 	bool OnTarget();
+	void checkTarget();
 
 	void setRPM(float);
 
@@ -42,6 +43,10 @@ private:
 
 	static const float RPM_PRESETS[];
 	static const float SPEED_PRESETS[];
+	static const int CYCLES_FOR_ONTARGET;
+	static const int ONTARGET_TOLERANCE;;
+
+	int cycles_within_tolerance;
 
 	float speed;
 

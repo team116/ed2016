@@ -19,9 +19,8 @@ float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT]
 	75.0
 };*/
 
-const float ShooterPitch::TARGET_HEIGHT = 246.38;//Centimeters to middle of target 246.38
 const float ShooterPitch::SHOOTER_HEIGHT = 45.72;//cm
-const float ShooterPitch::SHOOTER_TO_TARGET_HEIGHT = (TARGET_HEIGHT - SHOOTER_HEIGHT) / 100.0;//METERS
+const float ShooterPitch::SHOOTER_TO_TARGET_HEIGHT = (Cameras::TARGET_ELEVATION - SHOOTER_HEIGHT) / 100.0;//METERS
 const float ShooterPitch::MANUAL_SPEED = 1.0;
 const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;//cm
 
@@ -109,7 +108,6 @@ void ShooterPitch::checkLimits()
 //Accounts for gravitational acceleration
 float ShooterPitch::getPitchToTarget(float dis, float velocity)//Distance in cm Velocity in m/s
 {
-	dis += LIDAR_TO_SHOOTER_DISTANCE;
 	dis /= 100.0;
 
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "Distance: %f", dis);

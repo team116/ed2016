@@ -25,6 +25,9 @@ const float Shooter::SPEED_PRESETS[] = {
 	1.0
 };
 
+const int Shooter::CYCLES_FOR_ONTARGET = 5;
+const int Shooter::ONTARGET_TOLERANCE = 25;
+
 Shooter::Shooter() : PIDSubsystem("Shooter", 0.001, 0.0, 0.001, 0.00034)
 {
 	shooter_wheel = Utils::constructMotor(RobotPorts::SHOOTER_MOTOR);
@@ -39,6 +42,8 @@ Shooter::Shooter() : PIDSubsystem("Shooter", 0.001, 0.0, 0.001, 0.00034)
 	SetOutputRange(0.0,1.0);
 
 	speed = 0;
+
+	cycles_within_tolerance = 0;
 }
 
 void Shooter::InitDefaultCommand()
@@ -51,11 +56,11 @@ double Shooter::ReturnPIDInput()
 	// Return your input value for the PID loop
 	// e.g. a sensor, like a potentiometer:
 	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-	CommandBase::log->write(Log::DEBUG_LEVEL, "");
-	CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Rate: %f Target: %f P: %F I: %F D: %F", CommandBase::sensors->speedShooterWheel(), GetSetpoint(), GetPIDController()->GetP(), GetPIDController()->GetI(), GetPIDController()->GetD());
+	//CommandBase::log->write(Log::DEBUG_LEVEL, "");
+	//CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Rate: %f Target: %f P: %F I: %F D: %F", CommandBase::sensors->speedShooterWheel(), GetSetpoint(), GetPIDController()->GetP(), GetPIDController()->GetI(), GetPIDController()->GetD());
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "OnTarget: %d", OnTarget());
-	DriverStation::ReportError("");
-	DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));
+	//DriverStation::ReportError("");
+	//DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));
 	return CommandBase::sensors->speedShooterWheel();
 }
 
@@ -64,9 +69,11 @@ void Shooter::UsePIDOutput(double output)
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
 	if(GetPIDController()->IsEnabled()) {
-		CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Set: %f", output, speed);
-		DriverStation::ReportError("Output: " + std::to_string(output));
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Cycles: %d OnTarget: %d", output, cycles_within_tolerance, OnTarget());
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "");
+		//DriverStation::ReportError("Output: " + std::to_string(output) + " OnTarget: " + std::to_string(OnTarget()));
 		setSpeed(output);
+		checkTarget();
 	}
 }
 
@@ -164,9 +171,26 @@ void Shooter::setF(float f)
 
 bool Shooter::OnTarget()
 {
-	if(fabs(GetSetpoint() - CommandBase::sensors->speedShooterWheel()) <= tolerance)
+	if(cycles_within_tolerance >= CYCLES_FOR_ONTARGET)
 	{
 		return true;
 	}
 	return false;
+}
+
+void Shooter::checkTarget()
+{
+	if(fabs(GetPIDController()->GetError()) < ONTARGET_TOLERANCE)
+	{
+		//Has to be in its own if statement because otherwise it would reset the cycle count every time it reached the max
+		if(cycles_within_tolerance < CYCLES_FOR_ONTARGET)
+		{
+			cycles_within_tolerance++;
+		}
+	}
+	else
+	{
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "Resetting cycles. Error: %f", GetPIDController()->GetError());
+		cycles_within_tolerance = 0;
+	}
 }

@@ -29,7 +29,9 @@ private:
 
 	float current_pitch;
 
-	static const float TURN_SPEED;
+	static const float P;
+	static const float MIN_TURN_SPEED;
+	static const float MAX_TURN_SPEED;
 	static const float ACCEPTED_ERROR;
 	static const float TIMEOUT;
 };

@@ -6,11 +6,17 @@
 
 const bool kError = false;
 const bool kOk = true;
-const int IMAGE_WIDTH = 640;
-const int IMAGE_HEIGHT = 360;
-const float CAMERA_MOUNT_ANGLE = 0;//TODO: Measure exact angle on real robot
+const int Cameras::IMAGE_WIDTH = 640;//px
+const int Cameras::IMAGE_HEIGHT = 360;//px
+const float CAMERA_MOUNT_ANGLE = 0;//cm TODO: Measure exact angle on real robot
 const float HEIGHT_DISTANCE_RATIO = 46.25;
-const float CAMERA_MOUNT_HEIGHT = 0.0;//centimeters TODO: Measure exact height on real robot
+const float CAMERA_MOUNT_HEIGHT = 31.0;//cm TODO: Measure exact height on real robot
+const float CAMERA_SIDE_OFFSET = 26.0;//cm
+const float CAMERA_DEGREE_ROTATION = 0.0;
+const float Cameras::TARGET_WIDTH = 50.8;//cm
+const float Cameras::TARGET_HEIGHT = 30.48;//cm height of target
+const float Cameras::TARGET_ELEVATION = 246.38;//cm from floor to middle of target
+const float Cameras::TOWER_TO_GOAL_DISTANCE = 10;//cm to account for how much the tower sticks out
 
 Cameras::Cameras() :
 		Subsystem("Cameras")
@@ -160,11 +166,13 @@ void Cameras::RefreshContours()
 		target.x = grip->GetNumberArray("vision_contours/centerX", llvm::ArrayRef<double>())[index];
 		target.y = grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[index];
 		target.area = grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>())[index];
+		target.width = grip->GetNumberArray("vision_contours/width", llvm::ArrayRef<double>())[index];
 	}
 	else {
 		target.x = 0.0;
 		target.y = 0.0;
 		target.area = 0.0;
+		target.width = 0.0;
 	}
 }
 
@@ -202,7 +210,7 @@ float Cameras::GetTargetX()
 float Cameras::GetTargetY()
 {
 	if(canSeeGoal()) {
-		return target.y / IMAGE_WIDTH;
+		return target.y / IMAGE_HEIGHT;
 	}
 	DriverStation::ReportError("Error: Cannot get target Y if no target in view (Do you need to call RefreshContours?)\n");
 	return 0.0f; //If there is no target in view...
@@ -219,10 +227,15 @@ float Cameras::PitchFromHorizontal()
 }
 
 //Make sure to call RefreshContours
-float Cameras::AzimuthDegreesFromTarget()
+//from negative IMAGE_WIDTH/2 to positive IMAGE_WIDTH/2
+float Cameras::HorizontalPixelsFromTarget()
 {
-	DriverStation::ReportError("Warning: AzimuthDegreesFromTarget is not implemented\n");
-	return 0.0f;
+	return (target.x - IMAGE_WIDTH / 2) - (GetTargetWidth() / TARGET_WIDTH * CAMERA_SIDE_OFFSET);
+}
+
+float Cameras::GetTargetWidth()
+{
+	return target.width;
 }
 
 /*

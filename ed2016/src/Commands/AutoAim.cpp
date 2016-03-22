@@ -13,8 +13,10 @@
 #include <Subsystems/Mobility.h>
 #include <OI.h>
 
-const float AutoAim::TURN_SPEED = 0.5;
-const float AutoAim::ACCEPTED_ERROR = 2;
+const float AutoAim::P = 0.45;
+const float AutoAim::MAX_TURN_SPEED = 0.5;
+const float AutoAim::MIN_TURN_SPEED = 0.15;
+const float AutoAim::ACCEPTED_ERROR = 10;
 const float AutoAim::TIMEOUT = 10;
 
 AutoAim::AutoAim() {
@@ -47,11 +49,10 @@ void AutoAim::Execute()
 
 	rpm = shooter->getRPMPreset(5);
 	//rpm = shooter->getRPMPreset(oi->getShooterSpeedPosition());
-	//rpm = shooter->getSpeedToTarget(90 - pitch);
 	//float vel = M_PI * 0.1016 * (rpm-1000) / 60; // PI * D * RPM / 60
 	//float vel = std::stof(SmartDashboard::GetString("DB/String 9", "0"));
 	float vel = 10;
-	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance(), vel);
+	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE, vel);
 	if(pitch == -1) {
 		DriverStation::ReportError("Target out of range. Raise the speed and/or move closer");
 		log->write(Log::WARNING_LEVEL, "Warning: Target out of range");
@@ -59,8 +60,9 @@ void AutoAim::Execute()
 		return;
 	}
 
-	DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
-	DriverStation::ReportError("RPM: " + std::to_string(rpm));
+	//DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
+	//DriverStation::ReportError("RPM: " + std::to_string(rpm));
+	//log->write(Log::DEBUG_LEVEL, "Auto Aim Pitch: %f", pitch);
 
 	if((rpm > shooter->getRPMPreset(5)) || (rpm < shooter->getRPMPreset(0)) || (pitch < 0) || (pitch > 90)) {
 		log->write(Log::INFO_LEVEL, "Target is out of range(Angle: %f Calculated RPM: %f)", pitch, rpm);
@@ -70,26 +72,27 @@ void AutoAim::Execute()
 		shooter->Enable();
 		shooter->setRPM(rpm);
 	}
+	cameras->RefreshContours();
 	if (cameras->canSeeGoal())
 	{
-		azimuth = cameras->AzimuthDegreesFromTarget();
+		azimuth = cameras->HorizontalPixelsFromTarget();
+		float offset = fabs(azimuth / cameras->IMAGE_WIDTH / 2);
 
 		if (azimuth < -ACCEPTED_ERROR)
 		{
-			mobility->setLeft(-TURN_SPEED);
-			mobility->setRight(TURN_SPEED);
+			mobility->setLeft(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
+			mobility->setRight(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
 		}
 		else if (azimuth > ACCEPTED_ERROR)
 		{
-			mobility->setLeft(TURN_SPEED);
-			mobility->setRight(-TURN_SPEED);
+			mobility->setLeft(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
+			mobility->setRight(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
 		}
 		else
 		{
 			mobility->setLeft(0.0);
 			mobility->setRight(0.0);
 		}
-
 	}
 }
 
