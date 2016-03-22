@@ -152,6 +152,16 @@ float Sensors::shooterAngle()
 	}
 }
 
+float Sensors::intakeVoltage()
+{
+	return intake_angle_encoder->GetVoltage();
+}
+
+float Sensors::shooterVoltage()
+{
+	return shooter_angle_encoder->GetVoltage();
+}
+
 float Sensors::robotAngle()
 {
 	if(robot_angle_enabled)

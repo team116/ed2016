@@ -24,6 +24,9 @@ public:
 	float robotAngle();
 	float intakeAngle();
 
+	float shooterVoltage();
+	float intakeVoltage();
+
 	int lidarDistance();
 	void refreshLidar();
 
@@ -77,9 +80,8 @@ private:
 
 	static const float MIN_INTAKE_ANGLE_VOLT; // voltage @ 0 degrees
 	static const float MAX_INTAKE_ANGLE_VOLT; // voltage @ 90 degrees
-public:
+
 	AnalogInput*  intake_angle_encoder;
-private:
 
 	static const int SHOOTER_WHEEL_PPR; // pulses per revolution
 	static const int TACH_PERIOD_COUNT = 10;
