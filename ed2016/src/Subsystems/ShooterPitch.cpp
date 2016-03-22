@@ -25,7 +25,7 @@ const float ShooterPitch::MANUAL_SPEED = 1.0;
 const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;//cm
 
 ShooterPitch::ShooterPitch() :
-		PIDSubsystem("ShooterPitch", 0.03, 0.00005, 0.0, 0.0)
+		PIDSubsystem("ShooterPitch", 0.1, 0.0001, 0.0, 0.0)
 {
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
 
