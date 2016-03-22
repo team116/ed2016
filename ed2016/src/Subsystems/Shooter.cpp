@@ -9,11 +9,11 @@
 
 const float Shooter::RPM_PRESETS[] = {
 	1000.0,
-	1340.0,
-	1680.0,
-	2020.0,
-	2360.0,
-	2700.0
+	1300.0,
+	1600.0,
+	1900.0,
+	2200.0,
+	2500.0
 };
 
 const float Shooter::SPEED_PRESETS[] = {
