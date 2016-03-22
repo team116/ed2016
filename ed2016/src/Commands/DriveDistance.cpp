@@ -3,7 +3,7 @@
 #include <Subsystems/Sensors.h>
 #include <Commands/DriveStraight.h>
 
-const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 0.1;
+const float DriveDistance::DRIVE_DISTANCE_TIMEOUT = 0.05;
 
 DriveDistance::DriveDistance(float dist)
 {

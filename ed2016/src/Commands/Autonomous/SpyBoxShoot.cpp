@@ -17,7 +17,7 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 		if(using_autoaim)
 			AddSequential(new AutoAim());
 		else
-			AddSequential(new SetShooterPitch(40.0));
+			AddSequential(new SetShooterPitch(83.0));
 		AddSequential(new Shoot());
 	}
 	else if (goal == Autonomous::LOW)	//getlow getlow getlow 369
