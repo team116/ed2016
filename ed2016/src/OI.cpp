@@ -23,7 +23,7 @@
 #include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
 
-const float OI::DRIVE_JOYSTICK_SCALE = 0.5;
+const float OI::DRIVE_JOYSTICK_SCALE = 1.0;
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
 
