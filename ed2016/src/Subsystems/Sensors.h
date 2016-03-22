@@ -100,6 +100,7 @@ private:
 
 	static const float WINCH_SPEED;
 
+	static const int LIDAR_OFFSET;
 	Timer* lidar_timer;
 	unsigned int lidar_stage;
 	I2C* lidar;

@@ -1,16 +1,25 @@
 #include "LiftIntake.h"
 #include <Subsystems/Intake.h>
+#include <Subsystems/Sensors.h>
 
 LiftIntake::LiftIntake(Utils::VerticalDirection dir)
 {
 	Requires(&*intake);
 
+	pid_enabled = false;
 	direction = dir;
 }
 
 // Called just before this Command runs the first time
 void LiftIntake::Initialize()
 {
+	pid_enabled = intake->isPIDEnabled();
+	if (pid_enabled)
+	{
+		// prevent PID from fighting the manual controls
+		intake->Disable();
+	}
+
 	intake->setIntakeAngleDirection(direction);
 
 	switch (direction)
@@ -45,7 +54,15 @@ bool LiftIntake::IsFinished()
 // Called once after isFinished returns true
 void LiftIntake::End()
 {
-	intake->setIntakeAngleDirection(Utils::VerticalDirection::V_STILL);
+	if (pid_enabled)
+	{
+		intake->Enable();
+		intake->SetSetpoint(sensors->intakeAngle());
+	}
+	else
+	{
+		intake->setIntakeAngleDirection(Utils::VerticalDirection::V_STILL);
+	}
 }
 
 // Called when another command which requires one or more of the same

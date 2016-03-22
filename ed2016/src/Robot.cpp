@@ -198,12 +198,13 @@ private:
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
 			char text[255];
-			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f, tach rate: %f",
+			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f, tach rate: %f, lidar dist: %d",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->shooter_angle_encoder->GetVoltage(),
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->intake_angle_encoder->GetVoltage(),
-				CommandBase::sensors->speedShooterWheel());
+				CommandBase::sensors->speedShooterWheel(),
+				CommandBase::sensors->lidarDistance());
 			DriverStation::ReportError(text);
 		}
 		catch (exception& e)

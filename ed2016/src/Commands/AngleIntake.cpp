@@ -33,6 +33,10 @@ void AngleIntake::Initialize()
 	log->write(Log::TRACE_LEVEL, "Angle Intake Initialized (angle, %f)", angle);
 	if (sensors->areIntakeAngleEnabled())
 	{
+		if (intake->isPIDEnabled())
+		{
+			intake->SetSetpoint(angle);
+		}
 		SetTimeout(TIMEOUT * fabs(angle - sensors->intakeAngle()));
 	}
 	else
@@ -43,28 +47,31 @@ void AngleIntake::Initialize()
 
 void AngleIntake::Execute()
 {
-	if (sensors->areIntakeAngleEnabled())
+	if (!intake->isPIDEnabled())
 	{
-		current_angle = sensors->intakeAngle();
-	}
-	else
-	{
-		current_angle = last_angle;
-	}
+		if (sensors->areIntakeAngleEnabled())
+		{
+			current_angle = sensors->intakeAngle();
+		}
+		else
+		{
+			current_angle = last_angle;
+		}
 
-	if (angle > current_angle)
-	{
-		direction = Utils::VerticalDirection::DOWN;
+		if (angle > current_angle)
+		{
+			direction = Utils::VerticalDirection::DOWN;
+		}
+		else if (angle < current_angle)
+		{
+			direction = Utils::VerticalDirection::UP;
+		}
+		else
+		{
+			direction = Utils::VerticalDirection::V_STILL;
+		}
+		intake->setIntakeAngleDirection(direction);
 	}
-	else if (angle < current_angle)
-	{
-		direction = Utils::VerticalDirection::UP;
-	}
-	else
-	{
-		direction = Utils::VerticalDirection::V_STILL;
-	}
-	intake->setIntakeAngleDirection(direction);
 }
 
 bool AngleIntake::IsFinished()

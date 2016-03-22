@@ -16,6 +16,8 @@ const int Sensors::DRIVE_WHEEL_PPR = 128;
 
 const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
+const int Sensors::LIDAR_OFFSET = -10;
+
 // objects need to be initialized to null so that they don't try to use resources that haven't been set up statically
 Timer* Sensors::tach_pulse_timer = nullptr;
 int Sensors::last_tach_count = 0;
@@ -70,7 +72,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	lidar_timer->Start();
 	lidar_timer->Reset();
 	lidar_distance = 0;
-	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
+	lidar = new I2C(I2C::Port::kMXP, RobotPorts::LIDAR_ADDRESS);
 
 	navx = new AHRS(SPI::Port::kMXP);
 
@@ -212,6 +214,7 @@ int Sensors::lidarDistance()
 void Sensors::refreshLidar()
 {
 	uint8_t lidar_range_copy;
+
 	if (lidar_timer->Get() > (0.04 * (float)lidar_stage))
 	{
 		switch (lidar_stage)
@@ -228,7 +231,7 @@ void Sensors::refreshLidar()
 		case 2:
 			uint8_t buffer[2];
 			lidar->ReadOnly(2, buffer);
-			lidar_distance = (buffer[0] << 8) + buffer[1];
+			lidar_distance = ((buffer[0] << 8) + buffer[1]) - LIDAR_OFFSET;
 			++lidar_stage;
 			break;
 		case 3:
