@@ -77,7 +77,8 @@ public:
 	AnalogInput* shooter_angle_encoder;
 private:
 
-	static const float INTAKE_ANGLE_OFFSET;
+	static const float MIN_INTAKE_ANGLE_VOLT; // voltage @ 0 degrees
+	static const float MAX_INTAKE_ANGLE_VOLT; // voltage @ 90 degrees
 public:
 	AnalogInput*  intake_angle_encoder;
 private:
