@@ -1,7 +1,8 @@
 #include "AutoShoot.h"
 
 #include <Commands/Shoot.h>
-#include <Commands/AutoAim.h>
+#include <Commands/TurnToTarget.h>
+#include <Commands/AimShooterToTarget.h>
 
 AutoShoot::AutoShoot()
 {
@@ -22,6 +23,7 @@ AutoShoot::AutoShoot()
 	// a CommandGroup containing them would require both the chassis and the
 	// arm.
 
-	AddSequential(new AutoAim());
+	AddSequential(new TurnToTarget());
+	AddSequential(new AimShooterToTarget());
 	AddSequential(new Shoot());
 }

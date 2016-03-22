@@ -1,7 +1,7 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/CrossDefense.h>
 #include <Autonomous.h>
-#include <Commands/AutoAim.h>
+#include <Commands/AutoShoot.h>
 #include <Commands/Shoot.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/SweepForGoal.h>
@@ -22,8 +22,7 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 		{
 		log->write(Log::TRACE_LEVEL, "Shooting HIGH");
 			AddSequential(new SweepForGoal(initial_position));
-			AddSequential(new AutoAim());
-			AddSequential(new Shoot());
+			AddSequential(new AutoShoot());
 		}
 
 	else if (goal == Autonomous::LOW)
