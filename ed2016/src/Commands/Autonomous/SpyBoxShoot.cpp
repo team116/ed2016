@@ -18,7 +18,8 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 		log->write(Log::TRACE_LEVEL, "Shooting HIGH from Spy Box");
 		if(using_autoaim)
 			AddSequential(new AutoShoot());
-		else {
+		else
+		{
 			AddParallel(new SetShooterPitch(CommandBase::shooter_pitch->getPitchToTarget(349.61, 10)));
 			AddSequential(new SetShooterWheels(CommandBase::shooter->getRPMPreset(5)));
 			AddSequential(new Shoot());
