@@ -36,20 +36,23 @@ void TurnToTarget::Execute()
 	if (cameras->canSeeGoal())
 	{
 		pixels_off = cameras->HorizontalPixelsFromTarget();
-		float offset = fabs(pixels_off / cameras->IMAGE_WIDTH / 2);
+		float offset = fabs(pixels_off / (cameras->IMAGE_WIDTH / 2));
 
 		if (pixels_off < -ACCEPTED_ERROR)
 		{
+			//DriverStation::ReportError("Turning Left " + std::to_string(pixels_off));
 			mobility->setLeft(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
 			mobility->setRight(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
 		}
 		else if (pixels_off > ACCEPTED_ERROR)
 		{
+			//DriverStation::ReportError("Turning Right" + std::to_string(pixels_off));
 			mobility->setLeft(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
 			mobility->setRight(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
 		}
 		else
 		{
+			//DriverStation::ReportError("Lined Up" + std::to_string(pixels_off));
 			mobility->setLeft(0.0);
 			mobility->setRight(0.0);
 		}

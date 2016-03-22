@@ -3,9 +3,10 @@
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Cameras.h>
 #include <Subsystems/Sensors.h>
+#include <OI.h>
 
 const float ACCEPTED_ERROR = 2;
-const float TIMEOUT = 5;
+const float TIMEOUT = 6;
 
 AimShooterToTarget::AimShooterToTarget()
 {
@@ -26,6 +27,10 @@ AimShooterToTarget::AimShooterToTarget()
 // Called just before this Command runs the first time
 void AimShooterToTarget::Initialize()
 {
+	if(oi->getPIDEnableSwitch()) {
+		shooter->Enable();
+		shooter_pitch->Enable();
+	}
 	log->write(Log::TRACE_LEVEL, "AimShooterToTarget initialized");
 	interrupted = false;
 
@@ -33,7 +38,7 @@ void AimShooterToTarget::Initialize()
 	//rpm = shooter->getRPMPreset(oi->getShooterSpeedPosition());
 	//float vel = M_PI * 0.1016 * (rpm-1000) / 60; // PI * D * RPM / 60
 	//float vel = std::stof(SmartDashboard::GetString("DB/String 9", "0"));
-	float vel = 10;
+	float vel = 9.2;
 	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE, vel);
 	if((pitch < 0) || (pitch > 90)) {
 		DriverStation::ReportError("Target out of range. Move closer");
@@ -71,6 +76,7 @@ bool AimShooterToTarget::IsFinished()
 	else if(IsTimedOut()) {
 		log->write(Log::WARNING_LEVEL, "AimShooterToTarget timed out after %f seconds (current pitch: %f target pitch: %f current rpm: %f target rpm: %f)", TIMEOUT,
 				current_pitch, pitch, CommandBase::sensors->speedShooterWheel(), rpm);
+		return true;
 	}
 	return false;
 }
