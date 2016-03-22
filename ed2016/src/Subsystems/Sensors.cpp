@@ -8,8 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.0955;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.2949;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.48;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.74;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
