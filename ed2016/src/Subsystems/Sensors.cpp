@@ -8,17 +8,32 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.11;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.31;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.48;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.74;
 const float Sensors::INTAKE_ANGLE_OFFSET = 0.0;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
 
 const int Sensors::SHOOTER_WHEEL_PPR = 2;
 
+const int Sensors::LIDAR_OFFSET = -10;
+
+// objects need to be initialized to null so that they don't try to use resources that haven't been set up statically
+Timer* Sensors::tach_pulse_timer = nullptr;
+int Sensors::last_tach_count = 0;
+float Sensors::last_tach_timestamp = 0.0;
+bool Sensors::continue_sensor_update_thread = true;
+mutex* Sensors::tach_speed_access = nullptr;
+Counter* Sensors::shooter_wheel_tach = nullptr;
+float Sensors::shooter_wheel_tach_rate = 0.0;
+
 Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 {
 	log = Log::getInstance();
+
+	tach_pulse_timer = new Timer();
+	tach_speed_access = new mutex();
+	shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
 
 	shooter_angle_offset = 0.0;
 	shooter_angle_encoder = new AnalogInput(RobotPorts::SHOOTER_ANGLE_ENCODER);
@@ -27,12 +42,12 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	intake_angle_encoder = new AnalogInput(RobotPorts::INTAKE_ANGLE_ENCODER);
 	shooter_home_switch = new DigitalInput(RobotPorts::SHOOTER_HOME_SWITCH);
 
-	shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
+	//shooter_wheel_tach = new Counter(RobotPorts::SHOOTER_WHEEL_TACH);
 	//top_shooter_wheel_tach = new Counter(RobotPorts::TOP_SHOOTER_WHEEL_TACH);
 	//bottom_shooter_wheel_tach = new Counter(RobotPorts::BOTTOM_SHOOTER_WHEEL_TACH);
 
 	shooter_wheel_tach->ClearDownSource();
-	shooter_wheel_tach_rate = 0.0;
+	//shooter_wheel_tach_rate = 0.0;
 	cur_tach_period_index = 0;
 	for (int i = 0; i < TACH_PERIOD_COUNT; ++i)
 	{
@@ -57,20 +72,43 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	lidar_timer->Start();
 	lidar_timer->Reset();
 	lidar_distance = 0;
-	lidar = new I2C(I2C::Port::kOnboard, RobotPorts::LIDAR_ADDRESS);
+	lidar = new I2C(I2C::Port::kMXP, RobotPorts::LIDAR_ADDRESS);
 
 	navx = new AHRS(SPI::Port::kMXP);
 
 	pdp = new PowerDistributionPanel(RobotPorts::PDP);
 
-	drive_encoders_enabled = true;
+	drive_encoders_enabled = false;
 	lidar_sensor_enabled = true;
 	shooter_angle_enabled = true;
 	robot_angle_enabled = true;
 	intake_angle_enabled = true;
 	ready_to_shoot_enabled = true;
-	shooter_home_switch_enabled = false;
+	shooter_home_switch_enabled = true;
 	shooter_wheel_tachometer_enabled = true;
+
+	if (shooterWheelTachometerEnabled())
+	{
+		tach_pulse_timer->Start();
+		tach_pulse_timer->Reset();
+		sensor_update_thread = new thread(updateSensorsThread);
+		sensor_update_thread->detach(); // let the thread run separately
+	}
+	else
+	{
+		sensor_update_thread = nullptr;
+		continue_sensor_update_thread = false;
+	}
+}
+
+Sensors::~Sensors()
+{
+	continue_sensor_update_thread = false;
+	if (sensor_update_thread != nullptr)
+	{
+		sensor_update_thread->join();
+		delete sensor_update_thread;
+	}
 }
 
 void Sensors::InitDefaultCommand()
@@ -102,7 +140,7 @@ float Sensors::shooterAngle()
 		}
 		else
 		{
-			return actual;
+			return actual - shooter_angle_offset;
 		}
 	}
 	else
@@ -176,6 +214,7 @@ int Sensors::lidarDistance()
 void Sensors::refreshLidar()
 {
 	uint8_t lidar_range_copy;
+
 	if (lidar_timer->Get() > (0.04 * (float)lidar_stage))
 	{
 		switch (lidar_stage)
@@ -192,7 +231,7 @@ void Sensors::refreshLidar()
 		case 2:
 			uint8_t buffer[2];
 			lidar->ReadOnly(2, buffer);
-			lidar_distance = (buffer[0] << 8) + buffer[1];
+			lidar_distance = ((buffer[0] << 8) + buffer[1]) - LIDAR_OFFSET;
 			++lidar_stage;
 			break;
 		case 3:
@@ -263,7 +302,7 @@ bool Sensors::readyToShoot()
 {
 	if (ready_to_shoot_enabled)
 	{
-		return ready_to_shoot_balls_switch->Get();
+		return !ready_to_shoot_balls_switch->Get();
 	}
 	else
 	{
@@ -313,42 +352,6 @@ float Sensors::getSpeedRight()
 	return 0.0;
 }
 
-void Sensors::updateTachometers()
-{
-	unsigned int cur_tach_count = shooter_wheel_tach->Get();
-	float cur_timestamp = cycle_timer->Get();
-
-	shooter_wheel_tach_rate = (float)(cur_tach_count - prev_tach_counts[cur_tach_period_index]) / (cur_timestamp - prev_tach_timestamps[cur_tach_period_index]) * 60.0;
-	/*char text[255];
-	snprintf(text, 255, "tach rate: %f, prev count: %d, cur count: %d, prev time: %f, cur time: %f",
-			shooter_wheel_tach_rate,
-			prev_tach_counts[cur_tach_period_index],
-			cur_tach_count,
-			prev_tach_timestamps[cur_tach_period_index],
-			cur_timestamp);
-	DriverStation::ReportError(text);*/
-	prev_tach_counts[cur_tach_period_index] = cur_tach_count;
-	prev_tach_timestamps[cur_tach_period_index] = cur_timestamp;
-
-	++cur_tach_period_index;
-	if (cur_tach_period_index == TACH_PERIOD_COUNT)
-	{
-		cur_tach_period_index = 0;
-	}
-}
-/*
-void Sensors::updateTachometers()
-{
-	unsigned int cur_shooter_wheel_count = shooter_wheel_tach->Get();
-	float cycle_time = getCycleTime();
-
-	// multiply by 60 to convert to RPM
-	shooter_wheel_tach_rate = (float)(cur_shooter_wheel_count - prev_shooter_wheel_tach_count) / cycle_time * 60.0;
-
-	prev_shooter_wheel_tach_count = cur_shooter_wheel_count;
-}
-*/
-
 float Sensors::getCycleTime()
 {
 	return cycle_timer->Get() - prev_time_stamp;
@@ -357,4 +360,26 @@ float Sensors::getCycleTime()
 void Sensors::updateCycleTime()
 {
 	prev_time_stamp = cycle_timer->Get();
+}
+
+void Sensors::updateSensorsThread()
+{
+	while (continue_sensor_update_thread)
+	{
+		if (shooter_wheel_tach->Get() > last_tach_count)
+		{
+			float timestamp = tach_pulse_timer->Get();
+			int count = shooter_wheel_tach->Get();
+			setShooterSpeedTachValue((float)(count - last_tach_count) / (timestamp - last_tach_timestamp) / (float)SHOOTER_WHEEL_PPR * 60.0);
+
+			last_tach_count = count;
+			last_tach_timestamp = timestamp;
+		}
+	}
+}
+
+void Sensors::setShooterSpeedTachValue(float rate)
+{
+	lock_guard<mutex> guard(*tach_speed_access);
+	shooter_wheel_tach_rate = rate;
 }

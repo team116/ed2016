@@ -1,5 +1,7 @@
 #include <RobotMap.h>
 #include <Subsystems/Intake.h>
+#include <Subsystems/Sensors.h>
+#include <CommandBase.h>
 
 const int Intake::ANGLE_PRESET_COUNT = 6;
 float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT];/* {
@@ -11,7 +13,7 @@ float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT];/* {
 	90.0
 };*/
 
-Intake::Intake() : Subsystem("Intake")
+Intake::Intake() : PIDSubsystem("Intake", 0.09, 0, 0)
 {
 	intake_roller = Utils::constructMotor(RobotPorts::INTAKE_ROLLER_MOTOR);
 	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
@@ -22,12 +24,39 @@ Intake::Intake() : Subsystem("Intake")
 	}
 
 	log = Log::getInstance();
+
+	SetInputRange(-90, 120);
+	SetAbsoluteTolerance(0.0);
+	SetOutputRange(-1.0,1.0);
+
+	GetPIDController()->SetContinuous(false);
 }
 
 void Intake::InitDefaultCommand()
 {
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
+}
+
+double Intake::ReturnPIDInput()
+{
+	// Return your input value for the PID loop
+	// e.g. a sensor, like a potentiometer:
+	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
+
+	//CommandBase::log->write(Log::DEBUG_LEVEL, "");
+	//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Angle: %f Target: %f P: %f I: %f D: %f", CommandBase::sensors->intakeAngle(), GetSetpoint(), getP(), getI(), getD());
+	return CommandBase::sensors->intakeAngle();
+}
+
+void Intake::UsePIDOutput(double output)
+{
+	// Use output to drive your system, like a motor
+	// e.g. yourMotor->Set(output);
+	if(GetPIDController()->IsEnabled()) {
+		//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
+		intake_angle->Set(output);
+	}
 }
 
 void Intake::setIntakeDirection(Utils::HorizontalDirection value)
@@ -75,4 +104,43 @@ float Intake::getAnglePreset(int index)
 		index = 0;
 	}
 	return ANGLE_PRESETS[index];
+}
+
+bool Intake::isPIDEnabled()
+{
+	return GetPIDController()->IsEnabled();
+}
+
+float Intake::getP()
+{
+	return GetPIDController()->GetP();
+}
+float Intake::getI()
+{
+	return GetPIDController()->GetI();
+}
+float Intake::getD()
+{
+	return GetPIDController()->GetD();
+}
+float Intake::getF()
+{
+	return GetPIDController()->GetF();
+}
+
+void Intake::setP(float p)
+{
+	GetPIDController()->SetPID(p, getI(), getD());
+}
+void Intake::setI(float i)
+{
+	GetPIDController()->SetPID(getP(), i, getD());
+}
+void Intake::setD(float d)
+{
+	GetPIDController()->SetPID(getP(), getI(), d);
+}
+void Intake::setF(float f)
+{
+	GetPIDController()->SetPID(getP(), getI(), getD(), f);
 }

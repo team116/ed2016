@@ -6,19 +6,29 @@
 #include <RobotMap.h>
 #include <WPILib.h>
 
-class Intake: public Subsystem
+class Intake: public PIDSubsystem
 {
 public:
 	static const int ANGLE_PRESET_COUNT;
 	static float getAnglePreset(int index);
 
 	Intake();
+	double ReturnPIDInput();
+	void UsePIDOutput(double output);
 	void InitDefaultCommand();
-	// It's desirable that everything possible under private except
-	// for methods that implement subsystem capabilities
 
 	void setIntakeDirection(Utils::HorizontalDirection);
 	void setIntakeAngleDirection(Utils::VerticalDirection);
+
+	bool isPIDEnabled();
+	float getP();
+	float getI();
+	float getD();
+	float getF();
+	void setP(float);
+	void setI(float);
+	void setD(float);
+	void setF(float);
 
 private:
 	SpeedController* intake_roller;

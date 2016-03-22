@@ -1,21 +1,23 @@
 #include <cstdlib>
 #include <OI.h>
-#include <Commands/ExtendScalingArm.h>
-#include <Commands/RetractWinches.h>
-#include <Commands/AutoAim.h>
-#include <Commands/ClearCommands.h>
-#include <Commands/SetShooterPitch.h>
-#include <Commands/RunShooterWheels.h>
-#include <Commands/SelectCamera.h>
-#include <Commands/Shoot.h>
-#include <Commands/ManualWinchControl.h>
-#include <Commands/MoveClimberArm.h>
-#include <Commands/MoveHolderWheel.h>
 #include <Commands/AngleIntake.h>
-#include <Commands/MoveIntake.h>
+#include <Commands/AutoShoot.h>
+#include <Commands/ExtendScalingArm.h>
+#include <Commands/ClearCommands.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
 #include <Commands/JoystickTurn.h>
+#include <Commands/LiftIntake.h>
+#include <Commands/ManualWinchControl.h>
+#include <Commands/MoveClimberArm.h>
+#include <Commands/MoveHolderWheel.h>
+#include <Commands/MoveIntake.h>
+#include <Commands/ResetShooterAngle.h>
+#include <Commands/RetractWinches.h>
+#include <Commands/RunShooterWheels.h>
+#include <Commands/SelectCamera.h>
+#include <Commands/SetShooterPitch.h>
+#include <Commands/Shoot.h>
 #include <Commands/TogglePID.h>
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
@@ -24,10 +26,6 @@
 const float OI::DRIVE_JOYSTICK_SCALE = 0.5;
 const float OI::DIAL_UPDATE_TIME = 0.05;
 const float OI::DEAD_ZONE_AMOUNT = 0.1;
-
-// stupid stuff has to be static.  wah
-SetShooterPitch** OI::set_shooter_pitch = new SetShooterPitch*[ShooterPitch::ANGLE_PRESET_COUNT];
-AngleIntake** OI::angle_intake = new AngleIntake*[Intake::ANGLE_PRESET_COUNT];
 
 OI::OI()
 {
@@ -47,10 +45,13 @@ OI::OI()
 	b_turn_x_axis_left = new JoystickButton(joystick_left, OI_Ports::B_TURN_X_AXIS_LEFT);
 
 	//Instantiate Joystick Buttons 1's Buttons
-	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
+//	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
+//	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
+	b_move_intake_up = new JoystickButton(joystick_buttons1, OI_Ports::MOVE_INTAKE_UP_BUTTON);
+	b_move_intake_down = new JoystickButton(joystick_buttons2, OI_Ports::MOVE_INTAKE_DOWN_BUTTON);
+
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOT_BUTTON);
-	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	s_shooter_wheels = new JoystickButton(joystick_buttons1, OI_Ports::SHOOTER_WHEELS_SWITCH);
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
 	s_intake_belt_outward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
@@ -79,9 +80,11 @@ OI::OI()
 	b_auto_winch->WhenPressed(new RetractWinches());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
-	b_auto_aim->WhileHeld(new AutoAim());
+	b_auto_aim->WhenPressed(new AutoShoot());
+	b_move_intake_up->WhileHeld(new LiftIntake(Utils::VerticalDirection::UP));
+	b_move_intake_down->WhileHeld(new LiftIntake(Utils::VerticalDirection::DOWN));
 	//b_clear_commands->WhenPressed(new ClearCommands());
-	//b_test_button->ToggleWhenPressed(new DriveStraight(0.5, DriveStraight::SensorType::GYRO));
+	//b_test_button->WhenPressed(new ResetShooterAngle());
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
@@ -103,6 +106,8 @@ OI::OI()
 
 	shooter_speed_position = 0;
 
+	set_shooter_pitch = new SetShooterPitch*[ShooterPitch::ANGLE_PRESET_COUNT];
+	angle_intake = new AngleIntake*[Intake::ANGLE_PRESET_COUNT];
 	for (int i = 0; i < ShooterPitch::ANGLE_PRESET_COUNT; ++i)
 	{
 		set_shooter_pitch[i] = new SetShooterPitch(ShooterPitch::getAnglePreset(i));
@@ -111,6 +116,10 @@ OI::OI()
 	{
 		angle_intake[i] = new AngleIntake(Intake::getAnglePreset(i));
 	}
+
+	move_intake_in = new MoveIntake(Utils::HorizontalDirection::IN);
+	move_intake_still = new MoveIntake(Utils::HorizontalDirection::H_STILL);
+	move_intake_out = new MoveIntake(Utils::HorizontalDirection::OUT);
 
 	angle_temmie = new Timer();
 	speed_temmie = new Timer();
@@ -172,11 +181,13 @@ void OI::process()
 		aim_temmie->Reset();
 		aim_temmie->Stop();
 
+		/*
 		if (b_clear_commands->Get())
 		{
 			DriverStation::ReportError("\nClearing commands.");
 			Scheduler::GetInstance()->RemoveAll();
 		}
+		*/
 	}
 	
 	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
@@ -184,11 +195,22 @@ void OI::process()
 	{
 		resetIntakeDirectionSwitch();
 	}
-	/*
-	CommandBase::shooter_pitch_pid->setP(SmartDashboard::GetNumber("p-val", CommandBase::shooter_pitch_pid->getP()));
-	CommandBase::shooter_pitch_pid->setI(SmartDashboard::GetNumber("i-val", CommandBase::shooter_pitch_pid->getI()));
-	CommandBase::shooter_pitch_pid->setD(SmartDashboard::GetNumber("d-val", CommandBase::shooter_pitch_pid->getD()));
-	*/
+
+    /*CommandBase::shooter->setP(std::stof(SmartDashboard::GetString("DB/String 0", "0")));
+    CommandBase::shooter->setI(std::stof(SmartDashboard::GetString("DB/String 1", "0")));
+    CommandBase::shooter->setD(std::stof(SmartDashboard::GetString("DB/String 2", "0")));
+    CommandBase::shooter->setF(std::stof(SmartDashboard::GetString("DB/String 3", "0")));
+    CommandBase::intake->setP(std::stof(SmartDashboard::GetString("DB/String 5", "0")));
+    CommandBase::intake->setI(std::stof(SmartDashboard::GetString("DB/String 6", "0")));
+    CommandBase::intake->setD(std::stof(SmartDashboard::GetString("DB/String 7", "0")));
+    CommandBase::intake->setF(std::stof(SmartDashboard::GetString("DB/String 8", "0")));
+    CommandBase::shooter_pitch->setP(std::stof(SmartDashboard::GetString("DB/String 5", "0")));
+    CommandBase::shooter_pitch->setI(std::stof(SmartDashboard::GetString("DB/String 6", "0")));
+    CommandBase::shooter_pitch->setD(std::stof(SmartDashboard::GetString("DB/String 7", "0")));
+    CommandBase::shooter_pitch->setF(std::stof(SmartDashboard::GetString("DB/String 8", "0")));*/
+
+	//CommandBase::shooter_pitch->DISTANCE = std::stof(SmartDashboard::GetString("DB/String 4", "0"));
+
 }
 
 float OI::getJoystickLeftY()
@@ -291,11 +313,27 @@ Utils::HorizontalDirection OI::getIntakeDirectionSwitch()
 void OI::resetIntakeDirectionSwitch()
 {
 	Utils::HorizontalDirection intake_direction = getIntakeDirectionSwitch();
-	Scheduler::GetInstance()->AddCommand(new MoveIntake(intake_direction));
+	switch (intake_direction)
+	{
+	case Utils::HorizontalDirection::IN:
+		Scheduler::GetInstance()->AddCommand(move_intake_in);
+		break;
+	case Utils::HorizontalDirection::H_STILL:
+		Scheduler::GetInstance()->AddCommand(move_intake_still);
+		break;
+	case Utils::HorizontalDirection::OUT:
+		Scheduler::GetInstance()->AddCommand(move_intake_out);
+		break;
+	}
 	last_intake_direction = intake_direction;
 }
 
 bool OI::getPIDEnableSwitch()
 {
 	return s_pid_enable->Get();
+}
+
+void OI::updateAngle()
+{
+	manual_aim_position_process = -1;
 }

@@ -15,6 +15,7 @@ Shoot::Shoot() : CommandBase("Shoot")
 	timer = new Timer();
 	interrupted = false;
 	past_speed_up_time = false;
+	set_wheels = false;
 }
 
 // Called just before this Command runs the first time
@@ -25,19 +26,32 @@ void Shoot::Initialize()
 	past_speed_up_time = false;
 	timer->Start();
 	timer->Reset();
+
+	if((shooter->GetSetpoint() != 0.0) || (shooter->getMotorSpeed() != 0.0)) {
+		set_wheels = false;
+	}
+	else {
+		set_wheels = true;
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run
 void Shoot::Execute()
 {
-	float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
-	//shooter->setShooterSpeed(shooter->getSpeedPreset(oi->getShooterSpeedPosition()));
+	if(set_wheels) {
+		float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
+		shooter->setRPM(ideal_speed);
 
-	if (!past_speed_up_time && (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME))
-	{
+		if (!past_speed_up_time && (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME))
+		{
+			past_speed_up_time = true;
+			holder_wheel->setWheelDirection(Utils::HorizontalDirection::IN);
+			timer->Reset();
+		}
+	}
+	else {
 		past_speed_up_time = true;
 		holder_wheel->setWheelDirection(Utils::HorizontalDirection::IN);
-		timer->Reset();
 	}
 }
 
@@ -61,7 +75,8 @@ void Shoot::End()
 {
 	log->write(Log::TRACE_LEVEL,"Shoot Ended");
 	oi->resetIntakeDirectionSwitch();
-	shooter->setShooterSpeed(0.0);
+	shooter->setSpeed(0.0);
+	oi->updateAngle();
 }
 
 // Called when another command which requires one or more of the same

@@ -27,11 +27,11 @@ void Winches::setFrontWinchDirection(Utils::VerticalDirection direction)
 	front_winch_direction = direction;
 	if (direction == Utils::VerticalDirection::UP)
 	{
-		setFrontWinchSpeed(WINCH_SPEED);
+		setFrontWinchSpeed(-WINCH_SPEED);
 	}
 	else if (direction == Utils::VerticalDirection::DOWN)
 	{
-		setFrontWinchSpeed(-WINCH_SPEED);
+		setFrontWinchSpeed(WINCH_SPEED);
 	}
 	else
 	{
@@ -44,11 +44,11 @@ void Winches::setBackWinchDirection (Utils::VerticalDirection direction)
 	back_winch_direction = direction;
 	if (direction == Utils::VerticalDirection::UP)
 	{
-		setBackWinchSpeed(WINCH_SPEED);
+		setBackWinchSpeed(-WINCH_SPEED);
 	}
 	else if (direction == Utils::VerticalDirection::DOWN)
 	{
-		setBackWinchSpeed(-WINCH_SPEED);
+		setBackWinchSpeed(WINCH_SPEED);
 	}
 	else
 	{
@@ -60,11 +60,11 @@ void Winches::setFrontWinchSpeed(float speed) {
 	front_winch->Set(Utils::boundaryCheck(speed, -1.0, 1.0));
 	if (speed < 0.0)
 	{
-		front_winch_direction = Utils::VerticalDirection::DOWN;
+		front_winch_direction = Utils::VerticalDirection::UP;
 	}
 	else if (speed > 0.0)
 	{
-		front_winch_direction = Utils::VerticalDirection::UP;
+		front_winch_direction = Utils::VerticalDirection::DOWN;
 	}
 	else
 	{
@@ -76,11 +76,11 @@ void Winches::setBackWinchSpeed(float speed) {
 	back_winch->Set(Utils::boundaryCheck(-speed, -1.0, 1.0));
 	if (speed < 0.0)
 	{
-		back_winch_direction = Utils::VerticalDirection::DOWN;
+		back_winch_direction = Utils::VerticalDirection::UP;
 	}
 	else if (speed > 0.0)
 	{
-		back_winch_direction = Utils::VerticalDirection::UP;
+		back_winch_direction = Utils::VerticalDirection::DOWN;
 	}
 	else
 	{

@@ -3,6 +3,7 @@
 
 #include <Joystick.h>
 #include <Commands/AngleIntake.h>
+#include <Commands/MoveIntake.h>
 #include <Commands/SetShooterPitch.h>
 #include <Subsystems/Intake.h>
 #include <WPILib.h>
@@ -33,6 +34,8 @@ public:
 
 	bool getPIDEnableSwitch();
 
+	void updateAngle();
+
 private:
 	static const float DRIVE_JOYSTICK_SCALE;
 	Joystick* joystick_left;
@@ -59,7 +62,10 @@ private:
 	JoystickButton* b_auto_climber_deploy;
 	JoystickButton* b_shooter_engage;
 	JoystickButton* b_auto_aim;
-	JoystickButton* b_clear_commands;
+//	JoystickButton* b_test_button;
+//	JoystickButton* b_clear_commands;
+	JoystickButton* b_move_intake_up;
+	JoystickButton* b_move_intake_down;
 
 	JoystickButton* s_manual_winch_enable;
 	JoystickButton* s_shooter_wheels;
@@ -70,7 +76,6 @@ private:
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
 
-	JoystickButton* b_test_button;
 	JoystickButton* b_turn_x_axis_right;
 	JoystickButton* b_turn_x_axis_left;
 
@@ -84,8 +89,11 @@ private:
 
 	int shooter_speed_position;
 
-	static SetShooterPitch** set_shooter_pitch;
-	static AngleIntake** angle_intake;
+	SetShooterPitch** set_shooter_pitch;
+	AngleIntake** angle_intake;
+	MoveIntake* move_intake_in;
+	MoveIntake* move_intake_still;
+	MoveIntake* move_intake_out;
 
 	Timer* angle_temmie;
 	Timer* speed_temmie;

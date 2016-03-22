@@ -14,29 +14,43 @@ public:
 	void UsePIDOutput(double output);
 	void InitDefaultCommand();
 
-	void setShooterSpeed(float speed);
+	void setSpeed(float speed);
 
 	float getRPMPreset(int preset); // 0 to 5
 	float getSpeedPreset(int preset); // 0 to 5
 
 	float getSpeedToTarget(float angle);
 
+	float getMotorSpeed();
+
 	float getP();
 	float getI();
 	float getD();
 	float getF();
+	float getIzone();
 	void setP(float);
 	void setI(float);
 	void setD(float);
 	void setF(float);
+
+	bool OnTarget();
+	void checkTarget();
+
+	void setRPM(float);
 
 private:
 	SpeedController* shooter_wheel;
 
 	static const float RPM_PRESETS[];
 	static const float SPEED_PRESETS[];
+	static const int CYCLES_FOR_ONTARGET;
+	static const int ONTARGET_TOLERANCE;;
+
+	int cycles_within_tolerance;
 
 	float speed;
+
+	float tolerance;
 };
 
 #endif

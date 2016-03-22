@@ -18,6 +18,8 @@ public:
 private:
 	Utils::VerticalDirection direction;
 
+	bool pid_enabled;
+
 };
 
 #endif

@@ -23,12 +23,20 @@ public:
 	bool canSeeGoal();
 	float GetTargetX();
 	float GetTargetY();
+	float GetTargetWidth();
 	float PitchFromHorizontal();
-	float AzimuthDegreesFromTarget();
+	float HorizontalPixelsFromTarget();
 	float GetDistanceFromTarget();
 	void RefreshContours();
 
 	int GetRunningCamera();
+
+	static const int IMAGE_WIDTH;
+	static const int IMAGE_HEIGHT;
+	static const float TARGET_WIDTH;
+	static const float TARGET_HEIGHT;//Height of the actual target
+	static const float TARGET_ELEVATION;//Height of the target above the floor
+	static const float TOWER_TO_GOAL_DISTANCE;
 
 private:
 	// It's desirable that everything possible under private except
@@ -51,6 +59,7 @@ private:
 		float x;
 		float y;
 		float area;
+		float width;
 	};
 	Contour target;
 };

@@ -27,6 +27,7 @@ namespace RobotPorts
 
 	// digital inputs
 
+	const unsigned int SHOOTER_HOME_SWITCH = 0;
 	const unsigned int SHOOTER_WHEEL_TACH = 1;
 	const unsigned int LEFT_ENCODER_A = 2;
 	const unsigned int LEFT_ENCODER_B = 3;
@@ -34,7 +35,6 @@ namespace RobotPorts
 	const unsigned int RIGHT_ENCODER_B = 5;
 	const unsigned int INTAKE_LIMIT = 6;
 	const unsigned int BALL_PREP_CHECK_LIMIT = 7;
-	const unsigned int SHOOTER_HOME_SWITCH = 9;
 
 
 
@@ -89,8 +89,10 @@ namespace OI_Ports
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
 	const unsigned int SHOOT_BUTTON = 2;
-	const unsigned int TEST_BUTTON = 3;
-	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
+	const unsigned int MOVE_INTAKE_UP_BUTTON = 3;
+	const unsigned int MOVE_INTAKE_DOWN_BUTTON = 4;
+//	const unsigned int TEST_BUTTON = 3;
+//	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
 
 	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
 	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
