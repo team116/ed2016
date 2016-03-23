@@ -25,7 +25,7 @@ Intake::Intake() : PIDSubsystem("Intake", 0.09, 0, 0)
 
 	log = Log::getInstance();
 
-	SetInputRange(-90, 120);
+	SetInputRange(-180.0, 180.0);
 	SetAbsoluteTolerance(0.0);
 	SetOutputRange(-1.0,1.0);
 
@@ -55,7 +55,7 @@ void Intake::UsePIDOutput(double output)
 	// e.g. yourMotor->Set(output);
 	if(GetPIDController()->IsEnabled()) {
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
-		intake_angle->Set(output);
+		intake_angle->Set(-output);
 	}
 }
 
