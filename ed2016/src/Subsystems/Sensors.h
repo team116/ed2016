@@ -21,7 +21,10 @@ public:
 	// for methods that implement subsystem capabilities
 
 	float shooterAngle();
+
 	float robotAngle();
+	float robotPitch();
+
 	float intakeAngle();
 
 	float shooterVoltage();

@@ -186,6 +186,29 @@ float Sensors::robotAngle()
 	}
 }
 
+float Sensors::robotPitch()
+{
+	if(robot_angle_enabled)
+	{
+		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
+		{
+			return navx->GetPitch()();
+		}
+		else if (Utils::getRobotType() == Utils::ED2016_BOT)
+		{
+			return navx->GetPitch();
+		}
+		else
+		{
+			return 0.0;
+		}
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+
 float Sensors::speedShooterWheel()
 {
 	{
