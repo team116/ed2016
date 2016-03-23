@@ -9,8 +9,10 @@
 #include <Commands/AngleIntake.h>
 #include <Commands/TurnToAngle.h>
 #include <Commands/DriveByLidar.h>
+#include <Commands/SetShooterWheels.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
+#include <Subsystems/Shooter.h>
 
 CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals goal, int initial_position)
 {
@@ -22,6 +24,7 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 		{
 		log->write(Log::TRACE_LEVEL, "Shooting HIGH");
 			AddSequential(new SweepForGoal(initial_position));
+			AddSequential(new SetShooterWheels(CommandBase::shooter->getRPMPreset(5)));
 			AddSequential(new AutoShoot());
 		}
 
