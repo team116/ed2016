@@ -239,15 +239,11 @@ private:
 		{
 			LiveWindow::GetInstance()->Run();
 			char text[255];
-			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f",
 				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->shooterVoltage(),
 				CommandBase::sensors->intakeAngle(),
-				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
-				CommandBase::sensors->readyToShoot(),
-				CommandBase::sensors->speedShooterWheel(),
-				getShootSwitchValue(),
-				getPositionSwitchValue(),
-				getDefenseSwitchValue());
+				CommandBase::sensors->intakeVoltage());
 			DriverStation::ReportError(text);
 		}
 		catch (exception& e)
