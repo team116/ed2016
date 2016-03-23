@@ -35,11 +35,7 @@ void AimShooterToTarget::Initialize()
 	interrupted = false;
 
 	rpm = shooter->getRPMPreset(5);
-	//rpm = shooter->getRPMPreset(oi->getShooterSpeedPosition());
-	//float vel = M_PI * 0.1016 * (rpm-1000) / 60; // PI * D * RPM / 60
-	//float vel = std::stof(SmartDashboard::GetString("DB/String 9", "0"));
-	float vel = 9.2;
-	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE, vel);
+	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE, Shooter::SHOOT_VELOCITY);
 	if((pitch < 0) || (pitch > 90)) {
 		DriverStation::ReportError("Target out of range. Move closer");
 		log->write(Log::WARNING_LEVEL, "Warning: Target out of range");

@@ -38,6 +38,8 @@ public:
 
 	void setRPM(float);
 
+	static const float SHOOT_VELOCITY;
+
 private:
 	SpeedController* shooter_wheel;
 

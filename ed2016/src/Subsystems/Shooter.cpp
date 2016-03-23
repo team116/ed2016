@@ -27,6 +27,7 @@ const float Shooter::SPEED_PRESETS[] = {
 
 const int Shooter::CYCLES_FOR_ONTARGET = 5;
 const int Shooter::ONTARGET_TOLERANCE = 25;
+const float Shooter::SHOOT_VELOCITY = 9.2;//m/s
 
 Shooter::Shooter() : PIDSubsystem("Shooter", 0.001, 0.0, 0.001, 0.00034)
 {
