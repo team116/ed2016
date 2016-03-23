@@ -46,6 +46,7 @@ double Intake::ReturnPIDInput()
 
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "");
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Angle: %f Target: %f P: %f I: %f D: %f", CommandBase::sensors->intakeAngle(), GetSetpoint(), getP(), getI(), getD());
+	//DriverStation::ReportError("Angle: " + std::to_string(CommandBase::sensors->intakeAngle()) + " Target: " + std::to_string(GetSetpoint()));
 	return CommandBase::sensors->intakeAngle();
 }
 
@@ -55,7 +56,8 @@ void Intake::UsePIDOutput(double output)
 	// e.g. yourMotor->Set(output);
 	if(GetPIDController()->IsEnabled()) {
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
-		intake_angle->Set(output);
+		//DriverStation::ReportError("Output: " + std::to_string(output));
+		setSpeed(output);
 	}
 }
 
@@ -63,16 +65,21 @@ void Intake::setIntakeDirection(Utils::HorizontalDirection value)
 {
 	if (value == Utils::HorizontalDirection::IN)
 	{
-		intake_roller->Set(1.0);
+		setSpeed(1.0);
 	}
 	else if (value == Utils::HorizontalDirection::OUT)
 	{
-		intake_roller->Set(-1.0);
+		setSpeed(-1.0);
 	}
 	else if (value == Utils::HorizontalDirection::H_STILL)
 	{
-		intake_roller->Set(0.0);
+		setSpeed(0.0);
 	}
+}
+
+void Intake::setSpeed(float speed)
+{
+	intake_roller->Set(speed * -1);
 }
 
 void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
@@ -80,15 +87,15 @@ void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 	/* Note: may need to switch 1 and -1 */
 	if (value == Utils::VerticalDirection::UP)
 	{
-		intake_angle->Set(-1.0);
+		setSpeed(-1.0);
 	}
 	else if (value == Utils::VerticalDirection::DOWN)
 	{
-		intake_angle->Set(1.0);
+		setSpeed(1.0);
 	}
 	else if (value == Utils::VerticalDirection::V_STILL)
 	{
-		intake_angle->Set(0.0);
+		setSpeed(0.0);
 	}
 	log->write(Log::ERROR_LEVEL, "intake angle speed: %f", intake_angle->Get());
 }

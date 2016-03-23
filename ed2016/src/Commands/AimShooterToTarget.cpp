@@ -47,8 +47,10 @@ void AimShooterToTarget::Initialize()
 		return;
 	}
 
-	//DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
-	//DriverStation::ReportError("RPM: " + std::to_string(rpm));
+	/*DriverStation::ReportError("Calculated Pitch: " + std::to_string(pitch));
+	DriverStation::ReportError("RPM: " + std::to_string(rpm));
+	DriverStation::ReportError("Lidar: " + std::to_string(sensors->lidarDistance()));
+	DriverStation::ReportError("Dis: " + std::to_string(sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE));*/
 	//log->write(Log::DEBUG_LEVEL, "Auto Aim Pitch: %f", pitch);
 
 	shooter_pitch->SetSetpoint(pitch);

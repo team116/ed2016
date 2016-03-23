@@ -36,6 +36,8 @@ private:
 
 	static float* ANGLE_PRESETS;
 
+	void setSpeed(float);
+
 	Log* log;
 
 };
