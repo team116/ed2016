@@ -63,11 +63,11 @@ void Intake::setIntakeDirection(Utils::HorizontalDirection value)
 {
 	if (value == Utils::HorizontalDirection::IN)
 	{
-		intake_roller->Set(-1.0);
+		intake_roller->Set(1.0);
 	}
 	else if (value == Utils::HorizontalDirection::OUT)
 	{
-		intake_roller->Set(1.0);
+		intake_roller->Set(-1.0);
 	}
 	else if (value == Utils::HorizontalDirection::H_STILL)
 	{

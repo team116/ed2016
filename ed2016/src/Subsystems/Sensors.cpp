@@ -8,11 +8,11 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.48;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.74;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.27;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.44;
 
-const float Sensors::MIN_INTAKE_ANGLE_VOLT = 0.0;
-const float Sensors::MAX_INTAKE_ANGLE_VOLT = 1.25;
+const float Sensors::MIN_INTAKE_ANGLE_VOLT = 2.5;
+const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.7;
 
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -194,7 +194,10 @@ float Sensors::intakeAngle()
 {
 	if (intake_angle_enabled)
 	{
-		return 90.0 * (intake_angle_encoder->GetVoltage() - MIN_INTAKE_ANGLE_VOLT) / MAX_INTAKE_ANGLE_VOLT;
+		float voltage = intake_angle_encoder->GetVoltage() - 2.91;
+		voltage = Utils::wrap(voltage, 0.0, 5.0);
+		voltage = 5.0 - voltage;
+		return 90.0 * (voltage - MIN_INTAKE_ANGLE_VOLT) / (MAX_INTAKE_ANGLE_VOLT - MIN_INTAKE_ANGLE_VOLT);
 	}
 	else
 	{

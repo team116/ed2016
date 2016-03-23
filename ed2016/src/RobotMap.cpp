@@ -53,4 +53,17 @@ namespace Utils
 		}
 		return 0.0;
 	}
+
+	float wrap(float value, float min, float max)
+	{
+		while (value < min)
+		{
+			value += (max - min);
+		}
+		while (value > max)
+		{
+			value += (min - max);
+		}
+		return value;
+	}
 }
