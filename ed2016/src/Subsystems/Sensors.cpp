@@ -192,7 +192,7 @@ float Sensors::robotPitch()
 	{
 		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
 		{
-			return navx->GetPitch()();
+			return navx->GetPitch();
 		}
 		else if (Utils::getRobotType() == Utils::ED2016_BOT)
 		{
