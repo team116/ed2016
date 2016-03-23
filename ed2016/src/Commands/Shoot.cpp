@@ -28,9 +28,11 @@ void Shoot::Initialize()
 	timer->Reset();
 
 	if((shooter->GetSetpoint() != 0.0) || (shooter->getMotorSpeed() != 0.0)) {
+		log->write(Log::TRACE_LEVEL, "Not setting wheel speed.");
 		set_wheels = false;
 	}
 	else {
+		log->write(Log::TRACE_LEVEL, "Setting wheel speed.");
 		set_wheels = true;
 	}
 }
@@ -40,13 +42,19 @@ void Shoot::Execute()
 {
 	if(set_wheels) {
 		float ideal_speed = shooter->getRPMPreset(oi->getShooterSpeedPosition());
+		log->write(Log::TRACE_LEVEL, "Shooter Wheel Ideal Speed: %f", ideal_speed);
 		shooter->setRPM(ideal_speed);
 
 		if (!past_speed_up_time && (sensors->speedShooterWheel() > ideal_speed || timer->Get() > SPEED_UP_TIME))
 		{
+			log->write(Log::TRACE_LEVEL, "Done speeding up, now moving holder wheel.");
 			past_speed_up_time = true;
 			holder_wheel->setWheelDirection(Utils::HorizontalDirection::IN);
 			timer->Reset();
+		}
+		else
+		{
+			log->write(Log::TRACE_LEVEL, "Speeding up.");
 		}
 	}
 	else {

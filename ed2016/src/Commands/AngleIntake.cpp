@@ -60,11 +60,11 @@ void AngleIntake::Execute()
 
 		if (angle > current_angle)
 		{
-			direction = Utils::VerticalDirection::DOWN;
+			direction = Utils::VerticalDirection::UP;
 		}
 		else if (angle < current_angle)
 		{
-			direction = Utils::VerticalDirection::UP;
+			direction = Utils::VerticalDirection::DOWN;
 		}
 		else
 		{

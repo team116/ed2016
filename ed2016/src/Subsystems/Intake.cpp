@@ -25,7 +25,7 @@ Intake::Intake() : PIDSubsystem("Intake", 0.02, 0.0001, 0)
 
 	log = Log::getInstance();
 
-	SetInputRange(-90, 120);
+	SetInputRange(-180.0, 180.0);
 	SetAbsoluteTolerance(0.0);
 	SetOutputRange(-1.0,1.0);
 

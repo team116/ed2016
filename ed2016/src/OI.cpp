@@ -48,7 +48,7 @@ OI::OI()
 //	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
 //	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	b_move_intake_up = new JoystickButton(joystick_buttons1, OI_Ports::MOVE_INTAKE_UP_BUTTON);
-	b_move_intake_down = new JoystickButton(joystick_buttons2, OI_Ports::MOVE_INTAKE_DOWN_BUTTON);
+	b_move_intake_down = new JoystickButton(joystick_buttons1, OI_Ports::MOVE_INTAKE_DOWN_BUTTON);
 
 	b_auto_aim = new JoystickButton(joystick_buttons1, OI_Ports::AUTO_AIM_BUTTON);
 	b_shooter_engage = new JoystickButton(joystick_buttons1, OI_Ports::SHOOT_BUTTON);
@@ -82,7 +82,9 @@ OI::OI()
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoShoot());
 	b_move_intake_up->WhileHeld(new LiftIntake(Utils::VerticalDirection::UP));
+	b_move_intake_up->WhenReleased(new LiftIntake(Utils::VerticalDirection::V_STILL));
 	b_move_intake_down->WhileHeld(new LiftIntake(Utils::VerticalDirection::DOWN));
+	b_move_intake_down->WhenReleased(new LiftIntake(Utils::VerticalDirection::V_STILL));
 	//b_clear_commands->WhenPressed(new ClearCommands());
 	//b_test_button->WhenPressed(new ResetShooterAngle());
 
