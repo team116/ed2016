@@ -69,7 +69,7 @@ void Shooter::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
-	if(GetPIDController()->IsEnabled()) {
+	if(isPIDEnabled()) {
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Cycles: %d OnTarget: %d", output, cycles_within_tolerance, OnTarget());
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "");
 		//DriverStation::ReportError("Output: " + std::to_string(output) + " OnTarget: " + std::to_string(OnTarget()));
@@ -90,7 +90,7 @@ void Shooter::setSpeed(float speed)
 void Shooter::setRPM(float rpm)
 {
 	SetSetpoint(rpm);
-	if(!GetPIDController()->IsEnabled())
+	if(!isPIDEnabled())
 	{
 		float offset = (RPM_PRESETS[5] - RPM_PRESETS[0]) / 10; //Half of the number between each preset
 		int preset = -1;
@@ -134,6 +134,11 @@ float Shooter::getSpeedToTarget(float angle)
 float Shooter::getMotorSpeed()
 {
 	return shooter_wheel->Get();
+}
+
+bool Shooter::isPIDEnabled()
+{
+	return GetPIDController()->IsEnabled();
 }
 
 float Shooter::getP()

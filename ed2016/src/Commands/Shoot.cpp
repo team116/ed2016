@@ -27,7 +27,7 @@ void Shoot::Initialize()
 	timer->Start();
 	timer->Reset();
 
-	if((shooter->GetSetpoint() != 0.0) || (shooter->getMotorSpeed() != 0.0)) {
+	if(((shooter->GetSetpoint() != 0.0) && (shooter->isPIDEnabled())) || (shooter->getMotorSpeed() != 0.0)) {
 		log->write(Log::TRACE_LEVEL, "Not setting wheel speed.");
 		set_wheels = false;
 	}

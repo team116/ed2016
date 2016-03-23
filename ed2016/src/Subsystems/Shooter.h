@@ -23,6 +23,8 @@ public:
 
 	float getMotorSpeed();
 
+	bool isPIDEnabled();
+
 	float getP();
 	float getI();
 	float getD();
