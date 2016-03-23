@@ -27,7 +27,8 @@ void Shoot::Initialize()
 	timer->Start();
 	timer->Reset();
 
-	if(((shooter->GetSetpoint() != 0.0) && (shooter->isPIDEnabled())) || (shooter->getMotorSpeed() != 0.0)) {
+	//If PID is enabled, the setpoint is not 0, AND it's on target, don't set wheels. If the motor is not set to 0, dont set wheels.
+	if(((shooter->GetSetpoint() != 0.0) && (shooter->isPIDEnabled()) && (shooter->OnTarget())) || (shooter->getMotorSpeed() != 0.0)) {
 		log->write(Log::TRACE_LEVEL, "Not setting wheel speed.");
 		set_wheels = false;
 	}
