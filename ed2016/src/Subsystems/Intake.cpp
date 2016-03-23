@@ -13,7 +13,7 @@ float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT];/* {
 	90.0
 };*/
 
-Intake::Intake() : PIDSubsystem("Intake", 0.09, 0, 0)
+Intake::Intake() : PIDSubsystem("Intake", 0.02, 0.0001, 0)
 {
 	intake_roller = Utils::constructMotor(RobotPorts::INTAKE_ROLLER_MOTOR);
 	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
