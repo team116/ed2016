@@ -47,10 +47,25 @@ void AutoWinch::Execute()
 		}
 	}
 
-	if(!pid_enabled) {
-		float current_angle = sensors->robotPitch();
-		float degrees_off = current_angle - target_angle;
 
+	float current_angle = sensors->robotPitch();
+	float degrees_off = current_angle - target_angle;
+
+	if(pid_enabled)
+	{
+		if(fabs(degrees_off) < DEGREE_TOLERANCE)
+		{
+			DriverStation::ReportError("Inside tolerance");
+			winches->Disable();
+		}
+		else
+		{
+			DriverStation::ReportError("Outside tolerance");
+			winches->Enable();
+		}
+	}
+	else
+	{
 		if(degrees_off < -DEGREE_TOLERANCE) {
 			log->write(Log::INFO_LEVEL, "Front too high, slowing down. Current Angle: %f Target: %f Off: %f", current_angle, target_angle, degrees_off);
 			winches->setBackWinchSpeed(-Winches::PID_BASE_SPEED);
