@@ -5,11 +5,15 @@
 #include "WPILib.h"
 #include <RobotMap.h>
 
-class Winches: public Subsystem
+class Winches: public PIDSubsystem
 {
 public:
 	Winches();
 	void InitDefaultCommand();
+	double ReturnPIDInput();
+	void UsePIDOutput(double output);
+
+	bool isPIDEnabled();
 
 	void setFrontWinchDirection(Utils::VerticalDirection direction);
 	void setBackWinchDirection(Utils::VerticalDirection direction);
@@ -21,6 +25,8 @@ public:
 	Utils::VerticalDirection getBackWinchDirection();
 
 	bool isWinchCurrentSpiking();
+
+	const static float PID_BASE_SPEED;
 
 private:
 	Utils::VerticalDirection front_winch_direction;

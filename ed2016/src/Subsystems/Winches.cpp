@@ -5,10 +5,17 @@
 
 const float Winches::WINCH_SPEED = 1.0; //temporary speed
 const float Winches::WINCH_CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no idea what this number is actually supposed to look like
+const float Winches::PID_BASE_SPEED = 0.5;
 
 Winches::Winches() :
-		Subsystem("ExampleSubsystem")
+		PIDSubsystem("Winches", 0.0, 0.0, 0.0)
 {
+	SetInputRange(-180, 180);
+	SetOutputRange(-1.0, 1.0);
+	GetPIDController()->SetContinuous(false);
+	SetAbsoluteTolerance(10.0);
+	Disable();
+
 	front_winch = Utils::constructMotor(RobotPorts::WINCH_MOTOR_FRONT);
 	back_winch = Utils::constructMotor(RobotPorts::WINCH_MOTOR_BACK);
 
@@ -21,6 +28,30 @@ void Winches::InitDefaultCommand()
 	// Set the default command for a subsystem here.
 	//SetDefaultCommand(new MySpecialCommand());
 }
+
+double Winches::ReturnPIDInput()
+{
+	// Return your input value for the PID loop
+	// e.g. a sensor, like a potentiometer:
+	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
+
+	DriverStation::ReportError("Robot Pitch: " + std::to_string(CommandBase::sensors->robotPitch()));
+	return CommandBase::sensors->robotPitch();
+}
+
+void Winches::UsePIDOutput(double output)
+{
+	// Use output to drive your system, like a motor
+	// e.g. yourMotor->Set(output);
+
+	if(isPIDEnabled())
+	{
+		front_winch->Set(output);
+		DriverStation::ReportError("Front Winch: " + std::to_string(output));
+		back_winch->Set(PID_BASE_SPEED);
+	}
+}
+
 
 void Winches::setFrontWinchDirection(Utils::VerticalDirection direction)
 {
@@ -109,4 +140,9 @@ bool Winches::isWinchCurrentSpiking()
 	}
 	else
 		return false;
+}
+
+bool Winches::isPIDEnabled()
+{
+	return GetPIDController()->IsEnabled();
 }
