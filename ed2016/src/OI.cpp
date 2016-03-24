@@ -19,6 +19,7 @@
 #include <Commands/SetShooterPitch.h>
 #include <Commands/Shoot.h>
 #include <Commands/TogglePID.h>
+#include <Commands/AutoWinch.h>
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
@@ -77,7 +78,7 @@ OI::OI()
 
 	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
 	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
-	b_auto_winch->WhenPressed(new RetractWinches());
+	b_auto_winch->WhileHeld(new AutoWinch());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_shooter_engage->WhenPressed(new Shoot());
 	b_auto_aim->WhenPressed(new AutoShoot());

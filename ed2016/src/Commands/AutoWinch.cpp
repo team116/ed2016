@@ -19,11 +19,10 @@ AutoWinch::AutoWinch()
 // Called just before this Command runs the first time
 void AutoWinch::Initialize()
 {
-	log->write(Log::TRACE_LEVEL, "AutoWinch Initialized");
-	pid_enabled = false;
+	pid_enabled = oi->getPIDEnableSwitch();
+	log->write(Log::TRACE_LEVEL, "AutoWinch Initialized. PID mode: %d", pid_enabled);
 	target_angle = sensors->robotPitch();
-	if(oi->getPIDEnableSwitch()) {
-		pid_enabled = true;
+	if(pid_enabled) {
 		winches->SetAbsoluteTolerance(DEGREE_TOLERANCE);
 		winches->SetSetpoint(target_angle);
 		winches->Enable();
@@ -52,18 +51,18 @@ void AutoWinch::Execute()
 		float current_angle = sensors->robotPitch();
 		float degrees_off = current_angle - target_angle;
 
-		if(degrees_off > DEGREE_TOLERANCE) {
-			DriverStation::ReportError("Slow front");
+		if(degrees_off < -DEGREE_TOLERANCE) {
+			log->write(Log::INFO_LEVEL, "Front too high, slowing down. Current Angle: %f Target: %f Off: %f", current_angle, target_angle, degrees_off);
 			winches->setBackWinchSpeed(-Winches::PID_BASE_SPEED);
 			winches->setFrontWinchSpeed(-Winches::PID_BASE_SPEED + OFFSET_SPEED);
 		}
-		else if(degrees_off < -DEGREE_TOLERANCE) {
-			DriverStation::ReportError("Speed up front");
+		else if(degrees_off > DEGREE_TOLERANCE) {
+			log->write(Log::INFO_LEVEL, "Front too low, speeding up. Current Angle: %f Target: %f Off: %f", current_angle, target_angle, degrees_off);
 			winches->setBackWinchSpeed(-Winches::PID_BASE_SPEED);
 			winches->setFrontWinchSpeed(-Winches::PID_BASE_SPEED - OFFSET_SPEED);
 		}
 		else {
-			DriverStation::ReportError("Keep steady");
+			log->write(Log::INFO_LEVEL, "Front level. Current Angle: %f Target: %f Off: %f", current_angle, target_angle, degrees_off);
 			winches->setBackWinchSpeed(-Winches::PID_BASE_SPEED);
 			winches->setFrontWinchSpeed(-Winches::PID_BASE_SPEED);
 		}

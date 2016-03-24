@@ -8,7 +8,7 @@ const float Winches::WINCH_CURRENT_SPIKE_THRESHHOLD = 10.0;	//random guess, no i
 const float Winches::PID_BASE_SPEED = 0.5;
 
 Winches::Winches() :
-		PIDSubsystem("Winches", 0.0, 0.0, 0.0)
+		PIDSubsystem("Winches", 0.01, 0.0, 0.0)
 {
 	SetInputRange(-180, 180);
 	SetOutputRange(-1.0, 1.0);
@@ -46,9 +46,9 @@ void Winches::UsePIDOutput(double output)
 
 	if(isPIDEnabled())
 	{
-		front_winch->Set(output);
-		DriverStation::ReportError("Front Winch: " + std::to_string(output));
-		back_winch->Set(PID_BASE_SPEED);
+		front_winch->Set(Utils::boundaryCheck((-PID_BASE_SPEED + output), -1.0, 1.0));
+		DriverStation::ReportError("Front Winch: " + std::to_string(-PID_BASE_SPEED + output));
+		back_winch->Set(-PID_BASE_SPEED);
 	}
 }
 
