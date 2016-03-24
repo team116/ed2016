@@ -2,9 +2,9 @@
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Cameras.h>
 
-const float P = 0.45;
+const float P = 0.4;
 const float MIN_TURN_SPEED = 0.15;
-const float MAX_TURN_SPEED = 0.5;
+const float MAX_TURN_SPEED = 0.4;
 
 const float ACCEPTED_ERROR = 5;//in pixels
 
