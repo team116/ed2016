@@ -6,6 +6,7 @@
 #include <Subsystems/Climber.h>
 #include <Subsystems/HolderWheel.h>
 #include <Subsystems/Intake.h>
+#include <Subsystems/IntakeRoller.h>
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Shooter.h>
@@ -22,6 +23,7 @@ std::unique_ptr<ShooterPitch> CommandBase::shooter_pitch;
 std::unique_ptr<HolderWheel> CommandBase::holder_wheel;
 std::unique_ptr<Cameras> CommandBase::cameras;
 std::unique_ptr<Intake> CommandBase::intake;
+std::unique_ptr<IntakeRoller> CommandBase::intake_roller;
 std::unique_ptr<Winches> CommandBase::winches;
 Log* CommandBase::log;
 
@@ -49,6 +51,7 @@ void CommandBase::init()
 	holder_wheel.reset(new HolderWheel());
 	cameras.reset(new Cameras());
 	intake.reset(new Intake());
+	intake_roller.reset(new IntakeRoller());
 	winches.reset(new Winches());
 
 	oi.reset(new OI());

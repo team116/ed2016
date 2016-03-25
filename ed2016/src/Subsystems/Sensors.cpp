@@ -8,8 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.45;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.7;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.40;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.6;
 
 const float Sensors::MIN_INTAKE_ANGLE_VOLT = 2.5;
 const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.7;
@@ -17,7 +17,7 @@ const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.7;
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
 
-const int Sensors::SHOOTER_WHEEL_PPR = 2;
+const int Sensors::SHOOTER_WHEEL_PPR = 1;
 
 const int Sensors::LIDAR_OFFSET = -10;
 
@@ -403,16 +403,21 @@ void Sensors::updateCycleTime()
 
 void Sensors::updateSensorsThread()
 {
+	float timestamp;
 	while (continue_sensor_update_thread)
 	{
+		timestamp = tach_pulse_timer->Get();
 		if (shooter_wheel_tach->Get() > last_tach_count)
 		{
-			float timestamp = tach_pulse_timer->Get();
 			int count = shooter_wheel_tach->Get();
 			setShooterSpeedTachValue((float)(count - last_tach_count) / (timestamp - last_tach_timestamp) / (float)SHOOTER_WHEEL_PPR * 60.0);
 
 			last_tach_count = count;
 			last_tach_timestamp = timestamp;
+		}
+		else if (timestamp - last_tach_timestamp > 1.0)
+		{
+			setShooterSpeedTachValue(0.0);
 		}
 	}
 }

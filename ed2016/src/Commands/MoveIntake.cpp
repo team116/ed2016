@@ -1,7 +1,7 @@
 #include <Commands/MoveIntake.h>
 #include <CommandBase.h>
 #include <Subsystems/HolderWheel.h>
-#include <Subsystems/Intake.h>
+#include <Subsystems/IntakeRoller.h>
 #include <Subsystems/Sensors.h>
 
 
@@ -9,7 +9,7 @@ MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
-	Requires(&*intake);
+	Requires(&*intake_roller);
 	Requires(&*holder_wheel);
 
 	 this->direction = direction;
@@ -19,7 +19,7 @@ MoveIntake::MoveIntake(Utils::HorizontalDirection direction)
 void MoveIntake::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "MoveIntake Initialized");
-	intake->setIntakeDirection(direction);
+	intake_roller->setDirection(direction);
 	holder_wheel->setWheelDirection(direction);
 }
 
@@ -49,7 +49,7 @@ bool MoveIntake::IsFinished()
 void MoveIntake::End()
 {
 	log->write(Log::TRACE_LEVEL, "MoveIntake Ended");
-	CommandBase::intake->setIntakeDirection(Utils::HorizontalDirection::H_STILL);
+	CommandBase::intake_roller->setDirection(Utils::HorizontalDirection::H_STILL);
 	CommandBase::holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
 }
 

@@ -17,7 +17,6 @@ public:
 	void UsePIDOutput(double output);
 	void InitDefaultCommand();
 
-	void setIntakeDirection(Utils::HorizontalDirection);
 	void setIntakeAngleDirection(Utils::VerticalDirection);
 
 	bool isPIDEnabled();
@@ -31,12 +30,11 @@ public:
 	void setF(float);
 
 private:
-	SpeedController* intake_roller;
 	SpeedController* intake_angle;
 
 	static float* ANGLE_PRESETS;
 
-	void setSpeed(float);
+	void setAngleSpeed(float speed);
 
 	Log* log;
 

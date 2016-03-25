@@ -10,6 +10,8 @@
 
 const int ShooterPitch::ANGLE_PRESET_COUNT = 6;
 
+const float ShooterPitch::ZERO_ANGLE_ZONE = 1.0;
+
 float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT];/* {
 	0.0,
 	15.0,
@@ -39,6 +41,8 @@ ShooterPitch::ShooterPitch() :
 	SetOutputRange(-1.0,1.0);
 
 	GetPIDController()->SetContinuous(false);
+
+	requires_reenable = false;
 }
 
 double ShooterPitch::ReturnPIDInput()
@@ -66,6 +70,23 @@ void ShooterPitch::InitDefaultCommand()
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+
+void ShooterPitch::setAngle(float degrees)
+{
+	if (isPIDEnabled())
+	{
+		if (CommandBase::sensors->isShooterHomeSwitchEnabled() && fabs(degrees) < ZERO_ANGLE_ZONE)
+		{
+			Disable();
+			requires_reenable = true;
+			setDirection(Utils::VerticalDirection::DOWN);
+		}
+		else
+		{
+			SetSetpoint(degrees);
+		}
+	}
+}
 
 //Manual Control (Disable PID first)
 void ShooterPitch::setSpeed(float speed)
@@ -149,6 +170,12 @@ float ShooterPitch::getAnglePreset(int index)
 
 bool ShooterPitch::isPIDEnabled()
 {
+	if (requires_reenable)
+	{
+		Enable();
+		requires_reenable = false;
+	}
+
 	return GetPIDController()->IsEnabled();
 }
 

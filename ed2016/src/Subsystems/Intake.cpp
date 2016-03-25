@@ -15,7 +15,6 @@ float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT];/* {
 
 Intake::Intake() : PIDSubsystem("Intake", 0.02, 0.0001, 0)
 {
-	intake_roller = Utils::constructMotor(RobotPorts::INTAKE_ROLLER_MOTOR);
 	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
 
 	for (int i = 0; i < ANGLE_PRESET_COUNT; ++i)
@@ -57,45 +56,28 @@ void Intake::UsePIDOutput(double output)
 	if(GetPIDController()->IsEnabled()) {
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
 		//DriverStation::ReportError("Output: " + std::to_string(output));
-		setSpeed(output);
+		setAngleSpeed(output);
 	}
 }
 
-void Intake::setIntakeDirection(Utils::HorizontalDirection value)
+void Intake::setAngleSpeed(float speed)
 {
-	if (value == Utils::HorizontalDirection::IN)
-	{
-		setSpeed(1.0);
-	}
-	else if (value == Utils::HorizontalDirection::OUT)
-	{
-		setSpeed(-1.0);
-	}
-	else if (value == Utils::HorizontalDirection::H_STILL)
-	{
-		setSpeed(0.0);
-	}
-}
-
-void Intake::setSpeed(float speed)
-{
-	intake_roller->Set(speed * -1);
+	intake_angle->Set(-speed);
 }
 
 void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 {
-	/* Note: may need to switch 1 and -1 */
 	if (value == Utils::VerticalDirection::UP)
 	{
-		setSpeed(-1.0);
+		setAngleSpeed(0.5);
 	}
 	else if (value == Utils::VerticalDirection::DOWN)
 	{
-		setSpeed(1.0);
+		setAngleSpeed(-0.5);
 	}
 	else if (value == Utils::VerticalDirection::V_STILL)
 	{
-		setSpeed(0.0);
+		setAngleSpeed(0.0);
 	}
 	log->write(Log::ERROR_LEVEL, "intake angle speed: %f", intake_angle->Get());
 }

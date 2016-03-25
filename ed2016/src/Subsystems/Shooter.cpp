@@ -8,12 +8,12 @@
 #include "LiveWindow/LiveWindow.h"
 
 const float Shooter::RPM_PRESETS[] = {
-	1000.0,
-	1300.0,
-	1600.0,
-	1900.0,
-	2200.0,
-	2500.0
+	2000.0,
+	2600.0,
+	3200.0,
+	3800.0,
+	4400.0,
+	5000.0
 };
 
 const float Shooter::SPEED_PRESETS[] = {

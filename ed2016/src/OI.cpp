@@ -6,6 +6,7 @@
 #include <Commands/ClearCommands.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
+#include <Commands/JoystickClimberArm.h>
 #include <Commands/JoystickTurn.h>
 #include <Commands/LiftIntake.h>
 #include <Commands/ManualWinchControl.h>
@@ -91,6 +92,7 @@ OI::OI()
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
+	s_manual_winch_enable->WhenReleased(new JoystickClimberArm());
 	s_pid_enable->WhenPressed(new TogglePID(true));
 	s_pid_enable->WhenReleased(new TogglePID(false));
 	/*
