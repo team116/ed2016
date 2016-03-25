@@ -21,9 +21,10 @@ DriveStraight::DriveStraight(JoystickSide joystick, SensorType type)
 	starting_robot_angle = 0.0;
 
 	interrupted = false;
+	timeout = -1.0;
 }
 
-DriveStraight::DriveStraight(float speed, SensorType type)
+DriveStraight::DriveStraight(float speed, SensorType type, float t)
 {
 	//Requires(&*mobility);
 	joystick_used = (JoystickSide)-1;
@@ -35,6 +36,11 @@ DriveStraight::DriveStraight(float speed, SensorType type)
 	starting_robot_angle = 0.0;
 
 	interrupted = false;
+	timeout = t;
+	if (timeout > 0.0)
+	{
+		SetTimeout(timeout);
+	}
 }
 
 void DriveStraight::Initialize()
@@ -114,7 +120,7 @@ void DriveStraight::Execute()
 }
 bool DriveStraight::IsFinished()
 {
-	return interrupted;
+	return interrupted || (IsTimedOut() && timeout > 0.0);
 }
 void DriveStraight::End()
 {

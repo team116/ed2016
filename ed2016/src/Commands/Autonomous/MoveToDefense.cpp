@@ -1,6 +1,6 @@
 #include "MoveToDefense.h"
 #include <Commands/AngleIntake.h>
-#include <Commands/DriveDistance.h>
+#include <Commands/DriveStraight.h>
 #include <RobotMap.h>
 #include <Log.h>
 
@@ -9,5 +9,5 @@ MoveToDefense::MoveToDefense()
 	log = Log::getInstance();
 	log->write(Log::TRACE_LEVEL, "Moving to Defense");
 	AddSequential(new AngleIntake(90.0));
-	AddSequential(new DriveDistance(152.0)); //temporary time
+	AddSequential(new DriveStraight(1.0, DriveStraight::SensorType::GYRO, 4.0)); //temporary time
 }
