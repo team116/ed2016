@@ -1,4 +1,5 @@
 #include "SpyBoxShoot.h"
+#include <Commands/AngleIntake.h>
 #include <Commands/AutoShoot.h>
 #include <Commands/Shoot.h>
 #include <Commands/DriveDistance.h>
@@ -15,6 +16,7 @@ SpyBoxShoot::SpyBoxShoot(Autonomous::Goals goal)
 
 	if (goal == Autonomous::HIGH)	//AS FUUUUUUUUUUUUUUUUUhydrangeasUUUUUUUUUUUUUUUUUUUUUUCK
 	{
+		AddSequential(new AngleIntake(0.0));
 		log->write(Log::TRACE_LEVEL, "Shooting HIGH from Spy Box");
 		if(using_autoaim)
 			AddSequential(new AutoShoot());
