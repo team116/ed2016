@@ -31,7 +31,7 @@ private:
 
 	Log* log;
 
-	static const int MEMORY_RESERVATION_SIZE = 256;
+	static const int MEMORY_RESERVATION_SIZE = 2047;
 	uint8_t* out_of_memory_reservation;
 
 	void RobotInit()
@@ -209,7 +209,10 @@ private:
 		catch (exception& e)
 		{
 			delete[] out_of_memory_reservation; // free up a bunch of memory to protect against out of memory exceptions
-			log->write(Log::ERROR_LEVEL, "Exception thrown during TeleopPeriodic: %s", e.what());
+			char text[255];
+			snprintf(text, 255, "PATRICK LOOK AT THIS AND REMEMBER WHAT IT SAYS: %s", e.what());
+			log->write(Log::ERROR_LEVEL, text);
+			DriverStation::ReportError(text);
 			out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE]; // pretend nothing happened
 		}
 	}
