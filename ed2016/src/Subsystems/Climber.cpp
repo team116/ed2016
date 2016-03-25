@@ -4,8 +4,8 @@
 #include <RobotMap.h>
 #include <Log.h>
 
-const float Climber::DEPLOY_ARM_SPEED = 0.25;
-const float Climber::RETRACT_ARM_SPEED = 0.5;
+const float Climber::DEPLOY_ARM_SPEED = 0.4;
+const float Climber::RETRACT_ARM_SPEED = 0.6;
 
 const float Climber::CLIMBER_CURRENT_SPIKE_THRESHHOLD = 10.0; //Ditto
 

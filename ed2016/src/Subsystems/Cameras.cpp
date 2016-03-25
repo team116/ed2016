@@ -10,13 +10,13 @@ const int Cameras::IMAGE_WIDTH = 640;//px
 const int Cameras::IMAGE_HEIGHT = 360;//px
 const float CAMERA_MOUNT_ANGLE = 0;//cm TODO: Measure exact angle on real robot
 const float HEIGHT_DISTANCE_RATIO = 46.25;
-const float CAMERA_MOUNT_HEIGHT = 31.0;//cm TODO: Measure exact height on real robot
-const float CAMERA_SIDE_OFFSET = 26.0;//cm
+const float CAMERA_MOUNT_HEIGHT = 30.0;//cm TODO: Measure exact height on real robot
+const float CAMERA_SIDE_OFFSET = 28.2;//cm
 const float CAMERA_DEGREE_ROTATION = 0.0;
-const float Cameras::TARGET_WIDTH = 50.8;//cm
-const float Cameras::TARGET_HEIGHT = 30.48;//cm height of target
+const float Cameras::TARGET_WIDTH = 51.1;//cm
+const float Cameras::TARGET_HEIGHT = 31.5;//cm height of target
 const float Cameras::TARGET_ELEVATION = 246.38;//cm from floor to middle of target
-const float Cameras::TOWER_TO_GOAL_DISTANCE = 10;//cm to account for how much the tower sticks out
+const float Cameras::TOWER_TO_GOAL_DISTANCE = 13.5;//cm to account for how much the tower sticks out
 
 Cameras::Cameras() :
 		Subsystem("Cameras")

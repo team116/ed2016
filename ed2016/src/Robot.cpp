@@ -78,11 +78,11 @@ private:
 		{
 			Scheduler::GetInstance()->Run();
 			char text[255];
-			snprintf(text, 255, "shooter angle: %f, intake angle: %f, shooter home: %d, ball ready: %d, tach rate: %f, shoot: %d, pos: %d, def: %d",
+			snprintf(text, 255, "shooter angle: %f, shoot voltage: %f, intake angle: %f, intake voltage: %f, tach rate: %f, shoot: %d, pos: %d, def: %d",
 				CommandBase::sensors->shooterAngle(),
+				CommandBase::sensors->shooterVoltage(),
 				CommandBase::sensors->intakeAngle(),
-				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
-				CommandBase::sensors->readyToShoot(),
+				CommandBase::sensors->intakeVoltage(),
 				CommandBase::sensors->speedShooterWheel(),
 				getShootSwitchValue(),
 				getPositionSwitchValue(),
@@ -198,7 +198,7 @@ private:
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
 			char text[255];
-			snprintf(text, 255, "shooter angle: %f, intake angle: %f, tach rate: %f, lidar dist: %d",
+			snprintf(text, 255, "shooter angle: %f, intake angle: %f, tach rate: %f rpm, lidar dist: %d cm",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->speedShooterWheel(),

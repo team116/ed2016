@@ -10,6 +10,7 @@ class Cameras;
 class Climber;
 class HolderWheel;
 class Intake;
+class IntakeRoller;
 class Mobility;
 class OI;
 class Sensors;
@@ -34,6 +35,7 @@ public:
 	static std::unique_ptr<Cameras> cameras;
 	static std::unique_ptr<OI> oi;
 	static std::unique_ptr<Intake> intake;
+	static std::unique_ptr<IntakeRoller> intake_roller;
 	static Log* log;
 };
 
