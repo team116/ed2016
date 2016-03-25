@@ -83,6 +83,7 @@ private:
 
 	static const float MIN_INTAKE_ANGLE_VOLT; // voltage @ 0 degrees
 	static const float MAX_INTAKE_ANGLE_VOLT; // voltage @ 90 degrees
+	static const float INTAKE_VOLT_ADJUSTMENT;
 
 	AnalogInput*  intake_angle_encoder;
 

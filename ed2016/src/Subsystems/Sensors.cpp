@@ -12,7 +12,8 @@ const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.40;
 const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.6;
 
 const float Sensors::MIN_INTAKE_ANGLE_VOLT = 2.5;
-const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.7;
+const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.72;
+const float Sensors::INTAKE_VOLT_ADJUSTMENT = 1.17;
 
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -227,10 +228,10 @@ float Sensors::intakeAngle()
 {
 	if (intake_angle_enabled)
 	{
-		float voltage = intake_angle_encoder->GetVoltage() - 2.91;
+		float voltage = intake_angle_encoder->GetVoltage() + INTAKE_VOLT_ADJUSTMENT;
 		voltage = Utils::wrap(voltage, 0.0, 5.0);
 		voltage = 5.0 - voltage;
-		return 90.0 * (voltage - MIN_INTAKE_ANGLE_VOLT) / (MAX_INTAKE_ANGLE_VOLT - MIN_INTAKE_ANGLE_VOLT);
+		return 90.0 * (voltage - (MIN_INTAKE_ANGLE_VOLT)) / (MAX_INTAKE_ANGLE_VOLT - MIN_INTAKE_ANGLE_VOLT);
 	}
 	else
 	{
