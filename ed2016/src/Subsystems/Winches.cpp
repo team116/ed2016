@@ -146,3 +146,37 @@ bool Winches::isPIDEnabled()
 {
 	return GetPIDController()->IsEnabled();
 }
+
+float Winches::getP()
+{
+	return GetPIDController()->GetP();
+}
+float Winches::getI()
+{
+	return GetPIDController()->GetI();
+}
+float Winches::getD()
+{
+	return GetPIDController()->GetD();
+}
+float Winches::getF()
+{
+	return GetPIDController()->GetF();
+}
+
+void Winches::setP(float p)
+{
+	GetPIDController()->SetPID(p, getI(), getD());
+}
+void Winches::setI(float i)
+{
+	GetPIDController()->SetPID(getP(), i, getD());
+}
+void Winches::setD(float d)
+{
+	GetPIDController()->SetPID(getP(), getI(), d);
+}
+void Winches::setF(float f)
+{
+	GetPIDController()->SetPID(getP(), getI(), getD(), f);
+}

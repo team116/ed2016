@@ -28,6 +28,15 @@ public:
 
 	const static float PID_BASE_SPEED;
 
+	float getP();
+	float getI();
+	float getD();
+	float getF();
+	void setP(float);
+	void setI(float);
+	void setD(float);
+	void setF(float);
+
 private:
 	Utils::VerticalDirection front_winch_direction;
 	Utils::VerticalDirection back_winch_direction;
