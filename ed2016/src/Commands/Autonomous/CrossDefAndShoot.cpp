@@ -20,7 +20,7 @@ CrossDefAndShoot::CrossDefAndShoot(Autonomous::Defense def, Autonomous::Goals go
 {
 	log = Log::getInstance();
 
-	AddSequential(new MoveToDefense());
+	AddSequential(new CrossDefense(def));
 	AddSequential(new TimedDoNothing(1.0));
 	AddSequential(new AutoShoot());
 }

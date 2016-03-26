@@ -15,6 +15,7 @@
 #include <OI.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
+#include <Subsystems/Shooter.h>
 
 using namespace Autonomous;
 using namespace Utils;
@@ -125,37 +126,43 @@ private:
 
 		if (shoot_value == 0 && position_value == 0 && defense_value == 0)
 		{
+			log->write(Log::TRACE_LEVEL, "hello, this is do nothing");
 			auto_command = new DoNothing();
 		}
 		//MoveToDefense Plays
 		else if (shoot_value == 0 && position_value != 0 && defense_value == 0)
 		{
+			log->write(Log::TRACE_LEVEL, "hello, this is move to defense");
 			auto_command = new MoveToDefense();
 		}
 		//CrossDefense plays
 				//no shooting, position 1, various defenses
 		else if (shoot_value == 0 && position_value != 0  && defense_value != 0)
 		{
+			log->write(Log::TRACE_LEVEL, "hello, this is cross defense");
 			auto_command = new CrossDefense((Defense)defense_value);
 		}
 		//SpyBoxShoot
 		else if ((shoot_value == 1 || shoot_value == 2) && position_value == 0 && defense_value == 0)
 		{
+			log->write(Log::TRACE_LEVEL, "hello, this is spy box shoot");
 			auto_command = new SpyBoxShoot((Goals)shoot_value);
 		}
 		//SpyBoxShootAndReach
 		else if ((shoot_value == 1 || shoot_value == 2) && position_value == 0 && defense_value != 0)
 		{
-
+			log->write(Log::TRACE_LEVEL, "hello, this is spy box shoot and reach");
 			auto_command = new SpyBoxShootAndReach((Goals)shoot_value);
 		}
 		//CrossDefAndShoot plays
 		else if ((shoot_value == 1 || shoot_value == 2) && position_value != 0 && defense_value != 0)
 		{
+			log->write(Log::TRACE_LEVEL, "hello, this is cross defense and shoot");
 			auto_command = new CrossDefAndShoot((Defense)defense_value, (Goals)shoot_value, position_value);
 		}
 		else
 		{
+			log->write(Log::TRACE_LEVEL, "hello, this is do nothing");
 			auto_command = new DoNothing();
 		}
 		//Failsafe
@@ -203,6 +210,12 @@ private:
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->speedShooterWheel(),
 				CommandBase::sensors->lidarDistance());
+			DriverStation::ReportError(text);
+			snprintf(text, 255, "shooter p: %f, shooter i: %f, shooter d: %f, shooter f: %f",
+				CommandBase::shooter->getP(),
+				CommandBase::shooter->getI(),
+				CommandBase::shooter->getD(),
+				CommandBase::shooter->getF());
 			DriverStation::ReportError(text);
 			//DriverStation::ReportError("Distance: " + std::to_string(CommandBase::sensors->lidarDistance()));
 		}

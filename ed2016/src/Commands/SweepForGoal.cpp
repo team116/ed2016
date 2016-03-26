@@ -25,6 +25,7 @@ void SweepForGoal::Execute()
 {
 	angle = sensors->robotAngle();
 
+	cameras->RefreshContours();
 	if (cameras->canSeeGoal())
 	{
 		mobility->setLeft(0.0);
