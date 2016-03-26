@@ -1,5 +1,5 @@
 #include "AutoShoot.h"
-
+#include <Commands/AngleIntake.h>
 #include <Commands/Shoot.h>
 #include <Commands/TurnToTarget.h>
 #include <Commands/AimShooterToTarget.h>
@@ -24,6 +24,7 @@ AutoShoot::AutoShoot()
 	// arm.
 
 	AddSequential(new TurnToTarget());
+	AddSequential(new AngleIntake(0.0));
 	AddSequential(new AimShooterToTarget());
 	AddSequential(new Shoot());
 }
