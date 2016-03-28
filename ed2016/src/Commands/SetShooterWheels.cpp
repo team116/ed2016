@@ -7,6 +7,8 @@ SetShooterWheels::SetShooterWheels(float rpm)
 	// eg. Requires(chassis);
 	Requires(&*shooter);
 
+	SetTimeout(4.0);
+
 	setpoint = rpm;
 }
 
@@ -28,6 +30,11 @@ bool SetShooterWheels::IsFinished()
 {
 	if(shooter->OnTarget()) {
 		log->write(Log::TRACE_LEVEL, "ShooterWheels finished");
+		return true;
+	}
+	else if (IsTimedOut())
+	{
+		log->write(Log::TRACE_LEVEL, "SetShooterWheels timed out");
 		return true;
 	}
 	return false;

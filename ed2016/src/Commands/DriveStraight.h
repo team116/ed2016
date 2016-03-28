@@ -27,7 +27,7 @@ public:
 	};
 
 	DriveStraight(JoystickSide, SensorType);
-	DriveStraight(float, SensorType);
+	DriveStraight(float, SensorType, float timeout = -1.0);
 	void Initialize ();
 	void Execute();
 	bool IsFinished();
@@ -37,6 +37,7 @@ public:
 
 private:
 	bool interrupted;
+	float timeout;
 
 	float curr_left_speed;
 	float curr_right_speed;

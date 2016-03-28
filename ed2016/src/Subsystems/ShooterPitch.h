@@ -24,6 +24,7 @@ public:
 	float getPitchToTarget(float, float);
 
 	bool isPIDEnabled();
+	bool requiresReenable();
 
 	float getP();
 	float getI();

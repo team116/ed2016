@@ -60,7 +60,15 @@ void ShooterPitch::UsePIDOutput(double output)
 {
 	// Use output to drive your system, like a motor
 	// e.g. yourMotor->Set(output);
-	setSpeed(output);
+	if (CommandBase::sensors->isShooterHomeSwitchHorizontal() && output < 0.0)
+	{
+		setSpeed(0.0);
+		CommandBase::sensors->zeroShooterPitch();
+	}
+	else
+	{
+		setSpeed(output);
+	}
 }
 
 void ShooterPitch::InitDefaultCommand()
@@ -75,7 +83,7 @@ void ShooterPitch::setAngle(float degrees)
 {
 	if (isPIDEnabled())
 	{
-		if (CommandBase::sensors->isShooterHomeSwitchEnabled() && fabs(degrees) < ZERO_ANGLE_ZONE)
+		if (!CommandBase::sensors->isShooterHomeSwitchEnabled() && fabs(degrees) < ZERO_ANGLE_ZONE)
 		{
 			Disable();
 			requires_reenable = true;
@@ -83,6 +91,7 @@ void ShooterPitch::setAngle(float degrees)
 		}
 		else
 		{
+			requires_reenable = false;
 			SetSetpoint(degrees);
 		}
 	}
@@ -177,6 +186,11 @@ bool ShooterPitch::isPIDEnabled()
 	}
 
 	return GetPIDController()->IsEnabled();
+}
+
+bool ShooterPitch::requiresReenable()
+{
+	return requires_reenable;
 }
 
 float ShooterPitch::getP()
