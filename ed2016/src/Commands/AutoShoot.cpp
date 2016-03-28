@@ -3,6 +3,9 @@
 #include <Commands/Shoot.h>
 #include <Commands/TurnToTarget.h>
 #include <Commands/AimShooterToTarget.h>
+#include <Commands/SetShooterWheels.h>
+#include <Commands/SetShooterPitch.h>
+#include <Subsystems/Shooter.h>
 
 AutoShoot::AutoShoot()
 {
@@ -23,6 +26,8 @@ AutoShoot::AutoShoot()
 	// a CommandGroup containing them would require both the chassis and the
 	// arm.
 
+	AddParallel(new SetShooterPitch(30.0));
+	AddParallel(new SetShooterWheels(CommandBase::shooter->getRPMPreset(5)));
 	AddSequential(new TurnToTarget());
 	AddSequential(new AngleIntake(0.0));
 	AddSequential(new AimShooterToTarget());
