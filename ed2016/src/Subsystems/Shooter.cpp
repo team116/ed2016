@@ -29,7 +29,7 @@ const int Shooter::CYCLES_FOR_ONTARGET = 5;
 const int Shooter::ONTARGET_TOLERANCE = 25;
 const float Shooter::SHOOT_VELOCITY = 9.2;//m/s Tested to work on max rpm preset (2500 rpm), should work on the next one down as well (2200 rpm)
 
-Shooter::Shooter() : PIDSubsystem("Shooter", 0.001, 0.0, 0.001, 0.00034)
+Shooter::Shooter() : PIDSubsystem("Shooter", 0.001, 0.0, 0.001, 0.00016)
 {
 	shooter_wheel = Utils::constructMotor(RobotPorts::SHOOTER_MOTOR);
 
