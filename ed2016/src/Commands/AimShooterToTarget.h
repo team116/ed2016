@@ -15,7 +15,10 @@ public:
 	void Interrupted();
 
 private:
+	static const float ACCEPTED_LIDAR_ERROR;
+
 	float pitch;
+	float distance;
 	float rpm;
 	float current_pitch;
 

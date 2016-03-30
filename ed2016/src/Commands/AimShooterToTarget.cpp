@@ -5,8 +5,9 @@
 #include <Subsystems/Sensors.h>
 #include <OI.h>
 
-const float ACCEPTED_ERROR = 2;
-const float TIMEOUT = 6;
+const float ACCEPTED_ERROR = 2.0;
+const float AimShooterToTarget::ACCEPTED_LIDAR_ERROR = 5.0;
+const float TIMEOUT = 6.0;
 
 AimShooterToTarget::AimShooterToTarget()
 {
@@ -17,9 +18,10 @@ AimShooterToTarget::AimShooterToTarget()
 
 	SetTimeout(TIMEOUT);
 
-	pitch = 0;
-	rpm = 0;
-	current_pitch = 0;
+	pitch = 0.0;
+	rpm = 0.0;
+	current_pitch = 0.0;
+	distance = 0.0;
 
 	interrupted = false;
 }
@@ -34,8 +36,17 @@ void AimShooterToTarget::Initialize()
 	log->write(Log::TRACE_LEVEL, "AimShooterToTarget initialized");
 	interrupted = false;
 
+	if (sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - cameras->GetDistanceFromTarget() > AimShooterToTarget::ACCEPTED_LIDAR_ERROR)
+	{
+		distance = cameras->GetDistanceFromTarget() - Cameras::TOWER_TO_GOAL_DISTANCE;
+	}
+	else
+	{
+		distance = sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE;
+	}
+
 	rpm = shooter->getRPMPreset(5);
-	pitch = shooter_pitch->getPitchToTarget(sensors->lidarDistance() + ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE - Cameras::TOWER_TO_GOAL_DISTANCE, Shooter::SHOOT_VELOCITY);
+	pitch = shooter_pitch->getPitchToTarget(distance, Shooter::SHOOT_VELOCITY);
 	if((pitch < 0) || (pitch > 90)) {
 		DriverStation::ReportError("Target out of range. Move closer");
 		log->write(Log::WARNING_LEVEL, "Warning: Target out of range");
