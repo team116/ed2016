@@ -18,6 +18,7 @@ void EnableSensors::Initialize()
 	sensors->enableShooterAngle(enable);
 	sensors->enableShooterHomeSwitch(enable);
 	sensors->enableShooterWheelTachometer(enable);
+	sensors->enableBallSwitch(enable);
 }
 
 // Called repeatedly when this Command is scheduled to run
