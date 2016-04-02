@@ -47,8 +47,6 @@ OI::OI()
 	b_turn_x_axis_left = new JoystickButton(joystick_left, OI_Ports::B_TURN_X_AXIS_LEFT);
 
 	//Instantiate Joystick Buttons 1's Buttons
-//	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
-//	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
 	b_move_intake_up = new JoystickButton(joystick_buttons1, OI_Ports::MOVE_INTAKE_UP_BUTTON);
 	b_move_intake_down = new JoystickButton(joystick_buttons1, OI_Ports::MOVE_INTAKE_DOWN_BUTTON);
 
@@ -58,6 +56,7 @@ OI::OI()
 	s_intake_belt_inward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_FORWARD_SWITCH);
 	s_intake_belt_outward = new JoystickButton(joystick_buttons1, OI_Ports::INTAKE_BELT_BACKWARD_SWITCH);
 	s_pid_enable = new JoystickButton(joystick_buttons1, OI_Ports::PID_TOGGLE_SWITCH);
+	s_sensor_override = new JoystickButton(joystick_buttons1, OI_Ports::SENSOR_OVERRIDE_SWITCH);
 
 	// Instantiate Joystick Buttons 2's Buttons
 	b_extend_scaling_arm = new JoystickButton(joystick_buttons2, OI_Ports::EXTEND_SCALING_ARM_BUTTON);
@@ -74,33 +73,21 @@ OI::OI()
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 	b_turn_x_axis_right->WhileHeld(new JoystickTurn(JoystickTurn::RIGHT));
 
-
 	//Set Joystick Buttons Events
-
 	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
 	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
 	b_auto_winch->WhileHeld(new AutoWinch());
 	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
-	b_shooter_engage->WhenPressed(new Shoot());
-	b_auto_aim->WhenPressed(new AutoShoot());
 	b_move_intake_up->WhileHeld(new LiftIntake(Utils::VerticalDirection::UP));
 	b_move_intake_up->WhenReleased(new LiftIntake(Utils::VerticalDirection::V_STILL));
 	b_move_intake_down->WhileHeld(new LiftIntake(Utils::VerticalDirection::DOWN));
 	b_move_intake_down->WhenReleased(new LiftIntake(Utils::VerticalDirection::V_STILL));
-	//b_clear_commands->WhenPressed(new ClearCommands());
-	//b_test_button->WhenPressed(new ResetShooterAngle());
 
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
 	s_manual_winch_enable->WhenReleased(new JoystickClimberArm());
 	s_pid_enable->WhenPressed(new TogglePID(true));
 	s_pid_enable->WhenReleased(new TogglePID(false));
-	/*
-	s_intake_belt_inward->WhenPressed(new MoveIntake(Utils::HorizontalDirection::IN));
-	s_intake_belt_inward->WhenReleased(new MoveIntake(Utils::HorizontalDirection::H_STILL));
-	s_intake_belt_outward->WhenPressed(new MoveIntake(Utils::HorizontalDirection::OUT));
-	s_intake_belt_outward->WhenReleased(new MoveIntake(Utils::HorizontalDirection::H_STILL));
-	*/
 	//Set Joystick Analog Dial Events
 
 	//Set any other variables here
@@ -111,6 +98,7 @@ OI::OI()
 
 	shooter_speed_position = 0;
 
+	// commands
 	set_shooter_pitch = new SetShooterPitch*[ShooterPitch::ANGLE_PRESET_COUNT];
 	angle_intake = new AngleIntake*[Intake::ANGLE_PRESET_COUNT];
 	for (int i = 0; i < ShooterPitch::ANGLE_PRESET_COUNT; ++i)
@@ -121,6 +109,7 @@ OI::OI()
 	{
 		angle_intake[i] = new AngleIntake(Intake::getAnglePreset(i));
 	}
+	control_shooter_pitch = new ControlShooterPitch();
 
 	move_intake_in = new MoveIntake(Utils::HorizontalDirection::IN);
 	move_intake_still = new MoveIntake(Utils::HorizontalDirection::H_STILL);
@@ -142,6 +131,8 @@ void OI::process()
 	int intake_angle_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::INTAKE_ANGLE_DIAL) + 1.0), 6, 2.0);
 	int shooter_speed_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::SHOOTER_SPEED_DIAL) + 1.0), 6, 2.0);
 	int manual_aim_curr = Utils::voltageConversion(2.0 - (joystick_buttons1->GetRawAxis(OI_Ports::MANUAL_AIM_DIAL) + 1.0), 6, 2.0);
+
+	Scheduler::GetInstance()->AddCommand(control_shooter_pitch); // adding the command during the constructor doesn't work... for some stupid reason
 
 	//Intake Angle Dial
 	if(intake_angle_curr != intake_angle_position_process) {
@@ -300,6 +291,21 @@ int OI::getShooterSpeedPosition()
 bool OI::getShooterWheelsSwitch()
 {
 	return s_shooter_wheels->Get();
+}
+
+bool OI::getFuegoButton()
+{
+	return b_shooter_engage->Get();
+}
+
+bool OI::getAutoAimButton()
+{
+	return b_auto_aim->Get();
+}
+
+bool OI::getSensorOverrideSwitch()
+{
+	return s_sensor_override->Get();
 }
 
 Utils::HorizontalDirection OI::getIntakeDirectionSwitch()

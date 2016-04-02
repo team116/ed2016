@@ -3,8 +3,12 @@
 
 #include <Joystick.h>
 #include <Commands/AngleIntake.h>
+#include <Commands/AutoShoot.h>
+#include <Commands/ControlShooterPitch.h>
 #include <Commands/MoveIntake.h>
+#include <Commands/MoveShooter.h>
 #include <Commands/SetShooterPitch.h>
+#include <Commands/Shoot.h>
 #include <Subsystems/Intake.h>
 #include <WPILib.h>
 #include <Log.h>
@@ -26,6 +30,10 @@ public:
 	int getShooterSpeedPosition();
 
 	bool getShooterWheelsSwitch();
+
+	bool getFuegoButton();
+	bool getAutoAimButton();
+	bool getSensorOverrideSwitch();
 
 	Utils::HorizontalDirection getIntakeDirectionSwitch();
 	void resetIntakeDirectionSwitch();
@@ -72,6 +80,7 @@ private:
 	JoystickButton* s_intake_belt_inward;
 	JoystickButton* s_intake_belt_outward;
 	JoystickButton* s_pid_enable;
+	JoystickButton* s_sensor_override;
 
 	JoystickButton* b_drive_align_left;
 	JoystickButton* b_drive_align_right;
@@ -89,11 +98,13 @@ private:
 
 	int shooter_speed_position;
 
-	SetShooterPitch** set_shooter_pitch;
+	// commands
 	AngleIntake** angle_intake;
+	ControlShooterPitch* control_shooter_pitch;
 	MoveIntake* move_intake_in;
 	MoveIntake* move_intake_still;
 	MoveIntake* move_intake_out;
+	SetShooterPitch** set_shooter_pitch;
 
 	Timer* angle_temmie;
 	Timer* speed_temmie;

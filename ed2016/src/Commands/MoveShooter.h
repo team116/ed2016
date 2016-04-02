@@ -18,7 +18,7 @@ public:
 private:
 	Utils::VerticalDirection direction;
 
-	bool first_run;
+	bool enable_pid;
 
 };
 

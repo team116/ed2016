@@ -91,15 +91,11 @@ namespace OI_Ports
 	const unsigned int SHOOT_BUTTON = 2;
 	const unsigned int MOVE_INTAKE_UP_BUTTON = 3;
 	const unsigned int MOVE_INTAKE_DOWN_BUTTON = 4;
-//	const unsigned int TEST_BUTTON = 3;
-//	const unsigned int CLEAR_COMMANDS_BUTTON = 4;
-
-	const unsigned INTAKE_BELT_FORWARD_SWITCH = 6;
-	const unsigned INTAKE_BELT_BACKWARD_SWITCH = 7;
-
-	const unsigned SHOOTER_WHEELS_SWITCH = 9;
-
-	const unsigned PID_TOGGLE_SWITCH = 5;
+	const unsigned int PID_TOGGLE_SWITCH = 5;
+	const unsigned int INTAKE_BELT_FORWARD_SWITCH = 6;
+	const unsigned int INTAKE_BELT_BACKWARD_SWITCH = 7;
+	const unsigned int SENSOR_OVERRIDE_SWITCH = 8;
+	const unsigned int SHOOTER_WHEELS_SWITCH = 9;
 
 	// buttons joystick 1, analog
 	const unsigned int MANUAL_AIM_DIAL = 0; // X
