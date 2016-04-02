@@ -1,9 +1,10 @@
 #include "TurnToTarget.h"
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Cameras.h>
+#include <OI.h>
 
-const float P = 0.4;
-const float MIN_TURN_SPEED = 0.2;
+const float P = 0.37;
+const float MIN_TURN_SPEED = 0.13;
 const float MAX_TURN_SPEED = 0.4;
 
 const float ACCEPTED_ERROR = 5;//in pixels
@@ -18,6 +19,8 @@ TurnToTarget::TurnToTarget()
 
 	SetTimeout(TIMEOUT);
 
+	use_pid = false;
+
 	pixels_off = 0;
 }
 
@@ -27,34 +30,46 @@ void TurnToTarget::Initialize()
 	log->write(Log::TRACE_LEVEL, "TurnToTarget initialized");
 
 	pixels_off = 0;
+
+	use_pid = false;
+	if(CommandBase::oi->getPIDEnableSwitch()) {
+		cameras->RefreshContours();
+		DriverStation::ReportError("Setting PID: " + std::to_string(0));
+		mobility->SetSetpoint(0);
+		mobility->Enable();
+		use_pid = true;
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run
 void TurnToTarget::Execute()
 {
 	cameras->RefreshContours();
-	if (cameras->canSeeGoal())
-	{
-		pixels_off = cameras->HorizontalPixelsFromTarget();
-		float offset = fabs(pixels_off / (cameras->IMAGE_WIDTH / 2));
+	pixels_off = cameras->HorizontalPixelsFromTarget();
 
-		if (pixels_off < -ACCEPTED_ERROR)
+	if(!use_pid) {
+		if (cameras->canSeeGoal())
 		{
-			//DriverStation::ReportError("Turning Left " + std::to_string(pixels_off));
-			mobility->setLeft(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
-			mobility->setRight(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
-		}
-		else if (pixels_off > ACCEPTED_ERROR)
-		{
-			//DriverStation::ReportError("Turning Right" + std::to_string(pixels_off));
-			mobility->setLeft(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
-			mobility->setRight(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
-		}
-		else
-		{
-			//DriverStation::ReportError("Lined Up" + std::to_string(pixels_off));
-			mobility->setLeft(0.0);
-			mobility->setRight(0.0);
+			float offset = fabs(pixels_off / (cameras->IMAGE_WIDTH / 2));
+
+			if (pixels_off < -ACCEPTED_ERROR)
+			{
+				DriverStation::ReportError("Turning Left " + std::to_string(pixels_off));
+				mobility->setLeft(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
+				mobility->setRight(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
+			}
+			else if (pixels_off > ACCEPTED_ERROR)
+			{
+				DriverStation::ReportError("Turning Right" + std::to_string(pixels_off));
+				mobility->setLeft(Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
+				mobility->setRight(-1 * Utils::boundaryCheck((P * offset), MIN_TURN_SPEED, MAX_TURN_SPEED));
+			}
+			else
+			{
+				DriverStation::ReportError("Lined Up" + std::to_string(pixels_off));
+				mobility->setLeft(0.0);
+				mobility->setRight(0.0);
+			}
 		}
 	}
 }
@@ -62,8 +77,13 @@ void TurnToTarget::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool TurnToTarget::IsFinished()
 {
-	if(fabs(pixels_off) <= ACCEPTED_ERROR)
+	if(!use_pid && (fabs(pixels_off) <= ACCEPTED_ERROR))
 	{
+		return true;
+	}
+	else if(use_pid && (mobility->OnTarget()))
+	{
+		DriverStation::ReportError("Mobility On Target");
 		return true;
 	}
 	else if(IsTimedOut())
@@ -78,6 +98,8 @@ bool TurnToTarget::IsFinished()
 void TurnToTarget::End()
 {
 	log->write(Log::TRACE_LEVEL, "TurnToTarget ended (Pixels Off: %f)", pixels_off);
+	DriverStation::ReportError("Turn to target end");
+	mobility->Disable();
 	mobility->setStraight(0.0);
 }
 

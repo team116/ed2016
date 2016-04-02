@@ -5,10 +5,12 @@
 #include <RobotMap.h>
 #include <WPILib.h>
 
-class Mobility: public Subsystem
+class Mobility: public PIDSubsystem
 {
 public:
 	Mobility();
+	double ReturnPIDInput();
+	void UsePIDOutput(double output);
 	void InitDefaultCommand();
 
 	// It's desirable that everything possible under private except
@@ -21,13 +23,32 @@ public:
 
 	void useFrontOrientation(bool front);
 
+	bool isPIDEnabled();
+
+	float getP();
+	float getI();
+	float getD();
+	float getF();
+	void setP(float);
+	void setI(float);
+	void setD(float);
+	void setF(float);
+
+	bool OnTarget();
+	void checkTarget();
+
 private:
 	SpeedController* leftFront;
 	SpeedController* leftBack;
 	SpeedController* rightFront;
 	SpeedController* rightBack;
 
+	static const int CYCLES_FOR_ONTARGET;
+	static const int ONTARGET_TOLERANCE;;
+
 	bool front_orientation;
+
+	int cycles_within_tolerance;
 
 };
 

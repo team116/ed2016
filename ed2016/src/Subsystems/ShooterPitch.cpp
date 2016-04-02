@@ -21,10 +21,10 @@ float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT]
 	75.0
 };*/
 
-const float ShooterPitch::SHOOTER_HEIGHT = 45.72;//cm
+const float ShooterPitch::SHOOTER_HEIGHT = 40.6;//cm 45.72
 const float ShooterPitch::SHOOTER_TO_TARGET_HEIGHT = (Cameras::TARGET_ELEVATION - SHOOTER_HEIGHT) / 100.0;//METERS
 const float ShooterPitch::MANUAL_SPEED = 1.0;
-const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 27.04;//cm
+const float ShooterPitch::LIDAR_TO_SHOOTER_DISTANCE = 35.84;//cm 27.83
 
 ShooterPitch::ShooterPitch() :
 		PIDSubsystem("ShooterPitch", 0.1, 0.0001, 0.0, 0.0)

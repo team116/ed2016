@@ -26,6 +26,7 @@ public:
 	float GetTargetWidth();
 	float PitchFromHorizontal();
 	float HorizontalPixelsFromTarget();
+	float PixelTarget();
 	float GetDistanceFromTarget();
 	void RefreshContours();
 

@@ -16,6 +16,8 @@ public:
 
 private:
 	float pixels_off;
+
+	bool use_pid;
 };
 
 #endif

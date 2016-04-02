@@ -24,6 +24,7 @@
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Subsystems/Mobility.h>
 
 const float OI::DRIVE_JOYSTICK_SCALE = 1.0;
 const float OI::DIAL_UPDATE_TIME = 0.05;
@@ -213,6 +214,9 @@ void OI::process()
     CommandBase::shooter_pitch->setI(std::stof(SmartDashboard::GetString("DB/String 6", "0")));
     CommandBase::shooter_pitch->setD(std::stof(SmartDashboard::GetString("DB/String 7", "0")));
     CommandBase::shooter_pitch->setF(std::stof(SmartDashboard::GetString("DB/String 8", "0")));*/
+	CommandBase::mobility->setP(std::stof(SmartDashboard::GetString("DB/String 0", "0")));
+	CommandBase::mobility->setI(std::stof(SmartDashboard::GetString("DB/String 1", "0")));
+	CommandBase::mobility->setD(std::stof(SmartDashboard::GetString("DB/String 2", "0")));
 
 	//CommandBase::shooter_pitch->DISTANCE = std::stof(SmartDashboard::GetString("DB/String 4", "0"));
 
