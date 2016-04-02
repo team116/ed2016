@@ -90,7 +90,7 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 	ready_to_shoot_enabled = true;
 	shooter_home_switch_enabled = true;
 	shooter_wheel_tachometer_enabled = true;
-
+	shooter_home_switch_last_value = false;
 	if (shooterWheelTachometerEnabled())
 	{
 		tach_pulse_timer->Start();
@@ -368,7 +368,11 @@ bool Sensors::shooterWheelTachometerEnabled()
 bool Sensors::isShooterHomeSwitchHorizontal()
 {
 	if (isShooterHomeSwitchEnabled()) {
-		return !shooter_home_switch->Get();
+		bool shooter_home_switch_curr_value = shooter_home_switch->Get();
+		if (shooter_home_switch_curr_value != shooter_home_switch_last_value) {
+			log->write(Log::INFO_LEVEL, "Shooter Home Switch %d", shooter_home_switch_curr_value);
+		}
+		return !shooter_home_switch_curr_value;
 	}
 	else {
 		return false;

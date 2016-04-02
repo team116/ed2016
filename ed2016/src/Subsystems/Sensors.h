@@ -124,6 +124,8 @@ private:
 	bool shooter_home_switch_enabled;
 	bool shooter_wheel_tachometer_enabled;
 
+	bool shooter_home_switch_last_value;
+
 	DigitalInput* shooter_home_switch;
 
 };

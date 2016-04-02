@@ -7,10 +7,13 @@
 #include <Log.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <Commands/LowerShooterToZero.h>
 
 const int ShooterPitch::ANGLE_PRESET_COUNT = 6;
 
 const float ShooterPitch::ZERO_ANGLE_ZONE = 1.0;
+
+const float ShooterPitch::ANGLE_DEGREES = 3.0;
 
 float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT];/* {
 	0.0,
@@ -81,7 +84,11 @@ void ShooterPitch::InitDefaultCommand()
 
 void ShooterPitch::setAngle(float degrees)
 {
-	if (isPIDEnabled())
+	if (degrees < ANGLE_DEGREES)
+	{
+		Scheduler::GetInstance()->AddCommand(new LowerShooterToZero());
+	}
+	else if (isPIDEnabled())
 	{
 		if (!CommandBase::sensors->isShooterHomeSwitchEnabled() && fabs(degrees) < ZERO_ANGLE_ZONE)
 		{
