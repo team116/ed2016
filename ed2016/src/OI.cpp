@@ -6,9 +6,11 @@
 #include <Commands/ClearCommands.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
+#include <Commands/EnableSensors.h>
 #include <Commands/JoystickClimberArm.h>
 #include <Commands/JoystickTurn.h>
 #include <Commands/LiftIntake.h>
+#include <Commands/ManualOverride.h>
 #include <Commands/ManualWinchControl.h>
 #include <Commands/MoveClimberArm.h>
 #include <Commands/MoveHolderWheel.h>
@@ -88,6 +90,8 @@ OI::OI()
 	s_manual_winch_enable->WhenReleased(new JoystickClimberArm());
 	s_pid_enable->WhenPressed(new TogglePID(true));
 	s_pid_enable->WhenReleased(new TogglePID(false));
+	s_sensor_override->WhenPressed(new ManualOverride(true));
+	s_sensor_override->WhenReleased(new ManualOverride(false));
 	//Set Joystick Analog Dial Events
 
 	//Set any other variables here

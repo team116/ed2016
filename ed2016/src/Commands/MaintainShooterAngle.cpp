@@ -28,7 +28,7 @@ void MaintainShooterAngle::Execute()
 	{
 		shooter_pitch->setSpeed(0.0);
 	}
-	if (sensors->areShooterAngleEnabled())
+	if (sensors->isShooterAngleEnabled())
 	{
 		float pitch = sensors->shooterAngle();
 		float scale;

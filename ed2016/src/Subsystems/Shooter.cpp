@@ -54,14 +54,15 @@ void Shooter::InitDefaultCommand()
 
 double Shooter::ReturnPIDInput()
 {
-	// Return your input value for the PID loop
-	// e.g. a sensor, like a potentiometer:
-	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "");
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Rate: %f Target: %f P: %F I: %F D: %F", CommandBase::sensors->speedShooterWheel(), GetSetpoint(), GetPIDController()->GetP(), GetPIDController()->GetI(), GetPIDController()->GetD());
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "OnTarget: %d", OnTarget());
 	//DriverStation::ReportError("");
 	//DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));
+	if (!CommandBase::sensors->isShooterWheelTachometerEnabled())
+	{
+		Disable();
+	}
 	return CommandBase::sensors->speedShooterWheel();
 }
 

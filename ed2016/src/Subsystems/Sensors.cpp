@@ -22,6 +22,15 @@ const int Sensors::SHOOTER_WHEEL_PPR = 1;
 
 const int Sensors::LIDAR_OFFSET = -10;
 
+const bool Sensors::DRIVE_ENCODERS_ENABLED = false;
+const bool Sensors::LIDAR_SENSOR_ENABLED = true;
+const bool Sensors::SHOOTER_ANGLE_ENABLED = true;
+const bool Sensors::ROBOT_ANGLE_ENABLED = true;
+const bool Sensors::INTAKE_ANGLE_ENABLED = true;
+const bool Sensors::BALL_SWITCH_ENABLED = true;
+const bool Sensors::SHOOTER_HOME_SWITCH_ENABLED = true;
+const bool Sensors::SHOOTER_WHEEL_TACHOMETER_ENABLED = true;
+
 // objects need to be initialized to null so that they don't try to use resources that haven't been set up statically
 Timer* Sensors::tach_pulse_timer = nullptr;
 int Sensors::last_tach_count = 0;
@@ -82,16 +91,16 @@ Sensors::Sensors() : Subsystem("Sensors") // constructor for sensors
 
 	pdp = new PowerDistributionPanel(RobotPorts::PDP);
 
-	drive_encoders_enabled = false;
-	lidar_sensor_enabled = true;
-	shooter_angle_enabled = true;
-	robot_angle_enabled = true;
-	intake_angle_enabled = true;
-	ready_to_shoot_enabled = true;
-	shooter_home_switch_enabled = true;
-	shooter_wheel_tachometer_enabled = true;
+	drive_encoders_soft_enabled = true;
+	lidar_sensor_soft_enabled = true;
+	shooter_angle_soft_enabled = true;
+	robot_angle_soft_enabled = true;
+	intake_angle_soft_enabled = true;
+	ball_switch_soft_enabled = true;
+	shooter_home_switch_soft_enabled = true;
+	shooter_wheel_tachometer_soft_enabled = true;
 
-	if (shooterWheelTachometerEnabled())
+	if (isShooterWheelTachometerEnabled())
 	{
 		tach_pulse_timer->Start();
 		tach_pulse_timer->Reset();
@@ -135,7 +144,7 @@ float Sensors::shooterAngleActual()
 
 float Sensors::shooterAngle()
 {
-	if (areShooterAngleEnabled())
+	if (isShooterAngleEnabled())
 	{
 		float actual = shooterAngleActual();
 		if (actual > 270.0)
@@ -165,7 +174,7 @@ float Sensors::shooterVoltage()
 
 float Sensors::robotAngle()
 {
-	if(robot_angle_enabled)
+	if(isRobotAngleEnabled())
 	{
 		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
 		{
@@ -189,7 +198,7 @@ float Sensors::robotAngle()
 
 float Sensors::robotPitch()
 {
-	if(robot_angle_enabled)
+	if(isRobotAngleEnabled())
 	{
 		if (Utils::getRobotType() == Utils::CAN_MOTOR_BOT)
 		{
@@ -213,7 +222,7 @@ float Sensors::robotPitch()
 float Sensors::speedShooterWheel()
 {
 	{
-		if (shooterWheelTachometerEnabled())
+		if (isShooterWheelTachometerEnabled())
 		{
 			return shooter_wheel_tach_rate;
 		}
@@ -226,7 +235,7 @@ float Sensors::speedShooterWheel()
 
 float Sensors::intakeAngle()
 {
-	if (intake_angle_enabled)
+	if (isIntakeAngleEnabled())
 	{
 		float voltage = intake_angle_encoder->GetVoltage() + INTAKE_VOLT_ADJUSTMENT;
 		voltage = Utils::wrap(voltage, 0.0, 5.0);
@@ -241,7 +250,7 @@ float Sensors::intakeAngle()
 
 int Sensors::lidarDistance()
 {
-	if (areLidarEnabled())
+	if (isLidarEnabled())
 	{
 		return lidar_distance;
 	}
@@ -283,7 +292,7 @@ void Sensors::refreshLidar()
 
 float Sensors::getDistanceLeft()
 {
-	if (areDriveEncoderEnabled())
+	if (areDriveEncodersEnabled())
 	{
 		return (float)left_drive_encoder->GetDistance();
 	}
@@ -295,7 +304,7 @@ float Sensors::getDistanceLeft()
 
 float Sensors::getDistanceRight()
 {
-	if(areDriveEncoderEnabled())
+	if(areDriveEncodersEnabled())
 
 	{
 		return (float)right_drive_encoder->GetDistance();
@@ -316,31 +325,89 @@ void Sensors::resetEncoderRight()
 	right_drive_encoder->Reset();
 }
 
-bool Sensors::areDriveEncoderEnabled()
+void Sensors::enableDriveEncoders(bool enable)
 {
-	return drive_encoders_enabled;
+	drive_encoders_soft_enabled = enable;
 }
 
-bool Sensors::areLidarEnabled()
+void Sensors::enableLidar(bool enable)
 {
-	return lidar_sensor_enabled;
+	lidar_sensor_soft_enabled = enable;
 }
-bool Sensors::areShooterAngleEnabled()
+
+void Sensors::enableShooterAngle(bool enable)
 {
-	return shooter_angle_enabled;
+	shooter_angle_soft_enabled = enable;
 }
-bool Sensors::areRobotAngleEnabled()
+
+void Sensors::enableRobotAngle(bool enable)
 {
-	return robot_angle_enabled;
+	robot_angle_soft_enabled = enable;
 }
-bool Sensors::areIntakeAngleEnabled()
+
+void Sensors::enableIntakeAngle(bool enable)
 {
-	return intake_angle_enabled;
+	intake_angle_soft_enabled = enable;
+}
+
+void Sensors::enableShooterHomeSwitch(bool enable)
+{
+	shooter_home_switch_soft_enabled = enable;
+}
+
+void Sensors::enableShooterWheelTachometer(bool enable)
+{
+	shooter_wheel_tachometer_soft_enabled = enable;
+}
+
+void Sensors::enableBallSwitch(bool enable)
+{
+	ball_switch_soft_enabled = enable;
+}
+
+bool Sensors::areDriveEncodersEnabled()
+{
+	return DRIVE_ENCODERS_ENABLED && drive_encoders_soft_enabled;
+}
+
+bool Sensors::isLidarEnabled()
+{
+	return LIDAR_SENSOR_ENABLED && lidar_sensor_soft_enabled;
+}
+
+bool Sensors::isShooterAngleEnabled()
+{
+	return SHOOTER_ANGLE_ENABLED && shooter_angle_soft_enabled;
+}
+
+bool Sensors::isRobotAngleEnabled()
+{
+	return ROBOT_ANGLE_ENABLED && robot_angle_soft_enabled;
+}
+
+bool Sensors::isIntakeAngleEnabled()
+{
+	return INTAKE_ANGLE_ENABLED && intake_angle_soft_enabled;
+}
+
+bool Sensors::isShooterHomeSwitchEnabled()
+{
+	return SHOOTER_HOME_SWITCH_ENABLED && shooter_home_switch_soft_enabled;
+}
+
+bool Sensors::isShooterWheelTachometerEnabled()
+{
+	return SHOOTER_WHEEL_TACHOMETER_ENABLED && shooter_wheel_tachometer_soft_enabled;
+}
+
+bool Sensors::isBallSwitchEnabled()
+{
+	return BALL_SWITCH_ENABLED && ball_switch_soft_enabled;
 }
 
 bool Sensors::readyToShoot()
 {
-	if (ready_to_shoot_enabled)
+	if (isBallSwitchEnabled())
 	{
 		return !ready_to_shoot_balls_switch->Get();
 	}
@@ -355,16 +422,6 @@ float Sensors::getCurrent(unsigned int port)
 	return pdp->GetCurrent(port);
 }
 
-bool Sensors::isShooterHomeSwitchEnabled()
-{
-	return shooter_home_switch_enabled;
-}
-
-bool Sensors::shooterWheelTachometerEnabled()
-{
-	return shooter_wheel_tachometer_enabled;
-}
-
 bool Sensors::isShooterHomeSwitchHorizontal()
 {
 	if (isShooterHomeSwitchEnabled()) {
@@ -376,7 +433,7 @@ bool Sensors::isShooterHomeSwitchHorizontal()
 }
 float Sensors::getSpeedLeft()
 {
-	if (areDriveEncoderEnabled())
+	if (areDriveEncodersEnabled())
 	{
 		return left_drive_encoder->GetRate();
 	}
@@ -385,7 +442,7 @@ float Sensors::getSpeedLeft()
 
 float Sensors::getSpeedRight()
 {
-	if (areDriveEncoderEnabled())
+	if (areDriveEncodersEnabled())
 	{
 		return right_drive_encoder->GetRate();
 	}

@@ -50,13 +50,23 @@ public:
 
 	float getCurrent(unsigned int port);
 
-	bool areDriveEncoderEnabled();
-	bool areLidarEnabled();
-	bool areShooterAngleEnabled();
-	bool areRobotAngleEnabled();
-	bool areIntakeAngleEnabled();
+	void enableDriveEncoders(bool enable);
+	void enableLidar(bool enable);
+	void enableShooterAngle(bool enable);
+	void enableRobotAngle(bool enable);
+	void enableIntakeAngle(bool enable);
+	void enableShooterHomeSwitch(bool enable);
+	void enableShooterWheelTachometer(bool enable);
+	void enableBallSwitch(bool enable);
+
+	bool areDriveEncodersEnabled();
+	bool isLidarEnabled();
+	bool isShooterAngleEnabled();
+	bool isRobotAngleEnabled();
+	bool isIntakeAngleEnabled();
 	bool isShooterHomeSwitchEnabled();
-	bool shooterWheelTachometerEnabled();
+	bool isShooterWheelTachometerEnabled();
+	bool isBallSwitchEnabled();
 
 	void zeroShooterPitch();
 
@@ -115,14 +125,23 @@ private:
 
 	PowerDistributionPanel* pdp;
 
-	bool drive_encoders_enabled;
-	bool lidar_sensor_enabled;
-	bool shooter_angle_enabled;
-	bool robot_angle_enabled;
-	bool intake_angle_enabled;
-	bool ready_to_shoot_enabled;
-	bool shooter_home_switch_enabled;
-	bool shooter_wheel_tachometer_enabled;
+	static const bool DRIVE_ENCODERS_ENABLED;
+	static const bool LIDAR_SENSOR_ENABLED;
+	static const bool SHOOTER_ANGLE_ENABLED;
+	static const bool ROBOT_ANGLE_ENABLED;
+	static const bool INTAKE_ANGLE_ENABLED;
+	static const bool BALL_SWITCH_ENABLED;
+	static const bool SHOOTER_HOME_SWITCH_ENABLED;
+	static const bool SHOOTER_WHEEL_TACHOMETER_ENABLED;
+
+	bool drive_encoders_soft_enabled;
+	bool lidar_sensor_soft_enabled;
+	bool shooter_angle_soft_enabled;
+	bool robot_angle_soft_enabled;
+	bool intake_angle_soft_enabled;
+	bool ball_switch_soft_enabled;
+	bool shooter_home_switch_soft_enabled;
+	bool shooter_wheel_tachometer_soft_enabled;
 
 	DigitalInput* shooter_home_switch;
 

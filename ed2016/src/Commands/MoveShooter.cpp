@@ -49,7 +49,7 @@ void MoveShooter::End()
 {
 	shooter_pitch->setDirection(Utils::VerticalDirection::V_STILL);
 
-	if (enable_pid && sensors->areShooterAngleEnabled())
+	if (enable_pid && sensors->isShooterAngleEnabled())
 	{
 		shooter_pitch->Enable();
 		shooter_pitch->SetSetpoint(sensors->shooterAngle());

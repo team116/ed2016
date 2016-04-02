@@ -64,56 +64,67 @@ void DriveStraight::Execute()
 	{
 		case GYRO:
 		{
-			float degrees_off = (starting_robot_angle - sensors->robotAngle()) * -1;
-			while(degrees_off > 180) {
-				degrees_off -= 360;
-			}
-			while(degrees_off < -180) {
-				degrees_off += 360;
-			}
+			if (sensors->isRobotAngleEnabled())
+			{
+				float degrees_off = (starting_robot_angle - sensors->robotAngle()) * -1;
+				while(degrees_off > 180) {
+					degrees_off -= 360;
+				}
+				while(degrees_off < -180) {
+					degrees_off += 360;
+				}
 
-			if(degrees_off > DEGREE_TOLERANCE)
-			{
-				mobility->setLeft(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)),-1.0, 1.0));
-				mobility->setRight(Utils::boundaryCheck(joystick_value + (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+				if(degrees_off > DEGREE_TOLERANCE)
+				{
+					mobility->setLeft(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)),-1.0, 1.0));
+					mobility->setRight(Utils::boundaryCheck(joystick_value + (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+				}
+				else if(degrees_off < -DEGREE_TOLERANCE)
+				{
+					mobility->setLeft(Utils::boundaryCheck(joystick_value + (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+					mobility->setRight(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
+				}
+				else {
+					mobility->setLeft(joystick_value);
+					mobility->setRight(joystick_value);
+				}
 			}
-			else if(degrees_off < -DEGREE_TOLERANCE)
+			else
 			{
-				mobility->setLeft(Utils::boundaryCheck(joystick_value + (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
-				mobility->setRight(Utils::boundaryCheck(joystick_value - (GYRO_SPEED_OFFSET * fabs(degrees_off)), -1.0, 1.0));
-			}
-			else {
-				mobility->setLeft(joystick_value);
-				mobility->setRight(joystick_value);
+				mobility->setStraight(joystick_value);
 			}
 			break;
 		}
 		case ENCODER:
 		{
-			curr_left_speed = sensors ->getSpeedLeft();
-			curr_right_speed = sensors->getSpeedRight();
-			float target_speed = MAX_ROBOT_SPEED * joystick_value;
-
-			if(curr_left_speed > target_speed)
+			if (sensors->areDriveEncodersEnabled())
 			{
-				mobility ->setLeft(mobility ->getLeft() - ENCODER_SPEED_OFFSET);
-			}
+				curr_left_speed = sensors ->getSpeedLeft();
+				curr_right_speed = sensors->getSpeedRight();
+				float target_speed = MAX_ROBOT_SPEED * joystick_value;
 
+				if(curr_left_speed > target_speed)
+				{
+					mobility ->setLeft(mobility ->getLeft() - ENCODER_SPEED_OFFSET);
+				}
 				else if(curr_left_speed < target_speed)
 				{
 					mobility ->setLeft(mobility ->getLeft() + ENCODER_SPEED_OFFSET);
 				}
 
-			if(curr_right_speed > target_speed)
-			{
-				mobility ->setRight(mobility ->getRight() - ENCODER_SPEED_OFFSET);
-			}
-
+				if(curr_right_speed > target_speed)
+				{
+					mobility ->setRight(mobility ->getRight() - ENCODER_SPEED_OFFSET);
+				}
 				else if (curr_right_speed < target_speed)
 				{
 					mobility ->setRight(mobility ->getRight() + ENCODER_SPEED_OFFSET);
 				}
-
+			}
+			else
+			{
+				mobility->setStraight(joystick_value);
+			}
 			break;
 		}
 	}

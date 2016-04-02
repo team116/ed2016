@@ -22,7 +22,7 @@ void SetShooterPitch::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "SetShooterPitch (angle: %f, pid mode: %d)", pitch, shooter_pitch->isPIDEnabled());
 	interrupted = false;
-	if (sensors->areShooterAngleEnabled())
+	if (sensors->isShooterAngleEnabled())
 	{
 		SetTimeout(TIMEOUT * fabs(pitch - sensors->shooterAngle()));
 	}
@@ -46,7 +46,7 @@ void SetShooterPitch::Execute()
 {
 	if(!shooter_pitch->isPIDEnabled()) {
 		float current_angle;
-		if (sensors->areShooterAngleEnabled())
+		if (sensors->isShooterAngleEnabled())
 		{
 			current_angle = sensors->shooterAngle();
 		}
@@ -74,7 +74,7 @@ void SetShooterPitch::Execute()
 bool SetShooterPitch::IsFinished()
 {
 	float current_angle;
-	if (sensors->areShooterAngleEnabled())
+	if (sensors->isShooterAngleEnabled())
 	{
 		current_angle = sensors->shooterAngle();
 	}
@@ -111,7 +111,7 @@ void SetShooterPitch::End()
 	last_angle = pitch;
 
 	float angle;
-	if (sensors->areShooterAngleEnabled())
+	if (sensors->isShooterAngleEnabled())
 	{
 		angle = sensors->shooterAngle();
 	}

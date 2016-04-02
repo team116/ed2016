@@ -217,7 +217,6 @@ private:
 				CommandBase::shooter->getD(),
 				CommandBase::shooter->getF());
 			DriverStation::ReportError(text);
-			//DriverStation::ReportError("Distance: " + std::to_string(CommandBase::sensors->lidarDistance()));
 		}
 		catch (exception& e)
 		{

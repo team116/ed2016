@@ -64,7 +64,7 @@ bool DriveDistance::IsFinished()
 		log->write(Log::TRACE_LEVEL, "DriveDistance finished (interrupt)");
 		return true;
 	}
-	if (sensors->areDriveEncoderEnabled() && (distance == 0.0 ||
+	if (sensors->areDriveEncodersEnabled() && (distance == 0.0 ||
 		((current_distance - starting_distance >= distance && distance > 0.0) ||
 		 (current_distance - starting_distance <= distance && distance < 0.0))))
 	{

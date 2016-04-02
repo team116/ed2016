@@ -31,7 +31,7 @@ AngleIntake::~AngleIntake()
 void AngleIntake::Initialize()
 {
 	log->write(Log::TRACE_LEVEL, "Angle Intake Initialized (angle, %f)", angle);
-	if (sensors->areIntakeAngleEnabled())
+	if (sensors->isIntakeAngleEnabled())
 	{
 		if (intake->isPIDEnabled())
 		{
@@ -49,7 +49,7 @@ void AngleIntake::Execute()
 {
 	if (!intake->isPIDEnabled())
 	{
-		if (sensors->areIntakeAngleEnabled())
+		if (sensors->isIntakeAngleEnabled())
 		{
 			current_angle = sensors->intakeAngle();
 		}

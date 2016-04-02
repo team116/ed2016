@@ -47,12 +47,10 @@ ShooterPitch::ShooterPitch() :
 
 double ShooterPitch::ReturnPIDInput()
 {
-	// Return your input value for the PID loop
-	// e.g. a sensor, like a potentiometer:
-	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-
-	//DriverStation::ReportError("Angle: " + std::to_string(CommandBase::sensors->shooterAngle()) + " Target: " + std::to_string(GetSetpoint()));
-
+	if (!CommandBase::sensors->isShooterAngleEnabled())
+	{
+		Disable();
+	}
 	return CommandBase::sensors->shooterAngle();
 }
 

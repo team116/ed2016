@@ -39,13 +39,13 @@ void Intake::InitDefaultCommand()
 
 double Intake::ReturnPIDInput()
 {
-	// Return your input value for the PID loop
-	// e.g. a sensor, like a potentiometer:
-	// yourPot->SetAverageVoltage() / kYourMaxVoltage;
-
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "");
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Angle: %f Target: %f P: %f I: %f D: %f", CommandBase::sensors->intakeAngle(), GetSetpoint(), getP(), getI(), getD());
 	//DriverStation::ReportError("Angle: " + std::to_string(CommandBase::sensors->intakeAngle()) + " Target: " + std::to_string(GetSetpoint()));
+	if (!CommandBase::sensors->isIntakeAngleEnabled())
+	{
+		Disable();
+	}
 	return CommandBase::sensors->intakeAngle();
 }
 
