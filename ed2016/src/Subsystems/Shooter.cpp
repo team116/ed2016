@@ -107,7 +107,11 @@ void Shooter::setRPM(float rpm)
 		{
 			setSpeed(SPEED_PRESETS[preset]);
 		}
-		else
+		else if (rpm < RPM_PRESETS[0])
+		{
+			setSpeed(SPEED_PRESETS[0]);
+		}
+		else // rpm > RPM_PRESETS[5]
 		{
 			setSpeed(SPEED_PRESETS[5]);
 		}

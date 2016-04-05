@@ -16,16 +16,15 @@ void RunShooterWheels::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void RunShooterWheels::Execute()
 {
-	if(!DriverStation::GetInstance().IsAutonomous()) {
-		if(oi->getShooterWheelsSwitch()) {
-			if(oi->getPIDEnableSwitch()) {
-				shooter->Enable();
-			}
+	if(!DriverStation::GetInstance().IsAutonomous())
+	{
+		if(oi->getShooterWheelsSwitch())
+		{
 			shooter->setRPM(shooter->getRPMPreset(oi->getShooterSpeedPosition()));
 		}
-		else {
-			shooter->Disable();
-			shooter->setSpeed(0);
+		else
+		{
+			shooter->setSpeed(0.0);
 		}
 	}
 }
