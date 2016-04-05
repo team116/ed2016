@@ -10,7 +10,7 @@
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/SpyBoxShoot.h>
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
-#include <Commands/TogglePID.h>
+#include <Commands/CheckManualOverrides.h>
 #include <Log.h>
 #include <OI.h>
 #include <Subsystems/ShooterPitch.h>
@@ -32,6 +32,8 @@ private:
 
 	Log* log;
 
+	CheckManualOverrides* check_overrides;
+
 	static const int MEMORY_RESERVATION_SIZE = 2047;
 	uint8_t* out_of_memory_reservation;
 
@@ -44,6 +46,8 @@ private:
 		defense_switch = new AnalogInput(RobotPorts::AUTONOMOUS_NAVX_B);
 
 		log = Log::getInstance();
+
+		check_overrides = new CheckManualOverrides();
 
 		out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE];
 	}
@@ -70,7 +74,7 @@ private:
      */
 	void DisabledInit()
 	{
-		Scheduler::GetInstance()->AddCommand(new TogglePID(false));
+
 	}
 
 	void DisabledPeriodic()
@@ -109,7 +113,7 @@ private:
 	 */
 	void AutonomousInit()
 	{
-		Scheduler::GetInstance()->AddCommand(new TogglePID(true));
+		Scheduler::GetInstance()->AddCommand(check_overrides);
 
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = getShootSwitchValue();
@@ -186,6 +190,8 @@ private:
 
 	void TeleopInit()
 	{
+		Scheduler::GetInstance()->AddCommand(check_overrides);
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -194,7 +200,6 @@ private:
 			auto_command->Cancel();
 		DriverStation::ReportError("Starting Robot " + std::to_string(CommandBase::oi->getPIDEnableSwitch()));
 		//CommandBase::sensors->zeroShooterPitch();
-		Scheduler::GetInstance()->AddCommand(new TogglePID(CommandBase::oi->getPIDEnableSwitch()));
 	}
 
 	void TeleopPeriodic()
@@ -231,6 +236,8 @@ private:
 
 	void TestInit()
 	{
+		Scheduler::GetInstance()->AddCommand(check_overrides);
+
 		DriverStation::ReportError("my message");
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);

@@ -177,11 +177,11 @@ float ShooterPitch::getAnglePreset(int index)
 
 bool ShooterPitch::isPIDEnabled()
 {
-	if (requires_reenable)
-	{
-		Enable();
-		requires_reenable = false;
-	}
+//	if (requires_reenable)
+//	{
+//		Enable();
+//		requires_reenable = false;
+//	}
 
 	return GetPIDController()->IsEnabled();
 }

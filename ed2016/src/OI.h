@@ -33,7 +33,7 @@ public:
 
 	bool getFuegoButton();
 	bool getAutoAimButton();
-	bool getSensorOverrideSwitch();
+	bool getSensorEnableSwitch();
 
 	Utils::HorizontalDirection getIntakeDirectionSwitch();
 	void resetIntakeDirectionSwitch();

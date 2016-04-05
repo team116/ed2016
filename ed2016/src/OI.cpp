@@ -6,11 +6,9 @@
 #include <Commands/ClearCommands.h>
 #include <Commands/DriveStraight.h>
 #include <Commands/DriveDistance.h>
-#include <Commands/EnableSensors.h>
 #include <Commands/JoystickClimberArm.h>
 #include <Commands/JoystickTurn.h>
 #include <Commands/LiftIntake.h>
-#include <Commands/ManualOverride.h>
 #include <Commands/ManualWinchControl.h>
 #include <Commands/MoveClimberArm.h>
 #include <Commands/MoveHolderWheel.h>
@@ -21,7 +19,6 @@
 #include <Commands/SelectCamera.h>
 #include <Commands/SetShooterPitch.h>
 #include <Commands/Shoot.h>
-#include <Commands/TogglePID.h>
 #include <Commands/AutoWinch.h>
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
@@ -88,10 +85,10 @@ OI::OI()
 	//Set Joystick Switch Events
 	s_manual_winch_enable->WhileHeld(new ManualWinchControl());
 	s_manual_winch_enable->WhenReleased(new JoystickClimberArm());
-	s_pid_enable->WhenPressed(new TogglePID(true));
-	s_pid_enable->WhenReleased(new TogglePID(false));
-	s_sensor_override->WhenPressed(new ManualOverride(true));
-	s_sensor_override->WhenReleased(new ManualOverride(false));
+//	s_pid_enable->WhenPressed(new TogglePID(true));
+//	s_pid_enable->WhenReleased(new TogglePID(false));
+//	s_sensor_override->WhenPressed(new ManualOverride(true));
+//	s_sensor_override->WhenReleased(new ManualOverride(false));
 	//Set Joystick Analog Dial Events
 
 	//Set any other variables here
@@ -307,7 +304,7 @@ bool OI::getAutoAimButton()
 	return b_auto_aim->Get();
 }
 
-bool OI::getSensorOverrideSwitch()
+bool OI::getSensorEnableSwitch()
 {
 	return s_sensor_override->Get();
 }

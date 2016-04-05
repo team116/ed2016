@@ -29,7 +29,14 @@ void ControlShooterPitch::Execute()
 
 	if (last_fuego_value != fuego_value)
 	{
-		if (oi->getSensorOverrideSwitch())
+		if (oi->getSensorEnableSwitch())
+		{
+			if (fuego_value)
+			{
+				Scheduler::GetInstance()->AddCommand(shoot);
+			}
+		}
+		else
 		{
 			if (fuego_value)
 			{
@@ -40,15 +47,22 @@ void ControlShooterPitch::Execute()
 				Scheduler::GetInstance()->AddCommand(stop_shooter);
 			}
 		}
-		else
-		{
-			Scheduler::GetInstance()->AddCommand(shoot);
-		}
 	}
 
 	if (last_auto_aim_value != auto_aim_value)
 	{
-		if (oi->getSensorOverrideSwitch())
+		if (oi->getSensorEnableSwitch())
+		{
+			if (auto_aim_value)
+			{
+				Scheduler::GetInstance()->AddCommand(auto_shoot);
+			}
+			else
+			{
+				auto_shoot->Cancel();
+			}
+		}
+		else
 		{
 			if (auto_aim_value)
 			{
@@ -58,10 +72,6 @@ void ControlShooterPitch::Execute()
 			{
 				Scheduler::GetInstance()->AddCommand(stop_shooter);
 			}
-		}
-		else
-		{
-			Scheduler::GetInstance()->AddCommand(auto_shoot);
 		}
 	}
 
