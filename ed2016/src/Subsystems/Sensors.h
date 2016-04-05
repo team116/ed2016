@@ -45,7 +45,8 @@ public:
 	void resetEncoderLeft();
 	void resetEncoderRight();
 
-	bool readyToShoot();
+	bool getBallSwitch();
+	bool getBallSwitchActual();
 	bool isShooterHomeSwitchHorizontal();
 
 	float getCurrent(unsigned int port);

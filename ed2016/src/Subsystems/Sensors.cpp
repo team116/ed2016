@@ -405,16 +405,21 @@ bool Sensors::isBallSwitchEnabled()
 	return BALL_SWITCH_ENABLED && ball_switch_soft_enabled;
 }
 
-bool Sensors::readyToShoot()
+bool Sensors::getBallSwitch()
 {
 	if (isBallSwitchEnabled())
 	{
-		return !ready_to_shoot_balls_switch->Get();
+		return getBallSwitchActual();
 	}
 	else
 	{
 		return false;
 	}
+}
+
+bool Sensors::getBallSwitchActual()
+{
+	return !ready_to_shoot_balls_switch->Get();
 }
 
 float Sensors::getCurrent(unsigned int port)

@@ -211,6 +211,19 @@ void OI::process()
 
 	//CommandBase::shooter_pitch->DISTANCE = std::stof(SmartDashboard::GetString("DB/String 4", "0"));
 
+	if(CommandBase::sensors->getBallSwitchActual()) {
+		SmartDashboard::PutBoolean("DB/LED 0", true);
+		SmartDashboard::PutBoolean("DB/LED 1", true);
+		SmartDashboard::PutBoolean("DB/LED 2", true);
+		SmartDashboard::PutBoolean("DB/LED 3", true);
+	}
+	else {
+		SmartDashboard::PutBoolean("DB/LED 0", false);
+		SmartDashboard::PutBoolean("DB/LED 1", false);
+		SmartDashboard::PutBoolean("DB/LED 2", false);
+		SmartDashboard::PutBoolean("DB/LED 3", false);
+	}
+
 }
 
 float OI::getJoystickLeftY()
