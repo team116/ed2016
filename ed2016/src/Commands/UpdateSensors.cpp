@@ -19,11 +19,7 @@ void UpdateSensors::Execute()
 {
 	sensors->refreshLidar();
 
-	if (sensors->isShooterHomeSwitchHorizontal())
-	{
-		sensors->zeroShooterPitch();
-		SetShooterPitch::zeroTimedAngleTracker();
-	}
+	shooter_pitch->checkLimits();
 
 	// this always needs to come last
 	// other update functions might require cycle time

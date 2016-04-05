@@ -4,13 +4,13 @@
 #include <Commands/Command.h>
 #include <CommandBase.h>
 #include <Autonomous.h>
+#include <CheckManualOverrides.h>
 #include <Commands/Autonomous/CrossDefense.h>
 #include <Commands/Autonomous/DoNothing.h>
 #include <Commands/Autonomous/MoveToDefense.h>
 #include <Commands/Autonomous/CrossDefAndShoot.h>
 #include <Commands/Autonomous/SpyBoxShoot.h>
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
-#include <Commands/CheckManualOverrides.h>
 #include <Log.h>
 #include <OI.h>
 #include <Subsystems/ShooterPitch.h>
@@ -32,8 +32,6 @@ private:
 
 	Log* log;
 
-	CheckManualOverrides* check_overrides;
-
 	static const int MEMORY_RESERVATION_SIZE = 2047;
 	uint8_t* out_of_memory_reservation;
 
@@ -47,7 +45,7 @@ private:
 
 		log = Log::getInstance();
 
-		check_overrides = new CheckManualOverrides();
+		CheckManualOverrides::initialize();
 
 		out_of_memory_reservation = new uint8_t[MEMORY_RESERVATION_SIZE];
 	}
@@ -113,8 +111,6 @@ private:
 	 */
 	void AutonomousInit()
 	{
-		Scheduler::GetInstance()->AddCommand(check_overrides);
-
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = getShootSwitchValue();
 
@@ -178,6 +174,7 @@ private:
 	{
 		try
 		{
+			CheckManualOverrides::process();
 			Scheduler::GetInstance()->Run();
 		}
 		catch (exception& e)
@@ -190,8 +187,6 @@ private:
 
 	void TeleopInit()
 	{
-		Scheduler::GetInstance()->AddCommand(check_overrides);
-
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -206,6 +201,7 @@ private:
 	{
 		try
 		{
+			CheckManualOverrides::process();
 			Scheduler::GetInstance()->Run();
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
@@ -236,8 +232,6 @@ private:
 
 	void TestInit()
 	{
-		Scheduler::GetInstance()->AddCommand(check_overrides);
-
 		DriverStation::ReportError("my message");
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = voltageConversion(shoot_voltage, 3, 5.0);
@@ -257,6 +251,7 @@ private:
 	{
 		try
 		{
+			CheckManualOverrides::process();
 			LiveWindow::GetInstance()->Run();
 			char text[255];
 			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f",

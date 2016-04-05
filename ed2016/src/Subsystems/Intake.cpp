@@ -79,7 +79,6 @@ void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 	{
 		setAngleSpeed(0.0);
 	}
-	log->write(Log::ERROR_LEVEL, "intake angle speed: %f", intake_angle->Get());
 }
 
 float Intake::getAnglePreset(int index)

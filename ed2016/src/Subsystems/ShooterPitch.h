@@ -1,6 +1,7 @@
 #ifndef ShooterPitch_H
 #define ShooterPitch_H
 
+#include <Commands/MoveShooterToZero.h>
 #include <Commands/Subsystem.h>
 #include <WPILib.h>
 #include <RobotMap.h>
@@ -24,7 +25,7 @@ public:
 	float getPitchToTarget(float, float);
 
 	bool isPIDEnabled();
-	bool requiresReenable();
+	float getSpeed();
 
 	float getP();
 	float getI();
@@ -50,18 +51,7 @@ private:
 	static const float MANUAL_SPEED;
 
 	static const float ZERO_ANGLE_ZONE;
-
-	/**
-	 * requires_reenable is set to true when
-	 * 1) we decide to go to zero degrees,
-	 * 2) the home switch is enabled, and
-	 * 3) PID is enabled
-	 *
-	 * When this happens, PID is disabled so that we can just set the speed to -1.0 and wait for the limit
-	 * switch to be pressed.  isPIDEnabled() automatically checks for this, and reenables the subsystem
-	 * accordingly.
-	 */
-	bool requires_reenable;
+	MoveShooterToZero* move_shooter_to_zero;
 
 };
 

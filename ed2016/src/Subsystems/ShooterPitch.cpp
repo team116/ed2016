@@ -2,6 +2,7 @@
 #include "../RobotMap.h"
 #include <CommandBase.h>
 #include <Commands/MaintainShooterAngle.h>
+#include <Commands/SetShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Cameras.h>
 #include <Log.h>
@@ -10,7 +11,7 @@
 
 const int ShooterPitch::ANGLE_PRESET_COUNT = 6;
 
-const float ShooterPitch::ZERO_ANGLE_ZONE = 1.0;
+const float ShooterPitch::ZERO_ANGLE_ZONE = 3.0;
 
 float* ShooterPitch::ANGLE_PRESETS = new float[ShooterPitch::ANGLE_PRESET_COUNT];/* {
 	0.0,
@@ -30,6 +31,7 @@ ShooterPitch::ShooterPitch() :
 		PIDSubsystem("ShooterPitch", 0.1, 0.0001, 0.0, 0.0)
 {
 	pitch_angle = Utils::constructMotor(RobotPorts::SHOOTER_PITCH_MOTOR);
+	move_shooter_to_zero = new MoveShooterToZero();
 
 	for (int i = 0; i < ANGLE_PRESET_COUNT; ++i)
 	{
@@ -41,8 +43,6 @@ ShooterPitch::ShooterPitch() :
 	SetOutputRange(-1.0,1.0);
 
 	GetPIDController()->SetContinuous(false);
-
-	requires_reenable = false;
 }
 
 double ShooterPitch::ReturnPIDInput()
@@ -56,17 +56,7 @@ double ShooterPitch::ReturnPIDInput()
 
 void ShooterPitch::UsePIDOutput(double output)
 {
-	// Use output to drive your system, like a motor
-	// e.g. yourMotor->Set(output);
-	if (CommandBase::sensors->isShooterHomeSwitchHorizontal() && output < 0.0)
-	{
-		setSpeed(0.0);
-		CommandBase::sensors->zeroShooterPitch();
-	}
-	else
-	{
-		setSpeed(output);
-	}
+	setSpeed(output);
 }
 
 void ShooterPitch::InitDefaultCommand()
@@ -79,26 +69,31 @@ void ShooterPitch::InitDefaultCommand()
 
 void ShooterPitch::setAngle(float degrees)
 {
-	if (isPIDEnabled())
+	if (degrees < ZERO_ANGLE_ZONE && !move_shooter_to_zero->IsRunning())
 	{
-		if (!CommandBase::sensors->isShooterHomeSwitchEnabled() && fabs(degrees) < ZERO_ANGLE_ZONE)
+		Scheduler::GetInstance()->AddCommand(move_shooter_to_zero);
+	}
+	else
+	{
+		if (move_shooter_to_zero->IsRunning())
 		{
-			Disable();
-			requires_reenable = true;
-			setDirection(Utils::VerticalDirection::DOWN);
+			move_shooter_to_zero->Cancel();
 		}
-		else
-		{
-			requires_reenable = false;
-			SetSetpoint(degrees);
-		}
+		SetSetpoint(degrees);
 	}
 }
 
 //Manual Control (Disable PID first)
 void ShooterPitch::setSpeed(float speed)
 {
-	pitch_angle->Set(speed);
+	if (speed < 0.0 && CommandBase::sensors->isShooterHomeSwitchHorizontal())
+	{
+		pitch_angle->Set(0.0);
+	}
+	else
+	{
+		pitch_angle->Set(speed);
+	}
 }
 
 //Manual Control (Disabled PID first)
@@ -110,14 +105,7 @@ void ShooterPitch::setDirection(Utils::VerticalDirection dir)
 		setSpeed(MANUAL_SPEED);
 	}
 	else if (dir == Utils::VerticalDirection::DOWN){
-		if (CommandBase::sensors->isShooterHomeSwitchHorizontal() )
-		{
-			setSpeed(0.0);
-		}
-		else
-		{
-			setSpeed(-MANUAL_SPEED);
-		}
+		setSpeed(-MANUAL_SPEED);
 	}
 	else
 	{
@@ -127,8 +115,15 @@ void ShooterPitch::setDirection(Utils::VerticalDirection dir)
 
 void ShooterPitch::checkLimits()
 {
-	if(CommandBase::sensors->isShooterHomeSwitchHorizontal()) {
+	if(CommandBase::sensors->isShooterHomeSwitchHorizontal())
+	{
 		CommandBase::sensors->zeroShooterPitch();
+		SetShooterPitch::zeroTimedAngleTracker();
+
+		if (getSpeed() < 0.0)
+		{
+			setSpeed(0.0);
+		}
 	}
 }
 
@@ -177,18 +172,12 @@ float ShooterPitch::getAnglePreset(int index)
 
 bool ShooterPitch::isPIDEnabled()
 {
-//	if (requires_reenable)
-//	{
-//		Enable();
-//		requires_reenable = false;
-//	}
-
 	return GetPIDController()->IsEnabled();
 }
 
-bool ShooterPitch::requiresReenable()
+float ShooterPitch::getSpeed()
 {
-	return requires_reenable;
+	return pitch_angle->Get();
 }
 
 float ShooterPitch::getP()
