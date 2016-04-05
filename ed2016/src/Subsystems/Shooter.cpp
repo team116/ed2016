@@ -59,10 +59,10 @@ double Shooter::ReturnPIDInput()
 	//CommandBase::log->write(Log::DEBUG_LEVEL, "OnTarget: %d", OnTarget());
 	//DriverStation::ReportError("");
 	//DriverStation::ReportError("Input: " + std::to_string(CommandBase::sensors->speedShooterWheel()) + " Target: " + std::to_string(GetSetpoint()) + " P: " + std::to_string(getP()) + " I: " + std::to_string(getI()) + " D: " + std::to_string(getD()));
-	if (!CommandBase::sensors->isShooterWheelTachometerEnabled())
-	{
-		Disable();
-	}
+//	if (!CommandBase::sensors->isShooterWheelTachometerEnabled())
+//	{
+//		Disable();
+//	}
 	return CommandBase::sensors->speedShooterWheel();
 }
 

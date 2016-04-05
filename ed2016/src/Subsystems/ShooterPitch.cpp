@@ -47,10 +47,10 @@ ShooterPitch::ShooterPitch() :
 
 double ShooterPitch::ReturnPIDInput()
 {
-	if (!CommandBase::sensors->isShooterAngleEnabled())
-	{
-		Disable();
-	}
+//	if (!CommandBase::sensors->isShooterAngleEnabled())
+//	{
+//		Disable();
+//	}
 	return CommandBase::sensors->shooterAngle();
 }
 
