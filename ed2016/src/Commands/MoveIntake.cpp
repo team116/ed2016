@@ -28,7 +28,7 @@ void MoveIntake::Execute()
 {
 	if (direction == Utils::HorizontalDirection::IN)
 	{
-		if (sensors->readyToShoot())
+		if (sensors->getBallSwitch())
 		{
 			holder_wheel->setWheelDirection(Utils::HorizontalDirection::H_STILL);
 		}
