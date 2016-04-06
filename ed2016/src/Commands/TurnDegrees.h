@@ -11,6 +11,11 @@
 class TurnDegrees: public CommandBase
 {
 public:
+	enum CurrentDirection
+	{
+		COUNTERCLOCKWISE,
+		CLOCKWISE,
+	};
 	TurnDegrees(float degrees, float error = 5.0);
 	void Initialize();
 	void Execute();
@@ -24,8 +29,13 @@ private:
 	float acceptable_error;
 	float degrees;
 
+	float current_clockwise_offset;
+	float current_counter_offset;
+
 	float starting_angle;
 	float target_angle;
+
+	CurrentDirection direction_turning;
 
 	bool interrupted;
 };

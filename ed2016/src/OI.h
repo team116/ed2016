@@ -79,6 +79,9 @@ private:
 	JoystickButton* b_turn_x_axis_right;
 	JoystickButton* b_turn_x_axis_left;
 
+	JoystickButton* b_180_turn_left;
+	JoystickButton* b_180_turn_right;
+
 	static const float DIAL_UPDATE_TIME;
 	static const float DEAD_ZONE_AMOUNT;
 

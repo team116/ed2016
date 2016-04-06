@@ -86,6 +86,9 @@ namespace OI_Ports
 	const unsigned int B_TURN_X_AXIS_RIGHT = 2;
 	const unsigned int B_TURN_X_AXIS_LEFT = 2;
 
+	const unsigned int B_180_TURN_LEFT = 5;
+	const unsigned int B_180_TURN_RIGHT= 5;
+
 	// buttons joystick 1, digital
 	const unsigned int AUTO_AIM_BUTTON = 1;
 	const unsigned int SHOOT_BUTTON = 2;

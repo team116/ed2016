@@ -24,6 +24,7 @@
 #include <Subsystems/Intake.h>
 #include <Subsystems/Shooter.h>
 #include <Subsystems/ShooterPitch.h>
+#include <Commands/TurnDegrees.h>
 
 const float OI::DRIVE_JOYSTICK_SCALE = 1.0;
 const float OI::DIAL_UPDATE_TIME = 0.05;
@@ -40,12 +41,12 @@ OI::OI()
 	//Instantiate Joystick Right Buttons
 	b_drive_align_right = new JoystickButton(joystick_right, OI_Ports::B_DRVIE_ALIGN_BUTTON_RIGHT);
 	b_turn_x_axis_right = new JoystickButton(joystick_right, OI_Ports::B_TURN_X_AXIS_RIGHT);
-
+	b_180_turn_right = new JoystickButton(joystick_right, OI_Ports::B_180_TURN_RIGHT);
 
 	//Instantiate Joystick Left Buttons
 	b_drive_align_left = new JoystickButton(joystick_left, OI_Ports::B_DRIVE_ALIGN_BUTTON_LEFT);
 	b_turn_x_axis_left = new JoystickButton(joystick_left, OI_Ports::B_TURN_X_AXIS_LEFT);
-
+	b_180_turn_left = new JoystickButton(joystick_left, OI_Ports::B_180_TURN_LEFT);
 	//Instantiate Joystick Buttons 1's Buttons
 //	b_test_button = new JoystickButton(joystick_buttons1, OI_Ports::TEST_BUTTON);
 //	b_clear_commands = new JoystickButton(joystick_buttons1, OI_Ports::CLEAR_COMMANDS_BUTTON);
@@ -69,11 +70,12 @@ OI::OI()
 	//Set Joystick Left Events
 	b_drive_align_left->WhileHeld(new DriveStraight(DriveStraight::LEFT, DriveStraight::GYRO));
 	b_turn_x_axis_left->WhileHeld(new JoystickTurn(JoystickTurn::LEFT));
+	b_180_turn_left->WhenPressed(new TurnDegrees(-180));
 
 	//Set Joystick Right Events
 	b_drive_align_right->WhileHeld(new DriveStraight(DriveStraight::RIGHT, DriveStraight::GYRO));
 	b_turn_x_axis_right->WhileHeld(new JoystickTurn(JoystickTurn::RIGHT));
-
+	b_180_turn_right->WhenPressed(new TurnDegrees(180));
 
 	//Set Joystick Buttons Events
 

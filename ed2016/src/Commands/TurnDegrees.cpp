@@ -3,11 +3,12 @@
 #include <Subsystems/Mobility.h>
 #include <Subsystems/Sensors.h>
 
-const float TurnDegrees::TURN_SPEED = 0.75;
+const float TurnDegrees::TURN_SPEED = 0.50;
 
 TurnDegrees::TurnDegrees(float degrees, float error)
 {
 	// Use Requires(&*) here to declare subsystem dependencies
+
 	Requires(&*mobility);
 
 	acceptable_error = error;
@@ -16,13 +17,15 @@ TurnDegrees::TurnDegrees(float degrees, float error)
 	starting_angle = 0.0;
 	target_angle = 0.0;
 
+	current_clockwise_offset = 0.0;
+	current_counter_offset = -0.0;
 	interrupted = false;
 }
 
 // Called just before this Command runs the first time
 void TurnDegrees::Initialize()
 {
-	log->write(Log::TRACE_LEVEL,"TurnDegrees (degrees %f)", degrees);
+	log->write(Log::INFO_LEVEL,"TurnDegrees (degrees %f)", degrees);
 	starting_angle = sensors->robotAngle();
 	target_angle = starting_angle + degrees;
 
@@ -36,25 +39,37 @@ void TurnDegrees::Initialize()
 		target_angle -= 360.0;
 	}
 
-	log->write(Log::TRACE_LEVEL,"CURRENT ANGLE = %f, TARGET ANGLE = %f", starting_angle, target_angle);
+	log->write(Log::INFO_LEVEL,"CURRENT ANGLE = %f, TARGET ANGLE = %f", starting_angle, target_angle);
 	interrupted = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void TurnDegrees::Execute()
 {
-	float current_offset = sensors->robotAngle() - target_angle;
-	if (current_offset < -180.0 ||
-		(current_offset > 0.0 && current_offset < 180.0))
+	float current_angle = sensors->robotAngle();
+
+	current_clockwise_offset = target_angle - current_angle;
+	current_counter_offset = current_angle - target_angle;
+
+	if (current_angle < target_angle)
 	{
-		mobility->setLeft(-TURN_SPEED);
-		mobility->setRight(TURN_SPEED);
+		current_counter_offset = -current_counter_offset;
+		current_clockwise_offset = -current_clockwise_offset;
 	}
-	else
+
+	if(fabs(current_counter_offset) < fabs(current_clockwise_offset))
 	{
-		mobility->setLeft(TURN_SPEED);
-		mobility->setRight(-TURN_SPEED);
+		mobility->setLeft(-TURN_SPEED * fabs(current_counter_offset) / degrees);
+		mobility->setRight(TURN_SPEED * fabs(current_counter_offset) / degrees);
+		direction_turning = CurrentDirection::COUNTERCLOCKWISE;
 	}
+		else
+		{
+			mobility->setRight(-TURN_SPEED * fabs(current_clockwise_offset) / degrees);
+			mobility->setLeft(TURN_SPEED * fabs(current_clockwise_offset) / degrees);
+			direction_turning = CurrentDirection::CLOCKWISE;
+		}
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -66,20 +81,29 @@ bool TurnDegrees::IsFinished()
 	}
 
 	float current_offset = fabs(sensors->robotAngle() - target_angle);
-	log->write(Log::TRACE_LEVEL,"TurnDegrees CURRENT OFFSET = %f", current_offset);
+	log->write(Log::INFO_LEVEL,"TurnDegrees CURRENT OFFSET = %f", current_offset);
 
-	if (current_offset < acceptable_error)
+	if (direction_turning == CurrentDirection::CLOCKWISE)
 	{
+		if (fabs(current_clockwise_offset) < acceptable_error)
+
 		return true;
 	}
 
+	else if(direction_turning == CurrentDirection::COUNTERCLOCKWISE)
+	{
+		if(fabs(current_counter_offset) < acceptable_error)
+
+		return true;
+	}
 	return false;
 }
+
 
 // Called once after isFinished returns true
 void TurnDegrees::End()
 {
-	log->write(Log::TRACE_LEVEL,"TurnDegres Ended");
+	log->write(Log::INFO_LEVEL,"TurnDegres Ended");
 	mobility->setStraight(0.0);
 }
 
@@ -87,7 +111,7 @@ void TurnDegrees::End()
 // subsystems is scheduled to run
 void TurnDegrees::Interrupted()
 {
-	log->write(Log::TRACE_LEVEL,"TurnDegrees Interrupted");
+	log->write(Log::INFO_LEVEL,"TurnDegrees Interrupted");
 	End();
 	// Use an interrupted flag instead of setting target_angle to current_angle because
 	// our current_angle will change between now and the next IsFinished call
