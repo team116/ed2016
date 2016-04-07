@@ -8,12 +8,12 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.40;
-const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.6;
+const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.42;
+const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.62;
 
 const float Sensors::MIN_INTAKE_ANGLE_VOLT = 2.5;
 const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.72;
-const float Sensors::INTAKE_VOLT_ADJUSTMENT = 1.17;
+const float Sensors::INTAKE_VOLT_ADJUSTMENT = 0.27;
 
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;
 const int Sensors::DRIVE_WHEEL_PPR = 128;
@@ -134,7 +134,13 @@ void Sensors::InitDefaultCommand()
 
 void Sensors::zeroShooterPitch()
 {
-	shooter_angle_offset = shooterAngleActual();
+	float actual = shooterAngleActual();
+	/*
+	char text[255];
+	snprintf(text, 255, "Zeroing shooter angle to %f", actual);
+	DriverStation::ReportError(text);
+	*/
+	shooter_angle_offset = actual;
 }
 
 float Sensors::shooterAngleActual()
@@ -147,9 +153,14 @@ float Sensors::shooterAngle()
 	if (isShooterAngleEnabled())
 	{
 		float actual = shooterAngleActual();
+		/*
+		char text[255];
+		snprintf(text, 255, "retrieving shooter angle w/ offset: %f", shooter_angle_offset);
+		DriverStation::ReportError(text);
+		*/
 		if (actual > 270.0)
 		{
-			return -(360.0 - actual);
+			return -(360.0 - (actual - shooter_angle_offset));
 		}
 		else
 		{

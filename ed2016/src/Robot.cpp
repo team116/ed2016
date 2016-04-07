@@ -91,6 +91,7 @@ private:
 				getPositionSwitchValue(),
 				getDefenseSwitchValue());
 			DriverStation::ReportError(text);
+			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)
 		{
@@ -176,6 +177,7 @@ private:
 		{
 			CheckManualOverrides::process();
 			Scheduler::GetInstance()->Run();
+			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)
 		{
@@ -218,6 +220,7 @@ private:
 				CommandBase::shooter->getD(),
 				CommandBase::shooter->getF());
 			DriverStation::ReportError(text);
+			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)
 		{
@@ -254,12 +257,17 @@ private:
 			CheckManualOverrides::process();
 			LiveWindow::GetInstance()->Run();
 			char text[255];
-			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f",
+			snprintf(text, 255, "shooter angle: %f, shooter voltage: %f, intake angle: %f, intake voltage: %f, home switch: %d%d, ball switch: %d%d",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->shooterVoltage(),
 				CommandBase::sensors->intakeAngle(),
-				CommandBase::sensors->intakeVoltage());
-			DriverStation::ReportError(text);
+				CommandBase::sensors->intakeVoltage(),
+				CommandBase::sensors->isShooterHomeSwitchEnabled(),
+				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
+				CommandBase::sensors->isBallSwitchEnabled(),
+				CommandBase::sensors->getBallSwitch());
+			//DriverStation::ReportError(text);
+			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)
 		{

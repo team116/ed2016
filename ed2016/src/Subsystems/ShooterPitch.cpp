@@ -115,8 +115,14 @@ void ShooterPitch::setDirection(Utils::VerticalDirection dir)
 
 void ShooterPitch::checkLimits()
 {
+	/*
+	char text[255];
+	snprintf(text, 255, "checking shooter pitch limits: %d", CommandBase::sensors->isShooterHomeSwitchEnabled());
+	DriverStation::ReportError(text);
+	*/
 	if(CommandBase::sensors->isShooterHomeSwitchHorizontal())
 	{
+		// DriverStation::ReportError("shooter pitch trying to zero itself");
 		CommandBase::sensors->zeroShooterPitch();
 		SetShooterPitch::zeroTimedAngleTracker();
 
