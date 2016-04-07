@@ -213,12 +213,13 @@ private:
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->speedShooterWheel(),
 				CommandBase::sensors->lidarDistance());
-			DriverStation::ReportError(text);
-			snprintf(text, 255, "shooter p: %f, shooter i: %f, shooter d: %f, shooter f: %f",
-				CommandBase::shooter->getP(),
-				CommandBase::shooter->getI(),
-				CommandBase::shooter->getD(),
-				CommandBase::shooter->getF());
+			//DriverStation::ReportError(text);
+			snprintf(text, 255, "intake p: %f, intake i: %f, intake d: %f, intake f: %f, pid enabled: %d",
+				CommandBase::intake->getP(),
+				CommandBase::intake->getI(),
+				CommandBase::intake->getD(),
+				CommandBase::intake->getF(),
+				CommandBase::intake->isPIDEnabled());
 			DriverStation::ReportError(text);
 			CommandBase::shooter_pitch->checkLimits();
 		}

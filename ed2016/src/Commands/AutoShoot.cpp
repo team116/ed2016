@@ -26,10 +26,10 @@ AutoShoot::AutoShoot()
 	// a CommandGroup containing them would require both the chassis and the
 	// arm.
 
+	AddParallel(new AngleIntake(0.0));
 	AddParallel(new SetShooterPitch(30.0));
 	AddParallel(new SetShooterWheels(CommandBase::shooter->getRPMPreset(5)));
 	AddSequential(new TurnToTarget());
-	AddSequential(new AngleIntake(0.0));
 	AddSequential(new AimShooterToTarget());
 	AddSequential(new Shoot());
 }

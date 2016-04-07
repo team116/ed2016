@@ -88,17 +88,14 @@ bool SetShooterPitch::IsFinished()
 		return true;
 	}
 
-	if(!shooter_pitch->isPIDEnabled())
+	if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
 	{
-		if (current_angle > pitch - accepted_error && current_angle < pitch + accepted_error)
-		{
-			return true;
-		}
-		else if(IsTimedOut())
-		{
-			Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
-			return true;
-		}
+		return true;
+	}
+	else if(IsTimedOut())
+	{
+		Log::getInstance()->write(Log::WARNING_LEVEL, "SetShooterPitch timed out when trying to reach angle %f (Current Angle: %f)", pitch, current_angle);
+		return true;
 	}
 	return false;
 }

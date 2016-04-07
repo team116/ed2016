@@ -1,3 +1,4 @@
+#include <CheckManualOverrides.h>
 #include <Commands/RunShooterWheels.h>
 #include <OI.h>
 #include <Subsystems/Shooter.h>
@@ -24,6 +25,7 @@ void RunShooterWheels::Execute()
 		}
 		else
 		{
+			shooter->setRPM(0.0);
 			shooter->setSpeed(0.0);
 		}
 	}

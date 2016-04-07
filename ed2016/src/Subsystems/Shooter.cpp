@@ -74,7 +74,14 @@ void Shooter::UsePIDOutput(double output)
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "Shooter Output: %f Cycles: %d OnTarget: %d", output, cycles_within_tolerance, OnTarget());
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "");
 		//DriverStation::ReportError("Output: " + std::to_string(output) + " OnTarget: " + std::to_string(OnTarget()));
-		setSpeed(output);
+		if (fabs(GetSetpoint()) < 5.0)
+		{
+			setSpeed(0.0);
+		}
+		else
+		{
+			setSpeed(output);
+		}
 		checkTarget();
 	}
 }

@@ -36,6 +36,7 @@ void TurnToTarget::Execute()
 	if (cameras->canSeeGoal())
 	{
 		pixels_off = cameras->HorizontalPixelsFromTarget();
+		DriverStation::ReportError(std::to_string(pixels_off));
 		float offset = fabs(pixels_off / (cameras->IMAGE_WIDTH / 2));
 
 		if (pixels_off < -ACCEPTED_ERROR)
