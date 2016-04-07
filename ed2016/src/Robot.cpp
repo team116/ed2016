@@ -213,7 +213,7 @@ private:
 				CommandBase::sensors->intakeAngle(),
 				CommandBase::sensors->speedShooterWheel(),
 				CommandBase::sensors->lidarDistance());
-			//DriverStation::ReportError(text);
+			DriverStation::ReportError(text);
 			snprintf(text, 255, "intake p: %f, intake i: %f, intake d: %f, intake f: %f, pid enabled: %d",
 				CommandBase::intake->getP(),
 				CommandBase::intake->getI(),

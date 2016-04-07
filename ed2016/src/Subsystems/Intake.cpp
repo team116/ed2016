@@ -4,23 +4,25 @@
 #include <CommandBase.h>
 
 const int Intake::ANGLE_PRESET_COUNT = 6;
-float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT];/* {
-	-15.0,
+float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT] {
+	-30.0,
 	6.0,
 	27.0,
 	48.0,
 	69.0,
 	90.0
-};*/
+};
 
 Intake::Intake() : PIDSubsystem("Intake", 0.02, 0.0001, 0)
 {
 	intake_angle = Utils::constructMotor(RobotPorts::INTAKE_ANGLE_MOTOR);
 
+	/*
 	for (int i = 0; i < ANGLE_PRESET_COUNT; ++i)
 	{
-		ANGLE_PRESETS[i] = -15.0 + (float)i * 21.0; // [-15, 90]
+		ANGLE_PRESETS[i] = -25.0 + (float)i * 21.0; // [-15, 90]
 	}
+	*/
 
 	log = Log::getInstance();
 
