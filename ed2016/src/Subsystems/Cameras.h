@@ -24,6 +24,7 @@ public:
 	float GetTargetX();
 	float GetTargetY();
 	float GetTargetWidth();
+	float GetTargetHeight();
 	float PitchFromHorizontal();
 	float HorizontalPixelsFromTarget();
 	float GetDistanceFromTarget();
@@ -60,6 +61,7 @@ private:
 		float y;
 		float area;
 		float width;
+		float height;
 	};
 	Contour target;
 };

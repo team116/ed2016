@@ -19,11 +19,11 @@ void HolderWheel::setWheelDirection(Utils::HorizontalDirection direction)
 	wheel_direction = direction;
 	if (direction == Utils::HorizontalDirection::IN)
 	{
-		holder_wheel->Set(-0.40);
+		holder_wheel->Set(-0.50);
 	}
 	else if (direction == Utils::HorizontalDirection::OUT)
 	{
-		holder_wheel->Set(0.5);
+		holder_wheel->Set(0.6);
 	}
 	else
 	{

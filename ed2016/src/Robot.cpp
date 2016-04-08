@@ -115,6 +115,10 @@ private:
 	 */
 	void AutonomousInit()
 	{
+		CommandBase::intake->Enable();
+		CommandBase::shooter->Enable();
+		CommandBase::shooter_pitch->Enable();
+
 		float shoot_voltage = shoot_switch->GetVoltage();
 		int shoot_value = getShootSwitchValue();
 

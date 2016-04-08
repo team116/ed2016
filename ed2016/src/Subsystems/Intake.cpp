@@ -6,10 +6,10 @@
 const int Intake::ANGLE_PRESET_COUNT = 6;
 float* Intake::ANGLE_PRESETS = new float[Intake::ANGLE_PRESET_COUNT] {
 	-30.0,
-	6.0,
-	27.0,
-	48.0,
-	69.0,
+	-15.0,
+	3.0,
+	30.0,
+	60.0,
 	90.0
 };
 

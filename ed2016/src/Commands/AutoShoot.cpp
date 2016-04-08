@@ -30,6 +30,7 @@ AutoShoot::AutoShoot()
 	AddParallel(new SetShooterPitch(30.0));
 	AddParallel(new SetShooterWheels(CommandBase::shooter->getRPMPreset(5)));
 	AddSequential(new TurnToTarget());
+	AddParallel(new TurnToTarget());
 	AddSequential(new AimShooterToTarget());
 	AddSequential(new Shoot());
 }

@@ -10,7 +10,14 @@
 CrossDefense::CrossDefense(Autonomous::Defense def)
 {
 	log = Log::getInstance();
-	AddSequential(new AngleIntake(90.0));
+	if (def == Autonomous::PORTCULLIS)
+	{
+		AddSequential(new AngleIntake(-10.0));
+	}
+	else
+	{
+		AddSequential(new AngleIntake(90.0));
+	}
 	if (def == Autonomous::MOAT)
 	{
 		AddSequential(new SetShooterPitch(ShooterPitch::getAnglePreset(1)));

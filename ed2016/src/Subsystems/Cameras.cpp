@@ -167,12 +167,14 @@ void Cameras::RefreshContours()
 		target.y = grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[index];
 		target.area = grip->GetNumberArray("vision_contours/area", llvm::ArrayRef<double>())[index];
 		target.width = grip->GetNumberArray("vision_contours/width", llvm::ArrayRef<double>())[index];
+		target.height = grip->GetNumberArray("vision_contours/height", llvm::ArrayRef<double>())[index];
 	}
 	else {
 		target.x = 0.0;
 		target.y = 0.0;
 		target.area = 0.0;
 		target.width = 0.0;
+		target.height = 0.0;
 	}
 }
 
@@ -230,12 +232,17 @@ float Cameras::PitchFromHorizontal()
 //from negative IMAGE_WIDTH/2 to positive IMAGE_WIDTH/2
 float Cameras::HorizontalPixelsFromTarget()
 {
-	return (target.x - IMAGE_WIDTH / 2) - (GetTargetWidth() / TARGET_WIDTH * CAMERA_SIDE_OFFSET);
+	return (target.x - IMAGE_WIDTH / 2) - (GetTargetHeight() / TARGET_HEIGHT * CAMERA_SIDE_OFFSET);
 }
 
 float Cameras::GetTargetWidth()
 {
 	return target.width;
+}
+
+float Cameras::GetTargetHeight()
+{
+	return target.height;
 }
 
 /*

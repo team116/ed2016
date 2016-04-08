@@ -3,8 +3,10 @@
 #include <Subsystems/Cameras.h>
 
 const float P = 0.6;
-const float MIN_TURN_SPEED = 0.2;
+const float MIN_TURN_SPEED = 0.13;
 const float MAX_TURN_SPEED = 0.4;
+
+const float STARTUP_SPEED = 0.2;
 
 const float ACCEPTED_ERROR = 5;//in pixels
 
@@ -27,6 +29,29 @@ void TurnToTarget::Initialize()
 	log->write(Log::TRACE_LEVEL, "TurnToTarget initialized");
 
 	pixels_off = 0;
+	cameras->RefreshContours();
+	if(cameras->canSeeGoal()) {
+		pixels_off = cameras->HorizontalPixelsFromTarget();
+		float offset = fabs(pixels_off / (cameras->IMAGE_WIDTH / 2));
+		if (pixels_off < -ACCEPTED_ERROR)
+		{
+			//DriverStation::ReportError("Turning Left " + std::to_string(pixels_off));
+			mobility->setLeft(-STARTUP_SPEED);
+			mobility->setRight(STARTUP_SPEED);
+		}
+		else if (pixels_off > ACCEPTED_ERROR)
+		{
+			//DriverStation::ReportError("Turning Right" + std::to_string(pixels_off));
+			mobility->setLeft(STARTUP_SPEED);
+			mobility->setRight(-STARTUP_SPEED);
+		}
+		else
+		{
+			//DriverStation::ReportError("Lined Up" + std::to_string(pixels_off));
+			mobility->setLeft(0.0);
+			mobility->setRight(0.0);
+		}
+	}
 }
 
 // Called repeatedly when this Command is scheduled to run
