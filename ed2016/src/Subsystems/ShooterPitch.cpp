@@ -56,7 +56,14 @@ double ShooterPitch::ReturnPIDInput()
 
 void ShooterPitch::UsePIDOutput(double output)
 {
-	setSpeed(output);
+	if (fabs(GetSetpoint()) < ZERO_ANGLE_ZONE && CommandBase::sensors->isShooterHomeSwitchHorizontal())
+	{
+		setSpeed(0.0);
+	}
+	else
+	{
+		setSpeed(output);
+	}
 }
 
 void ShooterPitch::InitDefaultCommand()

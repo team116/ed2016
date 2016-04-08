@@ -15,7 +15,13 @@ public:
 	void Interrupted();
 
 private:
+	static const float EXTRA_BACKDRIVE_TIMEOUT;
+
+	Timer* extra_backdrive_timer;
+
 	bool pid_was_enabled;
+	bool last_switch_value;
+
 };
 
 #endif
