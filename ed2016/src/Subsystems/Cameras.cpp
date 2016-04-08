@@ -156,7 +156,7 @@ void Cameras::RefreshContours()
 	unsigned int index = 0;
 	float height = 0.0f;
 	for(unsigned int x = 0; x < grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>()).size(); x++) {
-		if(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[x] > height) {
+		if(grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[x] < height) {
 			height = grip->GetNumberArray("vision_contours/centerY", llvm::ArrayRef<double>())[x];
 			index = x;
 		}

@@ -13,6 +13,7 @@
 #include <Commands/Autonomous/SpyBoxShootAndReach.h>
 #include <Log.h>
 #include <OI.h>
+#include <Subsystems/Cameras.h>
 #include <Subsystems/ShooterPitch.h>
 #include <Subsystems/Sensors.h>
 #include <Subsystems/Shooter.h>
@@ -90,6 +91,8 @@ private:
 				getShootSwitchValue(),
 				getPositionSwitchValue(),
 				getDefenseSwitchValue());
+			CommandBase::cameras->RefreshContours();
+			snprintf(text, 255, "pixels off: %f", CommandBase::cameras->HorizontalPixelsFromTarget());
 			DriverStation::ReportError(text);
 			CommandBase::shooter_pitch->checkLimits();
 		}
