@@ -232,7 +232,7 @@ float Cameras::PitchFromHorizontal()
 //from negative IMAGE_WIDTH/2 to positive IMAGE_WIDTH/2
 float Cameras::HorizontalPixelsFromTarget()
 {
-	return (target.x - IMAGE_WIDTH / 2) - (GetTargetHeight() / TARGET_HEIGHT * CAMERA_SIDE_OFFSET);
+	return (target.x - IMAGE_WIDTH / 2) - ((GetTargetHeight() + 4) / TARGET_HEIGHT * CAMERA_SIDE_OFFSET);
 }
 
 float Cameras::GetTargetWidth()

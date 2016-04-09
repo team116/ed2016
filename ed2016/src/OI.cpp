@@ -75,8 +75,8 @@ OI::OI()
 	//Set Joystick Buttons Events
 	b_extend_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::UP));
 	b_retract_scaling_arm->WhileHeld(new MoveClimberArm(Utils::VerticalDirection::DOWN));
-	b_auto_winch->WhileHeld(new AutoWinch());
-	b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
+	// b_auto_winch->WhileHeld(new AutoWinch());
+	// b_auto_climber_deploy->WhenPressed(new ExtendScalingArm());
 	b_move_intake_up->WhileHeld(new LiftIntake(Utils::VerticalDirection::UP));
 	b_move_intake_up->WhenReleased(new LiftIntake(Utils::VerticalDirection::V_STILL));
 	b_move_intake_down->WhileHeld(new LiftIntake(Utils::VerticalDirection::DOWN));

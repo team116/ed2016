@@ -214,7 +214,18 @@ private:
 			Scheduler::GetInstance()->Run();
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
-			char text[255];
+			/*char text[255];
+			snprintf(text, 255, "lidar dist: %d cm", CommandBase::sensors->lidarDistance());
+			DriverStation::ReportError(text);*/
+
+
+//			PowerDistributionPanel pdp = new PowerDistributionPanel();
+//			DriverStation::ReportError("Front Right: " + std::to_string(pdp.GetCurrent(RobotPorts::RIGHT_FRONT_MOTOR))
+//			+ "Rear Right: " + std::to_string(pdp.GetCurrent(RobotPorts::RIGHT_BACK_MOTOR))
+//			+ "Front Left: " + std::to_string(pdp.GetCurrent(RobotPorts::LEFT_FRONT_MOTOR))
+//			+ "Rear LeftRight: " + std::to_string(pdp.GetCurrent(RobotPorts::LEFT_BACK_MOTOR)));
+
+			/*
 			snprintf(text, 255, "shooter angle: %f, intake angle: %f, tach rate: %f rpm, lidar dist: %d cm",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->intakeAngle(),
@@ -228,6 +239,7 @@ private:
 				CommandBase::intake->getF(),
 				CommandBase::intake->isPIDEnabled());
 			DriverStation::ReportError(text);
+			*/
 			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)
