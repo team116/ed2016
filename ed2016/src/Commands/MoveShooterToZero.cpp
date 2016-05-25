@@ -11,6 +11,8 @@ MoveShooterToZero::MoveShooterToZero()
 	extra_backdrive_timer = new Timer();
 	pid_was_enabled = false;
 	last_switch_value = false;
+
+	SetTimeout(2.0);
 }
 
 // Called just before this Command runs the first time
@@ -45,6 +47,10 @@ void MoveShooterToZero::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool MoveShooterToZero::IsFinished()
 {
+	if(IsTimedOut()){
+		return true;
+	}
+	DriverStation::ReportError("Home Switch: " + std::to_string(sensors->isShooterHomeSwitchHorizontal()));
 	return sensors->isShooterHomeSwitchHorizontal() /*&& extra_backdrive_timer->Get() > EXTRA_BACKDRIVE_TIMEOUT*/;
 }
 
