@@ -99,15 +99,18 @@ namespace CheckManualOverrides
 
 				if (CommandBase::intake->isPIDEnabled() != enable)
 				{
-					if (enable)
+
+					CommandBase::intake->Disable();
+
+					/*if (enable)
 					{
 						CommandBase::intake->Enable();
 					}
-					else
+					else									ORIGINAL PIECE OF CODE FOR CommandBase::intake->isPIDEnabled() != enable
 					{
 						CommandBase::intake->Disable();
 					}
-					pid_toggle_timer->Reset();
+					pid_toggle_timer->Reset();*/
 				}
 
 				last_pid_value = enable;
