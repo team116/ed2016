@@ -357,9 +357,9 @@ void Sensors::enableRobotAngle(bool enable)
 	robot_angle_soft_enabled = enable;
 }
 
-void Sensors::enableIntakeAngle(bool enable)
+void Sensors::enableIntakeAngle(bool disable)
 {
-	intake_angle_soft_enabled = enable;
+	intake_angle_soft_enabled = disable;
 }
 
 void Sensors::enableShooterHomeSwitch(bool enable)
