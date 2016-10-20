@@ -27,7 +27,7 @@ const bool Sensors::DRIVE_ENCODERS_ENABLED = false;
 const bool Sensors::LIDAR_SENSOR_ENABLED = true;
 const bool Sensors::SHOOTER_ANGLE_ENABLED = true;
 const bool Sensors::ROBOT_ANGLE_ENABLED = true;
-const bool Sensors::INTAKE_ANGLE_ENABLED = true;
+const bool Sensors::INTAKE_ANGLE_ENABLED = false;	//eventually switch this back to TRUE
 const bool Sensors::BALL_SWITCH_ENABLED = true;
 const bool Sensors::SHOOTER_HOME_SWITCH_ENABLED = true;
 const bool Sensors::SHOOTER_WHEEL_TACHOMETER_ENABLED = true;
@@ -357,9 +357,9 @@ void Sensors::enableRobotAngle(bool enable)
 	robot_angle_soft_enabled = enable;
 }
 
-void Sensors::enableIntakeAngle(bool disable)
+void Sensors::enableIntakeAngle(bool enable)
 {
-	intake_angle_soft_enabled = disable;
+	intake_angle_soft_enabled = enable;
 }
 
 void Sensors::enableShooterHomeSwitch(bool enable)
