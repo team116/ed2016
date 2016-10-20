@@ -81,7 +81,7 @@ private:
 		try
 		{
 			Scheduler::GetInstance()->Run();
-			char text[255];
+			/*char text[255];
 			snprintf(text, 255, "shooter angle: %f, shoot voltage: %f, intake angle: %f, intake voltage: %f, tach rate: %f, shoot: %d, pos: %d, def: %d",
 				CommandBase::sensors->shooterAngle(),
 				CommandBase::sensors->shooterVoltage(),
@@ -93,6 +93,10 @@ private:
 				getDefenseSwitchValue());
 			CommandBase::cameras->RefreshContours();
 			snprintf(text, 255, "pixels off: %f", CommandBase::cameras->HorizontalPixelsFromTarget());
+			DriverStation::ReportError(text);*/
+			char text[255];
+			snprintf(text, 255, "Tach: %f rpm Intake Angle: %f Voltage: %f", CommandBase::sensors->speedShooterWheel(), CommandBase::sensors->intakeAngle(), CommandBase::sensors->intakeVoltage());
+
 			DriverStation::ReportError(text);
 			CommandBase::shooter_pitch->checkLimits();
 		}
@@ -214,10 +218,7 @@ private:
 			Scheduler::GetInstance()->Run();
 			CommandBase::oi->process();
 			CommandBase::shooter_pitch->checkLimits();
-			/*char text[255];
-			snprintf(text, 255, "lidar dist: %d cm", CommandBase::sensors->lidarDistance());
-			DriverStation::ReportError(text);*/
-
+/*
 
 //			PowerDistributionPanel pdp = new PowerDistributionPanel();
 //			DriverStation::ReportError("Front Right: " + std::to_string(pdp.GetCurrent(RobotPorts::RIGHT_FRONT_MOTOR))
@@ -286,7 +287,7 @@ private:
 				CommandBase::sensors->isShooterHomeSwitchHorizontal(),
 				CommandBase::sensors->isBallSwitchEnabled(),
 				CommandBase::sensors->getBallSwitch());
-			//DriverStation::ReportError(text);
+			DriverStation::ReportError(text);
 			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)

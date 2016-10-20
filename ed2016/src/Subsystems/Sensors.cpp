@@ -11,8 +11,9 @@
 const float Sensors::MIN_SHOOTER_ANGLE_VOLT = 1.42;
 const float Sensors::MAX_SHOOTER_ANGLE_VOLT = 2.62;
 
-const float Sensors::MIN_INTAKE_ANGLE_VOLT = 2.5;
-const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.72;
+const float Sensors::MIN_INTAKE_ANGLE_VOLT = 2.5;		//min value measured from
+const float Sensors::MAX_INTAKE_ANGLE_VOLT = 3.72;		//max value measured from
+
 const float Sensors::INTAKE_VOLT_ADJUSTMENT = 0.27;
 
 const float Sensors::DRIVE_WHEEL_DIAMETER = 7.9502;

@@ -59,11 +59,14 @@ void Intake::UsePIDOutput(double output)
 		//CommandBase::log->write(Log::DEBUG_LEVEL, "Intake Output: %f", output);
 		//DriverStation::ReportError("Output: " + std::to_string(output));
 		setAngleSpeed(output);
+		//DriverStation::ReportError("PID Enabled");
 	}
+	//DriverStation::ReportError("PID Enabled");
 }
 
 void Intake::setAngleSpeed(float speed)
 {
+	DriverStation::ReportError("Setting SPeed " + std::to_string(speed));
 	intake_angle->Set(-speed);
 }
 
