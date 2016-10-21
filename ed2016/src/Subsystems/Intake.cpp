@@ -74,7 +74,7 @@ void Intake::setIntakeAngleDirection(Utils::VerticalDirection value)
 {
 	if (value == Utils::VerticalDirection::UP)
 	{
-		setAngleSpeed(0.5);
+		setAngleSpeed(0.8);
 	}
 	else if (value == Utils::VerticalDirection::DOWN)
 	{
