@@ -81,23 +81,13 @@ private:
 		try
 		{
 			Scheduler::GetInstance()->Run();
-			/*char text[255];
-			snprintf(text, 255, "shooter angle: %f, shoot voltage: %f, intake angle: %f, intake voltage: %f, tach rate: %f, shoot: %d, pos: %d, def: %d",
-				CommandBase::sensors->shooterAngle(),
-				CommandBase::sensors->shooterVoltage(),
-				CommandBase::sensors->intakeAngle(),
-				CommandBase::sensors->intakeVoltage(),
-				CommandBase::sensors->speedShooterWheel(),
-				getShootSwitchValue(),
-				getPositionSwitchValue(),
-				getDefenseSwitchValue());
-			CommandBase::cameras->RefreshContours();
-			snprintf(text, 255, "pixels off: %f", CommandBase::cameras->HorizontalPixelsFromTarget());
-			DriverStation::ReportError(text);*/
 			char text[255];
-			snprintf(text, 255, "Tach: %f rpm Intake Angle: %f Voltage: %f", CommandBase::sensors->speedShooterWheel(), CommandBase::sensors->intakeAngle(), CommandBase::sensors->intakeVoltage());
-
+			CommandBase::cameras->RefreshContours();
+			snprintf(text, 255, "distance: %d pixels off: %f", CommandBase::sensors->lidarDistance(), CommandBase::cameras->HorizontalPixelsFromTarget());
 			DriverStation::ReportError(text);
+//			snprintf(text, 255, "Tach: %f rpm Intake Angle: %f Voltage: %f", CommandBase::sensors->speedShooterWheel(), CommandBase::sensors->intakeAngle(), CommandBase::sensors->intakeVoltage());
+//			DriverStation::ReportError(text);
+
 			CommandBase::shooter_pitch->checkLimits();
 		}
 		catch (exception& e)

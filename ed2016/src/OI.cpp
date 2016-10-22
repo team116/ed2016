@@ -318,8 +318,8 @@ bool OI::getFuegoButton()
 
 bool OI::getAutoAimButton()
 {
-	//return b_auto_aim->Get();
-	return false;
+	return b_auto_aim->Get();
+	//return false;
 }
 
 bool OI::getSensorEnableSwitch()
